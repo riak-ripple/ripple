@@ -1,6 +1,6 @@
 = riak-client
 
-Description goes here.
+riak-client is a simple Ruby client/wrapper for Riak, Basho's distributed database.
 
 == Note on Patches/Pull Requests
  
@@ -14,4 +14,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2010 Sean Cribbs. See LICENSE for details.
+Copyright (c) 2010 Sean Cribbs, Sonian Inc., and Basho Technologies Inc. See LICENSE for details.
