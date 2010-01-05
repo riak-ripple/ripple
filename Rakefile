@@ -11,7 +11,7 @@ begin
     gem.homepage = "http://github.com/seancribbs/riak-client"
     gem.authors = ["Sean Cribbs"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "cucumber", ">= 0"
+    gem.add_development_dependency "cucumber", ">= 0.4.0"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
