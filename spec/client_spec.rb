@@ -59,4 +59,40 @@ describe Riak::Client do
       lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID + 1 }.should raise_error(ArgumentError)      
     end
   end
+
+  describe "reconfiguring" do
+    before :each do
+      @client = Riak::Client.new
+    end
+    
+    it "should allow setting the host" do    
+      @client.should respond_to(:host=)
+      @client.host = "riak.basho.com"
+      @client.host.should == "riak.basho.com"
+    end
+
+    it "should require the host to be an IP or hostname" do
+      [238472384972, "*+=@!"].each do |invalid|
+        lambda { @client.host = invalid }.should raise_error(ArgumentError)
+      end
+      ["127.0.0.1", "10.0.100.5", "localhost", "otherhost.local", "riak.basho.com"].each do |valid|
+        lambda { @client.host = valid }.should_not raise_error
+      end
+    end
+
+    it "should allow setting the port" do
+      @client.should respond_to(:port=)
+      @client.port = 9000
+      @client.port.should == 9000
+    end
+
+    it "should require the port to be a valid number" do
+      [0,-1,65536,"foo"].each do |invalid|
+        lambda { @client.port = invalid }.should raise_error(ArgumentError)
+      end
+      [1,65535,8098].each do |valid|
+        lambda { @client.port = valid }.should_not raise_error
+      end
+    end
+  end
 end
