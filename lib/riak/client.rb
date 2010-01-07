@@ -1,5 +1,4 @@
 require 'riak'
-require 'base64'
 
 module Riak
   class Client
