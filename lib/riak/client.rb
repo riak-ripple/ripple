@@ -7,13 +7,11 @@ module Riak
 
     attr_reader :host, :port, :client_id, :prefix
 
-    def initialize(*args)
-      options = args.extract_options!.symbolize_keys
+    def initialize(options={})
       options.assert_valid_keys(:host, :port, :prefix, :client_id)
-      host, port = args
       {
-        :host => host || "127.0.0.1",
-        :port => port || 8098,
+        :host => "127.0.0.1",
+        :port => 8098,
         :client_id => make_client_id,
         :prefix => "/raw/"
       }.merge(options).each do |k,v|

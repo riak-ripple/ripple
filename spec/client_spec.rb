@@ -5,14 +5,6 @@ describe Riak::Client do
     it "should require a host and port" do
       lambda { Riak::Client.new(:host => nil, :port => nil) }.should raise_error
     end
-
-    it "should allow the host as the first argument" do
-      Riak::Client.new("foobar.com").host.should == "foobar.com"
-    end
-
-    it "should accept the port as the second argument" do
-      Riak::Client.new("localhost", 9000).port.should == 9000
-    end
     
     it "should default to the local interface on port 8098" do
       client = Riak::Client.new
