@@ -24,7 +24,7 @@ module Riak
             header_line.size
           end
           @curl.on_body {|chunk| yield chunk; chunk.size } if block_given?
-          
+
           # Perform
           case method
           when :put, :post
