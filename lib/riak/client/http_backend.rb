@@ -26,6 +26,22 @@ module Riak
           uri.query = query if query.present?
         end
       end
+      
+      def verify_path_and_body!(args)
+        body = args.pop
+        begin
+          verify_path!(args)
+        rescue ArgumentError
+          raise ArgumentError, "You must supply both a resource path and a body."
+        end
+        
+        raise ArgumentError, "Request body must be a string." unless String === body
+        [args, body]
+      end
+      
+      def verify_path!(resource)
+        raise ArgumentError, "Resource path too short" if Array(resource).flatten.empty?
+      end
     end
   end
 end
