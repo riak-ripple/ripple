@@ -2,10 +2,22 @@ require 'riak'
 
 module Riak
   class Client
+    class FailedRequest < StandardError
+      attr_reader :method, :expected, :code, :headers, :body
+      
+      def initialize(method, expected_code, received_code, headers, body)
+        @method, @expected, @code, @headers, @body = method, expected_code, received_code, headers, body
+        super "Expected #{@expected} from Riak but received #{@code}."
+      end
+    end
+    
+    autoload :HTTPBackend, "riak/client/http_backend"
+    autoload :NetHTTPBackend, "riak/client/net_http_backend"
+    
     MAX_CLIENT_ID = 4294967296 #:nodoc:
-    IP_REGEX = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.freeze
-    HOST_REGEX = /^[-A-Z0-9.]+$/i.freeze
-    attr_reader :host, :port, :client_id, :prefix
+    
+    attr_reader :host, :port, :client_id
+    attr_accessor :prefix
 
     def initialize(options={})
       options.assert_valid_keys(:host, :port, :prefix, :client_id)
@@ -36,7 +48,7 @@ module Riak
     end
     
     def host=(value)
-      raise ArgumentError, "host must be a valid hostname" unless String === value && (value =~ IP_REGEX || value =~ HOST_REGEX)
+      raise ArgumentError, "host must be a valid hostname" unless String === value && value.present? && value =~ URI::REGEXP::HOST
       @host = value
     end
 
@@ -44,8 +56,9 @@ module Riak
       raise ArgumentError, "port must be an integer between 1 and 65535" unless (1..65535).include?(value)
       @port = value
     end
-    
+
     private
+        
     def make_client_id      
       b64encode(rand(MAX_CLIENT_ID))
     end

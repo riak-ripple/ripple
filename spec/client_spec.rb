@@ -72,7 +72,7 @@ describe Riak::Client do
     end
 
     it "should require the host to be an IP or hostname" do
-      [238472384972, "*+=@!"].each do |invalid|
+      [238472384972, ""].each do |invalid|
         lambda { @client.host = invalid }.should raise_error(ArgumentError)
       end
       ["127.0.0.1", "10.0.100.5", "localhost", "otherhost.local", "riak.basho.com"].each do |valid|
@@ -94,5 +94,11 @@ describe Riak::Client do
         lambda { @client.port = valid }.should_not raise_error
       end
     end
+    
+    it "should allow setting the prefix (although we prefer the raw interface)" do
+      @client.should respond_to(:prefix=)
+      @client.prefix = "/another-prefix"
+      @client.prefix.should == "/another-prefix"      
+    end    
   end
 end
