@@ -8,6 +8,9 @@ require 'fakeweb'
 
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
+$server = MockServer.new
+at_exit { $server.stop }
+
 Spec::Runner.configure do |config|
   config.before(:each) do
     FakeWeb.clean_registry

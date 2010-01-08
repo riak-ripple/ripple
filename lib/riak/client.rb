@@ -13,6 +13,7 @@ module Riak
     
     autoload :HTTPBackend, "riak/client/http_backend"
     autoload :NetHTTPBackend, "riak/client/net_http_backend"
+    autoload :CurbBackend, "riak/client/curb_backend"
     
     MAX_CLIENT_ID = 4294967296 #:nodoc:
     

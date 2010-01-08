@@ -42,7 +42,7 @@ describe Riak::Client::HTTPBackend do
     lambda { @backend.verify_path!([]) }.should raise_error(ArgumentError)
     lambda { @backend.verify_path!(["foo"]) }.should_not raise_error
   end
-  
+
   describe "verify_path_and_body!" do
     it "should separate the path and body from given arguments" do
       uri, data = @backend.verify_path_and_body!(["foo", "This is the body."])

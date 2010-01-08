@@ -5,32 +5,32 @@ describe Riak::Client do
     it "should require a host and port" do
       lambda { Riak::Client.new(:host => nil, :port => nil) }.should raise_error
     end
-    
+
     it "should default to the local interface on port 8098" do
       client = Riak::Client.new
       client.host.should == "127.0.0.1"
       client.port.should == 8098
     end
-    
+
     it "should accept a client ID" do
       client = Riak::Client.new :client_id => "AAAAAA=="
       client.client_id.should == "AAAAAA=="
     end
-    
+
     it "should turn an integer client ID into a base64-encoded string" do
       client = Riak::Client.new :client_id => 1
       client.client_id.should == "AAAAAQ=="
     end
-    
+
     it "should create a client ID if not specified" do
       Riak::Client.new.client_id.should be_kind_of(String)
     end
-    
+
     it "should accept a path prefix" do
       client = Riak::Client.new(:prefix => "/jiak/")
       client.prefix.should == "/jiak/"
     end
-    
+
     it "should default the prefix to /raw/ if not specified" do
       Riak::Client.new.prefix.should == "/raw/"
     end
@@ -40,7 +40,7 @@ describe Riak::Client do
     before :each do
       @client = Riak::Client.new
     end
-    
+
     it "should accept a string unmodified" do
       @client.client_id = "foo"
       @client.client_id.should == "foo"
@@ -52,11 +52,11 @@ describe Riak::Client do
     end
 
     it "should reject an integer equal to the maximum client id" do
-      lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID }.should raise_error(ArgumentError)      
+      lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID }.should raise_error(ArgumentError)
     end
-    
+
     it "should reject an integer larger than the maximum client id" do
-      lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID + 1 }.should raise_error(ArgumentError)      
+      lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID + 1 }.should raise_error(ArgumentError)
     end
   end
 
@@ -64,8 +64,8 @@ describe Riak::Client do
     before :each do
       @client = Riak::Client.new
     end
-    
-    it "should allow setting the host" do    
+
+    it "should allow setting the host" do
       @client.should respond_to(:host=)
       @client.host = "riak.basho.com"
       @client.host.should == "riak.basho.com"
@@ -94,11 +94,11 @@ describe Riak::Client do
         lambda { @client.port = valid }.should_not raise_error
       end
     end
-    
+
     it "should allow setting the prefix (although we prefer the raw interface)" do
       @client.should respond_to(:prefix=)
       @client.prefix = "/another-prefix"
-      @client.prefix.should == "/another-prefix"      
-    end    
+      @client.prefix.should == "/another-prefix"
+    end
   end
 end

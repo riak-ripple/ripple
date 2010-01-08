@@ -12,7 +12,10 @@ begin
     gem.authors = ["Sean Cribbs"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.add_development_dependency "cucumber", ">= 0.4.0"
+    gem.add_development_dependency "fakeweb", ">=1.2"
+    gem.add_development_dependency "rack", ">=1.0"
     gem.add_dependency "activesupport", ">=2.3"
+    gem.add_dependency "curb", ">=0.6"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

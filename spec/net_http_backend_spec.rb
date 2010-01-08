@@ -10,6 +10,6 @@ describe Riak::Client::NetHTTPBackend do
   def setup_http_mock(method, uri, options={})
     FakeWeb.register_uri(method, uri, options)
   end
-  
+
   it_should_behave_like "HTTP backend"
 end
