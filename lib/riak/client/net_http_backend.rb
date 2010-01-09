@@ -2,11 +2,13 @@ require 'riak'
 
 module Riak
   class Client
+    # Uses the Ruby standard library Net::HTTP to connect to Riak.
+    # We recommend using the CurbBackend, which will
+    # be preferred when the 'curb' library is available.
+    # Conforms to the Riak::Client::HTTPBackend interface.
     class NetHTTPBackend < HTTPBackend
       private
-      def perform(method, uri, user_headers, expect, data=nil)
-        headers = default_headers.merge(user_headers)
-
+      def perform(method, uri, headers, expect, data=nil) #:nodoc:
         Net::HTTP.start(uri.host, uri.port) do |http|
           response = http.send(method, *([uri.request_uri, data, headers].compact))
           if response.code.to_i == expect.to_i

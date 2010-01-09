@@ -11,9 +11,10 @@ begin
     gem.homepage = "http://github.com/seancribbs/riak-client"
     gem.authors = ["Sean Cribbs"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "cucumber", ">= 0.4.0"
+    # gem.add_development_dependency "cucumber", ">= 0.4.0"
     gem.add_development_dependency "fakeweb", ">=1.2"
     gem.add_development_dependency "rack", ">=1.0"
+    gem.add_development_dependency "yard", ">=0.5.2"
     gem.add_dependency "activesupport", ">=2.3"
     gem.add_dependency "curb", ">=0.6"
   end
@@ -50,12 +51,11 @@ end
 
 task :default => :spec
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "riak-client #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+require 'yard'
+YARD::Rake::YardocTask.new do |yard|
+  docfiles = FileList['lib/**/*.rb', 'README*', 'VERSION', 'LICENSE']
+  docfiles.exclude 'lib/riak-client.rb'
+  docfiles.exclude 'lib/riakclient.rb'
+  docfiles.exclude 'lib/riak_client.rb'
+  yard.files = docfiles
 end

@@ -2,10 +2,15 @@ require 'riak'
 
 module Riak
   class Client
+    # An HTTP backend for Riak::Client that uses the 'curb' library/gem.
+    # If the 'curb' library is present, this backend will be preferred to
+    # the backend based on Net::HTTP.
+    # Conforms to the Riak::Client::HTTPBackend interface.
     class CurbBackend < HTTPBackend
       begin
         require 'curb'
 
+        # @private
         def initialize(client)
           super
           @curl = Curl::Easy.new
@@ -13,9 +18,9 @@ module Riak
         end
 
         private
-        def perform(method, uri, user_headers, expect, data=nil)
+        def perform(method, uri, headers, expect, data=nil) #:nodoc:
           # Setup
-          @curl.headers = default_headers.merge(user_headers)
+          @curl.headers = headers
           @curl.url = uri.to_s
           response_headers = Headers.new
           @curl.on_header do |header_line|
@@ -45,7 +50,7 @@ module Riak
           end
         end
 
-        def parse_header(chunk)
+        def parse_header(chunk) #:nodoc:
           line = chunk.strip
           # thanks Net::HTTPResponse
           return [nil,nil] if chunk =~ /\AHTTP(?:\/(\d+\.\d+))?\s+(\d\d\d)\s*(.*)\z/in
@@ -60,7 +65,7 @@ module Riak
         end
       end
 
-      class Headers
+      class Headers #:nodoc:
         include Net::HTTPHeader
 
         def initialize
