@@ -62,4 +62,8 @@ describe Riak::Client::HTTPBackend do
       lambda { @backend.verify_path_and_body!([])}.should raise_error(ArgumentError)
     end
   end
+  
+  it "should force subclasses to implement the perform method" do
+    lambda { @backend.send(:perform, :get, "/foo", {}, 200) }.should raise_error(NotImplementedError)
+  end
 end
