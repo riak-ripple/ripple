@@ -18,7 +18,7 @@ module Riak
         end
 
         private
-        def perform(method, uri, headers, expect, data=nil) #:nodoc:
+        def perform(method, uri, headers, expect, data=nil) 
           # Setup
           @curl.headers = headers
           @curl.url = uri.to_s
@@ -50,7 +50,7 @@ module Riak
           end
         end
 
-        def parse_header(chunk) #:nodoc:
+        def parse_header(chunk) 
           line = chunk.strip
           # thanks Net::HTTPResponse
           return [nil,nil] if chunk =~ /\AHTTP(?:\/(\d+\.\d+))?\s+(\d\d\d)\s*(.*)\z/in
@@ -65,7 +65,8 @@ module Riak
         end
       end
 
-      class Headers #:nodoc:
+      # @private
+      class Headers 
         include Net::HTTPHeader
 
         def initialize
