@@ -3,10 +3,10 @@ require 'riak'
 module Riak
   # A client connection to Riak.
   class Client
-    autoload :FailedRequest, "riak/client/failed_request"
-    autoload :HTTPBackend, "riak/client/http_backend"
+    autoload :FailedRequest,  "riak/client/failed_request"
+    autoload :HTTPBackend,    "riak/client/http_backend"
     autoload :NetHTTPBackend, "riak/client/net_http_backend"
-    autoload :CurbBackend, "riak/client/curb_backend"
+    autoload :CurbBackend,    "riak/client/curb_backend"
 
     # When using integer client IDs, the exclusive upper-bound of valid values.
     MAX_CLIENT_ID = 4294967296
@@ -35,24 +35,17 @@ module Riak
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
       options.assert_valid_keys(:host, :port, :prefix, :client_id)
-      {
-        :host => "127.0.0.1",
-        :port => 8098,
-        :client_id => make_client_id,
-        :prefix => "/raw/"
-      }.merge(options).each do |k,v|
-        if respond_to?("#{k}=")
-          send("#{k}=", v)
-        else
-          instance_variable_set("@#{k}", v)
-        end
-      end
+      self.host      = options[:host]      || "127.0.0.1"
+      self.port      = options[:port]      || 8098
+      self.client_id = options[:client_id] || make_client_id
+      self.prefix    = options[:prefix]    || "/raw/"
       raise ArgumentError, "You must specify a host and port, or use the defaults of 127.0.0.1:8098" unless @host && @port
     end
 
-    # Set the client ID for this client. Must be a string or Fixnum value between 0 =< value < MAX_CLIENT_ID.
+    # Set the client ID for this client. Must be a string or Fixnum value 0 =< value < MAX_CLIENT_ID.
     # @param [String, Fixnum] value The internal client ID used by Riak to route responses
     # @raise [ArgumentError] when an invalid client ID is given
+    # @return [String] the assigned client ID
     def client_id=(value)
       @client_id = case value
                    when 0...MAX_CLIENT_ID
@@ -67,6 +60,7 @@ module Riak
     # Set the hostname of the Riak endpoint. Must be an IPv4, IPv6, or valid hostname
     # @param [String] value The host or IP address for the Riak endpoint
     # @raise [ArgumentError] if an invalid hostname is given
+    # @return [String] the assigned hostname
     def host=(value)
       raise ArgumentError, "host must be a valid hostname" unless String === value && value.present? && value =~ HOST_REGEX
       @host = value
@@ -75,11 +69,15 @@ module Riak
     # Set the port number of the Riak endpoint. This must be an integer between 1 and 65535.
     # @param [Fixnum] value The port number of the Riak endpoint
     # @raise [ArgumentError] if an invalid port number is given
+    # @return [Fixnum] the assigned port number
     def port=(value)
       raise ArgumentError, "port must be an integer between 1 and 65535" unless (1..65535).include?(value)
       @port = value
     end
 
+    # Automatically detects and returns an appropriate HTTP backend.
+    # The HTTP backend is used internally by the Riak client, but can also
+    # be used to access the server directly.
     # @return [HTTPBackend] the HTTP backend for this client
     def http
       @http ||= begin
@@ -92,12 +90,10 @@ module Riak
     end
 
     private
-    # @private
     def make_client_id
       b64encode(rand(MAX_CLIENT_ID))
     end
 
-    # @private
     def b64encode(n)
       Base64.encode64([n].pack("N")).chomp
     end
