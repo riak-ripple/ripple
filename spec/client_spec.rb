@@ -36,62 +36,42 @@ describe Riak::Client do
     end
   end
 
-  describe "setting a client id" do
-    before :each do
-      @client = Riak::Client.new
-    end
-
-    it "should accept a string unmodified" do
-      @client.client_id = "foo"
-      @client.client_id.should == "foo"
-    end
-
-    it "should base64-encode an integer" do
-      @client.client_id = 1
-      @client.client_id.should == "AAAAAQ=="
-    end
-
-    it "should reject an integer equal to the maximum client id" do
-      lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID }.should raise_error(ArgumentError)
-    end
-
-    it "should reject an integer larger than the maximum client id" do
-      lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID + 1 }.should raise_error(ArgumentError)
-    end
-  end
-
   describe "reconfiguring" do
     before :each do
       @client = Riak::Client.new
     end
 
-    it "should allow setting the host" do
-      @client.should respond_to(:host=)
-      @client.host = "riak.basho.com"
-      @client.host.should == "riak.basho.com"
+    describe "setting the host" do
+      it "should allow setting the host" do
+        @client.should respond_to(:host=)
+        @client.host = "riak.basho.com"
+        @client.host.should == "riak.basho.com"
+      end
+
+      it "should require the host to be an IP or hostname" do
+        [238472384972, ""].each do |invalid|
+          lambda { @client.host = invalid }.should raise_error(ArgumentError)
+        end
+        ["127.0.0.1", "10.0.100.5", "localhost", "otherhost.local", "riak.basho.com"].each do |valid|
+          lambda { @client.host = valid }.should_not raise_error
+        end
+      end
     end
 
-    it "should require the host to be an IP or hostname" do
-      [238472384972, ""].each do |invalid|
-        lambda { @client.host = invalid }.should raise_error(ArgumentError)
+    describe "setting the port" do
+      it "should allow setting the port" do
+        @client.should respond_to(:port=)
+        @client.port = 9000
+        @client.port.should == 9000
       end
-      ["127.0.0.1", "10.0.100.5", "localhost", "otherhost.local", "riak.basho.com"].each do |valid|
-        lambda { @client.host = valid }.should_not raise_error
-      end
-    end
 
-    it "should allow setting the port" do
-      @client.should respond_to(:port=)
-      @client.port = 9000
-      @client.port.should == 9000
-    end
-
-    it "should require the port to be a valid number" do
-      [0,-1,65536,"foo"].each do |invalid|
-        lambda { @client.port = invalid }.should raise_error(ArgumentError)
-      end
-      [1,65535,8098].each do |valid|
-        lambda { @client.port = valid }.should_not raise_error
+      it "should require the port to be a valid number" do
+        [0,-1,65536,"foo"].each do |invalid|
+          lambda { @client.port = invalid }.should raise_error(ArgumentError)
+        end
+        [1,65535,8098].each do |valid|
+          lambda { @client.port = valid }.should_not raise_error
+        end
       end
     end
 
@@ -99,6 +79,43 @@ describe Riak::Client do
       @client.should respond_to(:prefix=)
       @client.prefix = "/another-prefix"
       @client.prefix.should == "/another-prefix"
+    end
+
+    describe "setting the client id" do
+      it "should accept a string unmodified" do
+        @client.client_id = "foo"
+        @client.client_id.should == "foo"
+      end
+
+      it "should base64-encode an integer" do
+        @client.client_id = 1
+        @client.client_id.should == "AAAAAQ=="
+      end
+
+      it "should reject an integer equal to the maximum client id" do
+        lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID }.should raise_error(ArgumentError)
+      end
+
+      it "should reject an integer larger than the maximum client id" do
+        lambda { @client.client_id = Riak::Client::MAX_CLIENT_ID + 1 }.should raise_error(ArgumentError)
+      end
+    end
+  end
+
+  describe "choosing an HTTP backend" do
+    before :each do
+      @client = Riak::Client.new
+    end
+
+    it "should choose the Curb backend if Curb is available" do
+      @client.should_receive(:require).with('curb').and_return(true)
+      @client.http.should be_instance_of(Riak::Client::CurbBackend)
+    end
+
+    it "should choose the Net::HTTP backend if Curb is unavailable" do
+      @client.should_receive(:require).with('curb').and_raise(LoadError)
+      @client.should_receive(:warn)
+      @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
     end
   end
 end

@@ -80,6 +80,17 @@ module Riak
       @port = value
     end
 
+    # @return [HTTPBackend] the HTTP backend for this client
+    def http
+      @http ||= begin
+                  require 'curb'
+                  CurbBackend.new(self)
+                rescue LoadError, NameError
+                  warn "curb library not found! Please `gem install curb` for better performance."
+                  NetHTTPBackend.new(self)
+                end
+    end
+
     private
     # @private
     def make_client_id
