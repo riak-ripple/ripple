@@ -89,6 +89,18 @@ module Riak
                 end
     end
 
+    # Retrieves a bucket from Riak.
+    # @param [String] bucket the bucket to retrieve
+    # @param [Hash] options options for retrieving the bucket
+    # @option options [true,false] :keys (true) whether to retrieve the bucket keys
+    # @option options [true,false] :props (true) whether to retreive the bucket properties
+    # @return [Bucket] the requested bucket
+    def bucket(name, options={})
+      options.assert_valid_keys(:keys, :props)
+      response = http.get(200, name, options, {})
+      Bucket.new(self, name).load(response)
+    end
+
     private
     def make_client_id
       b64encode(rand(MAX_CLIENT_ID))

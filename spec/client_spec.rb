@@ -124,4 +124,23 @@ describe Riak::Client do
       @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
     end
   end
+
+  describe "retrieving a bucket" do
+    before :each do
+      @client = Riak::Client.new
+      @http = mock(Riak::Client::HTTPBackend)
+      @client.stub!(:http).and_return(@http)
+      @http.stub!(:get).and_return({})
+    end
+
+    it "should send a GET request to the bucket name and return a Riak::Bucket" do
+      @http.should_receive(:get).with(200, "foo", {}, {}).and_return({})
+      @client.bucket("foo").should be_kind_of(Riak::Bucket)
+    end
+
+    it "should allow requesting bucket properties without the keys" do
+      @http.should_receive(:get).with(200, "foo", {:keys => false}, {}).and_return({})
+      @client.bucket("foo", :keys => false)
+    end
+  end
 end
