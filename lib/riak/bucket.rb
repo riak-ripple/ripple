@@ -20,8 +20,8 @@ module Riak
     # Load information for the bucket from a response given by the {Riak::Client::HTTPBackend}.
     # @param [Hash] response a response from {Riak::Client::HTTPBackend}
     # @return [Bucket] self
-    def load(response)
-      return self unless response[:headers]['content-type'].first =~ /json$/
+    def load(response={})
+      return self unless response.try(:[], :headers).try(:[],'content-type').try(:first) =~ /json$/
       payload = JSON.parse(response[:body])
       @keys = payload['keys'] if payload['keys']
       @props = payload['props'] if payload['props']
