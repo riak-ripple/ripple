@@ -3,7 +3,6 @@ require 'riak'
 module Riak
   # A client connection to Riak.
   class Client
-    autoload :FailedRequest,  "riak/client/failed_request"
     autoload :HTTPBackend,    "riak/client/http_backend"
     autoload :NetHTTPBackend, "riak/client/net_http_backend"
     autoload :CurbBackend,    "riak/client/curb_backend"

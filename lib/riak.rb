@@ -4,6 +4,11 @@ require 'uri'
 require 'net/http'
 
 module Riak
-  autoload :Client, "riak/client"
+  # Domain objects
   autoload :Bucket, "riak/bucket"
+  autoload :Client, "riak/client"
+
+  # Exceptions
+  autoload :FailedRequest, "riak/failed_request"
+  autoload :InvalidResponse, "riak/invalid_response"
 end

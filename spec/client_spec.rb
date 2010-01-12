@@ -130,16 +130,17 @@ describe Riak::Client do
       @client = Riak::Client.new
       @http = mock(Riak::Client::HTTPBackend)
       @client.stub!(:http).and_return(@http)
-      @http.stub!(:get).and_return({})
+      @payload = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
+      @http.stub!(:get).and_return(@payload)
     end
 
     it "should send a GET request to the bucket name and return a Riak::Bucket" do
-      @http.should_receive(:get).with(200, "foo", {}, {}).and_return({})
+      @http.should_receive(:get).with(200, "foo", {}, {}).and_return(@payload)
       @client.bucket("foo").should be_kind_of(Riak::Bucket)
     end
 
     it "should allow requesting bucket properties without the keys" do
-      @http.should_receive(:get).with(200, "foo", {:keys => false}, {}).and_return({})
+      @http.should_receive(:get).with(200, "foo", {:keys => false}, {}).and_return(@payload)
       @client.bucket("foo", :keys => false)
     end
   end

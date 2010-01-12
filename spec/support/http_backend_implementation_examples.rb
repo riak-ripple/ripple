@@ -11,7 +11,7 @@ shared_examples_for "HTTP backend" do
     end
 
     it "should raise a FailedRequest exception when the request fails" do
-      lambda { @backend.head(301, "foo") }.should raise_error(Riak::Client::FailedRequest)
+      lambda { @backend.head(301, "foo") }.should raise_error(Riak::FailedRequest)
     end
 
     it "should raise an error if an invalid resource path is given" do
@@ -31,7 +31,7 @@ shared_examples_for "HTTP backend" do
     end
 
     it "should raise a FailedRequest exception when the request fails" do
-      lambda { @backend.get(304, "foo") }.should raise_error(Riak::Client::FailedRequest)
+      lambda { @backend.get(304, "foo") }.should raise_error(Riak::FailedRequest)
     end
 
     it "should yield successive chunks of the response to the given block but not return the entire body" do
@@ -61,7 +61,7 @@ shared_examples_for "HTTP backend" do
     end
 
     it "should raise a FailedRequest exception when the request fails" do
-      lambda { @backend.delete(304, "foo") }.should raise_error(Riak::Client::FailedRequest)
+      lambda { @backend.delete(304, "foo") }.should raise_error(Riak::FailedRequest)
     end
 
     it "should yield successive chunks of the response to the given block but not return the entire body" do
@@ -91,7 +91,7 @@ shared_examples_for "HTTP backend" do
     end
 
     it "should raise a FailedRequest exception when the request fails" do
-      lambda { @backend.put(204, "foo", "This is the body.") }.should raise_error(Riak::Client::FailedRequest)
+      lambda { @backend.put(204, "foo", "This is the body.") }.should raise_error(Riak::FailedRequest)
     end
 
     it "should yield successive chunks of the response to the given block but not return the entire body" do
@@ -129,7 +129,7 @@ shared_examples_for "HTTP backend" do
     end
 
     it "should raise a FailedRequest exception when the request fails" do
-      lambda { @backend.post(204, "foo", "This is the body.") }.should raise_error(Riak::Client::FailedRequest)
+      lambda { @backend.post(204, "foo", "This is the body.") }.should raise_error(Riak::FailedRequest)
     end
 
     it "should yield successive chunks of the response to the given block but not return the entire body" do
