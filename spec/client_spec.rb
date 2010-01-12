@@ -2,14 +2,20 @@ require File.join(File.dirname(__FILE__), "spec_helper")
 
 describe Riak::Client do
   describe "when initializing" do
-    it "should require a host and port" do
-      lambda { Riak::Client.new(:host => nil, :port => nil) }.should raise_error
-    end
-
     it "should default to the local interface on port 8098" do
       client = Riak::Client.new
       client.host.should == "127.0.0.1"
       client.port.should == 8098
+    end
+
+    it "should accept a host" do
+      client = Riak::Client.new :host => "riak.basho.com"
+      client.host.should == "riak.basho.com"
+    end
+
+    it "should accept a port" do
+      client = Riak::Client.new :port => 9000
+      client.port.should == 9000
     end
 
     it "should accept a client ID" do
@@ -66,10 +72,10 @@ describe Riak::Client do
       end
 
       it "should require the port to be a valid number" do
-        [0,-1,65536,"foo"].each do |invalid|
+        [-1,65536,"foo"].each do |invalid|
           lambda { @client.port = invalid }.should raise_error(ArgumentError)
         end
-        [1,65535,8098].each do |valid|
+        [0,1,65535,8098].each do |valid|
           lambda { @client.port = valid }.should_not raise_error
         end
       end

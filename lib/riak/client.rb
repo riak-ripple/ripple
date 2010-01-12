@@ -66,12 +66,12 @@ module Riak
       @host = value
     end
 
-    # Set the port number of the Riak endpoint. This must be an integer between 1 and 65535.
+    # Set the port number of the Riak endpoint. This must be an integer between 0 and 65535.
     # @param [Fixnum] value The port number of the Riak endpoint
     # @raise [ArgumentError] if an invalid port number is given
     # @return [Fixnum] the assigned port number
     def port=(value)
-      raise ArgumentError, "port must be an integer between 1 and 65535" unless (1..65535).include?(value)
+      raise ArgumentError, "port must be an integer between 0 and 65535" unless (0..65535).include?(value)
       @port = value
     end
 
