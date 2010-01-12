@@ -44,5 +44,17 @@ module Riak
       end
       @keys
     end
+
+    # Sets internal properties on the bucket
+    # Note: this results in a request to the Riak server
+    # @param [Hash] propertiess new properties for the bucket
+    # @return [Hash] the properties that were accepted
+    # @raise [FailedRequest] if the new properties were not accepted by the Riak server
+    def props=(properties)
+      raise ArgumentError, "properties must be a Hash" unless Hash === properties
+      body = {'props' => properties}.to_json
+      client.http.put(204, name, body, {"Content-Type" => "application/json"})
+      @props = properties
+    end
   end
 end

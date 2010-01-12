@@ -62,7 +62,7 @@ describe Riak::Bucket do
       @http.should_receive(:get).with(200, "foo", {:props=>false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
 
     end
-    
+
     it "should load the keys if not present" do
       @bucket.keys.should == ["bar"]
     end
@@ -74,6 +74,22 @@ describe Riak::Bucket do
 
     it "should allow streaming keys through block" do
       pending "Needs support in the raw_http_interface"
+    end
+  end
+
+  describe "setting the bucket properties" do
+    before :each do
+      @http = mock("HTTPBackend")
+      @client.stub!(:http).and_return(@http)
+    end
+
+    it "should PUT the new properties to the bucket" do
+      @http.should_receive(:put).with(204, "foo", '{"props":{"name":"foo"}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
+      @bucket.props = { :name => "foo" }
+    end
+
+    it "should raise an error if an invalid property is given" do
+      lambda { @bucket.props = "blah" }.should raise_error(ArgumentError)
     end
   end
 end
