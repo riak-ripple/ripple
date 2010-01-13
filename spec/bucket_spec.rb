@@ -98,4 +98,16 @@ describe Riak::Bucket do
       lambda { @bucket.props = "blah" }.should raise_error(ArgumentError)
     end
   end
+
+  describe "fetching an object" do
+    before :each do
+      @http = mock("HTTPBackend")
+      @client.stub!(:http).and_return(@http)      
+    end
+    
+    it "should load the object from the server" do
+      @http.should_receive(:get).with(200, "foo", "db", {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @bucket.get("db").should be_kind_of(Riak::Object)
+    end
+  end
 end

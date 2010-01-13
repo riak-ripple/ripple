@@ -21,8 +21,10 @@ module Riak
     end
 
     # Load information for the bucket from a response given by the {Riak::Client::HTTPBackend}.
+    # Used mostly internally - use {Riak::Client#bucket} to get a {Bucket} instance.
     # @param [Hash] response a response from {Riak::Client::HTTPBackend}
     # @return [Bucket] self
+    # @see Client#bucket
     def load(response={})
       unless response.try(:[], :headers).try(:[],'content-type').try(:first) =~ /json$/
         raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], "while loading bucket '#{name}'")
@@ -36,34 +38,43 @@ module Riak
     # Accesses or retrieves a list of keys in this bucket.
     # If a block is given, keys will be streamed through
     # the block (useful for large buckets). When streaming,
-    # results of the operation will not be retained.
+    # results of the operation will not be retained in the local Bucket object.
     # @param [Hash] options extra options
     # @yield [Array<String>] a list of keys from the current chunk
     # @option options [true] :reload (nil) If present, will force reloading of the bucket's keys from Riak
     # @return [Array<String>] Keys in this bucket
     def keys(options={})
       if block_given?
-        client.http.get(200, name, {:props => false}, {}) do |chunk|
+        @client.http.get(200, name, {:props => false}, {}) do |chunk|
           obj = JSON.parse(chunk) rescue {}
           yield obj['keys'] if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
-        response = client.http.get(200, name, {:props => false}, {})
+        response = @client.http.get(200, name, {:props => false}, {})
         load(response)
       end
       @keys
     end
 
     # Sets internal properties on the bucket
-    # Note: this results in a request to the Riak server
-    # @param [Hash] propertiess new properties for the bucket
+    # Note: this results in a request to the Riak server!
+    # @param [Hash] properties new properties for the bucket
     # @return [Hash] the properties that were accepted
     # @raise [FailedRequest] if the new properties were not accepted by the Riak server
     def props=(properties)
       raise ArgumentError, "properties must be a Hash" unless Hash === properties
       body = {'props' => properties}.to_json
-      client.http.put(204, name, body, {"Content-Type" => "application/json"})
+      @client.http.put(204, name, body, {"Content-Type" => "application/json"})
       @props = properties
+    end
+
+    # Retrieve an object from within the bucket.
+    # @param [String] key the key of the object to retrieve
+    # @return [Riak::Object] the object
+    # @raise [FailedRequest] if the object is not found or some other error occurs
+    def get(key)
+      response = @client.http.get(200, name, key, {})
+      Riak::Object.load(self, key, response)
     end
   end
 end
