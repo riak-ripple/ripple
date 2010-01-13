@@ -33,12 +33,21 @@ module Riak
       self
     end
 
-    # Accesses or retrieves a list of keys in this bucket
+    # Accesses or retrieves a list of keys in this bucket.
+    # If a block is given, keys will be streamed through
+    # the block (useful for large buckets). When streaming,
+    # results of the operation will not be retained.
     # @param [Hash] options extra options
+    # @yield [Array<String>] a list of keys from the current chunk
     # @option options [true] :reload (nil) If present, will force reloading of the bucket's keys from Riak
     # @return [Array<String>] Keys in this bucket
     def keys(options={})
-      if @keys.nil? || options[:reload]
+      if block_given?
+        client.http.get(200, name, {:props => false}, {}) do |chunk|
+          obj = JSON.parse(chunk) rescue {}
+          yield obj['keys'] if obj['keys']
+        end
+      elsif @keys.nil? || options[:reload]
         response = client.http.get(200, name, {:props => false}, {})
         load(response)
       end
