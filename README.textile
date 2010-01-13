@@ -1,0 +1,35 @@
+h1. riak-client
+
+riak-client is a simple Ruby client/wrapper for Riak, Basho's distributed database.
+
+h2. Dependencies
+
+riak-client requires ActiveSupport >=2.3.  We highly recommend the "curb" gem for better HTTP client performance.
+
+h2. Note on Patches/Pull Requests
+ 
+* Fork the project.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
+  <pre><notextile>$ git checkout master; git pull --rebase seancribbs master</notextile></pre>
+* Create a topic branch. If you've already created a topic branch,
+  rebase it on top of changes from the mainline "master"
+  branch. Examples:
+** New branch:
+  <pre>$ git checkout -b topic</pre>
+** Existing branch:
+  <pre>$ git rebase master</pre>
+* Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and
+  validity of your changes. *Patches without specs will most often be
+  ignored. Just do it, you'll thank me later.*
+* Make your feature addition or bug fix. Make your specs and stories pass (green).
+* Run the suite using multiruby or rvm to ensure cross-version compatibility.
+* Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the tracker, include "Closes #X" in the commit message (where X is the issue number).
+* Send me a pull request.
+
+h2. License
+
+All files without an included license statement are subject to the
+Apache 2.0 license. See LICENSE for details.
+
+h2. Copyright
+
+Copyright (c) 2010 Sean Cribbs, Sonian Inc., and Basho Technologies Inc.
