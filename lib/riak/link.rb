@@ -2,7 +2,7 @@ require 'riak'
 
 module Riak
   # Represents a link between various things in Riak
-  Link = Struct.new("Link", :url, :rel)
+  Link = Struct.new(:url, :rel)
 
   # @param [String] header_string the string value of the Link: HTTP header from a Riak response
   # @return [Array<Link>] an array of Riak::Link structs parsed from the header
@@ -11,5 +11,4 @@ module Riak
       new(match[0], match[1])
     end
   end
-  
 end
