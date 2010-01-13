@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Class: Riak::Document</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (D)</a> &raquo; 
+    <a href="../Riak.html" title="Riak">Riak</a>
+     &raquo; 
+    <span class="title">Document</span>
+  
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Riak::Document 
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></li>
+          
+            <li class="next">Riak::Document</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/riak/document.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="DOCUMENT_TYPES-constant ">DOCUMENT_TYPES =
+            <span class="summary_desc"></span>
+        </dt>
+        <dd><pre class="code"><span class='lbrack token'>[</span> <span class='regexp val'>/json$/i</span><span class='comma token'>,</span> <span class='regexp val'>/yaml$/i</span> <span class='rbrack token'>]</span><span class='dot token'>.</span><span class='freeze identifier id'>freeze</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+  
+  
+  
+  
+  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="SUBCLASS_PRIORITY">SUBCLASS_PRIORITY</a></p>
+
+
+  <h2>Class Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#matches%3F-class_method" title="matches? (class method)">+ (Boolean) <strong>matches?</strong>(headers) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+  </ul>
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#initialize-instance_method" title="#initialize">#initialize</a>, <a href="../Riak_3A_3AObject.html#load-class_method" title="load">load</a>, <a href="../Riak_3A_3AObject.html#load-instance_method" title="#load">#load</a></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <p class="notice">This class inherits a constructor from <a href="../Riak_3A_3AObject.html#initialize-instance_method" title="Riak::Object">Riak::Object</a></p>
+  
+</div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="matches?-class_method">
+  
+    + (<tt>Boolean</tt>) <strong>matches?</strong>(headers) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+5
+6
+7</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 5</span>
+
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='matches? fid id'>matches?</span><span class='lparen token'>(</span><span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
+  <span class='DOCUMENT_TYPES constant id'>DOCUMENT_TYPES</span><span class='dot token'>.</span><span class='any? fid id'>any?</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='type identifier id'>type</span><span class='bitor op'>|</span> <span class='headers identifier id'>headers</span><span class='lbrack token'>[</span><span class='string val'>&quot;content-type&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='first identifier id'>first</span> <span class='match op'>=~</span> <span class='type identifier id'>type</span> <span class='rbrace token'>}</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Jan 13 16:33:06 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.2 (ruby-1.8.6).
+</div>
+
+  </body>
+</html>

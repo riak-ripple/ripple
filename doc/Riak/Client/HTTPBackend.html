@@ -1,0 +1,2335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Class: Riak::Client::HTTPBackend</title>
+<link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (H)</a> &raquo; 
+    <a href="../../Riak.html" title="Riak">Riak</a> &raquo; <a href="../Client.html" title="Client">Client</a>
+     &raquo; 
+    <span class="title">HTTPBackend</span>
+  
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Riak::Client::HTTPBackend 
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></li>
+          
+            <li class="next">Riak::Client::HTTPBackend</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/riak/client/http_backend.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+
+  <h2>Constant Summary</h2>
+  
+
+
+  
+  
+  
+  
+  <h3 class="inherited">Constants inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
+  <p class="inherited"><a href="../../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="SUBCLASS_PRIORITY">SUBCLASS_PRIORITY</a></p>
+
+  <h2>Instance Attribute Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#client-instance_method" title="#client (instance method)">- (Object) <strong>client</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The Riak::Client that uses this backend.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <h2>Instance Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#default_headers-instance_method" title="#default_headers (instance method)">- (Hash) <strong>default_headers</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Default header hash sent with every request, based on settings in the
+client.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#delete-instance_method" title="#delete (instance method)">- (Hash) <strong>delete</strong>(expect, *resource, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Performs a DELETE request to the specified resource on the Riak server.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(expect, *resource, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Performs a GET request to the specified resource on the Riak server.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#head-instance_method" title="#head (instance method)">- (Hash) <strong>head</strong>(expect, *resource) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Performs a HEAD request to the specified resource on the Riak server.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (HTTPBackend) <strong>initialize</strong>(client) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Create an HTTPBackend for the Riak::Client.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#path-instance_method" title="#path (instance method)">- (URI) <strong>path</strong>(*segments) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Calculates an absolute URI from a relative path specification.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#perform-instance_method" title="#perform (instance method)">- (Hash) <strong>perform</strong>(method, uri, headers, expect, body = nil) {|chunk| ... }</a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="abstract note title">Abstract</span>
+  
+
+  
+    <span class="summary_desc">
+Response data, containing :headers and :body keys.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#post-instance_method" title="#post (instance method)">- (Hash) <strong>post</strong>(expect, *resource, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Performs a POST request to the specified resource on the Riak server.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#put-instance_method" title="#put (instance method)">- (Hash) <strong>put</strong>(expect, *resource, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Performs a PUT request to the specified resource on the Riak server.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#root_uri-instance_method" title="#root_uri (instance method)">- (URI) <strong>root_uri</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The calculated root URI for the Riak HTTP endpoint.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#verify_path%21-instance_method" title="#verify_path! (instance method)">- (Object) <strong>verify_path!</strong>(resource) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Verifies that the specified resource is valid.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#verify_path_and_body%21-instance_method" title="#verify_path_and_body! (instance method)">- (Object) <strong>verify_path_and_body!</strong>(args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Verifies that both a resource path and body are present in the arguments.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
+  <p class="inherited"><a href="../../Riak_3A_3AObject.html#load-class_method" title="load">load</a>, <a href="../../Riak_3A_3AObject.html#load-instance_method" title="#load">#load</a>, <a href="../../Riak_3A_3AObject.html#matches%3F-class_method" title="matches?">matches?</a></p>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><a href="" title="HTTPBackend">HTTPBackend</a></tt>) <strong>initialize</strong>(client) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Create an HTTPBackend for the Riak::Client.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../Client.html" title="Client">Client</a></tt>)</span>
+      
+      
+        <span class='name'>client</span>
+      
+      
+      
+        &mdash;
+        
+the client
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+11
+12
+13
+14</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 11</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='rparen token'>)</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Riak::Client instance required&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='Client constant id'>Client</span> <span class='eqq op'>===</span> <span class='client identifier id'>client</span>
+  <span class='@client ivar id'>@client</span> <span class='assign token'>=</span> <span class='client identifier id'>client</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <span id="client-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="client-instance_method">
+  
+    - (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>client</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The Riak::Client that uses this backend
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+7
+8
+9</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 7</span>
+
+<span class='def def kw'>def</span> <span class='client identifier id'>client</span>
+  <span class='@client ivar id'>@client</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="default_headers-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>default_headers</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Default header hash sent with every request, based on settings in the
+client
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+headers that will be merged with user-specified headers on every request
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+18
+19
+20
+21
+22
+23</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 18</span>
+
+<span class='def def kw'>def</span> <span class='default_headers identifier id'>default_headers</span>
+  <span class='lbrace token'>{</span>
+    <span class='string val'>&quot;Accept&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;multipart/mixed, application/json;q=0.7, */*;q=0.5&quot;</span><span class='comma token'>,</span>
+    <span class='string val'>&quot;X-Riak-ClientId&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='client_id identifier id'>client_id</span>
+  <span class='rbrace token'>}</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="delete-instance_method">
+  
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>delete</strong>(expect, *resource) </span>
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
+    
+      <span class="overload">- (<tt>Hash</tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Performs a DELETE request to the specified resource on the Riak server.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Send the request with custom headers
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Hash</tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Stream the response body through the supplied block
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+<h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'>(<tt>chunk</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+yields successive chunks of the response body as strings
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing only the :headers key
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>expect</span>
+      
+      
+      
+        &mdash;
+        
+the expected HTTP response code from Riak
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array&lt;String,Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>resource</span>
+      
+      
+      
+        &mdash;
+        
+a relative path or array of path segments and optional query params Hash
+that will be joined to the root URI
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing :headers and :body keys
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the response code doesn&#8217;t match the expected response
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 116</span>
+
+<span class='def def kw'>def</span> <span class='delete identifier id'>delete</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
+  <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
+  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:delete</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="get-instance_method">
+  
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>get</strong>(expect, *resource) </span>
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>get</strong>(expect, *resource, headers) </span>
+    
+      <span class="overload">- (<tt>Hash</tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Performs a GET request to the specified resource on the Riak server.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>get</strong>(expect, *resource, headers) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Send the request with custom headers
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Hash</tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Stream the response body through the supplied block
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+<h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'>(<tt>chunk</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+yields successive chunks of the response body as strings
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing only the :headers key
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>expect</span>
+      
+      
+      
+        &mdash;
+        
+the expected HTTP response code from Riak
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array&lt;String,Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>resource</span>
+      
+      
+      
+        &mdash;
+        
+a relative path or array of path segments and optional query params Hash
+that will be joined to the root URI
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing :headers and :body keys
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the response code doesn&#8217;t match the expected response
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54
+55
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 54</span>
+
+<span class='def def kw'>def</span> <span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
+  <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
+  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:get</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="head-instance_method">
+  
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>head</strong>(expect, *resource) </span>
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>head</strong>(expect, *resource, headers) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Performs a HEAD request to the specified resource on the Riak server.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>head</strong>(expect, *resource, headers) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Send the request with custom headers
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>expect</span>
+      
+      
+      
+        &mdash;
+        
+the expected HTTP response code from Riak
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array&lt;String,Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>resource</span>
+      
+      
+      
+        &mdash;
+        
+a relative path or array of path segments and optional query params Hash
+that will be joined to the root URI
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing only the :headers key
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the response code doesn&#8217;t match the expected response
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 34</span>
+
+<span class='def def kw'>def</span> <span class='head identifier id'>head</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
+  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
+  <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
+  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:head</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="path-instance_method">
+  
+    - (<tt>URI</tt>) <strong>path</strong>(*segments) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Calculates an absolute URI from a relative path specification
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;String,Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>segments</span>
+      
+      
+      
+        &mdash;
+        
+a relative path or sequence of path segments and optional query params Hash
+that will be joined to the root URI
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>URI</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+an absolute URI for the resource
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+130
+131
+132
+133
+134
+135</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 130</span>
+
+<span class='def def kw'>def</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='segments identifier id'>segments</span><span class='rparen token'>)</span>
+  <span class='query identifier id'>query</span> <span class='assign token'>=</span> <span class='segments identifier id'>segments</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='dot token'>.</span><span class='to_param identifier id'>to_param</span>
+  <span class='root_uri identifier id'>root_uri</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='segments identifier id'>segments</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='gsub identifier id'>gsub</span><span class='lparen token'>(</span><span class='regexp val'>/\/+/</span><span class='comma token'>,</span> <span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='sub identifier id'>sub</span><span class='lparen token'>(</span><span class='regexp val'>/^\//</span><span class='comma token'>,</span> <span class='string val'>''</span><span class='rparen token'>)</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='tap identifier id'>tap</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='uri identifier id'>uri</span><span class='bitor op'>|</span>
+    <span class='uri identifier id'>uri</span><span class='dot token'>.</span><span class='query identifier id'>query</span> <span class='assign token'>=</span> <span class='query identifier id'>query</span> <span class='if if_mod kw'>if</span> <span class='query identifier id'>query</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="perform-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>perform</strong>(method, uri, headers, expect, body = nil) {|chunk| ... }
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p class="note abstract">
+  <strong>This method is abstract.</strong> 
+  
+Subclasses must implement this internal method to perform HTTP requests
+according to the API of their HTTP libraries.
+
+
+</p>
+<p>
+Response data, containing :headers and :body keys. Only :headers should be
+present when the body is streamed or the method is :head.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+        <span class='name'>method</span>
+      
+      
+      
+        &mdash;
+        
+one of :head, :get, :post, :put, :delete
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>URI</tt>)</span>
+      
+      
+        <span class='name'>uri</span>
+      
+      
+      
+        &mdash;
+        
+the HTTP URI to request
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+headers to send along with the request
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>expect</span>
+      
+      
+      
+        &mdash;
+        
+the expected response code
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>optional</tt>, <tt>String</tt>)</span>
+      
+      
+        <span class='name'>body</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        
+the PUT or POST request body
+
+
+      
+    </li>
+  
+</ul>
+<h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'>(<tt>chunk</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the method is not :head, successive chunks of the response body will be
+yielded as strings
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing :headers and :body keys. Only :headers should be
+present when the body is streamed or the method is :head.
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>NotImplementedError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if a subclass does not implement this method
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+169
+170
+171</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 169</span>
+
+<span class='def def kw'>def</span> <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='raise identifier id'>raise</span> <span class='NotImplementedError constant id'>NotImplementedError</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="post-instance_method">
+  
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>post</strong>(expect, *resource, body) </span>
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
+    
+      <span class="overload">- (<tt>Hash</tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Performs a POST request to the specified resource on the Riak server.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Send the request with custom headers
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Hash</tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Stream the response body through the supplied block
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+<h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'>(<tt>chunk</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+yields successive chunks of the response body as strings
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing only the :headers key
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>expect</span>
+      
+      
+      
+        &mdash;
+        
+the expected HTTP response code from Riak
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+        <span class='name'>resource</span>
+      
+      
+      
+        &mdash;
+        
+a relative path or array of path segments that will be joined to the root
+URI
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>body</span>
+      
+      
+      
+        &mdash;
+        
+the request body to send to the server
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing :headers and :body keys
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the response code doesn&#8217;t match the expected response
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+96
+97
+98
+99
+100</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 96</span>
+
+<span class='def def kw'>def</span> <span class='post identifier id'>post</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
+  <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
+  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:post</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='uri identifier id'>uri</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="put-instance_method">
+  
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>put</strong>(expect, *resource, body) </span>
+    
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
+    
+      <span class="overload">- (<tt>Hash</tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Performs a PUT request to the specified resource on the Riak server.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Send the request with custom headers
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Hash</tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Stream the response body through the supplied block
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>headers</span>
+      
+      
+      
+        &mdash;
+        
+custom headers to send with the request
+
+
+      
+    </li>
+  
+</ul>
+<h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'>(<tt>chunk</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+yields successive chunks of the response body as strings
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing only the :headers key
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>expect</span>
+      
+      
+      
+        &mdash;
+        
+the expected HTTP response code from Riak
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array&lt;String,Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>resource</span>
+      
+      
+      
+        &mdash;
+        
+a relative path or array of path segments and optional query params Hash
+that will be joined to the root URI
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>body</span>
+      
+      
+      
+        &mdash;
+        
+the request body to send to the server
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+response data, containing :headers and :body keys
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the response code doesn&#8217;t match the expected response
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+75
+76
+77
+78
+79</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 75</span>
+
+<span class='def def kw'>def</span> <span class='put identifier id'>put</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
+  <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
+  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:put</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='uri identifier id'>uri</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="root_uri-instance_method">
+  
+    - (<tt>URI</tt>) <strong>root_uri</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The calculated root URI for the Riak HTTP endpoint
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>URI</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+The calculated root URI for the Riak HTTP endpoint
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+123
+124
+125</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 123</span>
+
+<span class='def def kw'>def</span> <span class='root_uri identifier id'>root_uri</span>
+  <span class='URI constant id'>URI</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='dstring node'>&quot;http://#{@client.host}:#{@client.port}&quot;</span><span class='comma token'>,</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='prefix identifier id'>prefix</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="verify_path!-instance_method">
+  
+    - (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>verify_path!</strong>(resource) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Verifies that the specified resource is valid
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array</tt>)</span>
+      
+      
+        <span class='name'>resource</span>
+      
+      
+      
+        &mdash;
+        
+the resource specification
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the resource path is too short
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+155
+156
+157</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 155</span>
+
+<span class='def def kw'>def</span> <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Resource path too short&quot;</span> <span class='if if_mod kw'>if</span> <span class='Array constant id'>Array</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='flatten identifier id'>flatten</span><span class='dot token'>.</span><span class='empty? fid id'>empty?</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="verify_path_and_body!-instance_method">
+  
+    - (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>verify_path_and_body!</strong>(args) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Verifies that both a resource path and body are present in the arguments
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <span class='name'>args</span>
+      
+      
+      
+        &mdash;
+        
+the arguments to verify
+
+
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the body or resource is missing, or if the body is not a String
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 140</span>
+
+<span class='def def kw'>def</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
+  <span class='body identifier id'>body</span> <span class='assign token'>=</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='pop identifier id'>pop</span>
+  <span class='begin begin kw'>begin</span>
+    <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
+  <span class='rescue rescue kw'>rescue</span> <span class='ArgumentError constant id'>ArgumentError</span>
+    <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;You must supply both a resource path and a body.&quot;</span>
+  <span class='end end kw'>end</span>
+
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Request body must be a string.&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span>
+  <span class='lbrack token'>[</span><span class='args identifier id'>args</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='rbrack token'>]</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Jan 13 16:33:04 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.2 (ruby-1.8.6).
+</div>
+
+  </body>
+</html>
