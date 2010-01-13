@@ -17,6 +17,7 @@ module Riak
       # @return [Hash] headers that will be merged with user-specified headers on every request
       def default_headers
         {
+          "Accept" => "multipart/mixed, application/json;q=0.7, */*;q=0.5",
           "X-Riak-ClientId" => @client.client_id
         }
       end

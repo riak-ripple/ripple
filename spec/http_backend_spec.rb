@@ -17,7 +17,7 @@ describe Riak::Client::HTTPBackend do
 
   it "should generate default headers for requests based on the client settings" do
     @client.client_id = "testing"
-    @backend.default_headers.should == {"X-Riak-ClientId" => "testing"}
+    @backend.default_headers.should == {"X-Riak-ClientId" => "testing", "Accept" => "multipart/mixed, application/json;q=0.7, */*;q=0.5"}
   end
 
   it "should generate a root URI based on the client settings" do
