@@ -5,10 +5,11 @@ require 'net/http'
 
 module Riak
   # Domain objects
+  autoload :Binary,   "riak/binary"
   autoload :Bucket,   "riak/bucket"
   autoload :Client,   "riak/client"
   autoload :Document, "riak/document"
-  autoload :Binary,   "riak/binary"
+  autoload :Link,     "riak/link"
   autoload :Object,   "riak/object"
   
   # Exceptions
