@@ -61,12 +61,9 @@ end
 
 task :doc => :yard do
   original_dir = Dir.pwd
+  docs_dir = File.expand_path(File.join(original_dir, "..", "ripple-docs"))
   commit = `git log --pretty=oneline -1`
-  chdir "../ripple-docs/" do
-    system "rm -rf *"
-    system "cp -r #{original_dir}/doc/* ."
-    system "git add .; git add -u"
-    system "git commit -m 'Update docs from commit: #{commit}'"
-    system "git push origin gh-pages"
-  end
+  rm_rf File.join(docs_dir, "*")
+  cp_r File.join(original_dir, "doc", "."), docs_dir
+  touch File.join(docs_dir, '.nojekyll')
 end
