@@ -276,7 +276,8 @@ Calculates an absolute URI from a relative path specification.
 
   
     <span class="summary_desc">
-Response data, containing :headers and :body keys.
+Executes requests according to the underlying HTTP client library
+semantics.
 
 </span>
   
@@ -1367,8 +1368,8 @@ according to the API of their HTTP libraries.
 
 </p>
 <p>
-Response data, containing :headers and :body keys. Only :headers should be
-present when the body is streamed or the method is :head.
+Executes requests according to the underlying HTTP client library
+semantics.
 </p>
 
 
@@ -1532,12 +1533,12 @@ if a subclass does not implement this method
       <pre class="lines">
 
 
-169
 170
-171</pre>
+171
+172</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 169</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 170</span>
 
 <span class='def def kw'>def</span> <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
   <span class='raise identifier id'>raise</span> <span class='NotImplementedError constant id'>NotImplementedError</span>
@@ -2316,7 +2317,7 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 14 14:55:55 2010 by 
+  Generated on Thu Jan 14 16:03:50 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

@@ -52,12 +52,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Struct</span>
+      <span class="inheritName">Object</span>
       
         <ul class="fullTree">
           <li>Object</li>
-          
-            <li class="next">Struct</li>
           
             <li class="next">Riak::Link</li>
           
@@ -92,14 +90,13 @@ Represents a link between various things in Riak
   
 </div>
 
-  
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
     
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#rel-instance_method" title="#rel (instance method)">- (Object) <strong>rel</strong> </a>
+      <a href="#rel-instance_method" title="#rel (instance method)">- (String) <strong>rel</strong> </a>
     
 
     
@@ -114,7 +111,10 @@ Represents a link between various things in Riak
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc">
+The relationship (&quot;rel&quot;) of the other resource to this one.
+
+</span>
   
 </li>
 
@@ -122,7 +122,7 @@ Represents a link between various things in Riak
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#url-instance_method" title="#url (instance method)">- (Object) <strong>url</strong> </a>
+      <a href="#url-instance_method" title="#url (instance method)">- (String) <strong>url</strong> </a>
     
 
     
@@ -137,7 +137,10 @@ Represents a link between various things in Riak
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc">
+The URL (relative or absolute) of the related resource.
+
+</span>
   
 </li>
 
@@ -174,7 +177,81 @@ An array of Riak::Link structs parsed from the header.
     
   </ul>
 
+  <h2>Instance Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Link) <strong>initialize</strong>(url, rel) </a>
+    
+
+    
+  </span>
   
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+A new instance of Link.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><a href="" title="Riak::Link (class)">Link</a></tt>) <strong>initialize</strong>(url, rel) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A new instance of Link
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+21
+22
+23</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 21</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='url identifier id'>url</span><span class='comma token'>,</span> <span class='rel identifier id'>rel</span><span class='rparen token'>)</span>
+  <span class='@url ivar id'>@url</span><span class='comma token'>,</span> <span class='@rel ivar id'>@rel</span> <span class='assign token'>=</span> <span class='url identifier id'>url</span><span class='comma token'>,</span> <span class='rel identifier id'>rel</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
     
@@ -184,11 +261,60 @@ An array of Riak::Link structs parsed from the header.
       <div class="method_details first">
   <p class="signature first" id="rel-instance_method">
   
-    - (<tt>Object</tt>) <strong>rel</strong> 
+    - (<tt>String</tt>) <strong>rel</strong> 
   
 
   
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The relationship (&quot;rel&quot;) of the other resource to this one
 </p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+the relationship (&quot;rel&quot;) of the other resource to this one
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+11
+12
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 11</span>
+
+<span class='def def kw'>def</span> <span class='rel identifier id'>rel</span>
+  <span class='@rel ivar id'>@rel</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
 </div>
     
       
@@ -197,11 +323,60 @@ An array of Riak::Link structs parsed from the header.
       <div class="method_details ">
   <p class="signature " id="url-instance_method">
   
-    - (<tt>Object</tt>) <strong>url</strong> 
+    - (<tt>String</tt>) <strong>url</strong> 
   
 
   
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The URL (relative or absolute) of the related resource
 </p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+the URL (relative or absolute) of the related resource
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 8</span>
+
+<span class='def def kw'>def</span> <span class='url identifier id'>url</span>
+  <span class='@url ivar id'>@url</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
 </div>
     
   </div>
@@ -275,16 +450,16 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-9
-10
-11
-12
-13</pre>
+15
+16
+17
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 15</span>
 
-<span class='def def kw'>def</span> <span class='Link constant id'>Link</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='header_string identifier id'>header_string</span><span class='rparen token'>)</span>
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='header_string identifier id'>header_string</span><span class='rparen token'>)</span>
   <span class='header_string identifier id'>header_string</span><span class='dot token'>.</span><span class='scan identifier id'>scan</span><span class='lparen token'>(</span><span class='regexp val'>%r{&lt;([^&gt;]+)&gt;\s*;\s*rel=&quot;([^&quot;]+)&quot;}</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='match identifier id'>match</span><span class='bitor op'>|</span>
     <span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>0</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
   <span class='end end kw'>end</span>
@@ -300,7 +475,7 @@ an array of Riak::Link structs parsed from the header
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 14 14:55:53 2010 by 
+  Generated on Thu Jan 14 16:03:49 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

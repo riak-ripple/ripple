@@ -80,7 +80,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Parent class of all object types supported by riak-client. <tt><a href="" title="Riak::RObject (class)">Riak::RObject</a></tt>
+Parent class of all object types supported by ripple. <tt><a href="" title="Riak::RObject (class)">Riak::RObject</a></tt>
 represents the data stored in a bucket/key pair in the Riak database.
 </p>
 
@@ -212,7 +212,7 @@ The data stored in Riak at this object&#8217;s key.
 
   
     <span class="summary_desc">
-The ETag header from the most HTTP response, useful for caching and
+The ETag header from the most recent HTTP response, useful for caching and
 reloading.
 
 </span>
@@ -265,8 +265,8 @@ The key of this object within its bucket.
 
   
     <span class="summary_desc">
-The Last-Modified header from the most HTTP response, useful for caching
-and reloading.
+The Last-Modified header from the most recent HTTP response, useful for
+caching and reloading.
 
 </span>
   
@@ -292,7 +292,7 @@ and reloading.
 
   
     <span class="summary_desc">
-An array of <tt><a href="Link.html" title="Riak::Link (class)">Riak::Link</a></tt> structs for relationships between this object and
+An array of <tt><a href="Link.html" title="Riak::Link (class)">Riak::Link</a></tt> objects for relationships between this object and
 other resources.
 
 </span>
@@ -760,7 +760,7 @@ subclass, defaulting to String from the response body.
 </p><div class="docstring">
   <div class="discussion">
     <p>
-The ETag header from the most HTTP response, useful for caching and
+The ETag header from the most recent HTTP response, useful for caching and
 reloading
 </p>
 
@@ -780,7 +780,7 @@ reloading
       
         &mdash;
         
-the ETag header from the most HTTP response, useful for caching and
+the ETag header from the most recent HTTP response, useful for caching and
 reloading
 
 
@@ -886,8 +886,8 @@ the key of this object within its bucket
 </p><div class="docstring">
   <div class="discussion">
     <p>
-The Last-Modified header from the most HTTP response, useful for caching
-and reloading
+The Last-Modified header from the most recent HTTP response, useful for
+caching and reloading
 </p>
 
 
@@ -906,8 +906,8 @@ and reloading
       
         &mdash;
         
-the Last-Modified header from the most HTTP response, useful for caching
-and reloading
+the Last-Modified header from the most recent HTTP response, useful for
+caching and reloading
 
 
       
@@ -950,7 +950,7 @@ and reloading
 </p><div class="docstring">
   <div class="discussion">
     <p>
-An array of <tt><a href="Link.html" title="Riak::Link (class)">Riak::Link</a></tt> structs for relationships between this object and
+An array of <tt><a href="Link.html" title="Riak::Link (class)">Riak::Link</a></tt> objects for relationships between this object and
 other resources
 </p>
 
@@ -970,7 +970,7 @@ other resources
       
         &mdash;
         
-an array of <tt><a href="Link.html" title="Riak::Link (class)">Riak::Link</a></tt> structs for relationships between this object and
+an array of <tt><a href="Link.html" title="Riak::Link (class)">Riak::Link</a></tt> objects for relationships between this object and
 other resources
 
 
@@ -1395,7 +1395,7 @@ a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPB
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 14 14:55:54 2010 by 
+  Generated on Thu Jan 14 16:03:49 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
