@@ -74,7 +74,7 @@ module Riak
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key)
       response = @client.http.get(200, name, key, {})
-      Riak::Object.load(self, key, response)
+      RObject.load(self, key, response)
     end
   end
 end

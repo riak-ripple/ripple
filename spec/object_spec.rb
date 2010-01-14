@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), "spec_helper")
 
-describe Riak::Object do
+describe Riak::RObject do
   before :each do
     @client = Riak::Client.new
     @bucket = Riak::Bucket.new(@client, "foo")
@@ -8,19 +8,19 @@ describe Riak::Object do
 
   describe "creating an object from a response" do
     it "should create a Riak::Document for a JSON object" do
-      Riak::Object.load(@bucket, "bar", {:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'}).should be_kind_of(Riak::Document)
+      Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'}).should be_kind_of(Riak::Document)
     end
 
     it "should create a Riak::Document for a YAML object" do
-      Riak::Object.load(@bucket, "bar", {:headers => {"content-type" => ["application/x-yaml"]}, :body => "---\nname: Riak\ncompany: Basho\n"}).should be_kind_of(Riak::Document)
+      Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["application/x-yaml"]}, :body => "---\nname: Riak\ncompany: Basho\n"}).should be_kind_of(Riak::Document)
     end
 
     it "should create a Riak::Binary for a binary type" do
-      Riak::Object.load(@bucket, "bar", {:headers => {"content-type" => ["application/octet-stream"]}, :body => 'ASD#$*@)#$%&*Q)DA&@*#$*'}).should be_kind_of(Riak::Binary)
+      Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["application/octet-stream"]}, :body => 'ASD#$*@)#$%&*Q)DA&@*#$*'}).should be_kind_of(Riak::Binary)
     end
 
-    it "should create a bare Riak::Object if none of the subclasses match" do
-      obj = Riak::Object.load(@bucket, "bar", {:headers => {"content-type" => ["text/richtext"]}, :body => 'This is my magnum opus.'})
+    it "should create a bare Riak::RObject if none of the subclasses match" do
+      obj = Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["text/richtext"]}, :body => 'This is my magnum opus.'})
       obj.should_not be_kind_of(Riak::Document)
       obj.should_not be_kind_of(Riak::Binary)
     end
@@ -28,7 +28,7 @@ describe Riak::Object do
 
   describe "loading data from the response" do
     before :each do
-      @object = Riak::Object.new(@bucket, "bar")
+      @object = Riak::RObject.new(@bucket, "bar")
     end
 
     it "should load the content type" do

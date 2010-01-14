@@ -10,7 +10,7 @@ module Riak
   autoload :Client,   "riak/client"
   autoload :Document, "riak/document"
   autoload :Link,     "riak/link"
-  autoload :Object,   "riak/object"
+  autoload :RObject,   "riak/robject"
   
   # Exceptions
   autoload :FailedRequest, "riak/failed_request"

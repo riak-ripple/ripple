@@ -1,5 +1,5 @@
 module Riak
-  class Document < ::Riak::Object
+  class Document < RObject
     DOCUMENT_TYPES = [ /json$/i, /yaml$/i ].freeze
     
     def self.matches?(headers)

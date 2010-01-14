@@ -52,12 +52,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></span>
+      <span class="inheritName">Object</span>
       
         <ul class="fullTree">
           <li>Object</li>
-          
-            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></li>
           
             <li class="next">Riak::Bucket</li>
           
@@ -93,16 +91,6 @@ meta-information later.
 <div class="tags">
   
 </div>
-  <h2>Constant Summary</h2>
-  
-
-
-  
-  
-  
-  
-  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="Riak::Object::SUBCLASS_PRIORITY (constant)">SUBCLASS_PRIORITY</a></p>
 
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
@@ -288,14 +276,6 @@ Load information for the bucket from a response given by the
 
     
   </ul>
-
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#load-class_method" title="Riak::Object.load (method)">load</a>, <a href="../Riak_3A_3AObject.html#matches%3F-class_method" title="Riak::Object.matches? (method)">matches?</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -595,7 +575,7 @@ Internal Riak bucket properties.
       <div class="method_details first">
   <p class="signature first" id="get-instance_method">
   
-    - (<tt><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></tt>) <strong>get</strong>(key) 
+    - (<tt>Riak::Object</tt>) <strong>get</strong>(key) 
   
 
   
@@ -635,7 +615,7 @@ the key of the object to retrieve
   
     <li>
       
-        <span class='type'>(<tt><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></tt>)</span>
+        <span class='type'>(<tt>Riak::Object</tt>)</span>
       
       
       
@@ -685,7 +665,7 @@ if the object is not found or some other error occurs
 
 <span class='def def kw'>def</span> <span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='rparen token'>)</span>
   <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
-  <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Object constant id'>Object</span><span class='dot token'>.</span><span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='self self kw'>self</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='response identifier id'>response</span><span class='rparen token'>)</span>
+  <span class='RObject constant id'>RObject</span><span class='dot token'>.</span><span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='self self kw'>self</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='response identifier id'>response</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -947,7 +927,7 @@ self
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 14 14:45:09 2010 by 
+  Generated on Thu Jan 14 14:55:56 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

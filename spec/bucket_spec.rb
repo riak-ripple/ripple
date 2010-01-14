@@ -105,9 +105,9 @@ describe Riak::Bucket do
       @client.stub!(:http).and_return(@http)      
     end
     
-    it "should load the object from the server" do
+    it "should load the object from the server as a Riak::RObject" do
       @http.should_receive(:get).with(200, "foo", "db", {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
-      @bucket.get("db").should be_kind_of(Riak::Object)
+      @bucket.get("db").should be_kind_of(Riak::RObject)
     end
   end
 end
