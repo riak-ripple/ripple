@@ -156,6 +156,7 @@ module Riak
         raise ArgumentError, "Resource path too short" if Array(resource).flatten.empty?
       end
 
+      # Executes requests according to the underlying HTTP client library semantics.
       # @abstract Subclasses must implement this internal method to perform HTTP requests
       #           according to the API of their HTTP libraries.
       # @param [Symbol] method one of :head, :get, :post, :put, :delete

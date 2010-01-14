@@ -58,3 +58,15 @@ YARD::Rake::YardocTask.new do |yard|
   docfiles.exclude 'lib/ripple.rb'
   yard.files = docfiles
 end
+
+task :doc => :yard do
+  original_dir = Dir.pwd
+  commit = `git log --pretty=oneline -1`
+  chdir "../ripple-docs/" do
+    system "rm -rf *"
+    system "cp -r #{original_dir}/doc/* ."
+    system "git add .; git add -u"
+    system "git commit -m 'Update docs from commit: #{commit}'"
+    system "git push origin gh-pages"
+  end
+end

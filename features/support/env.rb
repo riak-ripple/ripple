@@ -1,4 +1,4 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
-require 'riak-client'
+require 'ripple'
 
 require 'spec/expectations'

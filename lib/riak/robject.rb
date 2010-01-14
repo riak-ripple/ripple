@@ -1,7 +1,7 @@
 require 'riak'
 
 module Riak
-  # Parent class of all object types supported by riak-client. {Riak::RObject} represents
+  # Parent class of all object types supported by ripple. {Riak::RObject} represents
   # the data stored in a bucket/key pair in the Riak database.
   class RObject
     # The order in which child classes will attempt instantiation when loading a response.
@@ -38,13 +38,13 @@ module Riak
     # @return [Object] the data stored in Riak at this object's key. Varies in format by subclass, defaulting to String from the response body.
     attr_accessor :data
 
-    # @return [Array<Link>] an array of {Riak::Link} structs for relationships between this object and other resources
+    # @return [Array<Link>] an array of {Riak::Link} objects for relationships between this object and other resources
     attr_accessor :links
 
-    # @return [String] the ETag header from the most HTTP response, useful for caching and reloading
+    # @return [String] the ETag header from the most recent HTTP response, useful for caching and reloading
     attr_accessor :etag
 
-    # @return [Time] the Last-Modified header from the most HTTP response, useful for caching and reloading
+    # @return [Time] the Last-Modified header from the most recent HTTP response, useful for caching and reloading
     attr_accessor :last_modified
 
     # @return [Hash] a hash of any X-Riak-Meta-* headers that were in the HTTP response, keyed on the trailing portion
