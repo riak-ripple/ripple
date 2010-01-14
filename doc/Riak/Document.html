@@ -16,18 +16,24 @@
 
   </head>
   <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
     <div id="header">
       <div id="menu">
   
     <a href="../_index.html">Index (D)</a> &raquo; 
-    <a href="../Riak.html" title="Riak">Riak</a>
+    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
      &raquo; 
     <span class="title">Document</span>
   
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="class_list_link" href="#">Class List</a>
   <a id="method_list_link" href="#">Method List</a>
   <a id ="file_list_link" href="#">File List</a>
 </div>
@@ -46,12 +52,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></span>
+      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></li>
+            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></li>
           
             <li class="next">Riak::Document</li>
           
@@ -78,7 +84,7 @@
   
     <dl class="constants">
       
-        <dt id="DOCUMENT_TYPES-constant ">DOCUMENT_TYPES =
+        <dt id="DOCUMENT_TYPES-constant" class="">DOCUMENT_TYPES =
             <span class="summary_desc"></span>
         </dt>
         <dd><pre class="code"><span class='lbrack token'>[</span> <span class='regexp val'>/json$/i</span><span class='comma token'>,</span> <span class='regexp val'>/yaml$/i</span> <span class='rbrack token'>]</span><span class='dot token'>.</span><span class='freeze identifier id'>freeze</span>
@@ -92,8 +98,8 @@
   
   
   
-  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="SUBCLASS_PRIORITY">SUBCLASS_PRIORITY</a></p>
+  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="Riak::Object::SUBCLASS_PRIORITY (constant)">SUBCLASS_PRIORITY</a></p>
 
 
   <h2>Class Method Summary</h2>
@@ -127,12 +133,12 @@
   
   
   
-  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#initialize-instance_method" title="#initialize">#initialize</a>, <a href="../Riak_3A_3AObject.html#load-class_method" title="load">load</a>, <a href="../Riak_3A_3AObject.html#load-instance_method" title="#load">#load</a></p>
+  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#initialize-instance_method" title="Riak::Object#initialize (method)">#initialize</a>, <a href="../Riak_3A_3AObject.html#load-class_method" title="Riak::Object.load (method)">load</a>, <a href="../Riak_3A_3AObject.html#load-instance_method" title="Riak::Object#load (method)">#load</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
-    <p class="notice">This class inherits a constructor from <a href="../Riak_3A_3AObject.html#initialize-instance_method" title="Riak::Object">Riak::Object</a></p>
+    <p class="notice">This class inherits a constructor from <a href="../Riak_3A_3AObject.html#initialize-instance_method" title="Riak::Object#initialize (method)">Riak::Object</a></p>
   
 </div>
 
@@ -196,9 +202,9 @@
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 13 16:33:06 2010 by 
+  Generated on Thu Jan 14 14:45:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.2 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.6).
 </div>
 
   </body>

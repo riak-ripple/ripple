@@ -1,10 +1,10 @@
-h1. riak-client
+h1. ripple
 
-riak-client is a simple Ruby client/wrapper for Riak, Basho's distributed database.
+ripple is a Ruby client/wrapper for Riak, Basho's distributed database.
 
 h2. Dependencies
 
-riak-client requires ActiveSupport >=2.3.  We highly recommend the "curb" gem for better HTTP client performance.
+ripple requires ActiveSupport >=2.3.  We highly recommend the "curb" gem for better HTTP client performance.
 
 h2. Note on Patches/Pull Requests
  
@@ -27,8 +27,7 @@ h2. Note on Patches/Pull Requests
 
 h2. License
 
-All files without an included license statement are subject to the
-Apache 2.0 license. See LICENSE for details.
+All files without an included license statement are subject to the Apache 2.0 license. See LICENSE for details.
 
 h2. Copyright
 

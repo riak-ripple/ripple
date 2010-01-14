@@ -16,18 +16,24 @@
 
   </head>
   <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
     <div id="header">
       <div id="menu">
   
     <a href="../../_index.html">Index (C)</a> &raquo; 
-    <a href="../../Riak.html" title="Riak">Riak</a> &raquo; <a href="../Client.html" title="Client">Client</a>
+    <span class='title'><a href="../../Riak.html" title="Riak (module)">Riak</a></span> &raquo; <span class='title'><a href="../Client.html" title="Riak::Client (class)">Client</a></span>
      &raquo; 
     <span class="title">CurbBackend</span>
   
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="class_list_link" href="#">Class List</a>
   <a id="method_list_link" href="#">Method List</a>
   <a id ="file_list_link" href="#">File List</a>
 </div>
@@ -46,14 +52,14 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></span>
+      <span class="inheritName"><a href="HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></li>
+            <li class="next"><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></li>
           
-            <li class="next"><a href="HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></li>
+            <li class="next"><a href="HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></li>
           
             <li class="next">Riak::Client::CurbBackend</li>
           
@@ -102,8 +108,8 @@ Riak::Client::HTTPBackend interface.
   
   
   
-  <h3 class="inherited">Constants inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="SUBCLASS_PRIORITY">SUBCLASS_PRIORITY</a></p>
+  <h3 class="inherited">Constants inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></h3>
+  <p class="inherited"><a href="../../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="Riak::Object::SUBCLASS_PRIORITY (constant)">SUBCLASS_PRIORITY</a></p>
 
 
   <h2>Instance Method Summary</h2>
@@ -142,23 +148,23 @@ A new instance of CurbBackend.
   
   
   
-  <h3 class="inherited">Methods inherited from <a href="HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></h3>
-  <p class="inherited"><a href="HTTPBackend.html#default_headers-instance_method" title="#default_headers">#default_headers</a>, <a href="HTTPBackend.html#delete-instance_method" title="#delete">#delete</a>, <a href="HTTPBackend.html#get-instance_method" title="#get">#get</a>, <a href="HTTPBackend.html#head-instance_method" title="#head">#head</a>, <a href="HTTPBackend.html#path-instance_method" title="#path">#path</a>, <a href="HTTPBackend.html#post-instance_method" title="#post">#post</a>, <a href="HTTPBackend.html#put-instance_method" title="#put">#put</a>, <a href="HTTPBackend.html#root_uri-instance_method" title="#root_uri">#root_uri</a>, <a href="HTTPBackend.html#verify_path%21-instance_method" title="#verify_path!">#verify_path!</a>, <a href="HTTPBackend.html#verify_path_and_body%21-instance_method" title="#verify_path_and_body!">#verify_path_and_body!</a></p>
+  <h3 class="inherited">Methods inherited from <a href="HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></h3>
+  <p class="inherited"><a href="HTTPBackend.html#default_headers-instance_method" title="Riak::Client::HTTPBackend#default_headers (method)">#default_headers</a>, <a href="HTTPBackend.html#delete-instance_method" title="Riak::Client::HTTPBackend#delete (method)">#delete</a>, <a href="HTTPBackend.html#get-instance_method" title="Riak::Client::HTTPBackend#get (method)">#get</a>, <a href="HTTPBackend.html#head-instance_method" title="Riak::Client::HTTPBackend#head (method)">#head</a>, <a href="HTTPBackend.html#path-instance_method" title="Riak::Client::HTTPBackend#path (method)">#path</a>, <a href="HTTPBackend.html#post-instance_method" title="Riak::Client::HTTPBackend#post (method)">#post</a>, <a href="HTTPBackend.html#put-instance_method" title="Riak::Client::HTTPBackend#put (method)">#put</a>, <a href="HTTPBackend.html#root_uri-instance_method" title="Riak::Client::HTTPBackend#root_uri (method)">#root_uri</a>, <a href="HTTPBackend.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend#verify_path! (method)">#verify_path!</a>, <a href="HTTPBackend.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend#verify_path_and_body! (method)">#verify_path_and_body!</a></p>
 
   
   
   
   
   
-  <h3 class="inherited">Methods inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../../Riak_3A_3AObject.html#load-class_method" title="load">load</a>, <a href="../../Riak_3A_3AObject.html#load-instance_method" title="#load">#load</a>, <a href="../../Riak_3A_3AObject.html#matches%3F-class_method" title="matches?">matches?</a></p>
+  <h3 class="inherited">Methods inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></h3>
+  <p class="inherited"><a href="../../Riak_3A_3AObject.html#load-class_method" title="Riak::Object.load (method)">load</a>, <a href="../../Riak_3A_3AObject.html#load-instance_method" title="Riak::Object#load (method)">#load</a>, <a href="../../Riak_3A_3AObject.html#matches%3F-class_method" title="Riak::Object.matches? (method)">matches?</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="CurbBackend">CurbBackend</a></tt>) <strong>initialize</strong>(client) 
+    - (<tt><a href="" title="Riak::Client::CurbBackend (class)">CurbBackend</a></tt>) <strong>initialize</strong>(client) 
   
 
   
@@ -205,9 +211,9 @@ A new instance of CurbBackend
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 13 16:33:04 2010 by 
+  Generated on Thu Jan 14 14:45:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.2 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.6).
 </div>
 
   </body>

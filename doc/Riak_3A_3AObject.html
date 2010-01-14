@@ -16,6 +16,10 @@
 
   </head>
   <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
     <div id="header">
       <div id="menu">
   
@@ -24,10 +28,12 @@
     
     <span class="title">Riak::Object</span>
   
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="class_list_link" href="#">Class List</a>
   <a id="method_list_link" href="#">Method List</a>
   <a id ="file_list_link" href="#">File List</a>
 </div>
@@ -74,7 +80,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Parent class of all object types supported by riak-client. <tt><a href="" title="Riak::Object">Riak::Object</a></tt>
+Parent class of all object types supported by riak-client. <tt><a href="" title="Riak::Object (class)">Riak::Object</a></tt>
 represents the data stored in a bucket/key pair in the Riak database.
 </p>
 
@@ -83,12 +89,16 @@ represents the data stored in a bucket/key pair in the Riak database.
 </div>
 <div class="tags">
   
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><a href="Riak/Binary.html" title="Riak::Binary (class)">Riak::Binary</a>, <a href="Riak/Bucket.html" title="Riak::Bucket (class)">Riak::Bucket</a>, <a href="Riak/Client.html" title="Riak::Client (class)">Riak::Client</a>, <a href="Riak/Client/CurbBackend/Headers.html" title="Riak::Client::CurbBackend::Headers (class)">Riak::Client::CurbBackend::Headers</a>, <a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a>, <a href="Riak/Document.html" title="Riak::Document (class)">Riak::Document</a></p>
 </div>
+
   <h2>Constant Summary</h2>
   
     <dl class="constants">
       
-        <dt id="SUBCLASS_PRIORITY-constant ">SUBCLASS_PRIORITY =
+        <dt id="SUBCLASS_PRIORITY-constant" class="">SUBCLASS_PRIORITY =
             <span class="summary_desc">
 The order in which child classes will attempt instantiation when loading a
 response.
@@ -282,7 +292,7 @@ and reloading.
 
   
     <span class="summary_desc">
-An array of <tt><a href="Riak/Link.html" title="Riak::Link">Riak::Link</a></tt> structs for relationships between this object and
+An array of <tt><a href="Riak/Link.html" title="Riak::Link (class)">Riak::Link</a></tt> structs for relationships between this object and
 other resources.
 
 </span>
@@ -367,7 +377,7 @@ The Riak vector clock for the object.
   
     <span class="summary_desc">
 Load information for an object from a response given by
-<tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></tt>.
+<tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>.
 
 </span>
   
@@ -459,7 +469,7 @@ Load object data from an HTTP response.
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Riak::Object">Riak::Object</a></tt>) <strong>initialize</strong>(bucket, key = nil) 
+    - (<tt><a href="" title="Riak::Object (class)">Riak::Object</a></tt>) <strong>initialize</strong>(bucket, key = nil) 
   
 
   
@@ -940,7 +950,7 @@ and reloading
 </p><div class="docstring">
   <div class="discussion">
     <p>
-An array of <tt><a href="Riak/Link.html" title="Riak::Link">Riak::Link</a></tt> structs for relationships between this object and
+An array of <tt><a href="Riak/Link.html" title="Riak::Link (class)">Riak::Link</a></tt> structs for relationships between this object and
 other resources
 </p>
 
@@ -960,7 +970,7 @@ other resources
       
         &mdash;
         
-an array of <tt><a href="Riak/Link.html" title="Riak::Link">Riak::Link</a></tt> structs for relationships between this object and
+an array of <tt><a href="Riak/Link.html" title="Riak::Link (class)">Riak::Link</a></tt> structs for relationships between this object and
 other resources
 
 
@@ -1127,7 +1137,7 @@ the Riak vector clock for the object
       <div class="method_details first">
   <p class="signature first" id="load-class_method">
   
-    + (<tt><a href="" title="Riak::Object">Riak::Object</a></tt>) <strong>load</strong>(bucket, key, response) 
+    + (<tt><a href="" title="Riak::Object (class)">Riak::Object</a></tt>) <strong>load</strong>(bucket, key, response) 
   
 
   
@@ -1135,8 +1145,8 @@ the Riak vector clock for the object
   <div class="discussion">
     <p>
 Load information for an object from a response given by
-<tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></tt>. Used mostly internally - use
-<tt><a href="Riak/Bucket.html#get-instance_method" title="Riak::Bucket#get">Riak::Bucket#get</a></tt> to retrieve an <tt><a href="" title="Riak::Object">Riak::Object</a></tt> instance.
+<tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>. Used mostly internally - use
+<tt><a href="Riak/Bucket.html#get-instance_method" title="Riak::Bucket#get (method)">Riak::Bucket#get</a></tt> to retrieve an <tt><a href="" title="Riak::Object (class)">Riak::Object</a></tt> instance.
 </p>
 
 
@@ -1157,7 +1167,7 @@ Load information for an object from a response given by
       
         &mdash;
         
-a response from <tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></tt>
+a response from <tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>
 
 
       
@@ -1169,14 +1179,14 @@ a response from <tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::
   
     <li>
       
-        <span class='type'>(<tt><a href="" title="Riak::Object">Riak::Object</a></tt>)</span>
+        <span class='type'>(<tt><a href="" title="Riak::Object (class)">Riak::Object</a></tt>)</span>
       
       
       
       
         &mdash;
         
-an appropriate instance of a subclass of <tt><a href="" title="Riak::Object">Riak::Object</a></tt>
+an appropriate instance of a subclass of <tt><a href="" title="Riak::Object (class)">Riak::Object</a></tt>
 
 
       
@@ -1326,7 +1336,7 @@ Load object data from an HTTP response
       
         &mdash;
         
-a response from <tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></tt>
+a response from <tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>
 
 
       
@@ -1385,9 +1395,9 @@ a response from <tt><a href="Riak/Client/HTTPBackend.html" title="Riak::Client::
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 13 16:33:05 2010 by 
+  Generated on Thu Jan 14 14:45:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.2 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.6).
 </div>
 
   </body>

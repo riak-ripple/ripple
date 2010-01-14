@@ -16,18 +16,24 @@
 
   </head>
   <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
     <div id="header">
       <div id="menu">
   
     <a href="../_index.html">Index (B)</a> &raquo; 
-    <a href="../Riak.html" title="Riak">Riak</a>
+    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
      &raquo; 
     <span class="title">Bucket</span>
   
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="class_list_link" href="#">Class List</a>
   <a id="method_list_link" href="#">Method List</a>
   <a id ="file_list_link" href="#">File List</a>
 </div>
@@ -46,12 +52,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></span>
+      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></li>
+            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></li>
           
             <li class="next">Riak::Bucket</li>
           
@@ -77,7 +83,7 @@
   <div class="discussion">
     <p>
 Represents and encapsulates operations on a Riak bucket. You may retrieve a
-bucket using <tt><a href="Client.html#bucket-instance_method" title="Client#bucket">Client#bucket</a></tt>, or create it manually and retrieve its
+bucket using <tt><a href="Client.html#bucket-instance_method" title="Riak::Client#bucket (method)">Client#bucket</a></tt>, or create it manually and retrieve its
 meta-information later.
 </p>
 
@@ -95,8 +101,8 @@ meta-information later.
   
   
   
-  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="SUBCLASS_PRIORITY">SUBCLASS_PRIORITY</a></p>
+  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="Riak::Object::SUBCLASS_PRIORITY (constant)">SUBCLASS_PRIORITY</a></p>
 
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
@@ -163,7 +169,7 @@ The bucket name.
   </span>
   
   
-    <span class="note title readonly">readonly</span>
+    
     
   
   
@@ -274,31 +280,7 @@ Accesses or retrieves a list of keys in this bucket.
   
     <span class="summary_desc">
 Load information for the bucket from a response given by the
-<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></tt>.
-
-</span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#props%3D-instance_method" title="#props= (instance method)">- (Hash) <strong>props=</strong>(properties) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc">
-Sets internal properties on the bucket Note: this results in a request to
-the Riak server!.
+<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>.
 
 </span>
   
@@ -312,15 +294,15 @@ the Riak server!.
   
   
   
-  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#load-class_method" title="load">load</a>, <a href="../Riak_3A_3AObject.html#matches%3F-class_method" title="matches?">matches?</a></p>
+  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#load-class_method" title="Riak::Object.load (method)">load</a>, <a href="../Riak_3A_3AObject.html#matches%3F-class_method" title="Riak::Object.matches? (method)">matches?</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Bucket">Bucket</a></tt>) <strong>initialize</strong>(client, name) 
+    - (<tt><a href="" title="Riak::Bucket (class)">Bucket</a></tt>) <strong>initialize</strong>(client, name) 
   
 
   
@@ -339,7 +321,7 @@ Create a Riak bucket manually.
   
     <li>
       
-        <span class='type'>(<tt><a href="Client.html" title="Client">Client</a></tt>)</span>
+        <span class='type'>(<tt><a href="Client.html" title="Riak::Client (class)">Client</a></tt>)</span>
       
       
         <span class='name'>client</span>
@@ -348,7 +330,7 @@ Create a Riak bucket manually.
       
         &mdash;
         
-the <tt><a href="Client.html" title="Riak::Client">Riak::Client</a></tt> for this bucket
+the <tt><a href="Client.html" title="Riak::Client (class)">Riak::Client</a></tt> for this bucket
 
 
       
@@ -423,7 +405,7 @@ the name of the bucket
       <div class="method_details first">
   <p class="signature first" id="client-instance_method">
   
-    - (<tt><a href="Client.html" title="Riak::Client">Riak::Client</a></tt>) <strong>client</strong>  <span class="extras">(readonly)</span>
+    - (<tt><a href="Client.html" title="Riak::Client (class)">Riak::Client</a></tt>) <strong>client</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -442,7 +424,7 @@ The associated client
   
     <li>
       
-        <span class='type'>(<tt><a href="Client.html" title="Riak::Client">Riak::Client</a></tt>)</span>
+        <span class='type'>(<tt><a href="Client.html" title="Riak::Client (class)">Riak::Client</a></tt>)</span>
       
       
       
@@ -542,12 +524,12 @@ the bucket name
 </div>
     
       
-      <span id=""></span>
+      <span id="props=-instance_method"></span>
       <span id="props-instance_method"></span>
       <div class="method_details ">
   <p class="signature " id="props-instance_method">
   
-    - (<tt>Hash</tt>) <strong>props</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Hash</tt>) <strong>props</strong> 
   
 
   
@@ -613,7 +595,7 @@ Internal Riak bucket properties.
       <div class="method_details first">
   <p class="signature first" id="get-instance_method">
   
-    - (<tt><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></tt>) <strong>get</strong>(key) 
+    - (<tt><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></tt>) <strong>get</strong>(key) 
   
 
   
@@ -653,7 +635,7 @@ the key of the object to retrieve
   
     <li>
       
-        <span class='type'>(<tt><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></tt>)</span>
+        <span class='type'>(<tt><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></tt>)</span>
       
       
       
@@ -672,7 +654,7 @@ the object
   
     <li>
       
-        <span class='type'>(<tt><a href="FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+        <span class='type'>(<tt><a href="FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></tt>)</span>
       
       
       
@@ -860,7 +842,7 @@ Keys in this bucket
       <div class="method_details ">
   <p class="signature " id="load-instance_method">
   
-    - (<tt><a href="" title="Bucket">Bucket</a></tt>) <strong>load</strong>(response = {}) 
+    - (<tt><a href="" title="Riak::Bucket (class)">Bucket</a></tt>) <strong>load</strong>(response = {}) 
   
 
   
@@ -868,8 +850,8 @@ Keys in this bucket
   <div class="discussion">
     <p>
 Load information for the bucket from a response given by the
-<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></tt>. Used mostly internally - use
-<tt><a href="Client.html#bucket-instance_method" title="Riak::Client#bucket">Riak::Client#bucket</a></tt> to get a <tt><a href="" title="Bucket">Bucket</a></tt> instance.
+<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>. Used mostly internally - use
+<tt><a href="Client.html#bucket-instance_method" title="Riak::Client#bucket (method)">Riak::Client#bucket</a></tt> to get a <tt><a href="" title="Riak::Bucket (class)">Bucket</a></tt> instance.
 </p>
 
 
@@ -892,7 +874,7 @@ Load information for the bucket from a response given by the
       
         &mdash;
         
-a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend">Riak::Client::HTTPBackend</a></tt>
+a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>
 
 
       
@@ -904,7 +886,7 @@ a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPB
   
     <li>
       
-        <span class='type'>(<tt><a href="" title="Bucket">Bucket</a></tt>)</span>
+        <span class='type'>(<tt><a href="" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
       
       
       
@@ -922,7 +904,7 @@ self
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li><a href="Client.html#bucket-instance_method" title="Client#bucket">Client#bucket</a></li>
+      <li><a href="Client.html#bucket-instance_method" title="Riak::Client#bucket (method)">Client#bucket</a></li>
     
   </ul>
 
@@ -960,120 +942,14 @@ self
 </table>
 </div>
     
-      <div class="method_details ">
-  <p class="signature " id="props=-instance_method">
-  
-    - (<tt>Hash</tt>) <strong>props=</strong>(properties) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Sets internal properties on the bucket Note: this results in a request to
-the Riak server!
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <span class='name'>properties</span>
-      
-      
-      
-        &mdash;
-        
-new properties for the bucket
-
-
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-the properties that were accepted
-
-
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt><a href="FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-if the new properties were not accepted by the Riak server
-
-
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-64
-65
-66
-67
-68
-69</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 64</span>
-
-<span class='def def kw'>def</span> <span class='props= identifier id'>props=</span><span class='lparen token'>(</span><span class='properties identifier id'>properties</span><span class='rparen token'>)</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;properties must be a Hash&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='Hash constant id'>Hash</span> <span class='eqq op'>===</span> <span class='properties identifier id'>properties</span>
-  <span class='body identifier id'>body</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='string val'>'props'</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='properties identifier id'>properties</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='to_json identifier id'>to_json</span>
-  <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='put identifier id'>put</span><span class='lparen token'>(</span><span class='integer val'>204</span><span class='comma token'>,</span> <span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='string val'>&quot;Content-Type&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;application/json&quot;</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
-  <span class='@props ivar id'>@props</span> <span class='assign token'>=</span> <span class='properties identifier id'>properties</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
   </div>
 
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 13 16:33:05 2010 by 
+  Generated on Thu Jan 14 14:45:09 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.2 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.6).
 </div>
 
   </body>

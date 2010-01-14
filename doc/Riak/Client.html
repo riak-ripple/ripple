@@ -16,18 +16,24 @@
 
   </head>
   <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
     <div id="header">
       <div id="menu">
   
     <a href="../_index.html">Index (C)</a> &raquo; 
-    <a href="../Riak.html" title="Riak">Riak</a>
+    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
      &raquo; 
     <span class="title">Client</span>
   
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="class_list_link" href="#">Class List</a>
   <a id="method_list_link" href="#">Method List</a>
   <a id ="file_list_link" href="#">File List</a>
 </div>
@@ -46,12 +52,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></span>
+      <span class="inheritName"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></li>
+            <li class="next"><a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></li>
           
             <li class="next">Riak::Client</li>
           
@@ -91,7 +97,7 @@ A client connection to Riak.
   
     <dl class="constants">
       
-        <dt id="MAX_CLIENT_ID-constant ">MAX_CLIENT_ID =
+        <dt id="MAX_CLIENT_ID-constant" class="">MAX_CLIENT_ID =
             <span class="summary_desc">
 When using integer client IDs, the exclusive upper-bound of valid values.
 
@@ -100,7 +106,7 @@ When using integer client IDs, the exclusive upper-bound of valid values.
         <dd><pre class="code"><span class='integer val'>4294967296</span>
 </pre></dd>
       
-        <dt id="HOST_REGEX-constant ">HOST_REGEX =
+        <dt id="HOST_REGEX-constant" class="">HOST_REGEX =
             <span class="summary_desc">
 Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6.
 
@@ -117,8 +123,8 @@ Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6.
   
   
   
-  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="SUBCLASS_PRIORITY">SUBCLASS_PRIORITY</a></p>
+  <h3 class="inherited">Constants inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="Riak::Object::SUBCLASS_PRIORITY (constant)">SUBCLASS_PRIORITY</a></p>
 
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
@@ -133,7 +139,7 @@ Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6.
   </span>
   
   
-    <span class="note title readonly">readonly</span>
+    
     
   
   
@@ -159,7 +165,7 @@ The internal client ID used by Riak to route responses.
   </span>
   
   
-    <span class="note title readonly">readonly</span>
+    
     
   
   
@@ -185,7 +191,7 @@ The host or IP address for the Riak endpoint.
   </span>
   
   
-    <span class="note title readonly">readonly</span>
+    
     
   
   
@@ -260,52 +266,6 @@ Retrieves a bucket from Riak.
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#client_id%3D-instance_method" title="#client_id= (instance method)">- (String) <strong>client_id=</strong>(value) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc">
-Set the client ID for this client.
-
-</span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#host%3D-instance_method" title="#host= (instance method)">- (String) <strong>host=</strong>(value) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc">
-Set the hostname of the Riak endpoint.
-
-</span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#http-instance_method" title="#http (instance method)">- (HTTPBackend) <strong>http</strong> </a>
     
 
@@ -351,29 +311,6 @@ Creates a client connection to Riak.
 </li>
 
     
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#port%3D-instance_method" title="#port= (instance method)">- (Fixnum) <strong>port=</strong>(value) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc">
-Set the port number of the Riak endpoint.
-
-</span>
-  
-</li>
-
-    
   </ul>
 
   
@@ -381,15 +318,15 @@ Set the port number of the Riak endpoint.
   
   
   
-  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../Riak_3A_3AObject.html#load-class_method" title="load">load</a>, <a href="../Riak_3A_3AObject.html#load-instance_method" title="#load">#load</a>, <a href="../Riak_3A_3AObject.html#matches%3F-class_method" title="matches?">matches?</a></p>
+  <h3 class="inherited">Methods inherited from <a href="../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></h3>
+  <p class="inherited"><a href="../Riak_3A_3AObject.html#load-class_method" title="Riak::Object.load (method)">load</a>, <a href="../Riak_3A_3AObject.html#load-instance_method" title="Riak::Object#load (method)">#load</a>, <a href="../Riak_3A_3AObject.html#matches%3F-class_method" title="Riak::Object.matches? (method)">matches?</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Client">Client</a></tt>) <strong>initialize</strong>(options = {}) 
+    - (<tt><a href="" title="Riak::Client (class)">Client</a></tt>) <strong>initialize</strong>(options = {}) 
   
 
   
@@ -553,12 +490,12 @@ raised if any options are invalid
     <h2>Instance Attribute Details</h2>
     
       
-      <span id=""></span>
+      <span id="client_id=-instance_method"></span>
       <span id="client_id-instance_method"></span>
       <div class="method_details first">
   <p class="signature first" id="client_id-instance_method">
   
-    - (<tt>String</tt>) <strong>client_id</strong>  <span class="extras">(readonly)</span>
+    - (<tt>String</tt>) <strong>client_id</strong> 
   
 
   
@@ -615,12 +552,12 @@ The internal client ID used by Riak to route responses
 </div>
     
       
-      <span id=""></span>
+      <span id="host=-instance_method"></span>
       <span id="host-instance_method"></span>
       <div class="method_details ">
   <p class="signature " id="host-instance_method">
   
-    - (<tt>String</tt>) <strong>host</strong>  <span class="extras">(readonly)</span>
+    - (<tt>String</tt>) <strong>host</strong> 
   
 
   
@@ -677,12 +614,12 @@ The host or IP address for the Riak endpoint
 </div>
     
       
-      <span id=""></span>
+      <span id="port=-instance_method"></span>
       <span id="port-instance_method"></span>
       <div class="method_details ">
   <p class="signature " id="port-instance_method">
   
-    - (<tt>Fixnum</tt>) <strong>port</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Fixnum</tt>) <strong>port</strong> 
   
 
   
@@ -810,7 +747,7 @@ The URL path prefix to the &quot;raw&quot; HTTP endpoint
       <div class="method_details first">
   <p class="signature first" id="bucket-instance_method">
   
-    - (<tt><a href="Bucket.html" title="Bucket">Bucket</a></tt>) <strong>bucket</strong>(name, options = {}) 
+    - (<tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>) <strong>bucket</strong>(name, options = {}) 
   
 
   
@@ -910,7 +847,7 @@ whether to retreive the bucket properties
   
     <li>
       
-        <span class='type'>(<tt><a href="Bucket.html" title="Bucket">Bucket</a></tt>)</span>
+        <span class='type'>(<tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
       
       
       
@@ -952,225 +889,9 @@ the requested bucket
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="client_id=-instance_method">
-  
-    - (<tt>String</tt>) <strong>client_id=</strong>(value) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Set the client ID for this client. Must be a string or Fixnum value 0 =&lt;
-value &lt; MAX_CLIENT_ID.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>String</tt>, <tt>Fixnum</tt>)</span>
-      
-      
-        <span class='name'>value</span>
-      
-      
-      
-        &mdash;
-        
-The internal client ID used by Riak to route responses
-
-
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-the assigned client ID
-
-
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-when an invalid client ID is given
-
-
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 48</span>
-
-<span class='def def kw'>def</span> <span class='client_id= identifier id'>client_id=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='@client_id ivar id'>@client_id</span> <span class='assign token'>=</span> <span class='case case kw'>case</span> <span class='value identifier id'>value</span>
-               <span class='when when kw'>when</span> <span class='integer val'>0</span><span class='dot3 op'>...</span><span class='MAX_CLIENT_ID constant id'>MAX_CLIENT_ID</span>
-                 <span class='b64encode identifier id'>b64encode</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-               <span class='when when kw'>when</span> <span class='String constant id'>String</span>
-                 <span class='value identifier id'>value</span>
-               <span class='else else kw'>else</span>
-                 <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='dstring node'>&quot;Invalid client ID, must be a string or between 0 and #{MAX_CLIENT_ID}&quot;</span>
-               <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="host=-instance_method">
-  
-    - (<tt>String</tt>) <strong>host=</strong>(value) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Set the hostname of the Riak endpoint. Must be an IPv4, IPv6, or valid
-hostname
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <span class='name'>value</span>
-      
-      
-      
-        &mdash;
-        
-The host or IP address for the Riak endpoint
-
-
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-the assigned hostname
-
-
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-if an invalid hostname is given
-
-
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-63
-64
-65
-66</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 63</span>
-
-<span class='def def kw'>def</span> <span class='host= identifier id'>host=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;host must be a valid hostname&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='value identifier id'>value</span> <span class='andop op'>&amp;&amp;</span> <span class='value identifier id'>value</span><span class='dot token'>.</span><span class='present? fid id'>present?</span> <span class='andop op'>&amp;&amp;</span> <span class='value identifier id'>value</span> <span class='match op'>=~</span> <span class='HOST_REGEX constant id'>HOST_REGEX</span>
-  <span class='@host ivar id'>@host</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <p class="signature " id="http-instance_method">
   
-    - (<tt><a href="Client/HTTPBackend.html" title="HTTPBackend">HTTPBackend</a></tt>) <strong>http</strong> 
+    - (<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></tt>) <strong>http</strong> 
   
 
   
@@ -1191,7 +912,7 @@ access the server directly.
   
     <li>
       
-        <span class='type'>(<tt><a href="Client/HTTPBackend.html" title="HTTPBackend">HTTPBackend</a></tt>)</span>
+        <span class='type'>(<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></tt>)</span>
       
       
       
@@ -1240,116 +961,14 @@ the HTTP backend for this client
 </table>
 </div>
     
-      <div class="method_details ">
-  <p class="signature " id="port=-instance_method">
-  
-    - (<tt>Fixnum</tt>) <strong>port=</strong>(value) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Set the port number of the Riak endpoint. This must be an integer between 0
-and 65535.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>)</span>
-      
-      
-        <span class='name'>value</span>
-      
-      
-      
-        &mdash;
-        
-The port number of the Riak endpoint
-
-
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-the assigned port number
-
-
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-if an invalid port number is given
-
-
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-72
-73
-74
-75</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 72</span>
-
-<span class='def def kw'>def</span> <span class='port= identifier id'>port=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;port must be an integer between 0 and 65535&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='lparen token'>(</span><span class='integer val'>0</span><span class='dot2 op'>..</span><span class='integer val'>65535</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='@port ivar id'>@port</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
   </div>
 
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 13 16:33:06 2010 by 
+  Generated on Thu Jan 14 14:45:09 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.2 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.6).
 </div>
 
   </body>

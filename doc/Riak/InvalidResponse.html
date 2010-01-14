@@ -16,18 +16,24 @@
 
   </head>
   <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
     <div id="header">
       <div id="menu">
   
     <a href="../_index.html">Index (I)</a> &raquo; 
-    <a href="../Riak.html" title="Riak">Riak</a>
+    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
      &raquo; 
     <span class="title">InvalidResponse</span>
   
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="class_list_link" href="#">Class List</a>
   <a id="method_list_link" href="#">Method List</a>
   <a id ="file_list_link" href="#">File List</a>
 </div>
@@ -114,7 +120,7 @@ A new instance of InvalidResponse.
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="InvalidResponse">InvalidResponse</a></tt>) <strong>initialize</strong>(expected, received, extra = &quot;&quot;) 
+    - (<tt><a href="" title="Riak::InvalidResponse (class)">InvalidResponse</a></tt>) <strong>initialize</strong>(expected, received, extra = &quot;&quot;) 
   
 
   
@@ -161,9 +167,9 @@ A new instance of InvalidResponse
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 13 16:33:06 2010 by 
+  Generated on Thu Jan 14 14:45:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.2 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.6).
 </div>
 
   </body>

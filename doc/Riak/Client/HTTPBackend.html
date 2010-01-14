@@ -16,18 +16,24 @@
 
   </head>
   <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
     <div id="header">
       <div id="menu">
   
     <a href="../../_index.html">Index (H)</a> &raquo; 
-    <a href="../../Riak.html" title="Riak">Riak</a> &raquo; <a href="../Client.html" title="Client">Client</a>
+    <span class='title'><a href="../../Riak.html" title="Riak (module)">Riak</a></span> &raquo; <span class='title'><a href="../Client.html" title="Riak::Client (class)">Client</a></span>
      &raquo; 
     <span class="title">HTTPBackend</span>
   
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Namespace List</a>
+  <a id="class_list_link" href="#">Class List</a>
   <a id="method_list_link" href="#">Method List</a>
   <a id ="file_list_link" href="#">File List</a>
 </div>
@@ -46,12 +52,12 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></span>
+      <span class="inheritName"><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></li>
+            <li class="next"><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></li>
           
             <li class="next">Riak::Client::HTTPBackend</li>
           
@@ -73,6 +79,10 @@
 </dl>
 <div class="clear"></div>
 
+<div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><a href="CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a>, <a href="NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a></p>
+</div>
 
   <h2>Constant Summary</h2>
   
@@ -82,8 +92,8 @@
   
   
   
-  <h3 class="inherited">Constants inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="SUBCLASS_PRIORITY">SUBCLASS_PRIORITY</a></p>
+  <h3 class="inherited">Constants inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></h3>
+  <p class="inherited"><a href="../../Riak_3A_3AObject.html#SUBCLASS_PRIORITY-constant" title="Riak::Object::SUBCLASS_PRIORITY (constant)">SUBCLASS_PRIORITY</a></p>
 
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
@@ -407,15 +417,15 @@ Verifies that both a resource path and body are present in the arguments.
   
   
   
-  <h3 class="inherited">Methods inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object">Riak::Object</a></h3>
-  <p class="inherited"><a href="../../Riak_3A_3AObject.html#load-class_method" title="load">load</a>, <a href="../../Riak_3A_3AObject.html#load-instance_method" title="#load">#load</a>, <a href="../../Riak_3A_3AObject.html#matches%3F-class_method" title="matches?">matches?</a></p>
+  <h3 class="inherited">Methods inherited from <a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Riak::Object</a></h3>
+  <p class="inherited"><a href="../../Riak_3A_3AObject.html#load-class_method" title="Riak::Object.load (method)">load</a>, <a href="../../Riak_3A_3AObject.html#load-instance_method" title="Riak::Object#load (method)">#load</a>, <a href="../../Riak_3A_3AObject.html#matches%3F-class_method" title="Riak::Object.matches? (method)">matches?</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="HTTPBackend">HTTPBackend</a></tt>) <strong>initialize</strong>(client) 
+    - (<tt><a href="" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></tt>) <strong>initialize</strong>(client) 
   
 
   
@@ -434,7 +444,7 @@ Create an HTTPBackend for the Riak::Client.
   
     <li>
       
-        <span class='type'>(<tt><a href="../Client.html" title="Client">Client</a></tt>)</span>
+        <span class='type'>(<tt><a href="../Client.html" title="Riak::Client (class)">Client</a></tt>)</span>
       
       
         <span class='name'>client</span>
@@ -499,7 +509,7 @@ the client
       <div class="method_details first">
   <p class="signature first" id="client-instance_method">
   
-    - (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>client</strong>  <span class="extras">(readonly)</span>
+    - (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>client</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -613,9 +623,9 @@ headers that will be merged with user-specified headers on every request
   <p class="signature " id="delete-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>delete</strong>(expect, *resource) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>delete</strong>(expect, *resource) </span>
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
     
       <span class="overload">- (<tt>Hash</tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
     
@@ -639,7 +649,7 @@ Performs a DELETE request to the specified resource on the Riak server.
       
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -815,7 +825,7 @@ response data, containing :headers and :body keys
   
     <li>
       
-        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></tt>)</span>
       
       
       
@@ -860,9 +870,9 @@ if the response code doesn&#8217;t match the expected response
   <p class="signature " id="get-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>get</strong>(expect, *resource) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>get</strong>(expect, *resource) </span>
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>get</strong>(expect, *resource, headers) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>get</strong>(expect, *resource, headers) </span>
     
       <span class="overload">- (<tt>Hash</tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
     
@@ -886,7 +896,7 @@ Performs a GET request to the specified resource on the Riak server.
       
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>get</strong>(expect, *resource, headers) </span>
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>get</strong>(expect, *resource, headers) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -1062,7 +1072,7 @@ response data, containing :headers and :body keys
   
     <li>
       
-        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></tt>)</span>
       
       
       
@@ -1107,9 +1117,9 @@ if the response code doesn&#8217;t match the expected response
   <p class="signature " id="head-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>head</strong>(expect, *resource) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>head</strong>(expect, *resource) </span>
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>head</strong>(expect, *resource, headers) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>head</strong>(expect, *resource, headers) </span>
     
   
 
@@ -1131,7 +1141,7 @@ Performs a HEAD request to the specified resource on the Riak server.
       
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>head</strong>(expect, *resource, headers) </span>
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>head</strong>(expect, *resource, headers) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -1231,7 +1241,7 @@ response data, containing only the :headers key
   
     <li>
       
-        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></tt>)</span>
       
       
       
@@ -1562,9 +1572,9 @@ if a subclass does not implement this method
   <p class="signature " id="post-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>post</strong>(expect, *resource, body) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>post</strong>(expect, *resource, body) </span>
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
     
       <span class="overload">- (<tt>Hash</tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
     
@@ -1588,7 +1598,7 @@ Performs a POST request to the specified resource on the Riak server.
       
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -1781,7 +1791,7 @@ response data, containing :headers and :body keys
   
     <li>
       
-        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></tt>)</span>
       
       
       
@@ -1826,9 +1836,9 @@ if the response code doesn&#8217;t match the expected response
   <p class="signature " id="put-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>put</strong>(expect, *resource, body) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>put</strong>(expect, *resource, body) </span>
     
-      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
+      <span class="overload">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
     
       <span class="overload">- (<tt>Hash</tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
     
@@ -1852,7 +1862,7 @@ Performs a PUT request to the specified resource on the Riak server.
       
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
+        <span class="signature">- (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -2045,7 +2055,7 @@ response data, containing :headers and :body keys
   
     <li>
       
-        <span class='type'>(<tt><a href="../FailedRequest.html" title="FailedRequest">FailedRequest</a></tt>)</span>
+        <span class='type'>(<tt><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></tt>)</span>
       
       
       
@@ -2148,7 +2158,7 @@ The calculated root URI for the Riak HTTP endpoint
       <div class="method_details ">
   <p class="signature " id="verify_path!-instance_method">
   
-    - (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>verify_path!</strong>(resource) 
+    - (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>verify_path!</strong>(resource) 
   
 
   
@@ -2228,7 +2238,7 @@ if the resource path is too short
       <div class="method_details ">
   <p class="signature " id="verify_path_and_body!-instance_method">
   
-    - (<tt><a href="../../Riak_3A_3AObject.html" title="Object">Object</a></tt>) <strong>verify_path_and_body!</strong>(args) 
+    - (<tt><a href="../../Riak_3A_3AObject.html" title="Riak::Object (class)">Object</a></tt>) <strong>verify_path_and_body!</strong>(args) 
   
 
   
@@ -2326,9 +2336,9 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 13 16:33:04 2010 by 
+  Generated on Thu Jan 14 14:45:11 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.2 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.6).
 </div>
 
   </body>
