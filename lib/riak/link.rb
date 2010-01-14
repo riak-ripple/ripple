@@ -21,5 +21,9 @@ module Riak
     def initialize(url, rel)
       @url, @rel = url, rel
     end
+
+    def to_s
+      %Q[<#{@url}>; rel="#{@rel}"]
+    end
   end
 end

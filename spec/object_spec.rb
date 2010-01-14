@@ -41,6 +41,12 @@ describe Riak::RObject do
       @object.data.should == "{}"
     end
 
+    it "should leave the object data unchanged if the response body is blank" do
+      @object.data = "Original data"
+      @object.load({:headers => {"content-type" => ["application/json"]}, :body => ""})
+      @object.data.should == "Original data"
+    end
+
     it "should load the vclock from the headers" do
       @object.load({:headers => {"content-type" => ["application/json"], 'x-riak-vclock' => ["somereallylongbase64string=="]}, :body => "{}"})
       @object.vclock.should == "somereallylongbase64string=="
@@ -67,6 +73,100 @@ describe Riak::RObject do
     it "should load meta information from the headers" do
       @object.load({:headers => {"content-type" => ["application/json"], "x-riak-meta-some-kind-of-robot" => ["for AWESOME"]}, :body => "{}"})
       @object.meta["some-kind-of-robot"].should == ["for AWESOME"]
+    end
+
+    it "should parse the location header into the key when present" do
+      @object.load({:headers => {"content-type" => ["application/json"], "location" => ["/raw/foo/baz"]}})
+      @object.key.should == "baz"
+    end
+  end
+
+  describe "headers used for storing the object" do
+    before :each do
+      @object = Riak::RObject.new(@bucket, "bar")
+    end
+
+    it "should include the content type" do
+      @object.content_type = "application/json"
+      @object.headers["Content-Type"].should == "application/json"
+    end
+
+    it "should include the vclock when present" do
+      @object.vclock = "123445678990"
+      @object.headers["X-Riak-Vclock"].should == "123445678990"
+    end
+
+    it "should exclude the vclock when nil" do
+      @object.vclock = nil
+      @object.headers.should_not have_key("X-Riak-Vclock")
+    end
+
+    describe "when links are defined" do
+      before :each do
+        @object.links = [Riak::Link.new("/raw/foo/baz", "next")]
+      end
+
+      it "should include a Link header with references to other objects" do
+        @object.headers.should have_key("Link")
+        @object.headers["Link"].should include('</raw/foo/baz>; rel="next"')
+      end
+
+      it "should exclude the 'up' link to the bucket from the header" do
+        @object.links << Riak::Link.new("/raw/foo", "up")
+        @object.headers.should have_key("Link")
+        @object.headers["Link"].should_not include('rel="up"')
+      end
+    end
+
+    it "should exclude the Link header when no links are present" do
+      @object.links = []
+      @object.headers.should_not have_key("Link")
+    end
+
+    describe "when meta fields are present" do
+      before :each do
+        @object.meta = {"some-kind-of-robot" => true, "powers" => "for awesome", "cold-ones" => 10}
+      end
+
+      it "should include X-Riak-Meta-* headers for each meta key" do
+        @object.headers.should have_key("X-Riak-Meta-some-kind-of-robot")
+        @object.headers.should have_key("X-Riak-Meta-cold-ones")
+        @object.headers.should have_key("X-Riak-Meta-powers")
+      end
+
+      it "should turn non-string meta values into strings" do
+        @object.headers["X-Riak-Meta-some-kind-of-robot"].should == "true"
+        @object.headers["X-Riak-Meta-cold-ones"].should == "10"
+      end
+
+      it "should leave string meta values unchanged in the header" do
+        @object.headers["X-Riak-Meta-powers"].should == "for awesome"
+      end
+    end
+  end
+
+  describe "when storing the object normally" do
+    before :each do
+      @http = mock("HTTPBackend")
+      @client.stub!(:http).and_return(@http)
+      @object = Riak::RObject.new(@bucket)
+      @object.content_type = "text/plain"
+      @object.data = "This is some text."
+      @headers = @object.headers
+    end
+
+    describe "when the object has no key" do
+      it "should issue a POST request to the bucket, and update the object properties" do
+        @http.should_receive(:post).with(204, "foo", {}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @object.store
+        @object.key.should == "somereallylongstring"
+        @object.vclock.should == "areallylonghashvalue"
+      end
+
+      it "should include persistence-tuning parameters in the query string" do
+        @http.should_receive(:post).with(204, "foo", {:dw => 2}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @object.store(:dw => 2)
+      end
     end
   end
 end

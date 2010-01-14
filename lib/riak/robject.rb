@@ -2,7 +2,7 @@ require 'riak'
 
 module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
-  # the data stored in a bucket/key pair in the Riak database.
+  # the data and metadata stored in a bucket/key pair in the Riak database.
   class RObject
     # The order in which child classes will attempt instantiation when loading a response.
     SUBCLASS_PRIORITY = [Document, Binary, self]
@@ -61,8 +61,9 @@ module Riak
     # Load object data from an HTTP response
     # @param [Hash] response a response from {Riak::Client::HTTPBackend}
     def load(response)
+      @key = response[:headers]['location'].first.split("/").last if response[:headers]['location'].present?
       @content_type = response[:headers]['content-type'].try(:first)
-      @data = response[:body]
+      @data = response[:body] if response[:body].present?
       @vclock = response[:headers]['x-riak-vclock'].try(:first)
       @links = Link.parse(response[:headers]['link'].try(:first) || "")
       @etag = response[:headers]['etag'].try(:first)
@@ -74,6 +75,34 @@ module Riak
         h
       end
       self
+    end
+
+    # HTTP header hash that will be sent along when storing the object
+    # @return [Hash] hash of HTTP Headers
+    def headers
+      {}.tap do |hash|
+        hash["Content-Type"] = @content_type
+        hash["X-Riak-Vclock"] = @vclock if @vclock
+        unless @links.blank?
+          hash["Link"] = @links.reject {|l| l.rel == "up" }.map(&:to_s).join(", ")
+        end
+        unless @meta.blank?
+          @meta.each do |k,v|
+            hash["X-Riak-Meta-#{k}"] = v.to_s
+          end
+        end
+      end
+    end
+
+    # Store the object in Riak
+    # @params [Hash] options query parameters
+    # @option options [Fixnum] :w - the "w" parameter (Write quorum)
+    # @option options [Fixnum] :dw - the "dw" parameter (Durable-write quorum)
+    # @return [Riak::RObject] self
+    def store(options={})
+      method, path = @key.present? ? [:put, "#{@bucket.name}/#{@key}"] : [:post, @bucket.name]
+      response = @bucket.client.http.send(method, 204, path, options, data, headers)
+      load(response)
     end
   end
 end
