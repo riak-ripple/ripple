@@ -4,19 +4,20 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "riak-client"
-    gem.summary = %Q{riak-client is a simple Ruby client/wrapper for Riak, Basho's distributed database.}
-    gem.description = %Q{riak-client is a simple Ruby client for Riak, Basho's distributed database. It interacts with Riak via the "jiak" HTTP/JSON interface and models elements of the Riak database as Ruby objects.}
+    gem.name = "ripple"
+    gem.summary = %Q{ripple is a simple Ruby client/wrapper for Riak, Basho's distributed database.}
+    gem.description = %Q{ripple is a simple Ruby client for Riak, Basho's distributed database. It interacts with Riak via the "jiak" HTTP/JSON interface and models elements of the Riak database as Ruby objects.}
     gem.email = "seancribbs@gmail.com"
-    gem.homepage = "http://github.com/seancribbs/riak-client"
+    gem.homepage = "http://seancribbs.github.com/ripple"
     gem.authors = ["Sean Cribbs"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem.add_development_dependency "cucumber", ">= 0.4.0"
     gem.add_development_dependency "fakeweb", ">=1.2"
     gem.add_development_dependency "rack", ">=1.0"
     gem.add_development_dependency "yard", ">=0.5.2"
+    gem.add_development_dependency "curb", ">=0.6"
     gem.add_dependency "activesupport", ">=2.3"
-    gem.add_dependency "curb", ">=0.6"
+    gem.requirements << "curb gem for better performance"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -54,8 +55,6 @@ task :default => :spec
 require 'yard'
 YARD::Rake::YardocTask.new do |yard|
   docfiles = FileList['lib/**/*.rb', 'README*', 'VERSION', 'LICENSE']
-  docfiles.exclude 'lib/riak-client.rb'
-  docfiles.exclude 'lib/riakclient.rb'
-  docfiles.exclude 'lib/riak_client.rb'
+  docfiles.exclude 'lib/ripple.rb'
   yard.files = docfiles
 end
