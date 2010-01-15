@@ -106,8 +106,13 @@ describe Riak::Bucket do
     end
     
     it "should load the object from the server as a Riak::RObject" do
-      @http.should_receive(:get).with(200, "foo", "db", {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @http.should_receive(:get).with(200, "foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @bucket.get("db").should be_kind_of(Riak::RObject)
+    end
+
+    it "should use the given query parameters (for R value, etc)" do
+      @http.should_receive(:get).with(200, "foo", "db", {:r => 2}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @bucket.get("db", :r => 2).should be_kind_of(Riak::RObject)
     end
   end
 end

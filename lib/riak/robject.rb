@@ -1,11 +1,18 @@
 require 'riak'
 
 module Riak
+  class RObject; end
+end
+
+require 'riak/document'
+require 'riak/binary'
+
+module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
   # the data and metadata stored in a bucket/key pair in the Riak database.
   class RObject
     # The order in which child classes will attempt instantiation when loading a response.
-    SUBCLASS_PRIORITY = [Document, Binary, self]
+    SUBCLASS_PRIORITY = [Riak::Document, Riak::Binary, self]
 
     # Load information for an object from a response given by {Riak::Client::HTTPBackend}.
     # Used mostly internally - use {Riak::Bucket#get} to retrieve an {Riak::RObject} instance.
@@ -96,6 +103,7 @@ module Riak
 
     # Store the object in Riak
     # @param [Hash] options query parameters
+    # @option options [Fixnum] :r - the "r" parameter (Read quorum for the implicit read performed when validating the store operation)
     # @option options [Fixnum] :w - the "w" parameter (Write quorum)
     # @option options [Fixnum] :dw - the "dw" parameter (Durable-write quorum)
     # @return [Riak::RObject] self
@@ -104,5 +112,26 @@ module Riak
       response = @bucket.client.http.send(method, 204, path, options, data, headers)
       load(response)
     end
+
+    # Reload the object from Riak.  Will use conditional GETs when possible.
+    # @param [Hash] options query parameters
+    # @option options [Fixnum] :r - the "r" parameter (Read quorum)
+    # @return [Riak::RObject] self
+    def reload(options={})
+      return self unless @key && @vclock
+      headers = {}.tap do |h|
+        h['If-None-Match'] = @etag if @etag.present?
+        h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?
+      end
+      begin
+        response = @bucket.client.http.get(200, @bucket.name, @key, options, headers)
+        load(response)
+      rescue FailedRequest => fr
+        raise fr unless fr.code == 304
+        self
+      end
+    end
+
+    alias :fetch :reload
   end
 end

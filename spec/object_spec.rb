@@ -187,4 +187,53 @@ describe Riak::RObject do
       end
     end
   end
+
+  describe "when reloading the object" do
+    before :each do
+      @http = mock("HTTPBackend")
+      @client.stub!(:http).and_return(@http)
+      @object = Riak::RObject.new(@bucket, "bar")
+      @object.vclock = "somereallylongstring"
+    end
+
+    it "should return without requesting if the key is blank" do
+      @object.key = nil
+      @http.should_not_receive(:get)
+      @object.reload
+    end
+
+    it "should return without requesting if the vclock is blank" do
+      @object.vclock = nil
+      @http.should_not_receive(:get)
+      @object.reload
+    end
+
+    it "should add an If-None-Match header when an ETag is present" do
+      @object.etag = "12345567890"
+      @http.should_receive(:get).with(200, "foo", "bar", {}, hash_including('If-None-Match' => "12345567890")).and_return({:headers => {'etag' => ['0987654321']}})
+      @object.reload
+      @object.etag.should == '0987654321'
+    end
+
+    it "should add an If-Modified-Since header when the last modified date is present" do
+      time = Time.now - 1000
+      new_time = Time.now.httpdate
+      @object.last_modified = time
+      @http.should_receive(:get).with(200, "foo", "bar", {}, hash_including('If-Modified-Since' => time.httpdate)).and_return({:headers => {'last-modified' => [new_time]}})
+      @object.reload
+      @object.last_modified.httpdate.should == new_time
+    end
+
+    it "should return without modifying the object if the response is 304 Not Modified" do
+      @http.should_receive(:get).with(200, "foo", "bar", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 304, {}, ''))
+      @object.should_not_receive(:load)
+      @object.reload
+    end
+
+    it "should raise an exception when the response code is not 200 or 304" do
+      @http.should_receive(:get).with(200, "foo", "bar", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, ''))
+      @object.should_not_receive(:load)
+      lambda { @object.reload }.should raise_error(Riak::FailedRequest)
+    end
+  end
 end

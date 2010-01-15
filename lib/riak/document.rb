@@ -1,4 +1,5 @@
 module Riak
+  # Represents hash-like documents (JSON, YAML)
   class Document < RObject
     DOCUMENT_TYPES = [ /json$/i, /yaml$/i ].freeze
 

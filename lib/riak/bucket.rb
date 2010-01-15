@@ -1,3 +1,5 @@
+require 'riak'
+
 module Riak
   # Represents and encapsulates operations on a Riak bucket.  You may retrieve a bucket
   # using {Client#bucket}, or create it manually and retrieve its meta-information later.
@@ -70,10 +72,12 @@ module Riak
 
     # Retrieve an object from within the bucket.
     # @param [String] key the key of the object to retrieve
-    # @return [Riak::Object] the object
+    # @param [Hash] options query parameters for the request
+    # @option options [Fixnum] :r - the read quorum for the request - how many nodes should concur on the read
+    # @return [Riak::RObject] the object
     # @raise [FailedRequest] if the object is not found or some other error occurs
-    def get(key)
-      response = @client.http.get(200, name, key, {})
+    def get(key, options={})
+      response = @client.http.get(200, name, key, options, {})
       RObject.load(self, key, response)
     end
   end

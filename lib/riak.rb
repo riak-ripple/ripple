@@ -5,14 +5,18 @@ require 'net/http'
 
 module Riak
   # Domain objects
-  autoload :Binary,   "riak/binary"
   autoload :Bucket,   "riak/bucket"
   autoload :Client,   "riak/client"
-  autoload :Document, "riak/document"
   autoload :Link,     "riak/link"
+
   autoload :RObject,   "riak/robject"
-  
+  autoload :Document, "riak/document"
+  autoload :Binary,   "riak/binary"
+
   # Exceptions
   autoload :FailedRequest, "riak/failed_request"
   autoload :InvalidResponse, "riak/invalid_response"
 end
+
+# Necessary so that load-order is correct
+require 'riak/robject'
