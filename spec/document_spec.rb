@@ -34,11 +34,11 @@ describe Riak::Document do
       @document.content_type = "application/x-yaml"
     end
 
-    it "should serialize data as JSON" do
+    it "should serialize data as YAML" do
       @document.serialize({"foo" => "bar"}).should == "--- \nfoo: bar\n"
     end
 
-    it "should deserialize data as JSON" do
+    it "should deserialize data as YAML" do
       @document.deserialize("--- \nfoo: bar\n").should == {"foo" => "bar"}
     end
   end
