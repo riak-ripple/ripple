@@ -37,17 +37,17 @@
   
 
   <li class="r2 ">
-    <a href="Riak/RObject.html#bucket-instance_method" title="Riak::RObject#bucket (method)">#bucket</a> 
+    <a href="Riak/Client.html#bucket-instance_method" title="Riak::Client#bucket (method)">#bucket</a> 
     
-      <small>Riak::RObject</small>
+      <small>Riak::Client</small>
     
   </li>
   
 
   <li class="r1 ">
-    <a href="Riak/Client.html#bucket-instance_method" title="Riak::Client#bucket (method)">#bucket</a> 
+    <a href="Riak/RObject.html#bucket-instance_method" title="Riak::RObject#bucket (method)">#bucket</a> 
     
-      <small>Riak::Client</small>
+      <small>Riak::RObject</small>
     
   </li>
   
@@ -133,17 +133,17 @@
   
 
   <li class="r2 ">
-    <a href="Riak/Client/HTTPBackend.html#get-instance_method" title="Riak::Client::HTTPBackend#get (method)">#get</a> 
+    <a href="Riak/Bucket.html#get-instance_method" title="Riak::Bucket#get (method)">#get</a> 
     
-      <small>Riak::Client::HTTPBackend</small>
+      <small>Riak::Bucket</small>
     
   </li>
   
 
   <li class="r1 ">
-    <a href="Riak/Bucket.html#get-instance_method" title="Riak::Bucket#get (method)">#get</a> 
+    <a href="Riak/Client/HTTPBackend.html#get-instance_method" title="Riak::Client::HTTPBackend#get (method)">#get</a> 
     
-      <small>Riak::Bucket</small>
+      <small>Riak::Client::HTTPBackend</small>
     
   </li>
   
@@ -197,6 +197,38 @@
   
 
   <li class="r2 ">
+    <a href="Riak/Client/CurbBackend/Headers.html#initialize-instance_method" title="Riak::Client::CurbBackend::Headers#initialize (method)">#initialize</a> 
+    
+      <small>Riak::Client::CurbBackend::Headers</small>
+    
+  </li>
+  
+
+  <li class="r1 ">
+    <a href="Riak/Bucket.html#initialize-instance_method" title="Riak::Bucket#initialize (method)">#initialize</a> 
+    
+      <small>Riak::Bucket</small>
+    
+  </li>
+  
+
+  <li class="r2 ">
+    <a href="Riak/Client/HTTPBackend.html#initialize-instance_method" title="Riak::Client::HTTPBackend#initialize (method)">#initialize</a> 
+    
+      <small>Riak::Client::HTTPBackend</small>
+    
+  </li>
+  
+
+  <li class="r1 ">
+    <a href="Riak/Client/CurbBackend.html#initialize-instance_method" title="Riak::Client::CurbBackend#initialize (method)">#initialize</a> 
+    
+      <small>Riak::Client::CurbBackend</small>
+    
+  </li>
+  
+
+  <li class="r2 ">
     <a href="Riak/Link.html#initialize-instance_method" title="Riak::Link#initialize (method)">#initialize</a> 
     
       <small>Riak::Link</small>
@@ -205,30 +237,6 @@
   
 
   <li class="r1 ">
-    <a href="Riak/FailedRequest.html#initialize-instance_method" title="Riak::FailedRequest#initialize (method)">#initialize</a> 
-    
-      <small>Riak::FailedRequest</small>
-    
-  </li>
-  
-
-  <li class="r2 ">
-    <a href="Riak/Bucket.html#initialize-instance_method" title="Riak::Bucket#initialize (method)">#initialize</a> 
-    
-      <small>Riak::Bucket</small>
-    
-  </li>
-  
-
-  <li class="r1 ">
-    <a href="Riak/Client/HTTPBackend.html#initialize-instance_method" title="Riak::Client::HTTPBackend#initialize (method)">#initialize</a> 
-    
-      <small>Riak::Client::HTTPBackend</small>
-    
-  </li>
-  
-
-  <li class="r2 ">
     <a href="Riak/RObject.html#initialize-instance_method" title="Riak::RObject#initialize (method)">#initialize</a> 
     
       <small>Riak::RObject</small>
@@ -236,7 +244,7 @@
   </li>
   
 
-  <li class="r1 ">
+  <li class="r2 ">
     <a href="Riak/Client.html#initialize-instance_method" title="Riak::Client#initialize (method)">#initialize</a> 
     
       <small>Riak::Client</small>
@@ -244,18 +252,10 @@
   </li>
   
 
-  <li class="r2 ">
-    <a href="Riak/Client/CurbBackend.html#initialize-instance_method" title="Riak::Client::CurbBackend#initialize (method)">#initialize</a> 
-    
-      <small>Riak::Client::CurbBackend</small>
-    
-  </li>
-  
-
   <li class="r1 ">
-    <a href="Riak/Client/CurbBackend/Headers.html#initialize-instance_method" title="Riak::Client::CurbBackend::Headers#initialize (method)">#initialize</a> 
+    <a href="Riak/FailedRequest.html#initialize-instance_method" title="Riak::FailedRequest#initialize (method)">#initialize</a> 
     
-      <small>Riak::Client::CurbBackend::Headers</small>
+      <small>Riak::FailedRequest</small>
     
   </li>
   
@@ -301,14 +301,6 @@
   
 
   <li class="r1 ">
-    <a href="Riak/Bucket.html#load-instance_method" title="Riak::Bucket#load (method)">#load</a> 
-    
-      <small>Riak::Bucket</small>
-    
-  </li>
-  
-
-  <li class="r2 ">
     <a href="Riak/RObject.html#load-class_method" title="Riak::RObject.load (method)">load</a> 
     
       <small>Riak::RObject</small>
@@ -316,10 +308,18 @@
   </li>
   
 
-  <li class="r1 ">
-    <a href="Riak/Binary.html#matches%3F-class_method" title="Riak::Binary.matches? (method)">matches?</a> 
+  <li class="r2 ">
+    <a href="Riak/Bucket.html#load-instance_method" title="Riak::Bucket#load (method)">#load</a> 
     
-      <small>Riak::Binary</small>
+      <small>Riak::Bucket</small>
+    
+  </li>
+  
+
+  <li class="r1 ">
+    <a href="Riak/Document.html#matches%3F-class_method" title="Riak::Document.matches? (method)">matches?</a> 
+    
+      <small>Riak::Document</small>
     
   </li>
   
@@ -333,9 +333,9 @@
   
 
   <li class="r1 ">
-    <a href="Riak/Document.html#matches%3F-class_method" title="Riak::Document.matches? (method)">matches?</a> 
+    <a href="Riak/Binary.html#matches%3F-class_method" title="Riak::Binary.matches? (method)">matches?</a> 
     
-      <small>Riak::Document</small>
+      <small>Riak::Binary</small>
     
   </li>
   
@@ -437,6 +437,14 @@
   
 
   <li class="r2 ">
+    <a href="Riak/RObject.html#reload-instance_method" title="Riak::RObject#reload (method)">#reload</a> 
+    
+      <small>Riak::RObject</small>
+    
+  </li>
+  
+
+  <li class="r1 ">
     <a href="Riak/Client/HTTPBackend.html#root_uri-instance_method" title="Riak::Client::HTTPBackend#root_uri (method)">#root_uri</a> 
     
       <small>Riak::Client::HTTPBackend</small>
@@ -444,7 +452,7 @@
   </li>
   
 
-  <li class="r1 ">
+  <li class="r2 ">
     <a href="Riak/RObject.html#store-instance_method" title="Riak::RObject#store (method)">#store</a> 
     
       <small>Riak::RObject</small>
@@ -452,7 +460,7 @@
   </li>
   
 
-  <li class="r2 ">
+  <li class="r1 ">
     <a href="Riak/Link.html#to_s-instance_method" title="Riak::Link#to_s (method)">#to_s</a> 
     
       <small>Riak::Link</small>
@@ -460,7 +468,7 @@
   </li>
   
 
-  <li class="r1 ">
+  <li class="r2 ">
     <a href="Riak/Link.html#url-instance_method" title="Riak::Link#url (method)">#url</a> 
     
       <small>Riak::Link</small>
@@ -468,7 +476,7 @@
   </li>
   
 
-  <li class="r2 ">
+  <li class="r1 ">
     <a href="Riak/RObject.html#vclock-instance_method" title="Riak::RObject#vclock (method)">#vclock</a> 
     
       <small>Riak::RObject</small>
@@ -476,7 +484,7 @@
   </li>
   
 
-  <li class="r1 ">
+  <li class="r2 ">
     <a href="Riak/Client/HTTPBackend.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend#verify_path! (method)">#verify_path!</a> 
     
       <small>Riak::Client::HTTPBackend</small>
@@ -484,7 +492,7 @@
   </li>
   
 
-  <li class="r2 ">
+  <li class="r1 ">
     <a href="Riak/Client/HTTPBackend.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend#verify_path_and_body! (method)">#verify_path_and_body!</a> 
     
       <small>Riak::Client::HTTPBackend</small>

@@ -79,7 +79,18 @@
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Represents hash-like documents (JSON, YAML)
+</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
   <h2>Constant Summary</h2>
   
     <dl class="constants">
@@ -134,7 +145,7 @@
   
   
   <h3 class="inherited">Methods inherited from <a href="RObject.html" title="Riak::RObject (class)">RObject</a></h3>
-  <p class="inherited"><a href="RObject.html#headers-instance_method" title="Riak::RObject#headers (method)">#headers</a>, <a href="RObject.html#initialize-instance_method" title="Riak::RObject#initialize (method)">#initialize</a>, <a href="RObject.html#load-class_method" title="Riak::RObject.load (method)">load</a>, <a href="RObject.html#load-instance_method" title="Riak::RObject#load (method)">#load</a>, <a href="RObject.html#store-instance_method" title="Riak::RObject#store (method)">#store</a></p>
+  <p class="inherited"><a href="RObject.html#headers-instance_method" title="Riak::RObject#headers (method)">#headers</a>, <a href="RObject.html#initialize-instance_method" title="Riak::RObject#initialize (method)">#initialize</a>, <a href="RObject.html#load-class_method" title="Riak::RObject.load (method)">load</a>, <a href="RObject.html#load-instance_method" title="Riak::RObject#load (method)">#load</a>, <a href="RObject.html#reload-instance_method" title="Riak::RObject#reload (method)">#reload</a>, <a href="RObject.html#store-instance_method" title="Riak::RObject#store (method)">#store</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -181,12 +192,12 @@
       <pre class="lines">
 
 
-5
 6
-7</pre>
+7
+8</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 5</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 6</span>
 
 <span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='matches? fid id'>matches?</span><span class='lparen token'>(</span><span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
   <span class='DOCUMENT_TYPES constant id'>DOCUMENT_TYPES</span><span class='dot token'>.</span><span class='any? fid id'>any?</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='type identifier id'>type</span><span class='bitor op'>|</span> <span class='headers identifier id'>headers</span><span class='lbrack token'>[</span><span class='string val'>&quot;content-type&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='first identifier id'>first</span> <span class='match op'>=~</span> <span class='type identifier id'>type</span> <span class='rbrace token'>}</span>
@@ -202,7 +213,7 @@
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 14 18:29:17 2010 by 
+  Generated on Fri Jan 15 14:57:24 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
