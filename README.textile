@@ -10,16 +10,12 @@ h2. Note on Patches/Pull Requests
  
 * Fork the project.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
   <pre><notextile>$ git checkout master; git pull --rebase seancribbs master</notextile></pre>
-* Create a topic branch. If you've already created a topic branch,
-  rebase it on top of changes from the mainline "master"
-  branch. Examples:
+* Create a topic branch. If you've already created a topic branch, rebase it on top of changes from the mainline "master" branch. Examples:
 ** New branch:
   <pre>$ git checkout -b topic</pre>
 ** Existing branch:
   <pre>$ git rebase master</pre>
-* Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and
-  validity of your changes. *Patches without specs will most often be
-  ignored. Just do it, you'll thank me later.*
+* Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. *Patches without specs will most often be ignored. Just do it, you'll thank me later.*
 * Make your feature addition or bug fix. Make your specs and stories pass (green).
 * Run the suite using multiruby or rvm to ensure cross-version compatibility.
 * Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the tracker, include "Closes #X" in the commit message (where X is the issue number).

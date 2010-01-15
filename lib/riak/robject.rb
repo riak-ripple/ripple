@@ -95,7 +95,7 @@ module Riak
     end
 
     # Store the object in Riak
-    # @params [Hash] options query parameters
+    # @param [Hash] options query parameters
     # @option options [Fixnum] :w - the "w" parameter (Write quorum)
     # @option options [Fixnum] :dw - the "dw" parameter (Durable-write quorum)
     # @return [Riak::RObject] self

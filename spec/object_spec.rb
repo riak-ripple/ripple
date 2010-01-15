@@ -168,5 +168,23 @@ describe Riak::RObject do
         @object.store(:dw => 2)
       end
     end
+
+    describe "when the object has a key" do
+      before :each do
+        @object.key = "bar"
+      end
+
+      it "should issue a PUT request to the bucket, and update the object properties" do
+        @http.should_receive(:put).with(204, "foo/bar", {}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @object.store
+        @object.key.should == "somereallylongstring"
+        @object.vclock.should == "areallylonghashvalue"
+      end
+
+      it "should include persistence-tuning parameters in the query string" do
+        @http.should_receive(:put).with(204, "foo/bar", {:dw => 2}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @object.store(:dw => 2)
+      end
+    end
   end
 end
