@@ -2,6 +2,7 @@ require 'active_support'
 require 'base64'
 require 'uri'
 require 'net/http'
+require 'yaml'
 
 module Riak
   # Domain objects

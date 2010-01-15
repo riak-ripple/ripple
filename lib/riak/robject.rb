@@ -70,7 +70,7 @@ module Riak
     def load(response)
       @key = response[:headers]['location'].first.split("/").last if response[:headers]['location'].present?
       @content_type = response[:headers]['content-type'].try(:first)
-      @data = response[:body] if response[:body].present?
+      @data = deserialize(response[:body]) if response[:body].present?
       @vclock = response[:headers]['x-riak-vclock'].try(:first)
       @links = Link.parse(response[:headers]['link'].try(:first) || "")
       @etag = response[:headers]['etag'].try(:first)
@@ -109,7 +109,7 @@ module Riak
     # @return [Riak::RObject] self
     def store(options={})
       method, path = @key.present? ? [:put, "#{@bucket.name}/#{@key}"] : [:post, @bucket.name]
-      response = @bucket.client.http.send(method, 204, path, options, data, headers)
+      response = @bucket.client.http.send(method, 204, path, options, serialize(data), headers)
       load(response)
     end
 
@@ -133,5 +133,19 @@ module Riak
     end
 
     alias :fetch :reload
+
+    # Serializes the internal object data for sending to Riak.
+    # @abstract Subclasses should redefine this method to provide richer functionality
+    # @param [Object] payload the data to serialize, providing internally when storing an object
+    def serialize(payload)
+      payload.to_s
+    end
+
+    # Deserializes the internal object data from a Riak response
+    # @abstract Subclasses should redefine this method to provide richer functionality
+    # @param [String] body the serialized response body
+    def deserialize(body)
+      body
+    end
   end
 end

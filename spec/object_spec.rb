@@ -26,6 +26,21 @@ describe Riak::RObject do
     end
   end
 
+  describe "serialization" do
+    before :each do
+      @object = Riak::RObject.new(@bucket, "bar")
+    end
+
+    it "should change the data into a string by default when serializing" do
+      @object.serialize("foo").should == "foo"
+      @object.serialize(2).should == "2"
+    end
+
+    it "should not modify the data by default when deserializing" do
+      @object.deserialize("foo").should == "foo"
+    end
+  end
+
   describe "loading data from the response" do
     before :each do
       @object = Riak::RObject.new(@bucket, "bar")
@@ -37,6 +52,12 @@ describe Riak::RObject do
     end
 
     it "should load the body data" do
+      @object.load({:headers => {"content-type" => ["application/json"]}, :body => "{}"})
+      @object.data.should == "{}"
+    end
+
+    it "should deserialize the body data" do
+      @object.should_receive(:deserialize).with("{}").and_return("{}")
       @object.load({:headers => {"content-type" => ["application/json"]}, :body => "{}"})
       @object.data.should == "{}"
     end
@@ -236,4 +257,6 @@ describe Riak::RObject do
       lambda { @object.reload }.should raise_error(Riak::FailedRequest)
     end
   end
+
+
 end
