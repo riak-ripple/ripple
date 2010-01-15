@@ -420,6 +420,29 @@ Riak.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#deserialize-instance_method" title="#deserialize (instance method)">- (Object) <strong>deserialize</strong>(body) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="abstract note title">Abstract</span>
+  
+
+  
+    <span class="summary_desc">
+Deserializes the internal object data from a Riak response.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#headers-instance_method" title="#headers (instance method)">- (Hash) <strong>headers</strong> </a>
     
 
@@ -507,6 +530,29 @@ Load object data from an HTTP response.
   
     <span class="summary_desc">
 Reload the object from Riak.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#serialize-instance_method" title="#serialize (instance method)">- (Object) <strong>serialize</strong>(payload) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="abstract note title">Abstract</span>
+  
+
+  
+    <span class="summary_desc">
+Serializes the internal object data for sending to Riak.
 
 </span>
   
@@ -1380,7 +1426,75 @@ whether the data should be instantiated as this class
     
     
       <div class="method_details first">
-  <p class="signature first" id="headers-instance_method">
+  <p class="signature first" id="deserialize-instance_method">
+  
+    - (<tt>Object</tt>) <strong>deserialize</strong>(body) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p class="note abstract">
+  <strong>This method is abstract.</strong> 
+  
+Subclasses should redefine this method to provide richer functionality
+
+
+</p>
+<p>
+Deserializes the internal object data from a Riak response
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>body</span>
+      
+      
+      
+        &mdash;
+        
+the serialized response body
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+147
+148
+149</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 147</span>
+
+<span class='def def kw'>def</span> <span class='deserialize identifier id'>deserialize</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
+  <span class='body identifier id'>body</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="headers-instance_method">
   
     - (<tt>Hash</tt>) <strong>headers</strong> 
   
@@ -1528,7 +1642,7 @@ a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPB
 <span class='def def kw'>def</span> <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
   <span class='@key ivar id'>@key</span> <span class='assign token'>=</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'location'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='first identifier id'>first</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='last identifier id'>last</span> <span class='if if_mod kw'>if</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'location'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
   <span class='@content_type ivar id'>@content_type</span> <span class='assign token'>=</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'content-type'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:first</span><span class='rparen token'>)</span>
-  <span class='@data ivar id'>@data</span> <span class='assign token'>=</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:body</span><span class='rbrack token'>]</span> <span class='if if_mod kw'>if</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:body</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
+  <span class='@data ivar id'>@data</span> <span class='assign token'>=</span> <span class='deserialize identifier id'>deserialize</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:body</span><span class='rbrack token'>]</span><span class='rparen token'>)</span> <span class='if if_mod kw'>if</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:body</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
   <span class='@vclock ivar id'>@vclock</span> <span class='assign token'>=</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'x-riak-vclock'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:first</span><span class='rparen token'>)</span>
   <span class='@links ivar id'>@links</span> <span class='assign token'>=</span> <span class='Link constant id'>Link</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'link'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:first</span><span class='rparen token'>)</span> <span class='orop op'>||</span> <span class='string val'>&quot;&quot;</span><span class='rparen token'>)</span>
   <span class='@etag ivar id'>@etag</span> <span class='assign token'>=</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'etag'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:first</span><span class='rparen token'>)</span>
@@ -1681,6 +1795,74 @@ self
 </div>
     
       <div class="method_details ">
+  <p class="signature " id="serialize-instance_method">
+  
+    - (<tt>Object</tt>) <strong>serialize</strong>(payload) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p class="note abstract">
+  <strong>This method is abstract.</strong> 
+  
+Subclasses should redefine this method to provide richer functionality
+
+
+</p>
+<p>
+Serializes the internal object data for sending to Riak.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+        <span class='name'>payload</span>
+      
+      
+      
+        &mdash;
+        
+the data to serialize, providing internally when storing an object
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+140
+141
+142</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 140</span>
+
+<span class='def def kw'>def</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
+  <span class='payload identifier id'>payload</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <p class="signature " id="store-instance_method">
   
     - (<tt><a href="" title="Riak::RObject (class)">Riak::RObject</a></tt>) <strong>store</strong>(options = {}) 
@@ -1815,7 +1997,7 @@ self
 
 <span class='def def kw'>def</span> <span class='store identifier id'>store</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='path identifier id'>path</span> <span class='assign token'>=</span> <span class='@key ivar id'>@key</span><span class='dot token'>.</span><span class='present? fid id'>present?</span> <span class='integer val'>? </span><span class='lbrack token'>[</span><span class='symbol val'>:put</span><span class='comma token'>,</span> <span class='dstring node'>&quot;#{@bucket.name}/#{@key}&quot;</span><span class='rbrack token'>]</span> <span class='colon op'>:</span> <span class='lbrack token'>[</span><span class='symbol val'>:post</span><span class='comma token'>,</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span><span class='rbrack token'>]</span>
-  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='integer val'>204</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
+  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='integer val'>204</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
   <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -1829,7 +2011,7 @@ self
 </div>
     
     <div id="footer">
-  Generated on Fri Jan 15 14:57:24 2010 by 
+  Generated on Fri Jan 15 15:28:36 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
