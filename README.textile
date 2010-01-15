@@ -23,7 +23,7 @@ h2. Note on Patches/Pull Requests
 
 h2. License
 
-All files without an included license statement are subject to the Apache 2.0 license. See LICENSE for details.
+All included code is subject to the Apache 2.0 license.  See LICENSE for details.
 
 h2. Copyright
 
