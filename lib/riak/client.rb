@@ -113,6 +113,10 @@ module Riak
       Bucket.new(self, name).load(response)
     end
 
+    def inspect
+      "#<Riak::Client #{http.root_uri.to_s}>"
+    end
+
     private
     def make_client_id
       b64encode(rand(MAX_CLIENT_ID))

@@ -35,6 +35,8 @@ module Riak
       @url, @rel = url, rel
     end
 
+    def inspect; to_s; end
+
     def to_s
       %Q[<#{@url}>; rel="#{@rel}"]
     end

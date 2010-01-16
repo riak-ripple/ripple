@@ -93,5 +93,9 @@ module Riak
       response = @client.http.get(200, name, key, options, {})
       RObject.load(self, key, response)
     end
+
+    def inspect
+      "#<Riak::Bucket #{client.http.path(name).to_s}>"
+    end
   end
 end

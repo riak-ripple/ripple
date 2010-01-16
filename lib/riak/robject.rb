@@ -81,19 +81,19 @@ module Riak
     # Load object data from an HTTP response
     # @param [Hash] response a response from {Riak::Client::HTTPBackend}
     def load(response)
-      @key = response[:headers]['location'].first.split("/").last if response[:headers]['location'].present?
-      @content_type = response[:headers]['content-type'].try(:first)
-      @data = deserialize(response[:body]) if response[:body].present?
-      @vclock = response[:headers]['x-riak-vclock'].try(:first)
-      @links = Link.parse(response[:headers]['link'].try(:first) || "")
-      @etag = response[:headers]['etag'].try(:first)
-      @last_modified = Time.httpdate(response[:headers]['last-modified'].first) if response[:headers]['last-modified']
+      extract_header(response, "location", :key) {|v| v.split("/").last }
+      extract_header(response, "content-type", :content_type)
+      extract_header(response, "x-riak-vclock", :vclock)
+      extract_header(response, "link", :links) {|v| Link.parse(v) }
+      extract_header(response, "etag", :etag)
+      extract_header(response, "last-modified", :last_modified) {|v| Time.httpdate(v) }
       @meta = response[:headers].inject({}) do |h,(k,v)|
         if k =~ /x-riak-meta-(.*)/
           h[$1] = v
         end
         h
       end
+      @data = deserialize(response[:body]) if response[:body].present?
       self
     end
 
@@ -159,6 +159,19 @@ module Riak
     # @param [String] body the serialized response body
     def deserialize(body)
       body
+    end
+
+    def inspect
+      "#<#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}>"
+    end
+
+    private
+    def extract_header(response, name, attribute=nil)
+      if response[:headers][name].present?
+        value = response[:headers][name].try(:first)
+        value = yield value if block_given?
+        send("#{attribute}=", value) if attribute
+      end
     end
   end
 end
