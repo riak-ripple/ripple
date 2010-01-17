@@ -55,4 +55,17 @@ describe Riak::Document do
       @document.deserialize("--- \nfoo: bar\n").should == {"foo" => "bar"}
     end
   end
+
+  describe "accessing properties of the data" do
+    it "should delegate the bracket reader to the data" do
+      @document.data = {"name" => "Riak"}
+      @document["name"].should == "Riak"
+    end
+
+    it "should deleget the bracket setter to the data" do
+      @document.data = {}
+      @document["name"] = "Riak"
+      @document.data.should == {"name" => "Riak"}
+    end
+  end
 end

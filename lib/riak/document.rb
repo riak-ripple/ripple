@@ -23,7 +23,9 @@ module Riak
     def self.matches?(headers)
       DOCUMENT_TYPES.any? { |type| headers["content-type"].first =~ type }
     end
-
+    
+    delegate :[], :[]=, :to => :data
+    
     def serialize(data)
       case @content_type
       when /json$/i
