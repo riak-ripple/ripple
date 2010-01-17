@@ -25,6 +25,11 @@ module Riak
         super
         @curl = Curl::Easy.new
         @curl.follow_location = false
+        @curl.on_header do |header_line|
+          k,v = parse_header(header_line)
+          @response_headers.add_field(k,v) if k && v
+          header_line.size
+        end
       end
 
       private
@@ -32,12 +37,7 @@ module Riak
         # Setup
         @curl.headers = headers
         @curl.url = uri.to_s
-        response_headers = Headers.new
-        @curl.on_header do |header_line|
-          k,v = parse_header(header_line)
-          response_headers.add_field(k,v) if k && v
-          header_line.size
-        end
+        @response_headers = Headers.new
         @curl.on_body {|chunk| yield chunk; chunk.size } if block_given?
 
         # Perform
@@ -50,13 +50,13 @@ module Riak
 
         # Verify
         if @curl.response_code.to_i == expect.to_i
-          result = { :headers => response_headers.to_hash }
+          result = { :headers => @response_headers.to_hash }
           unless block_given? || method == :head || [204,304].include?(@curl.response_code.to_i)
             result[:body] = @curl.body_str
           end
           result
         else
-          raise FailedRequest.new(method, expect, @curl.response_code, response_headers.to_hash, @curl.body_str)
+          raise FailedRequest.new(method, expect, @curl.response_code, @response_headers.to_hash, @curl.body_str)
         end
       end
 
