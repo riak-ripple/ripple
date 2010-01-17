@@ -51,7 +51,7 @@ module Riak
         # Verify
         if @curl.response_code.to_i == expect.to_i
           result = { :headers => response_headers.to_hash }
-          unless block_given? || method == :head
+          unless block_given? || method == :head || [204,304].include?(@curl.response_code.to_i)
             result[:body] = @curl.body_str
           end
           result

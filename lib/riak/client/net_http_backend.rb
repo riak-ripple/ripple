@@ -26,10 +26,12 @@ module Riak
           response = http.send(method, *([uri.request_uri, data, headers].compact))
           if response.code.to_i == expect.to_i
             result = {:headers => response.to_hash}
-            if block_given?
-              response.read_body {|chunk| yield chunk }
-            elsif method != :head
-              result[:body] = response.body
+            unless method == :head || [204, 304].include?(response.code.to_i)
+              if block_given?
+                response.read_body {|chunk| yield chunk }
+              else
+                result[:body] = response.body
+              end
             end
             result
           else

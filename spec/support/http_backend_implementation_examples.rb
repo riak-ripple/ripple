@@ -167,4 +167,20 @@ shared_examples_for "HTTP backend" do
       lambda { @backend.post(200, "foo", 123) }.should raise_error(ArgumentError)
     end
   end
+
+  describe "Responses with no body" do
+    [204, 304].each do |code|
+      [:get, :post, :put, :delete].each do |method|
+        it "should not return a body on #{method.to_s.upcase} for #{code}" do
+          setup_http_mock(method, @backend.path("foo").to_s, :status => code)
+          response = if method == :post || method == :put
+                       @backend.send(method, code, "foo", "This is the body")
+                     else
+                       @backend.send(method, code, "foo")
+                     end
+          response.should_not have_key(:body)
+        end
+      end
+    end
+  end
 end
