@@ -142,13 +142,13 @@ describe Riak::RObject do
 
       it "should include a Link header with references to other objects" do
         @object.headers.should have_key("Link")
-        @object.headers["Link"].should include('</raw/foo/baz>; rel="next"')
+        @object.headers["Link"].should include('</raw/foo/baz>; riaktag="next"')
       end
 
       it "should exclude the 'up' link to the bucket from the header" do
         @object.links << Riak::Link.new("/raw/foo", "up")
         @object.headers.should have_key("Link")
-        @object.headers["Link"].should_not include('rel="up"')
+        @object.headers["Link"].should_not include('riaktag="up"')
       end
     end
 

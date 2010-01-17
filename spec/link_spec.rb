@@ -22,7 +22,7 @@ describe Riak::Link do
     end
 
     it "should set the url and rel parameters properly" do
-      result = Riak::Link.parse('</raw/foo/bar>; rel="tag", </raw/foo>; rel="up"')
+      result = Riak::Link.parse('</raw/foo/bar>; riaktag="tag", </raw/foo>; rel="up"')
       result[0].url.should == "/raw/foo/bar"
       result[0].rel.should == "tag"
       result[1].url.should == "/raw/foo"
@@ -31,7 +31,7 @@ describe Riak::Link do
   end
 
   it "should convert to a string appropriate for use in the Link header" do
-    Riak::Link.new("/raw/foo", "up").to_s.should == '</raw/foo>; rel="up"'
-    Riak::Link.new("/raw/foo/bar", "next").to_s.should == '</raw/foo/bar>; rel="next"'
+    Riak::Link.new("/raw/foo", "up").to_s.should == '</raw/foo>; riaktag="up"'
+    Riak::Link.new("/raw/foo/bar", "next").to_s.should == '</raw/foo/bar>; riaktag="next"'
   end
 end
