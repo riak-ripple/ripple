@@ -190,15 +190,15 @@ describe Riak::RObject do
     end
 
     describe "when the object has no key" do
-      it "should issue a POST request to the bucket, and update the object properties" do
-        @http.should_receive(:post).with(204, "foo", {}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+      it "should issue a POST request to the bucket, and update the object properties (returning the body by default)" do
+        @http.should_receive(:post).with(204, "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
         @object.store
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
 
       it "should include persistence-tuning parameters in the query string" do
-        @http.should_receive(:post).with(204, "foo", {:dw => 2}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @http.should_receive(:post).with(204, "foo", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
         @object.store(:dw => 2)
       end
     end
@@ -208,15 +208,15 @@ describe Riak::RObject do
         @object.key = "bar"
       end
 
-      it "should issue a PUT request to the bucket, and update the object properties" do
-        @http.should_receive(:put).with(204, "foo/bar", {}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+      it "should issue a PUT request to the bucket, and update the object properties (returning the body by default)" do
+        @http.should_receive(:put).with(204, "foo/bar", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
         @object.store
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
 
       it "should include persistence-tuning parameters in the query string" do
-        @http.should_receive(:put).with(204, "foo/bar", {:dw => 2}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @http.should_receive(:put).with(204, "foo/bar", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
         @object.store(:dw => 2)
       end
     end

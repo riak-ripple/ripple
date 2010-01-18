@@ -119,10 +119,12 @@ module Riak
     # @option options [Fixnum] :r the "r" parameter (Read quorum for the implicit read performed when validating the store operation)
     # @option options [Fixnum] :w the "w" parameter (Write quorum)
     # @option options [Fixnum] :dw the "dw" parameter (Durable-write quorum)
+    # @option options [Boolean] :returnbody (true) whether to return the result of a successful write in the body of the response. Set to false for fire-and-forget updates, set to true to immediately have access to the object's stored representation.
     # @return [Riak::RObject] self
     def store(options={})
+      params = {:returnbody => true}.merge(options)
       method, path = @key.present? ? [:put, "#{@bucket.name}/#{@key}"] : [:post, @bucket.name]
-      response = @bucket.client.http.send(method, 204, path, options, serialize(data), headers)
+      response = @bucket.client.http.send(method, 204, path, params, serialize(data), headers)
       load(response)
     end
 
