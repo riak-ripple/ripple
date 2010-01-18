@@ -209,6 +209,26 @@ A new instance of Link.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#inspect-instance_method" title="#inspect (instance method)">- (Object) <strong>inspect</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#to_s-instance_method" title="#to_s (instance method)">- (Object) <strong>to_s</strong> </a>
     
 
@@ -254,12 +274,12 @@ A new instance of Link
       <pre class="lines">
 
 
-21
-22
-23</pre>
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 34</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='url identifier id'>url</span><span class='comma token'>,</span> <span class='rel identifier id'>rel</span><span class='rparen token'>)</span>
   <span class='@url ivar id'>@url</span><span class='comma token'>,</span> <span class='@rel ivar id'>@rel</span> <span class='assign token'>=</span> <span class='url identifier id'>url</span><span class='comma token'>,</span> <span class='rel identifier id'>rel</span>
@@ -321,12 +341,12 @@ the relationship (&quot;rel&quot;) of the other resource to this one
       <pre class="lines">
 
 
-11
-12
-13</pre>
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 24</span>
 
 <span class='def def kw'>def</span> <span class='rel identifier id'>rel</span>
   <span class='@rel ivar id'>@rel</span>
@@ -383,12 +403,12 @@ the URL (relative or absolute) of the related resource
       <pre class="lines">
 
 
-8
-9
-10</pre>
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 21</span>
 
 <span class='def def kw'>def</span> <span class='url identifier id'>url</span>
   <span class='@url ivar id'>@url</span>
@@ -470,17 +490,17 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-15
-16
-17
-18
-19</pre>
+28
+29
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 28</span>
 
 <span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='header_string identifier id'>header_string</span><span class='rparen token'>)</span>
-  <span class='header_string identifier id'>header_string</span><span class='dot token'>.</span><span class='scan identifier id'>scan</span><span class='lparen token'>(</span><span class='regexp val'>%r{&lt;([^&gt;]+)&gt;\s*;\s*rel=&quot;([^&quot;]+)&quot;}</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='match identifier id'>match</span><span class='bitor op'>|</span>
+  <span class='header_string identifier id'>header_string</span><span class='dot token'>.</span><span class='scan identifier id'>scan</span><span class='lparen token'>(</span><span class='regexp val'>%r{&lt;([^&gt;]+)&gt;\s*;\s*(?:rel|riaktag)=&quot;([^&quot;]+)&quot;}</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='match identifier id'>match</span><span class='bitor op'>|</span>
     <span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>0</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
   <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
@@ -497,7 +517,32 @@ an array of Riak::Link structs parsed from the header
     
     
       <div class="method_details first">
-  <p class="signature first" id="to_s-instance_method">
+  <p class="signature first" id="inspect-instance_method">
+  
+    - (<tt>Object</tt>) <strong>inspect</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 38</span>
+
+<span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span><span class='semicolon token'>;</span> <span class='to_s identifier id'>to_s</span> <span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="to_s-instance_method">
   
     - (<tt>Object</tt>) <strong>to_s</strong> 
   
@@ -509,15 +554,15 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-25
-26
-27</pre>
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 40</span>
 
 <span class='def def kw'>def</span> <span class='to_s identifier id'>to_s</span>
-  <span class='dstring node'>%Q[&lt;#{@url}&gt;; rel=&quot;#{@rel}&quot;]</span>
+  <span class='dstring node'>%Q[&lt;#{@url}&gt;; riaktag=&quot;#{@rel}&quot;]</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -530,7 +575,7 @@ an array of Riak::Link structs parsed from the header
 </div>
     
     <div id="footer">
-  Generated on Fri Jan 15 15:28:37 2010 by 
+  Generated on Mon Jan 18 11:18:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

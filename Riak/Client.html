@@ -302,6 +302,26 @@ Creates a client connection to Riak.
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#inspect-instance_method" title="#inspect (instance method)">- (Object) <strong>inspect</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
   </ul>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -441,17 +461,17 @@ raised if any options are invalid
       <pre class="lines">
 
 
-35
-36
-37
-38
-39
-40
-41
-42</pre>
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 48</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='assert_valid_keys identifier id'>assert_valid_keys</span><span class='lparen token'>(</span><span class='symbol val'>:host</span><span class='comma token'>,</span> <span class='symbol val'>:port</span><span class='comma token'>,</span> <span class='symbol val'>:prefix</span><span class='comma token'>,</span> <span class='symbol val'>:client_id</span><span class='rparen token'>)</span>
@@ -518,12 +538,12 @@ The internal client ID used by Riak to route responses
       <pre class="lines">
 
 
-23
-24
-25</pre>
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 36</span>
 
 <span class='def def kw'>def</span> <span class='client_id identifier id'>client_id</span>
   <span class='@client_id ivar id'>@client_id</span>
@@ -580,12 +600,12 @@ The host or IP address for the Riak endpoint
       <pre class="lines">
 
 
-17
-18
-19</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 30</span>
 
 <span class='def def kw'>def</span> <span class='host identifier id'>host</span>
   <span class='@host ivar id'>@host</span>
@@ -642,12 +662,12 @@ The port of the Riak HTTP endpoint
       <pre class="lines">
 
 
-20
-21
-22</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 33</span>
 
 <span class='def def kw'>def</span> <span class='port identifier id'>port</span>
   <span class='@port ivar id'>@port</span>
@@ -704,12 +724,12 @@ The URL path prefix to the &quot;raw&quot; HTTP endpoint
       <pre class="lines">
 
 
-26
-27
-28</pre>
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 39</span>
 
 <span class='def def kw'>def</span> <span class='prefix identifier id'>prefix</span>
   <span class='@prefix ivar id'>@prefix</span>
@@ -851,14 +871,14 @@ the requested bucket
       <pre class="lines">
 
 
-97
-98
-99
-100
-101</pre>
+110
+111
+112
+113
+114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 110</span>
 
 <span class='def def kw'>def</span> <span class='bucket identifier id'>bucket</span><span class='lparen token'>(</span><span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='assert_valid_keys identifier id'>assert_valid_keys</span><span class='lparen token'>(</span><span class='symbol val'>:keys</span><span class='comma token'>,</span> <span class='symbol val'>:props</span><span class='rparen token'>)</span>
@@ -916,18 +936,18 @@ the HTTP backend for this client
       <pre class="lines">
 
 
-81
-82
-83
-84
-85
-86
-87
-88
-89</pre>
+94
+95
+96
+97
+98
+99
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 94</span>
 
 <span class='def def kw'>def</span> <span class='http identifier id'>http</span>
   <span class='@http ivar id'>@http</span> <span class='opasgn op'>||=</span> <span class='begin begin kw'>begin</span>
@@ -944,12 +964,41 @@ the HTTP backend for this client
 </table>
 </div>
     
+      <div class="method_details ">
+  <p class="signature " id="inspect-instance_method">
+  
+    - (<tt>Object</tt>) <strong>inspect</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+116
+117
+118</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 116</span>
+
+<span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
+  <span class='dstring node'>&quot;#&lt;Riak::Client #{http.root_uri.to_s}&gt;&quot;</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
     
     <div id="footer">
-  Generated on Fri Jan 15 15:28:38 2010 by 
+  Generated on Mon Jan 18 11:18:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

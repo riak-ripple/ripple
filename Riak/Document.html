@@ -193,7 +193,7 @@ and deserialized from responses.
   
   
   <h3 class="inherited">Methods inherited from <a href="RObject.html" title="Riak::RObject (class)">RObject</a></h3>
-  <p class="inherited"><a href="RObject.html#headers-instance_method" title="Riak::RObject#headers (method)">#headers</a>, <a href="RObject.html#initialize-instance_method" title="Riak::RObject#initialize (method)">#initialize</a>, <a href="RObject.html#load-class_method" title="Riak::RObject.load (method)">load</a>, <a href="RObject.html#load-instance_method" title="Riak::RObject#load (method)">#load</a>, <a href="RObject.html#reload-instance_method" title="Riak::RObject#reload (method)">#reload</a>, <a href="RObject.html#store-instance_method" title="Riak::RObject#store (method)">#store</a></p>
+  <p class="inherited"><a href="RObject.html#headers-instance_method" title="Riak::RObject#headers (method)">#headers</a>, <a href="RObject.html#initialize-instance_method" title="Riak::RObject#initialize (method)">#initialize</a>, <a href="RObject.html#inspect-instance_method" title="Riak::RObject#inspect (method)">#inspect</a>, <a href="RObject.html#load-instance_method" title="Riak::RObject#load (method)">#load</a>, <a href="RObject.html#load-class_method" title="Riak::RObject.load (method)">load</a>, <a href="RObject.html#reload-instance_method" title="Riak::RObject#reload (method)">#reload</a>, <a href="RObject.html#store-instance_method" title="Riak::RObject#store (method)">#store</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -240,12 +240,12 @@ and deserialized from responses.
       <pre class="lines">
 
 
-10
-11
-12</pre>
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 23</span>
 
 <span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='matches? fid id'>matches?</span><span class='lparen token'>(</span><span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
   <span class='DOCUMENT_TYPES constant id'>DOCUMENT_TYPES</span><span class='dot token'>.</span><span class='any? fid id'>any?</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='type identifier id'>type</span><span class='bitor op'>|</span> <span class='headers identifier id'>headers</span><span class='lbrack token'>[</span><span class='string val'>&quot;content-type&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='first identifier id'>first</span> <span class='match op'>=~</span> <span class='type identifier id'>type</span> <span class='rbrace token'>}</span>
@@ -275,19 +275,19 @@ and deserialized from responses.
       <pre class="lines">
 
 
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34</pre>
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 40</span>
 
 <span class='def def kw'>def</span> <span class='deserialize identifier id'>deserialize</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='rparen token'>)</span>
   <span class='case case kw'>case</span> <span class='@content_type ivar id'>@content_type</span>
@@ -318,19 +318,19 @@ and deserialized from responses.
       <pre class="lines">
 
 
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23</pre>
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/document.rb', line 29</span>
 
 <span class='def def kw'>def</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='rparen token'>)</span>
   <span class='case case kw'>case</span> <span class='@content_type ivar id'>@content_type</span>
@@ -353,7 +353,7 @@ and deserialized from responses.
 </div>
     
     <div id="footer">
-  Generated on Fri Jan 15 15:28:37 2010 by 
+  Generated on Mon Jan 18 11:18:08 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
