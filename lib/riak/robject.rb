@@ -131,7 +131,8 @@ module Riak
     # @option options [Fixnum] :r - the "r" parameter (Read quorum)
     # @return [Riak::RObject] self
     def reload(options={})
-      return self unless @key && @vclock
+      force = options.delete(:force)
+      return self unless @key && (@vclock || force)
       headers = {}.tap do |h|
         h['If-None-Match'] = @etag if @etag.present?
         h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?

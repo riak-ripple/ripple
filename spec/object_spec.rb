@@ -242,6 +242,11 @@ describe Riak::RObject do
       @object.reload
     end
 
+    it "should make the request if the key is present and the :force option is given" do
+      @http.should_receive(:get).and_return({:headers => {}})
+      @object.reload :force => true
+    end
+
     it "should add an If-None-Match header when an ETag is present" do
       @object.etag = "12345567890"
       @http.should_receive(:get).with(200, "foo", "bar", {}, hash_including('If-None-Match' => "12345567890")).and_return({:headers => {'etag' => ['0987654321']}})
@@ -259,17 +264,15 @@ describe Riak::RObject do
     end
 
     it "should return without modifying the object if the response is 304 Not Modified" do
-      @http.should_receive(:get).with(200, "foo", "bar", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 304, {}, ''))
+      @http.should_receive(:get).and_raise(Riak::FailedRequest.new(:get, 200, 304, {}, ''))
       @object.should_not_receive(:load)
       @object.reload
     end
 
     it "should raise an exception when the response code is not 200 or 304" do
-      @http.should_receive(:get).with(200, "foo", "bar", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, ''))
+      @http.should_receive(:get).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, ''))
       @object.should_not_receive(:load)
       lambda { @object.reload }.should raise_error(Riak::FailedRequest)
     end
   end
-
-
 end
