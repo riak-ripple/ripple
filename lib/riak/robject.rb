@@ -116,9 +116,9 @@ module Riak
 
     # Store the object in Riak
     # @param [Hash] options query parameters
-    # @option options [Fixnum] :r - the "r" parameter (Read quorum for the implicit read performed when validating the store operation)
-    # @option options [Fixnum] :w - the "w" parameter (Write quorum)
-    # @option options [Fixnum] :dw - the "dw" parameter (Durable-write quorum)
+    # @option options [Fixnum] :r the "r" parameter (Read quorum for the implicit read performed when validating the store operation)
+    # @option options [Fixnum] :w the "w" parameter (Write quorum)
+    # @option options [Fixnum] :dw the "dw" parameter (Durable-write quorum)
     # @return [Riak::RObject] self
     def store(options={})
       method, path = @key.present? ? [:put, "#{@bucket.name}/#{@key}"] : [:post, @bucket.name]
@@ -128,7 +128,8 @@ module Riak
 
     # Reload the object from Riak.  Will use conditional GETs when possible.
     # @param [Hash] options query parameters
-    # @option options [Fixnum] :r - the "r" parameter (Read quorum)
+    # @option options [Fixnum] :r the "r" parameter (Read quorum)
+    # @option options [Boolean] :force will force a reload request if the vclock is not present, useful for reloading the object after a store (not passed in the query params)
     # @return [Riak::RObject] self
     def reload(options={})
       force = options.delete(:force)
