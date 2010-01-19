@@ -14,6 +14,7 @@
 require 'riak'
 
 module Riak
+  # Raised when Riak returns a response that is in an unexpected format
   class InvalidResponse < StandardError
     def initialize(expected, received, extra="")
       expected = expected.inspect if Hash === expected

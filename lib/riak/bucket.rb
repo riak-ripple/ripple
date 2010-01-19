@@ -56,7 +56,7 @@ module Riak
     # results of the operation will not be retained in the local Bucket object.
     # @param [Hash] options extra options
     # @yield [Array<String>] a list of keys from the current chunk
-    # @option options [true] :reload (nil) If present, will force reloading of the bucket's keys from Riak
+    # @option options [Boolean] :reload (false) If present, will force reloading of the bucket's keys from Riak
     # @return [Array<String>] Keys in this bucket
     def keys(options={})
       if block_given?
@@ -94,6 +94,7 @@ module Riak
       RObject.load(self, key, response)
     end
 
+    # @return [String] a representation suitable for IRB and debugging output
     def inspect
       "#<Riak::Bucket #{client.http.path(name).to_s}>"
     end

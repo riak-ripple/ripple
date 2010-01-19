@@ -75,12 +75,12 @@ describe Riak::Bucket do
     end
 
     it "should load the keys if not present" do
-      @http.should_receive(:get).with(200, "foo", {:props=>false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @http.should_receive(:get).with(200, "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       @bucket.keys.should == ["bar"]
     end
 
     it "should allow reloading of the keys" do
-      @http.should_receive(:get).with(200, "foo", {:props=>false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @http.should_receive(:get).with(200, "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       do_load # Ensures they're already loaded
       @bucket.keys(:reload => true).should == ["bar"]
     end

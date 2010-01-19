@@ -165,7 +165,7 @@ module Riak
       body
     end
 
-    # @return [String] A representation suitable for IRB and debugging output.
+    # @return [String] A representation suitable for IRB and debugging output
     def inspect
       "#<#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}>"
     end

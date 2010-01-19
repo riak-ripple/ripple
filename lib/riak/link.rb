@@ -14,7 +14,7 @@
 require 'riak'
 
 module Riak
-  # Represents a link between various things in Riak
+  # Represents a link from one object to another in Riak
   class Link
 
     # @return [String] the URL (relative or absolute) of the related resource
