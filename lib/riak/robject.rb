@@ -169,7 +169,25 @@ module Riak
     def inspect
       "#<#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}>"
     end
-
+    
+    # Walks links from this object to other objects in Riak.
+    def walk(*params)
+      specs = WalkSpec.normalize(*params)
+      response = @bucket.client.http.get(200, @bucket.name, @key, specs.join("/"))
+      if boundary = Riak::Util::Multipart.extract_boundary(response[:headers]['content-type'].first)
+        Riak::Util::Multipart.parse(response[:body], boundary).map do |group|
+          group.map do |obj|
+            if obj[:headers] && obj[:body] && obj[:headers]['location']
+              bucket, key = $1, $2 if obj[:headers]['location'].first =~ %r{/.*/(.*)/(.*)$}
+              Riak::RObject.load(@bucket.client.bucket(bucket, :keys => false), key, obj)
+            end
+          end
+        end
+      else
+        []
+      end
+    end
+    
     private
     def extract_header(response, name, attribute=nil)
       if response[:headers][name].present?

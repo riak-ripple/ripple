@@ -275,4 +275,37 @@ describe Riak::RObject do
       lambda { @object.reload }.should raise_error(Riak::FailedRequest)
     end
   end
+
+  describe "walking from the object to linked objects" do
+    before :each do
+      @http = mock("HTTPBackend")
+      @client.stub!(:http).and_return(@http)
+      @client.stub!(:bucket).and_return(@bucket)
+      @object = Riak::RObject.new(@bucket, "bar")
+      @body = File.read(File.join(File.dirname(__FILE__), "fixtures", "multipart-with-body.txt"))
+    end
+
+    it "should issue a GET request to the given walk spec" do
+      @http.should_receive(:get).with(200, "foo", "bar", "_,next,1").and_return(:headers => {"content-type" => ["multipart/mixed; boundary=12345"]}, :body => "\n--12345\nContent-Type: multipart/mixed; boundary=09876\n\n--09876--\n\n--12345--\n")
+      @object.walk(nil,"next",true)
+    end
+    
+    it "should parse the results into arrays of objects" do
+      @http.stub!(:get).and_return(:headers => {"content-type" => ["multipart/mixed; boundary=5EiMOjuGavQ2IbXAqsJPLLfJNlA"]}, :body => @body)
+      results = @object.walk(nil,"next",true)
+      results.should be_kind_of(Array)
+      results.first.should be_kind_of(Array)
+      obj = results.first.first
+      obj.should be_kind_of(Riak::RObject)
+      obj.content_type.should == "text/plain"
+      obj.key.should == "baz"
+      obj.bucket.should == @bucket
+    end
+
+    it "should assign the bucket for newly parsed objects" do
+      @http.stub!(:get).and_return(:headers => {"content-type" => ["multipart/mixed; boundary=5EiMOjuGavQ2IbXAqsJPLLfJNlA"]}, :body => @body)
+      @client.should_receive(:bucket).with("foo", :keys => false).and_return(@bucket)
+      @object.walk(nil,"next",true)
+    end
+  end
 end

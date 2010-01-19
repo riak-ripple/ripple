@@ -31,6 +31,28 @@ module Riak
     
     # @return [Boolean] Whether objects should be returned from this phase of link walking. Default is false.
     attr_accessor :result
+
+    # Normalize a list of walk specs into WalkSpec objects.
+    def self.normalize(*params)
+      params.flatten!
+      specs = []
+      while params.length > 0
+        param = params.shift
+        case param
+        when Hash
+          specs << new(param)
+        when WalkSpec
+          specs << param
+        else
+          if params.length >= 2
+            specs << new(param, params.shift, params.shift)
+          else
+            raise ArgumentError, "too few arguments"
+          end
+        end
+      end
+      specs
+    end
     
     # Creates a walk-spec for use in finding other objects in Riak.
     # @overload initialize(hash)
