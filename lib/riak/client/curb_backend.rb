@@ -26,8 +26,7 @@ module Riak
         @curl = Curl::Easy.new
         @curl.follow_location = false
         @curl.on_header do |header_line|
-          k,v = parse_header(header_line)
-          @response_headers.add_field(k,v) if k && v
+          @response_headers.parse(header_line)
           header_line.size
         end
       end
@@ -37,7 +36,7 @@ module Riak
         # Setup
         @curl.headers = headers
         @curl.url = uri.to_s
-        @response_headers = Headers.new
+        @response_headers = Riak::Util::Headers.new
         @curl.on_body {|chunk| yield chunk; chunk.size } if block_given?
 
         # Perform
@@ -57,23 +56,6 @@ module Riak
           result
         else
           raise FailedRequest.new(method, expect, @curl.response_code, @response_headers.to_hash, @curl.body_str)
-        end
-      end
-
-      def parse_header(chunk)
-        line = chunk.strip
-        # thanks Net::HTTPResponse
-        return [nil,nil] if chunk =~ /\AHTTP(?:\/(\d+\.\d+))?\s+(\d\d\d)\s*(.*)\z/in
-        m = /\A([^:]+):\s*/.match(line)
-        [m[1], m.post_match] rescue [nil, nil]
-      end
-
-      # @private
-      class Headers
-        include Net::HTTPHeader
-
-        def initialize
-          initialize_http_header({})
         end
       end
     end

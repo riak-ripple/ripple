@@ -31,6 +31,10 @@ module Riak
   # Exceptions
   autoload :FailedRequest, "riak/failed_request"
   autoload :InvalidResponse, "riak/invalid_response"
+
+  module Util
+    autoload :Headers, "riak/util/headers"
+  end
 end
 
 # Necessary so that load-order is correct
