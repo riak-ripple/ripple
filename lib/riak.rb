@@ -19,21 +19,22 @@ require 'yaml'
 
 module Riak
   # Domain objects
-  autoload :Bucket,   "riak/bucket"
-  autoload :Client,   "riak/client"
-  autoload :Link,     "riak/link"
-  autoload :WalkSpec, "riak/walk_spec"
+  autoload :Bucket,          "riak/bucket"
+  autoload :Client,          "riak/client"
+  autoload :Link,            "riak/link"
+  autoload :WalkSpec,        "riak/walk_spec"
 
-  autoload :RObject,   "riak/robject"
-  autoload :Document, "riak/document"
-  autoload :Binary,   "riak/binary"
+  autoload :RObject,         "riak/robject"
+  autoload :Document,        "riak/document"
+  autoload :Binary,          "riak/binary"
 
   # Exceptions
-  autoload :FailedRequest, "riak/failed_request"
+  autoload :FailedRequest,   "riak/failed_request"
   autoload :InvalidResponse, "riak/invalid_response"
 
   module Util
-    autoload :Headers, "riak/util/headers"
+    autoload :Headers,       "riak/util/headers"
+    autoload :Multipart,     "riak/util/multipart"
   end
 end
 
