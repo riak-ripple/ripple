@@ -26,7 +26,7 @@ module Riak
     # @param [String] header_string the string value of the Link: HTTP header from a Riak response
     # @return [Array<Link>] an array of Riak::Link structs parsed from the header
     def self.parse(header_string)
-      header_string.scan(%r{<([^>]+)>\s*;\s*(?:rel|riaktag)="([^"]+)"}).map do |match|
+      header_string.scan(%r{<([^>]+)>\s*;\s*(?:rel|riaktag)=\"([^\"]+)\"}).map do |match|
         new(match[0], match[1])
       end
     end
@@ -39,6 +39,12 @@ module Riak
 
     def to_s
       %Q[<#{@url}>; riaktag="#{@rel}"]
+    end
+
+    def to_walk_spec
+      bucket, object = $1, $2 if @url =~ %r{/raw/([^/]+)/([^/]+)/?}
+      raise "Can't convert a bucket link to a walk spec" if @rel == "up" || object.nil?
+      WalkSpec.new(:bucket => bucket, :tag => @rel)
     end
   end
 end

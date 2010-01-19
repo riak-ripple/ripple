@@ -22,6 +22,7 @@ module Riak
   autoload :Bucket,   "riak/bucket"
   autoload :Client,   "riak/client"
   autoload :Link,     "riak/link"
+  autoload :WalkSpec, "riak/walk_spec"
 
   autoload :RObject,   "riak/robject"
   autoload :Document, "riak/document"

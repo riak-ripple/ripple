@@ -34,4 +34,9 @@ describe Riak::Link do
     Riak::Link.new("/raw/foo", "up").to_s.should == '</raw/foo>; riaktag="up"'
     Riak::Link.new("/raw/foo/bar", "next").to_s.should == '</raw/foo/bar>; riaktag="next"'
   end
+
+  it "should convert to a walk spec when pointing to an object" do
+    Riak::Link.new("/raw/foo/bar", "next").to_walk_spec.to_s.should == "foo,next,_"
+    lambda { Riak::Link.new("/raw/foo", "up").to_walk_spec }.should raise_error
+  end
 end

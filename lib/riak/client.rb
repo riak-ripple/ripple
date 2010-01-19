@@ -104,8 +104,8 @@ module Riak
     # Retrieves a bucket from Riak.
     # @param [String] bucket the bucket to retrieve
     # @param [Hash] options options for retrieving the bucket
-    # @option options [true,false] :keys (true) whether to retrieve the bucket keys
-    # @option options [true,false] :props (true) whether to retreive the bucket properties
+    # @option options [Boolean] :keys (true) whether to retrieve the bucket keys
+    # @option options [Boolean] :props (true) whether to retreive the bucket properties
     # @return [Bucket] the requested bucket
     def bucket(name, options={})
       options.assert_valid_keys(:keys, :props)
@@ -113,6 +113,7 @@ module Riak
       Bucket.new(self, name).load(response)
     end
 
+    # @return [String] A representation suitable for IRB and debugging output.
     def inspect
       "#<Riak::Client #{http.root_uri.to_s}>"
     end
