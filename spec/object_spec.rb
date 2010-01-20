@@ -19,26 +19,6 @@ describe Riak::RObject do
     @bucket = Riak::Bucket.new(@client, "foo")
   end
 
-  describe "creating an object from a response" do
-    it "should create a Riak::Document for a JSON object" do
-      Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'}).should be_kind_of(Riak::Document)
-    end
-
-    it "should create a Riak::Document for a YAML object" do
-      Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["application/x-yaml"]}, :body => "---\nname: Riak\ncompany: Basho\n"}).should be_kind_of(Riak::Document)
-    end
-
-    it "should create a Riak::Binary for a binary type" do
-      Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["application/octet-stream"]}, :body => 'ASD#$*@)#$%&*Q)DA&@*#$*'}).should be_kind_of(Riak::Binary)
-    end
-
-    it "should create a bare Riak::RObject if none of the subclasses match" do
-      obj = Riak::RObject.load(@bucket, "bar", {:headers => {"content-type" => ["text/richtext"]}, :body => 'This is my magnum opus.'})
-      obj.should_not be_kind_of(Riak::Document)
-      obj.should_not be_kind_of(Riak::Binary)
-    end
-  end
-
   describe "serialization" do
     before :each do
       @object = Riak::RObject.new(@bucket, "bar")

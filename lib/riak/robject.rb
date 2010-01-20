@@ -24,25 +24,6 @@ module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
   # the data and metadata stored in a bucket/key pair in the Riak database.
   class RObject
-    # The order in which child classes will attempt instantiation when loading a response.
-    SUBCLASS_PRIORITY = [Riak::Document, Riak::Binary, self]
-
-    # Load information for an object from a response given by {Riak::Client::HTTPBackend}.
-    # Used mostly internally - use {Riak::Bucket#get} to retrieve an {Riak::RObject} instance.
-    # @param [Hash] response a response from {Riak::Client::HTTPBackend}
-    # @return [Riak::RObject] an appropriate instance of a subclass of {Riak::RObject}
-    def self.load(bucket, key, response)
-      subclass = SUBCLASS_PRIORITY.find {|k| k.matches?(response[:headers]) }
-      subclass.new(bucket, key).load(response)
-    end
-
-    # Detect whether this is an appropriate wrapper for the data received from Riak
-    # @param [Hash] headers the headers hash received in the response
-    # @return [true,false] whether the data should be instantiated as this class
-    def self.matches?(headers)
-      true
-    end
-
     # @return [Bucket] the bucket in which this object is contained
     attr_accessor :bucket
 

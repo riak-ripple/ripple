@@ -91,12 +91,11 @@ module Riak
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key, options={})
       response = @client.http.get(200, name, key, options, {})
-      RObject.load(self, key, response)
+      RObject.new(self, key).load(response)
     end
 
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
-      "#<Riak::Bucket #{client.http.path(name).to_s}>"
     end
   end
 end
