@@ -112,7 +112,8 @@ module Riak
       response = http.get(200, name, options, {})
       Bucket.new(self, name).load(response)
     end
-
+    alias :[] :bucket
+    
     # @return [String] A representation suitable for IRB and debugging output.
     def inspect
       "#<Riak::Client #{http.root_uri.to_s}>"

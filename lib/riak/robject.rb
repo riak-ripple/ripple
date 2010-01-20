@@ -35,6 +35,7 @@ module Riak
 
     # @return [String] the Riak vector clock for the object
     attr_accessor :vclock
+    alias_attribute :vector_clock, :vclock
 
     # @return [Object] the data stored in Riak at this object's key. Varies in format by subclass, defaulting to String from the response body.
     attr_accessor :data

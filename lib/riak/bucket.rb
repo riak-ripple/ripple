@@ -25,6 +25,7 @@ module Riak
 
     # @return [Hash] Internal Riak bucket properties.
     attr_reader :props
+    alias_attribute :properties, :props
 
     # Create a Riak bucket manually.
     # @param [Client] client the {Riak::Client} for this bucket
@@ -93,6 +94,7 @@ module Riak
       response = @client.http.get(200, name, key, options, {})
       RObject.new(self, key).load(response)
     end
+    alias :[] :get
 
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
