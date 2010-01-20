@@ -66,6 +66,11 @@ describe Riak::Bucket do
         do_load(:headers => {"content-type" => ["text/plain"]})
       end.should raise_error(Riak::InvalidResponse)
     end
+
+    it "should unescape key names" do
+      do_load(:body => '{"keys":["foo", "bar%20baz"]}')
+      @bucket.keys.should == ["foo", "bar baz"]
+    end
   end
 
   describe "accessing keys" do
@@ -94,6 +99,11 @@ describe Riak::Bucket do
       end
       all_keys.should == ["bar", "baz"]
     end
+
+    it "should unescape key names" do
+      @http.should_receive(:get).with(200, "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
+      @bucket.keys.should == ["bar baz"]
+    end
   end
 
   describe "setting the bucket properties" do
@@ -115,9 +125,9 @@ describe Riak::Bucket do
   describe "fetching an object" do
     before :each do
       @http = mock("HTTPBackend")
-      @client.stub!(:http).and_return(@http)      
+      @client.stub!(:http).and_return(@http)
     end
-    
+
     it "should load the object from the server as a Riak::RObject" do
       @http.should_receive(:get).with(200, "foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @bucket.get("db").should be_kind_of(Riak::RObject)

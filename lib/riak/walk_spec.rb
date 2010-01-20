@@ -47,7 +47,7 @@ module Riak
           if params.length >= 2
             specs << new(param, params.shift, params.shift)
           else
-            raise ArgumentError, "too few arguments"
+            raise ArgumentError, "too few arguments: #{params.inspect}"
           end
         end
       end

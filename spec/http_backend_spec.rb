@@ -47,6 +47,11 @@ describe Riak::Client::HTTPBackend do
     @backend.path("/foo/bar").to_s.should == "http://127.0.0.1:8098/raw/foo/bar"
   end
 
+  it "should escape appropriate characters in a relative resource path" do
+    @backend.path("foo bar").to_s.should == "http://127.0.0.1:8098/raw/foo%20bar"
+    @backend.path("foo", "bar", {"param" => "a string"}).to_s.should == "http://127.0.0.1:8098/raw/foo/bar?param=a+string"
+  end
+
   it "should compute a URI from a relative resource path with a hash of query parameters" do
     @backend.path("baz", :r => 2).to_s.should == "http://127.0.0.1:8098/raw/baz?r=2"
   end
@@ -75,7 +80,7 @@ describe Riak::Client::HTTPBackend do
       lambda { @backend.verify_path_and_body!([])}.should raise_error(ArgumentError)
     end
   end
-  
+
   it "should force subclasses to implement the perform method" do
     lambda { @backend.send(:perform, :get, "/foo", {}, 200) }.should raise_error(NotImplementedError)
   end

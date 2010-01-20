@@ -14,13 +14,6 @@
 require 'riak'
 
 module Riak
-  class RObject; end
-end
-
-require 'riak/document'
-require 'riak/binary'
-
-module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
   # the data and metadata stored in a bucket/key pair in the Riak database.
   class RObject
@@ -63,7 +56,7 @@ module Riak
     # Load object data from an HTTP response
     # @param [Hash] response a response from {Riak::Client::HTTPBackend}
     def load(response)
-      extract_header(response, "location", :key) {|v| v.split("/").last }
+      extract_header(response, "location", :key) {|v| URI.unescape(v.split("/").last) }
       extract_header(response, "content-type", :content_type)
       extract_header(response, "x-riak-vclock", :vclock)
       extract_header(response, "link", :links) {|v| Link.parse(v) }
@@ -151,31 +144,35 @@ module Riak
     def inspect
       "#<#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}>"
     end
-    
+
     # Walks links from this object to other objects in Riak.
     def walk(*params)
       specs = WalkSpec.normalize(*params)
       response = @bucket.client.http.get(200, @bucket.name, @key, specs.join("/"))
       if boundary = Riak::Util::Multipart.extract_boundary(response[:headers]['content-type'].first)
         Riak::Util::Multipart.parse(response[:body], boundary).map do |group|
-          group.map do |obj|
-            if obj[:headers] && obj[:body] && obj[:headers]['location']
-              bucket, key = $1, $2 if obj[:headers]['location'].first =~ %r{/.*/(.*)/(.*)$}
-              Riak::RObject.load(@bucket.client.bucket(bucket, :keys => false), key, obj)
-            end
-          end
+          map_walk_group(group)
         end
       else
         []
       end
     end
-    
+
     private
     def extract_header(response, name, attribute=nil)
       if response[:headers][name].present?
         value = response[:headers][name].try(:first)
         value = yield value if block_given?
         send("#{attribute}=", value) if attribute
+      end
+    end
+
+    def map_walk_group(group)
+      group.map do |obj|
+        if obj[:headers] && obj[:body] && obj[:headers]['location']
+          bucket, key = $1, $2 if obj[:headers]['location'].first =~ %r{/.*/(.*)/(.*)$}
+          RObject.new(@bucket.client.bucket(bucket, :keys => false), key).load(obj)
+        end
       end
     end
   end

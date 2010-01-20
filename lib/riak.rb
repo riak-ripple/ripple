@@ -23,10 +23,7 @@ module Riak
   autoload :Client,          "riak/client"
   autoload :Link,            "riak/link"
   autoload :WalkSpec,        "riak/walk_spec"
-
   autoload :RObject,         "riak/robject"
-  autoload :Document,        "riak/document"
-  autoload :Binary,          "riak/binary"
 
   # Exceptions
   autoload :FailedRequest,   "riak/failed_request"
@@ -37,6 +34,3 @@ module Riak
     autoload :Multipart,     "riak/util/multipart"
   end
 end
-
-# Necessary so that load-order is correct
-require 'riak/robject'

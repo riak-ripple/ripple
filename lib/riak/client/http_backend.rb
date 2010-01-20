@@ -142,7 +142,7 @@ module Riak
       # @return [URI] an absolute URI for the resource
       def path(*segments)
         query = segments.extract_options!.to_param
-        root_uri.merge(segments.join("/").gsub(/\/+/, "/").sub(/^\//, '')).tap do |uri|
+        root_uri.merge(URI.escape(segments.join("/").gsub(/\/+/, "/").sub(/^\//, ''))).tap do |uri|
           uri.query = query if query.present?
         end
       end

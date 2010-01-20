@@ -46,7 +46,7 @@ module Riak
         raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], "while loading bucket '#{name}'")
       end
       payload = JSON.parse(response[:body])
-      @keys = payload['keys'] if payload['keys']
+      @keys = payload['keys'].map {|k| URI.unescape(k) }  if payload['keys']
       @props = payload['props'] if payload['props']
       self
     end
@@ -63,7 +63,7 @@ module Riak
       if block_given?
         @client.http.get(200, name, {:props => false}, {}) do |chunk|
           obj = JSON.parse(chunk) rescue {}
-          yield obj['keys'] if obj['keys']
+          yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
         response = @client.http.get(200, name, {:props => false}, {})
@@ -98,6 +98,7 @@ module Riak
 
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
+      "#<Riak::Bucket #{client.http.path(name).to_s}#{" keys=#{keys.join(', ')}" if defined?(@keys)}>"
     end
   end
 end
