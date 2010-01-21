@@ -19,8 +19,9 @@ shared_examples_for "HTTP backend" do
 
     it "should return only the headers when the request succeeds" do
       response = @backend.head(200, "foo")
-      response[:body].should be_nil
+      response.should_not have_key(:body)
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise a FailedRequest exception when the request fails" do
@@ -29,6 +30,10 @@ shared_examples_for "HTTP backend" do
 
     it "should raise an error if an invalid resource path is given" do
       lambda { @backend.head(200) }.should raise_error(ArgumentError)
+    end
+
+    it "should not raise a FailedRequest if one of the expected response codes matches" do
+      lambda { @backend.head([200, 301], "foo") }.should_not raise_error(Riak::FailedRequest)
     end
   end
 
@@ -41,20 +46,26 @@ shared_examples_for "HTTP backend" do
       response = @backend.get(200, "foo")
       response[:body].should == "Success!"
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise a FailedRequest exception when the request fails" do
       lambda { @backend.get(304, "foo") }.should raise_error(Riak::FailedRequest)
     end
 
+    it "should not raise a FailedRequest if one of the expected response codes matches" do
+      lambda { @backend.get([200, 301], "foo") }.should_not raise_error(Riak::FailedRequest)
+    end
+    
     it "should yield successive chunks of the response to the given block but not return the entire body" do
       chunks = ""
       response = @backend.get(200, "foo") do |chunk|
         chunks << chunk
       end
       chunks.should == "Success!"
-      response[:body].should be_nil
+      response.should_not have_key(:body)
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise an error if an invalid resource path is given" do
@@ -76,15 +87,20 @@ shared_examples_for "HTTP backend" do
     it "should raise a FailedRequest exception when the request fails" do
       lambda { @backend.delete(304, "foo") }.should raise_error(Riak::FailedRequest)
     end
-
+    
+    it "should not raise a FailedRequest if one of the expected response codes matches" do
+      lambda { @backend.delete([200, 301], "foo") }.should_not raise_error(Riak::FailedRequest)
+    end
+    
     it "should yield successive chunks of the response to the given block but not return the entire body" do
       chunks = ""
       response = @backend.delete(200, "foo") do |chunk|
         chunks << chunk
       end
       chunks.should == "Success!"
-      response[:body].should be_nil
+      response.should_not have_key(:body)
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise an error if an invalid resource path is given" do
@@ -97,24 +113,31 @@ shared_examples_for "HTTP backend" do
       setup_http_mock(:put, @backend.path("foo").to_s, :body => "Success!")
     end
 
-    it "should return the response body and headers when the request succeeds" do
+    it "should return the response body, headers, and code when the request succeeds" do
       response = @backend.put(200, "foo", "This is the body.")
       response[:body].should == "Success!"
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise a FailedRequest exception when the request fails" do
       lambda { @backend.put(204, "foo", "This is the body.") }.should raise_error(Riak::FailedRequest)
     end
-
+    
+    it "should not raise a FailedRequest if one of the expected response codes matches" do
+      lambda { @backend.put([200, 204], "foo", "This is the body.") }.should_not raise_error(Riak::FailedRequest)
+    end
+    
+    
     it "should yield successive chunks of the response to the given block but not return the entire body" do
       chunks = ""
       response = @backend.put(200, "foo", "This is the body.") do |chunk|
         chunks << chunk
       end
       chunks.should == "Success!"
-      response[:body].should be_nil
+      response.should_not have_key(:body)
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise an error if an invalid resource path is given" do
@@ -135,14 +158,19 @@ shared_examples_for "HTTP backend" do
       setup_http_mock(:post, @backend.path("foo").to_s, :body => "Success!")
     end
 
-    it "should return the response body and headers when the request succeeds" do
+    it "should return the response body, headers, and code when the request succeeds" do
       response = @backend.post(200, "foo", "This is the body.")
       response[:body].should == "Success!"
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise a FailedRequest exception when the request fails" do
       lambda { @backend.post(204, "foo", "This is the body.") }.should raise_error(Riak::FailedRequest)
+    end
+
+    it "should not raise a FailedRequest if one of the expected response codes matches" do
+      lambda { @backend.post([200, 204], "foo", "This is the body.") }.should_not raise_error(Riak::FailedRequest)
     end
 
     it "should yield successive chunks of the response to the given block but not return the entire body" do
@@ -151,8 +179,9 @@ shared_examples_for "HTTP backend" do
         chunks << chunk
       end
       chunks.should == "Success!"
-      response[:body].should be_nil
+      response.should_not have_key(:body)
       response[:headers].should be_kind_of(Hash)
+      response[:code].should == 200
     end
 
     it "should raise an error if an invalid resource path is given" do
@@ -169,7 +198,7 @@ shared_examples_for "HTTP backend" do
   end
 
   describe "Responses with no body" do
-    [204, 304].each do |code|
+    [204, 205, 304].each do |code|
       [:get, :post, :put, :delete].each do |method|
         it "should not return a body on #{method.to_s.upcase} for #{code}" do
           setup_http_mock(method, @backend.path("foo").to_s, :status => code)

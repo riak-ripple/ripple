@@ -80,7 +80,56 @@ describe Riak::Client::HTTPBackend do
       lambda { @backend.verify_path_and_body!([])}.should raise_error(ArgumentError)
     end
   end
+  
+  describe "detecting valid response codes" do
+    it "should accept strings or integers for either argument" do
+      @backend.should be_valid_response("300", "300")
+      @backend.should be_valid_response(300, "300")
+      @backend.should be_valid_response("300", 300)
+    end
 
+    it "should accept an array of strings or integers for the expected code" do
+      @backend.should be_valid_response([200,304], "200")
+      @backend.should be_valid_response(["200",304], "200")
+      @backend.should be_valid_response([200,"304"], "200")
+      @backend.should be_valid_response(["200","304"], "200")
+      @backend.should be_valid_response([200,304], 200)
+    end
+
+    it "should be false when none of the response codes match" do
+      @backend.should_not be_valid_response(200, 404)
+      @backend.should_not be_valid_response(["200","304"], 404)
+      @backend.should_not be_valid_response([200,304], 404)
+    end
+  end
+
+  describe "detecting whether a body should be returned" do
+    it "should be false when the method is :head" do
+      @backend.should_not be_return_body(:head, 200, false)
+    end
+
+    it "should be false when the response code is 204, 205, or 304" do
+      @backend.should_not be_return_body(:get, 204, false)
+      @backend.should_not be_return_body(:get, 205, false)
+      @backend.should_not be_return_body(:get, 304, false)
+    end
+
+    it "should be false when a streaming block was passed" do
+      @backend.should_not be_return_body(:get, 200, true)
+    end
+
+    it "should be true when the method is not head, a code other than 204, 205, or 304 was given, and there was no streaming block" do
+      [:get, :put, :post, :delete].each do |method|
+        [100,101,200,201,202,203,206,300,301,302,303,305,307,400,401,
+         402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,
+         500,501,502,503,504,505].each do |code|
+          @backend.should be_return_body(method, code, false)
+          @backend.should be_return_body(method, code.to_s, false)
+        end
+      end
+    end
+  end
+  
   it "should force subclasses to implement the perform method" do
     lambda { @backend.send(:perform, :get, "/foo", {}, 200) }.should raise_error(NotImplementedError)
   end

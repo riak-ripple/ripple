@@ -74,7 +74,7 @@ module Riak
 
     # HTTP header hash that will be sent along when storing the object
     # @return [Hash] hash of HTTP Headers
-    def headers
+    def store_headers
       {}.tap do |hash|
         hash["Content-Type"] = @content_type
         hash["X-Riak-Vclock"] = @vclock if @vclock
@@ -88,7 +88,16 @@ module Riak
         end
       end
     end
-
+    
+    # HTTP header hash that will be sent along when reloading the object
+    # @return [Hash] hash of HTTP headers
+    def reload_headers
+      {}.tap do |h|
+        h['If-None-Match'] = @etag if @etag.present?
+        h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?
+      end
+    end
+    
     # Store the object in Riak
     # @param [Hash] options query parameters
     # @option options [Fixnum] :r the "r" parameter (Read quorum for the implicit read performed when validating the store operation)
@@ -96,10 +105,12 @@ module Riak
     # @option options [Fixnum] :dw the "dw" parameter (Durable-write quorum)
     # @option options [Boolean] :returnbody (true) whether to return the result of a successful write in the body of the response. Set to false for fire-and-forget updates, set to true to immediately have access to the object's stored representation.
     # @return [Riak::RObject] self
+    # @raise [ArgumentError] if the content_type is not defined
     def store(options={})
+      raise ArgumentError, "content_type is not defined!" unless @content_type.present?
       params = {:returnbody => true}.merge(options)
       method, path = @key.present? ? [:put, "#{@bucket.name}/#{@key}"] : [:post, @bucket.name]
-      response = @bucket.client.http.send(method, 204, path, params, serialize(data), headers)
+      response = @bucket.client.http.send(method, [200, 204], path, params, serialize(data), store_headers)
       load(response)
     end
 
@@ -111,17 +122,9 @@ module Riak
     def reload(options={})
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
-      headers = {}.tap do |h|
-        h['If-None-Match'] = @etag if @etag.present?
-        h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?
-      end
-      begin
-        response = @bucket.client.http.get(200, @bucket.name, @key, options, headers)
-        load(response)
-      rescue FailedRequest => fr
-        raise fr unless fr.code == 304
-        self
-      end
+      response = @bucket.client.http.get([200, 304], @bucket.name, @key, options, reload_headers)
+      load(response) if response[:code] == 200
+      self
     end
 
     alias :fetch :reload

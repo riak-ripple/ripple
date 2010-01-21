@@ -102,17 +102,17 @@ describe Riak::RObject do
 
     it "should include the content type" do
       @object.content_type = "application/json"
-      @object.headers["Content-Type"].should == "application/json"
+      @object.store_headers["Content-Type"].should == "application/json"
     end
 
     it "should include the vclock when present" do
       @object.vclock = "123445678990"
-      @object.headers["X-Riak-Vclock"].should == "123445678990"
+      @object.store_headers["X-Riak-Vclock"].should == "123445678990"
     end
 
     it "should exclude the vclock when nil" do
       @object.vclock = nil
-      @object.headers.should_not have_key("X-Riak-Vclock")
+      @object.store_headers.should_not have_key("X-Riak-Vclock")
     end
 
     describe "when links are defined" do
@@ -121,20 +121,20 @@ describe Riak::RObject do
       end
 
       it "should include a Link header with references to other objects" do
-        @object.headers.should have_key("Link")
-        @object.headers["Link"].should include('</raw/foo/baz>; riaktag="next"')
+        @object.store_headers.should have_key("Link")
+        @object.store_headers["Link"].should include('</raw/foo/baz>; riaktag="next"')
       end
 
       it "should exclude the 'up' link to the bucket from the header" do
         @object.links << Riak::Link.new("/raw/foo", "up")
-        @object.headers.should have_key("Link")
-        @object.headers["Link"].should_not include('riaktag="up"')
+        @object.store_headers.should have_key("Link")
+        @object.store_headers["Link"].should_not include('riaktag="up"')
       end
     end
 
     it "should exclude the Link header when no links are present" do
       @object.links = []
-      @object.headers.should_not have_key("Link")
+      @object.store_headers.should_not have_key("Link")
     end
 
     describe "when meta fields are present" do
@@ -143,22 +143,45 @@ describe Riak::RObject do
       end
 
       it "should include X-Riak-Meta-* headers for each meta key" do
-        @object.headers.should have_key("X-Riak-Meta-some-kind-of-robot")
-        @object.headers.should have_key("X-Riak-Meta-cold-ones")
-        @object.headers.should have_key("X-Riak-Meta-powers")
+        @object.store_headers.should have_key("X-Riak-Meta-some-kind-of-robot")
+        @object.store_headers.should have_key("X-Riak-Meta-cold-ones")
+        @object.store_headers.should have_key("X-Riak-Meta-powers")
       end
 
       it "should turn non-string meta values into strings" do
-        @object.headers["X-Riak-Meta-some-kind-of-robot"].should == "true"
-        @object.headers["X-Riak-Meta-cold-ones"].should == "10"
+        @object.store_headers["X-Riak-Meta-some-kind-of-robot"].should == "true"
+        @object.store_headers["X-Riak-Meta-cold-ones"].should == "10"
       end
 
       it "should leave string meta values unchanged in the header" do
-        @object.headers["X-Riak-Meta-powers"].should == "for awesome"
+        @object.store_headers["X-Riak-Meta-powers"].should == "for awesome"
       end
     end
   end
+  
+  describe "headers used for reloading the object" do
+    before :each do
+      @object = Riak::RObject.new(@bucket, "bar")
+    end
 
+    it "should be blank when the etag and last_modified properties are blank" do
+      @object.etag.should be_blank
+      @object.last_modified.should be_blank
+      @object.reload_headers.should be_blank
+    end
+
+    it "should include the If-None-Match key when the etag is present" do
+      @object.etag = "etag!"
+      @object.reload_headers['If-None-Match'].should == "etag!"
+    end
+
+    it "should include the If-Modified-Since header when the last_modified time is present" do
+      time = Time.now
+      @object.last_modified = time
+      @object.reload_headers['If-Modified-Since'].should == time.httpdate
+    end
+  end
+  
   describe "when storing the object normally" do
     before :each do
       @http = mock("HTTPBackend")
@@ -166,19 +189,24 @@ describe Riak::RObject do
       @object = Riak::RObject.new(@bucket)
       @object.content_type = "text/plain"
       @object.data = "This is some text."
-      @headers = @object.headers
+      @headers = @object.store_headers
     end
-
+    
+    it "should raise an error when the content_type is blank" do
+      lambda { @object.content_type = nil; @object.store }.should raise_error(ArgumentError)
+      lambda { @object.content_type = "   "; @object.store }.should raise_error(ArgumentError)
+    end
+    
     describe "when the object has no key" do
       it "should issue a POST request to the bucket, and update the object properties (returning the body by default)" do
-        @http.should_receive(:post).with(204, "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @http.should_receive(:post).with([200,204], "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
 
       it "should include persistence-tuning parameters in the query string" do
-        @http.should_receive(:post).with(204, "foo", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @http.should_receive(:post).with([200,204], "foo", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store(:dw => 2)
       end
     end
@@ -189,14 +217,14 @@ describe Riak::RObject do
       end
 
       it "should issue a PUT request to the bucket, and update the object properties (returning the body by default)" do
-        @http.should_receive(:put).with(204, "foo/bar", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @http.should_receive(:put).with([200,204], "foo/bar", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
 
       it "should include persistence-tuning parameters in the query string" do
-        @http.should_receive(:put).with(204, "foo/bar", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}})
+        @http.should_receive(:put).with([200,204], "foo/bar", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store(:dw => 2)
       end
     end
@@ -208,6 +236,7 @@ describe Riak::RObject do
       @client.stub!(:http).and_return(@http)
       @object = Riak::RObject.new(@bucket, "bar")
       @object.vclock = "somereallylongstring"
+      @object.stub!(:reload_headers).and_return({})
     end
 
     it "should return without requesting if the key is blank" do
@@ -223,28 +252,19 @@ describe Riak::RObject do
     end
 
     it "should make the request if the key is present and the :force option is given" do
-      @http.should_receive(:get).and_return({:headers => {}})
+      @http.should_receive(:get).and_return({:headers => {}, :code => 304})
       @object.reload :force => true
     end
 
-    it "should add an If-None-Match header when an ETag is present" do
-      @object.etag = "12345567890"
-      @http.should_receive(:get).with(200, "foo", "bar", {}, hash_including('If-None-Match' => "12345567890")).and_return({:headers => {'etag' => ['0987654321']}})
+    it "should pass along the reload_headers" do
+      @headers = {"If-None-Match" => "etag"}
+      @object.should_receive(:reload_headers).and_return(@headers)
+      @http.should_receive(:get).with([200,304], "foo", "bar", {}, @headers).and_return({:code => 304})
       @object.reload
-      @object.etag.should == '0987654321'
     end
-
-    it "should add an If-Modified-Since header when the last modified date is present" do
-      time = Time.now - 1000
-      new_time = Time.now.httpdate
-      @object.last_modified = time
-      @http.should_receive(:get).with(200, "foo", "bar", {}, hash_including('If-Modified-Since' => time.httpdate)).and_return({:headers => {'last-modified' => [new_time]}})
-      @object.reload
-      @object.last_modified.httpdate.should == new_time
-    end
-
+    
     it "should return without modifying the object if the response is 304 Not Modified" do
-      @http.should_receive(:get).and_raise(Riak::FailedRequest.new(:get, 200, 304, {}, ''))
+      @http.should_receive(:get).and_return({:code => 304})
       @object.should_not_receive(:load)
       @object.reload
     end
