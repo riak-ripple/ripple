@@ -29,6 +29,12 @@ describe Riak::RObject do
       @object.serialize(2).should == "2"
     end
 
+    it "should not change the data when it is an IO" do
+      file = File.open("#{File.dirname(__FILE__)}/fixtures/cat.jpg", "r")
+      file.should_not_receive(:to_s)
+      @object.serialize(file).should == file
+    end
+
     it "should not modify the data by default when deserializing" do
       @object.deserialize("foo").should == "foo"
     end
@@ -72,17 +78,17 @@ describe Riak::RObject do
         @object.content_type = "application/octet-stream"
         @object.meta ||= {}
       end
-      
+
       describe "if the ruby-serialization meta field is set to Marshal" do
         before :each do
           @object.meta['ruby-serialization'] = "Marshal"
           @payload = Marshal.dump({"foo" => "bar"})
         end
 
-        it "should dump via Marshal" do         
+        it "should dump via Marshal" do
           @object.serialize({"foo" => "bar"}).should == @payload
         end
-        
+
         it "should load from Marshal" do
           @object.deserialize(@payload).should == {"foo" => "bar"}
         end
@@ -92,7 +98,7 @@ describe Riak::RObject do
         before :each do
           @object.meta.delete("ruby-serialization")
         end
-        
+
         it "should dump to a string" do
           @object.serialize(2).should == "2"
           @object.serialize("foo").should == "foo"
@@ -229,7 +235,7 @@ describe Riak::RObject do
       end
     end
   end
-  
+
   describe "headers used for reloading the object" do
     before :each do
       @object = Riak::RObject.new(@bucket, "bar")
@@ -252,7 +258,7 @@ describe Riak::RObject do
       @object.reload_headers['If-Modified-Since'].should == time.httpdate
     end
   end
-  
+
   describe "when storing the object normally" do
     before :each do
       @http = mock("HTTPBackend")
@@ -262,12 +268,12 @@ describe Riak::RObject do
       @object.data = "This is some text."
       @headers = @object.store_headers
     end
-    
+
     it "should raise an error when the content_type is blank" do
       lambda { @object.content_type = nil; @object.store }.should raise_error(ArgumentError)
       lambda { @object.content_type = "   "; @object.store }.should raise_error(ArgumentError)
     end
-    
+
     describe "when the object has no key" do
       it "should issue a POST request to the bucket, and update the object properties (returning the body by default)" do
         @http.should_receive(:post).with([200,204], "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
@@ -333,7 +339,7 @@ describe Riak::RObject do
       @http.should_receive(:get).with([200,304], "foo", "bar", {}, @headers).and_return({:code => 304})
       @object.reload
     end
-    
+
     it "should return without modifying the object if the response is 304 Not Modified" do
       @http.should_receive(:get).and_return({:code => 304})
       @object.should_not_receive(:load)
@@ -360,7 +366,7 @@ describe Riak::RObject do
       @http.should_receive(:get).with(200, "foo", "bar", "_,next,1").and_return(:headers => {"content-type" => ["multipart/mixed; boundary=12345"]}, :body => "\n--12345\nContent-Type: multipart/mixed; boundary=09876\n\n--09876--\n\n--12345--\n")
       @object.walk(nil,"next",true)
     end
-    
+
     it "should parse the results into arrays of objects" do
       @http.stub!(:get).and_return(:headers => {"content-type" => ["multipart/mixed; boundary=5EiMOjuGavQ2IbXAqsJPLLfJNlA"]}, :body => @body)
       results = @object.walk(nil,"next",true)

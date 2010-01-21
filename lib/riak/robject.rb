@@ -137,6 +137,7 @@ module Riak
     # * Marshal (application/octet-stream if meta['ruby-serialization'] == "Marshal")
     # @param [Object] payload the data to serialize
     def serialize(payload)
+      return payload if IO === payload
       case @content_type
       when /json/
         ActiveSupport::JSON.encode(payload)
