@@ -23,13 +23,21 @@ module Riak
       private
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
         Net::HTTP.start(uri.host, uri.port) do |http|
-          response = http.send(method, *([uri.request_uri, data, headers].compact))
+          request = Net::HTTP.const_get(method.to_s.camelize).new(uri.request_uri, headers)
+          case data
+          when String
+            request.body = data
+          when IO
+            request.body_stream = data
+          end
+          response = http.request(request)
+
           if valid_response?(expect, response.code)
             result = {:headers => response.to_hash, :code => response.code.to_i}
             response.read_body {|chunk| yield chunk } if block_given?
             if return_body?(method, response.code, block_given?)
               result[:body] = response.body
-            end  
+            end
             result
           else
             raise FailedRequest.new(method, expect, response.code, response.to_hash, response.body)

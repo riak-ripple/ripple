@@ -158,7 +158,7 @@ module Riak
           raise ArgumentError, "You must supply both a resource path and a body."
         end
 
-        raise ArgumentError, "Request body must be a string." unless String === body
+        raise ArgumentError, "Request body must be a string or IO." unless String === body || IO === body
         [args, body]
       end
 
@@ -195,7 +195,7 @@ module Riak
       # @param [URI] uri the HTTP URI to request
       # @param [Hash] headers headers to send along with the request
       # @param [Fixnum, Array] expect the expected response code(s)
-      # @param [String] body the PUT or POST request body
+      # @param [String, IO] body the PUT or POST request body
       # @return [Hash] response data, containing :headers, :code and :body keys. Only :headers and :code should be present when the body is streamed or the method is :head.
       # @yield [chunk] if the method is not :head, successive chunks of the response body will be yielded as strings
       # @raise [NotImplementedError] if a subclass does not implement this method
