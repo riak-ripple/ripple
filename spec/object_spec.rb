@@ -32,6 +32,77 @@ describe Riak::RObject do
     it "should not modify the data by default when deserializing" do
       @object.deserialize("foo").should == "foo"
     end
+
+    describe "when the content type is YAML" do
+      before :each do
+        @object.content_type = "text/x-yaml"
+      end
+
+      it "should serialize into a YAML stream" do
+        @object.serialize({"foo" => "bar"}).should == "--- \nfoo: bar\n"
+      end
+
+      it "should deserialize a YAML stream" do
+        @object.deserialize("--- \nfoo: bar\n").should == {"foo" => "bar"}
+      end
+    end
+
+    describe "when the content type is JSON" do
+      before :each do
+        @object.content_type = "application/json"
+      end
+
+      it "should serialize into a JSON blob" do
+        @object.serialize({"foo" => "bar"}).should == '{"foo":"bar"}'
+        @object.serialize(2).should == "2"
+        @object.serialize("Some text").should == '"Some text"'
+        @object.serialize([1,2,3]).should == "[1,2,3]"
+      end
+
+      it "should deserialize a JSON blob" do
+        @object.deserialize('{"foo":"bar"}').should == {"foo" => "bar"}
+        @object.deserialize("2").should == 2
+        @object.deserialize('"Some text"').should == "Some text"
+        @object.deserialize('[1,2,3]').should == [1,2,3]
+      end
+    end
+
+    describe "when the content type is an octet-stream" do
+      before :each do
+        @object.content_type = "application/octet-stream"
+        @object.meta ||= {}
+      end
+      
+      describe "if the ruby-serialization meta field is set to Marshal" do
+        before :each do
+          @object.meta['ruby-serialization'] = "Marshal"
+          @payload = Marshal.dump({"foo" => "bar"})
+        end
+
+        it "should dump via Marshal" do         
+          @object.serialize({"foo" => "bar"}).should == @payload
+        end
+        
+        it "should load from Marshal" do
+          @object.deserialize(@payload).should == {"foo" => "bar"}
+        end
+      end
+
+      describe "if the ruby-serialization meta field is not set to Marshal" do
+        before :each do
+          @object.meta.delete("ruby-serialization")
+        end
+        
+        it "should dump to a string" do
+          @object.serialize(2).should == "2"
+          @object.serialize("foo").should == "foo"
+        end
+
+        it "should load the body unmodified" do
+          @object.deserialize("foo").should == "foo"
+        end
+      end
+    end
   end
 
   describe "loading data from the response" do
@@ -45,14 +116,14 @@ describe Riak::RObject do
     end
 
     it "should load the body data" do
-      @object.load({:headers => {"content-type" => ["application/json"]}, :body => "{}"})
-      @object.data.should == "{}"
+      @object.load({:headers => {"content-type" => ["application/json"]}, :body => '{"foo":"bar"}'})
+      @object.data.should be_present
     end
 
     it "should deserialize the body data" do
-      @object.should_receive(:deserialize).with("{}").and_return("{}")
+      @object.should_receive(:deserialize).with("{}").and_return({})
       @object.load({:headers => {"content-type" => ["application/json"]}, :body => "{}"})
-      @object.data.should == "{}"
+      @object.data.should == {}
     end
 
     it "should leave the object data unchanged if the response body is blank" do

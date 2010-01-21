@@ -129,18 +129,52 @@ module Riak
 
     alias :fetch :reload
 
-    # Serializes the internal object data for sending to Riak.
-    # @abstract Subclasses should redefine this method to provide richer functionality
-    # @param [Object] payload the data to serialize, providing internally when storing an object
+    # Serializes the internal object data for sending to Riak. Differs based on the content-type.
+    # This method is called internally when storing the object.
+    # Automatically serialized formats:
+    # * JSON (application/json)
+    # * YAML (text/yaml)
+    # * Marshal (application/octet-stream if meta['ruby-serialization'] == "Marshal")
+    # @param [Object] payload the data to serialize
     def serialize(payload)
-      payload.to_s
+      case @content_type
+      when /json/
+        ActiveSupport::JSON.encode(payload)
+      when /yaml/
+        YAML.dump(payload)
+      when "application/octet-stream"
+        if @meta['ruby-serialization'] == "Marshal"
+          Marshal.dump(payload)
+        else
+          payload.to_s
+        end
+      else
+        payload.to_s
+      end
     end
 
-    # Deserializes the internal object data from a Riak response
-    # @abstract Subclasses should redefine this method to provide richer functionality
+    # Deserializes the internal object data from a Riak response. Differs based on the content-type.
+    # This method is called internally when loading the object.
+    # Automatically deserialized formats:
+    # * JSON (application/json)
+    # * YAML (text/yaml)
+    # * Marshal (application/octet-stream if meta['ruby-serialization'] == "Marshal")
     # @param [String] body the serialized response body
     def deserialize(body)
-      body
+      case @content_type
+      when /json/
+        ActiveSupport::JSON.decode(body)
+      when /yaml/
+        YAML.load(body)
+      when "application/octet-stream"
+        if @meta['ruby-serialization'] == "Marshal"
+          Marshal.load(body)
+        else
+          body
+        end
+      else
+        body
+      end
     end
 
     # @return [String] A representation suitable for IRB and debugging output
