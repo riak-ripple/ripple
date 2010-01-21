@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rake'
+require 'rake/clean'
 
 begin
   require 'jeweler'
@@ -67,3 +68,6 @@ task :doc => :yard do
   cp_r File.join(original_dir, "doc", "."), docs_dir
   touch File.join(docs_dir, '.nojekyll')
 end
+
+CLOBBER.include(".yardoc")
+CLOBBER.include("doc")
