@@ -366,29 +366,6 @@ Deserializes the internal object data from a Riak response.
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#headers-instance_method" title="#headers (instance method)">- (Hash) <strong>headers</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc">
-HTTP header hash that will be sent along when storing the object.
-
-</span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (RObject) <strong>initialize</strong>(bucket, key = nil) </a>
     
 
@@ -485,6 +462,29 @@ Reload the object from Riak.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#reload_headers-instance_method" title="#reload_headers (instance method)">- (Hash) <strong>reload_headers</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+HTTP header hash that will be sent along when reloading the object.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#serialize-instance_method" title="#serialize (instance method)">- (Object) <strong>serialize</strong>(payload) </a>
     
 
@@ -522,6 +522,29 @@ Serializes the internal object data for sending to Riak.
   
     <span class="summary_desc">
 Store the object in Riak.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#store_headers-instance_method" title="#store_headers (instance method)">- (Hash) <strong>store_headers</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+HTTP header hash that will be sent along when storing the object.
 
 </span>
   
@@ -1275,96 +1298,15 @@ the serialized response body
       <pre class="lines">
 
 
-139
-140
-141</pre>
+142
+143
+144</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 139</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 142</span>
 
 <span class='def def kw'>def</span> <span class='deserialize identifier id'>deserialize</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
   <span class='body identifier id'>body</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="headers-instance_method">
-  
-    - (<tt>Hash</tt>) <strong>headers</strong> 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-HTTP header hash that will be sent along when storing the object
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-hash of HTTP Headers
-
-
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 77</span>
-
-<span class='def def kw'>def</span> <span class='headers identifier id'>headers</span>
-  <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='tap identifier id'>tap</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='hash identifier id'>hash</span><span class='bitor op'>|</span>
-    <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;Content-Type&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@content_type ivar id'>@content_type</span>
-    <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;X-Riak-Vclock&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@vclock ivar id'>@vclock</span> <span class='if if_mod kw'>if</span> <span class='@vclock ivar id'>@vclock</span>
-    <span class='unless unless kw'>unless</span> <span class='@links ivar id'>@links</span><span class='dot token'>.</span><span class='blank? fid id'>blank?</span>
-      <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;Link&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@links ivar id'>@links</span><span class='dot token'>.</span><span class='reject identifier id'>reject</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='l identifier id'>l</span><span class='bitor op'>|</span> <span class='l identifier id'>l</span><span class='dot token'>.</span><span class='rel identifier id'>rel</span> <span class='eq op'>==</span> <span class='string val'>&quot;up&quot;</span> <span class='rbrace token'>}</span><span class='dot token'>.</span><span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_s</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>&quot;, &quot;</span><span class='rparen token'>)</span>
-    <span class='end end kw'>end</span>
-    <span class='unless unless kw'>unless</span> <span class='@meta ivar id'>@meta</span><span class='dot token'>.</span><span class='blank? fid id'>blank?</span>
-      <span class='@meta ivar id'>@meta</span><span class='dot token'>.</span><span class='each identifier id'>each</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='k identifier id'>k</span><span class='comma token'>,</span><span class='v identifier id'>v</span><span class='bitor op'>|</span>
-        <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='dstring node'>&quot;X-Riak-Meta-#{k}&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='v identifier id'>v</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
-      <span class='end end kw'>end</span>
-    <span class='end end kw'>end</span>
-  <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -1415,12 +1357,12 @@ A representation suitable for IRB and debugging output
       <pre class="lines">
 
 
-144
-145
-146</pre>
+147
+148
+149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 144</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 147</span>
 
 <span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
   <span class='dstring node'>&quot;#&lt;#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}&gt;&quot;</span>
@@ -1626,38 +1568,87 @@ self
       <pre class="lines">
 
 
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
 122
 123
 124
-125</pre>
+125
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 111</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 122</span>
 
 <span class='def def kw'>def</span> <span class='reload identifier id'>reload</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='force identifier id'>force</span> <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='delete identifier id'>delete</span><span class='lparen token'>(</span><span class='symbol val'>:force</span><span class='rparen token'>)</span>
   <span class='return return kw'>return</span> <span class='self self kw'>self</span> <span class='unless unless_mod kw'>unless</span> <span class='@key ivar id'>@key</span> <span class='andop op'>&amp;&amp;</span> <span class='lparen token'>(</span><span class='@vclock ivar id'>@vclock</span> <span class='orop op'>||</span> <span class='force identifier id'>force</span><span class='rparen token'>)</span>
-  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='tap identifier id'>tap</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='h identifier id'>h</span><span class='bitor op'>|</span>
+  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='lbrack token'>[</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='integer val'>304</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='@key ivar id'>@key</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='reload_headers identifier id'>reload_headers</span><span class='rparen token'>)</span>
+  <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span> <span class='if if_mod kw'>if</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:code</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='integer val'>200</span>
+  <span class='self self kw'>self</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="reload_headers-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>reload_headers</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+HTTP header hash that will be sent along when reloading the object
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+hash of HTTP headers
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+94
+95
+96
+97
+98
+99</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 94</span>
+
+<span class='def def kw'>def</span> <span class='reload_headers identifier id'>reload_headers</span>
+  <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='tap identifier id'>tap</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='h identifier id'>h</span><span class='bitor op'>|</span>
     <span class='h identifier id'>h</span><span class='lbrack token'>[</span><span class='string val'>'If-None-Match'</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@etag ivar id'>@etag</span> <span class='if if_mod kw'>if</span> <span class='@etag ivar id'>@etag</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
     <span class='h identifier id'>h</span><span class='lbrack token'>[</span><span class='string val'>'If-Modified-Since'</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@last_modified ivar id'>@last_modified</span><span class='dot token'>.</span><span class='httpdate identifier id'>httpdate</span> <span class='if if_mod kw'>if</span> <span class='@last_modified ivar id'>@last_modified</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
-  <span class='end end kw'>end</span>
-  <span class='begin begin kw'>begin</span>
-    <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='@key ivar id'>@key</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
-    <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
-  <span class='rescue rescue kw'>rescue</span> <span class='FailedRequest constant id'>FailedRequest</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='fr identifier id'>fr</span>
-    <span class='raise identifier id'>raise</span> <span class='fr identifier id'>fr</span> <span class='unless unless_mod kw'>unless</span> <span class='fr identifier id'>fr</span><span class='dot token'>.</span><span class='code identifier id'>code</span> <span class='eq op'>==</span> <span class='integer val'>304</span>
-    <span class='self self kw'>self</span>
   <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -1718,12 +1709,12 @@ the data to serialize, providing internally when storing an object
       <pre class="lines">
 
 
-132
-133
-134</pre>
+135
+136
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 135</span>
 
 <span class='def def kw'>def</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
   <span class='payload identifier id'>payload</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
@@ -1862,6 +1853,25 @@ self
     </li>
   
 </ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+if the content_type is not defined
+
+
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1869,21 +1879,104 @@ self
       <pre class="lines">
 
 
-99
-100
-101
-102
-103
-104</pre>
+109
+110
+111
+112
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 109</span>
 
 <span class='def def kw'>def</span> <span class='store identifier id'>store</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;content_type is not defined!&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='@content_type ivar id'>@content_type</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
   <span class='params identifier id'>params</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='symbol val'>:returnbody</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='rparen token'>)</span>
   <span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='path identifier id'>path</span> <span class='assign token'>=</span> <span class='@key ivar id'>@key</span><span class='dot token'>.</span><span class='present? fid id'>present?</span> <span class='integer val'>? </span><span class='lbrack token'>[</span><span class='symbol val'>:put</span><span class='comma token'>,</span> <span class='dstring node'>&quot;#{@bucket.name}/#{@key}&quot;</span><span class='rbrack token'>]</span> <span class='colon op'>:</span> <span class='lbrack token'>[</span><span class='symbol val'>:post</span><span class='comma token'>,</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span><span class='rbrack token'>]</span>
-  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='integer val'>204</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='comma token'>,</span> <span class='params identifier id'>params</span><span class='comma token'>,</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
+  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='lbrack token'>[</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='integer val'>204</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='comma token'>,</span> <span class='params identifier id'>params</span><span class='comma token'>,</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='store_headers identifier id'>store_headers</span><span class='rparen token'>)</span>
   <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="store_headers-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>store_headers</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+HTTP header hash that will be sent along when storing the object
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+hash of HTTP Headers
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 77</span>
+
+<span class='def def kw'>def</span> <span class='store_headers identifier id'>store_headers</span>
+  <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='tap identifier id'>tap</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='hash identifier id'>hash</span><span class='bitor op'>|</span>
+    <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;Content-Type&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@content_type ivar id'>@content_type</span>
+    <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;X-Riak-Vclock&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@vclock ivar id'>@vclock</span> <span class='if if_mod kw'>if</span> <span class='@vclock ivar id'>@vclock</span>
+    <span class='unless unless kw'>unless</span> <span class='@links ivar id'>@links</span><span class='dot token'>.</span><span class='blank? fid id'>blank?</span>
+      <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;Link&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='@links ivar id'>@links</span><span class='dot token'>.</span><span class='reject identifier id'>reject</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='l identifier id'>l</span><span class='bitor op'>|</span> <span class='l identifier id'>l</span><span class='dot token'>.</span><span class='rel identifier id'>rel</span> <span class='eq op'>==</span> <span class='string val'>&quot;up&quot;</span> <span class='rbrace token'>}</span><span class='dot token'>.</span><span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_s</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>&quot;, &quot;</span><span class='rparen token'>)</span>
+    <span class='end end kw'>end</span>
+    <span class='unless unless kw'>unless</span> <span class='@meta ivar id'>@meta</span><span class='dot token'>.</span><span class='blank? fid id'>blank?</span>
+      <span class='@meta ivar id'>@meta</span><span class='dot token'>.</span><span class='each identifier id'>each</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='k identifier id'>k</span><span class='comma token'>,</span><span class='v identifier id'>v</span><span class='bitor op'>|</span>
+        <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='dstring node'>&quot;X-Riak-Meta-#{k}&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='v identifier id'>v</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
+      <span class='end end kw'>end</span>
+    <span class='end end kw'>end</span>
+  <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -1915,9 +2008,6 @@ Walks links from this object to other objects in Riak.
       <pre class="lines">
 
 
-149
-150
-151
 152
 153
 154
@@ -1925,10 +2015,13 @@ Walks links from this object to other objects in Riak.
 156
 157
 158
-159</pre>
+159
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 152</span>
 
 <span class='def def kw'>def</span> <span class='walk identifier id'>walk</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
   <span class='specs identifier id'>specs</span> <span class='assign token'>=</span> <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='normalize identifier id'>normalize</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
@@ -1952,7 +2045,7 @@ Walks links from this object to other objects in Riak.
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 21 09:12:21 2010 by 
+  Generated on Thu Jan 21 12:00:06 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

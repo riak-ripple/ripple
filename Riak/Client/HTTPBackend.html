@@ -333,6 +333,30 @@ Performs a PUT request to the specified resource on the Riak server.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#return_body%3F-instance_method" title="#return_body? (instance method)">- (Boolean) <strong>return_body?</strong>(method, code, has_block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Checks whether a combination of the HTTP method, response code, and block
+should result in returning the :body in the response hash.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#root_uri-instance_method" title="#root_uri (instance method)">- (URI) <strong>root_uri</strong> </a>
     
 
@@ -347,6 +371,29 @@ Performs a PUT request to the specified resource on the Riak server.
   
     <span class="summary_desc">
 The calculated root URI for the Riak HTTP endpoint.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid_response%3F-instance_method" title="#valid_response? (instance method)">- (Boolean) <strong>valid_response?</strong>(expected, actual) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Checks the expected response codes against the actual response code.
 
 </span>
   
@@ -731,7 +778,7 @@ yields successive chunks of the response body as strings
       
         &mdash;
         
-response data, containing only the :headers key
+response data, containing only the :headers and :code keys
 
 
       
@@ -748,7 +795,7 @@ response data, containing only the :headers key
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -757,7 +804,7 @@ response data, containing only the :headers key
       
         &mdash;
         
-the expected HTTP response code from Riak
+the expected HTTP response code(s) from Riak
 
 
       
@@ -794,7 +841,7 @@ that will be joined to the root URI
       
         &mdash;
         
-response data, containing :headers and :body keys
+response data, containing :headers, :code and :body keys
 
 
       
@@ -978,7 +1025,7 @@ yields successive chunks of the response body as strings
       
         &mdash;
         
-response data, containing only the :headers key
+response data, containing only the :headers and :code keys
 
 
       
@@ -995,7 +1042,7 @@ response data, containing only the :headers key
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1004,7 +1051,7 @@ response data, containing only the :headers key
       
         &mdash;
         
-the expected HTTP response code from Riak
+the expected HTTP response code(s) from Riak
 
 
       
@@ -1041,7 +1088,7 @@ that will be joined to the root URI
       
         &mdash;
         
-response data, containing :headers and :body keys
+response data, containing :headers, :body, and :code keys
 
 
       
@@ -1164,7 +1211,7 @@ custom headers to send with the request
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1173,7 +1220,7 @@ custom headers to send with the request
       
         &mdash;
         
-the expected HTTP response code from Riak
+the expected HTTP response code(s) from Riak
 
 
       
@@ -1210,7 +1257,7 @@ that will be joined to the root URI
       
         &mdash;
         
-response data, containing only the :headers key
+response data, containing only the :headers and :code keys
 
 
       
@@ -1432,7 +1479,7 @@ headers to send along with the request
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1441,7 +1488,7 @@ headers to send along with the request
       
         &mdash;
         
-the expected response code
+the expected response code(s)
 
 
       
@@ -1449,7 +1496,7 @@ the expected response code
   
     <li>
       
-        <span class='type'>(<tt>optional</tt>, <tt>String</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
         <span class='name'>body</span>
@@ -1499,8 +1546,8 @@ yielded as strings
       
         &mdash;
         
-response data, containing :headers and :body keys. Only :headers should be
-present when the body is streamed or the method is :head.
+response data, containing :headers, :code and :body keys. Only :headers and
+:code should be present when the body is streamed or the method is :head.
 
 
       
@@ -1533,12 +1580,12 @@ if a subclass does not implement this method
       <pre class="lines">
 
 
-183
-184
-185</pre>
+202
+203
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 183</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 202</span>
 
 <span class='def def kw'>def</span> <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
   <span class='raise identifier id'>raise</span> <span class='NotImplementedError constant id'>NotImplementedError</span>
@@ -1680,7 +1727,7 @@ yields successive chunks of the response body as strings
       
         &mdash;
         
-response data, containing only the :headers key
+response data, containing only the :headers and :code keys
 
 
       
@@ -1697,7 +1744,7 @@ response data, containing only the :headers key
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1706,7 +1753,7 @@ response data, containing only the :headers key
       
         &mdash;
         
-the expected HTTP response code from Riak
+the expected HTTP response code(s) from Riak
 
 
       
@@ -1760,7 +1807,7 @@ the request body to send to the server
       
         &mdash;
         
-response data, containing :headers and :body keys
+response data, containing :headers, :code and :body keys
 
 
       
@@ -1944,7 +1991,7 @@ yields successive chunks of the response body as strings
       
         &mdash;
         
-response data, containing only the :headers key
+response data, containing only the :headers and :code keys
 
 
       
@@ -1961,7 +2008,7 @@ response data, containing only the :headers key
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1970,7 +2017,7 @@ response data, containing only the :headers key
       
         &mdash;
         
-the expected HTTP response code from Riak
+the expected HTTP response code(s) from Riak
 
 
       
@@ -2024,7 +2071,7 @@ the request body to send to the server
       
         &mdash;
         
-response data, containing :headers and :body keys
+response data, containing :headers, :code, and :body keys
 
 
       
@@ -2070,6 +2117,123 @@ if the response code doesn&#8217;t match the expected response
   <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
   <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
   <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:put</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='uri identifier id'>uri</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="return_body?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>return_body?</strong>(method, code, has_block) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Checks whether a combination of the HTTP method, response code, and block
+should result in returning the :body in the response hash. Use internally
+when implementing <tt><a href="#perform-instance_method" title="Riak::Client::HTTPBackend#perform (method)">#perform</a></tt>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+        <span class='name'>method</span>
+      
+      
+      
+        &mdash;
+        
+the HTTP method
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>code</span>
+      
+      
+      
+        &mdash;
+        
+the received response code
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <span class='name'>has_block</span>
+      
+      
+      
+        &mdash;
+        
+whether a streaming block was passed to <tt><a href="#perform-instance_method" title="Riak::Client::HTTPBackend#perform (method)">#perform</a></tt>. Pass block_given? to
+this parameter.
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+whether to return the body in the response hash
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+187
+188
+189</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 187</span>
+
+<span class='def def kw'>def</span> <span class='return_body? fid id'>return_body?</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='code identifier id'>code</span><span class='comma token'>,</span> <span class='has_block identifier id'>has_block</span><span class='rparen token'>)</span>
+  <span class='method identifier id'>method</span> <span class='neq op'>!=</span> <span class='symbol val'>:head</span> <span class='andop op'>&amp;&amp;</span> <span class='notop op'>!</span><span class='valid_response? fid id'>valid_response?</span><span class='lparen token'>(</span><span class='lbrack token'>[</span><span class='integer val'>204</span><span class='comma token'>,</span><span class='integer val'>205</span><span class='comma token'>,</span><span class='integer val'>304</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='code identifier id'>code</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span> <span class='notop op'>!</span><span class='has_block identifier id'>has_block</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -2129,6 +2293,104 @@ The calculated root URI for the Riak HTTP endpoint
 
 <span class='def def kw'>def</span> <span class='root_uri identifier id'>root_uri</span>
   <span class='URI constant id'>URI</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='dstring node'>&quot;http://#{@client.host}:#{@client.port}&quot;</span><span class='comma token'>,</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='prefix identifier id'>prefix</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="valid_response?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>valid_response?</strong>(expected, actual) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Checks the expected response codes against the actual response code. Use
+internally when implementing <tt><a href="#perform-instance_method" title="Riak::Client::HTTPBackend#perform (method)">#perform</a></tt>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Fixnum</tt>, <tt>Array&lt;String,Fixnum&gt;</tt>)</span>
+      
+      
+        <span class='name'>expected</span>
+      
+      
+      
+        &mdash;
+        
+the expected response code(s)
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>actual</span>
+      
+      
+      
+        &mdash;
+        
+the received response code
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+whether the actual response code is acceptable given the expectations
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+177
+178
+179</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 177</span>
+
+<span class='def def kw'>def</span> <span class='valid_response? fid id'>valid_response?</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='comma token'>,</span> <span class='actual identifier id'>actual</span><span class='rparen token'>)</span>
+  <span class='Array constant id'>Array</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_i</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='actual identifier id'>actual</span><span class='dot token'>.</span><span class='to_i identifier id'>to_i</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -2317,7 +2579,7 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 21 09:12:23 2010 by 
+  Generated on Thu Jan 21 12:00:07 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
