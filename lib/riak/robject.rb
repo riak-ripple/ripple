@@ -30,7 +30,7 @@ module Riak
     attr_accessor :vclock
     alias_attribute :vector_clock, :vclock
 
-    # @return [Object] the data stored in Riak at this object's key. Varies in format by subclass, defaulting to String from the response body.
+    # @return [Object] the data stored in Riak at this object's key. Varies in format by content-type, defaulting to String from the response body.
     attr_accessor :data
 
     # @return [Array<Link>] an array of {Riak::Link} objects for relationships between this object and other resources
