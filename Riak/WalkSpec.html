@@ -1,0 +1,851 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Class: Riak::WalkSpec</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (W)</a> &raquo; 
+    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
+     &raquo; 
+    <span class="title">WalkSpec</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Riak::WalkSpec 
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Riak::WalkSpec</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/riak/walk_spec.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+The specification of how to follow links from one object to another in
+Riak, when using the link-walker resource. Example link-walking operation:
+</p>
+<pre class="code">
+  <span class='GET constant id'>GET</span> <span class='regexp val'>/raw/</span><span class='artists identifier id'>artists</span><span class='div op'>/</span><span class='REM constant id'>REM</span><span class='div op'>/</span><span class='albums identifier id'>albums</span><span class='comma token'>,</span><span class='_ identifier id'>_</span><span class='comma token'>,</span><span class='_ identifier id'>_</span><span class='div op'>/</span><span class='tracks identifier id'>tracks</span><span class='comma token'>,</span><span class='_ identifier id'>_</span><span class='comma token'>,</span><span class='integer val'>1</span>
+</pre>
+<p>
+This operation would have two WalkSpecs:
+</p>
+<pre class="code">
+  <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>'albums'</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>'tracks'</span><span class='comma token'>,</span> <span class='symbol val'>:result</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+  <h2>Instance Attribute Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#bucket-instance_method" title="#bucket (instance method)">- (String) <strong>bucket</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The bucket followed links should be restricted to.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#result-instance_method" title="#result (instance method)">- (Boolean) <strong>result</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Whether objects should be returned from this phase of link walking.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#tag-instance_method" title="#tag (instance method)">- (String) <strong>tag</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The &quot;riaktag&quot; or &quot;rel&quot; that followed links should be
+restricted to.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <h2>Class Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#normalize-class_method" title="normalize (class method)">+ (Object) <strong>normalize</strong>(*params) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Normalize a list of walk specs into WalkSpec objects.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+  <h2>Instance Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (WalkSpec) <strong>initialize</strong>(*args) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Creates a walk-spec for use in finding other objects in Riak.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_s-instance_method" title="#to_s (instance method)">- (Object) <strong>to_s</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Converts the walk-spec into the form required by the link-walker resource
+URL.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>initialize</strong>(hash) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>initialize</strong>(bucket, tag, result) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Creates a walk-spec for use in finding other objects in Riak.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>initialize</strong>(hash) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Creates a walk-spec from a hash.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>hash</span>
+      
+      
+      
+        &mdash;
+        
+options for the walk-spec
+
+
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    <h3>Options Hash (<tt>hash</tt>):</h3>
+    <ul class="option">
+      
+        <li>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="name">:bucket</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>&quot;_&quot;</tt>
+            
+          </span>
+          &mdash;
+the bucket the links should point to (default &#8216;_&#8217; is all)
+
+
+        </tr>
+      
+        <li>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="name">:tag</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>&quot;_&quot;</tt>
+            
+          </span>
+          &mdash;
+the tag to filter links by (default &#8216;_&#8217; is all)
+
+
+        </tr>
+      
+        <li>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="name">:result</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>false</tt>
+            
+          </span>
+          &mdash;
+whether to return results from following this link specification
+
+
+        </tr>
+      
+    </ul>
+  
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>initialize</strong>(bucket, tag, result) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Creates a walk-spec from a bucket-tag-result triple.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        
+the bucket the links should point to (default &#8216;_&#8217; is all)
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>tag</span>
+      
+      
+      
+        &mdash;
+        
+the tag to filter links by (default &#8216;_&#8217; is all)
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <span class='name'>result</span>
+      
+      
+      
+        &mdash;
+        
+whether to return results from following this link specification
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li>{Riak::RObject#walk}</li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 70</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
+  <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='flatten! fid id'>flatten!</span>
+  <span class='case case kw'>case</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='size identifier id'>size</span>
+  <span class='when when kw'>when</span> <span class='integer val'>1</span>
+    <span class='hash identifier id'>hash</span> <span class='assign token'>=</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='first identifier id'>first</span>
+    <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='dstring node'>&quot;invalid argument #{hash.inspect}&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='Hash constant id'>Hash</span> <span class='eqq op'>===</span> <span class='hash identifier id'>hash</span>
+    <span class='assign identifier id'>assign</span><span class='lparen token'>(</span><span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:bucket</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:tag</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:result</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='when when kw'>when</span> <span class='integer val'>3</span>
+    <span class='assign identifier id'>assign</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
+  <span class='else else kw'>else</span>
+    <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;wrong number of arguments (one Hash or bucket,tag,result required)&quot;</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="bucket=-instance_method"></span>
+      <span id="bucket-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="bucket-instance_method">
+  
+    - (<tt>String</tt>) <strong>bucket</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The bucket followed links should be restricted to. &quot;_&quot; represents
+all buckets.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+The bucket followed links should be restricted to. &quot;_&quot; represents
+all buckets.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 27</span>
+
+<span class='def def kw'>def</span> <span class='bucket identifier id'>bucket</span>
+  <span class='@bucket ivar id'>@bucket</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="result=-instance_method"></span>
+      <span id="result-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="result-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>result</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Whether objects should be returned from this phase of link walking. Default
+is false.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+Whether objects should be returned from this phase of link walking. Default
+is false.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+33
+34
+35</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 33</span>
+
+<span class='def def kw'>def</span> <span class='result identifier id'>result</span>
+  <span class='@result ivar id'>@result</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="tag=-instance_method"></span>
+      <span id="tag-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="tag-instance_method">
+  
+    - (<tt>String</tt>) <strong>tag</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The &quot;riaktag&quot; or &quot;rel&quot; that followed links should be
+restricted to. &quot;_&quot; represents all tags.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+The &quot;riaktag&quot; or &quot;rel&quot; that followed links should be
+restricted to. &quot;_&quot; represents all tags.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 30</span>
+
+<span class='def def kw'>def</span> <span class='tag identifier id'>tag</span>
+  <span class='@tag ivar id'>@tag</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="normalize-class_method">
+  
+    + (<tt>Object</tt>) <strong>normalize</strong>(*params) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Normalize a list of walk specs into WalkSpec objects.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 36</span>
+
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='normalize identifier id'>normalize</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
+  <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='flatten! fid id'>flatten!</span>
+  <span class='specs identifier id'>specs</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+  <span class='while while kw'>while</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='length identifier id'>length</span> <span class='gt op'>&gt;</span> <span class='integer val'>0</span>
+    <span class='param identifier id'>param</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span>
+    <span class='case case kw'>case</span> <span class='param identifier id'>param</span>
+    <span class='when when kw'>when</span> <span class='Hash constant id'>Hash</span>
+      <span class='specs identifier id'>specs</span> <span class='lshft op'>&lt;&lt;</span> <span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='param identifier id'>param</span><span class='rparen token'>)</span>
+    <span class='when when kw'>when</span> <span class='WalkSpec constant id'>WalkSpec</span>
+      <span class='specs identifier id'>specs</span> <span class='lshft op'>&lt;&lt;</span> <span class='param identifier id'>param</span>
+    <span class='else else kw'>else</span>
+      <span class='if if kw'>if</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='length identifier id'>length</span> <span class='geq op'>&gt;=</span> <span class='integer val'>2</span>
+        <span class='specs identifier id'>specs</span> <span class='lshft op'>&lt;&lt;</span> <span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='param identifier id'>param</span><span class='comma token'>,</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span><span class='comma token'>,</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span><span class='rparen token'>)</span>
+      <span class='else else kw'>else</span>
+        <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='dstring node'>&quot;too few arguments: #{params.inspect}&quot;</span>
+      <span class='end end kw'>end</span>
+    <span class='end end kw'>end</span>
+  <span class='end end kw'>end</span>
+  <span class='specs identifier id'>specs</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="to_s-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_s</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Converts the walk-spec into the form required by the link-walker resource
+URL
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+85
+86
+87</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 85</span>
+
+<span class='def def kw'>def</span> <span class='to_s identifier id'>to_s</span>
+  <span class='dstring node'>&quot;#{@bucket || '_'},#{@tag || '_'},#{@result ? '1' : '_'}&quot;</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Jan 20 19:47:59 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.3 (ruby-1.8.6).
+</div>
+
+  </body>
+</html>

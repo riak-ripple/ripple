@@ -238,6 +238,8 @@ The URL path prefix to the &quot;raw&quot; HTTP endpoint.
     
 
     
+      (also: #[])
+    
   </span>
   
   
@@ -305,7 +307,7 @@ Creates a client connection to Riak.
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#inspect-instance_method" title="#inspect (instance method)">- (Object) <strong>inspect</strong> </a>
+      <a href="#inspect-instance_method" title="#inspect (instance method)">- (String) <strong>inspect</strong> </a>
     
 
     
@@ -317,7 +319,10 @@ Creates a client connection to Riak.
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc">
+A representation suitable for IRB and debugging output.
+
+</span>
   
 </li>
 
@@ -754,6 +759,10 @@ The URL path prefix to the &quot;raw&quot; HTTP endpoint
   
 
   
+    <span class="aliases">Also known as:
+    <span class="names"><span id='[]-instance_method'>[]</span></span>
+    </span>
+  
 </p><div class="docstring">
   <div class="discussion">
     <p>
@@ -814,7 +823,7 @@ options for retrieving the bucket
     <ul class="option">
       
         <li>
-          <span class="type">(<tt>true</tt>, <tt>false</tt>)</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
           <span class="name">:keys</span>
           <span class="default">
             
@@ -829,7 +838,7 @@ whether to retrieve the bucket keys
         </tr>
       
         <li>
-          <span class="type">(<tt>true</tt>, <tt>false</tt>)</span>
+          <span class="type">(<tt>Boolean</tt>)</span>
           <span class="name">:props</span>
           <span class="default">
             
@@ -967,22 +976,52 @@ the HTTP backend for this client
       <div class="method_details ">
   <p class="signature " id="inspect-instance_method">
   
-    - (<tt>Object</tt>) <strong>inspect</strong> 
+    - (<tt>String</tt>) <strong>inspect</strong> 
   
 
   
-</p><table class="source_code">
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A representation suitable for IRB and debugging output.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+A representation suitable for IRB and debugging output.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-116
-117
-118</pre>
+118
+119
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 118</span>
 
 <span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
   <span class='dstring node'>&quot;#&lt;Riak::Client #{http.root_uri.to_s}&gt;&quot;</span>
@@ -998,7 +1037,7 @@ the HTTP backend for this client
 </div>
     
     <div id="footer">
-  Generated on Mon Jan 18 11:18:10 2010 by 
+  Generated on Wed Jan 20 19:48:00 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

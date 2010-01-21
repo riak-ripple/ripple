@@ -79,7 +79,18 @@
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Raised when Riak returns a response that is in an unexpected format
+</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
 
   
 
@@ -141,14 +152,14 @@ A new instance of InvalidResponse
       <pre class="lines">
 
 
-18
 19
 20
 21
-22</pre>
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/invalid_response.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/invalid_response.rb', line 19</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='comma token'>,</span> <span class='received identifier id'>received</span><span class='comma token'>,</span> <span class='extra identifier id'>extra</span><span class='assign token'>=</span><span class='string val'>&quot;&quot;</span><span class='rparen token'>)</span>
   <span class='expected identifier id'>expected</span> <span class='assign token'>=</span> <span class='expected identifier id'>expected</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span> <span class='if if_mod kw'>if</span> <span class='Hash constant id'>Hash</span> <span class='eqq op'>===</span> <span class='expected identifier id'>expected</span>
@@ -167,7 +178,7 @@ A new instance of InvalidResponse
 </div>
     
     <div id="footer">
-  Generated on Mon Jan 18 11:18:08 2010 by 
+  Generated on Wed Jan 20 19:48:00 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

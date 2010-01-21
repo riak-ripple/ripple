@@ -72,9 +72,7 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/riak/robject.rb<span class="defines">,<br />
-  lib/riak/robject.rb</span>
-</dd>
+    <dd class="r2 last">lib/riak/robject.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -92,28 +90,7 @@ database.
 </div>
 <div class="tags">
   
-</div><div id="subclasses">
-  <h2>Direct Known Subclasses</h2>
-  <p class="children"><a href="Binary.html" title="Riak::Binary (class)">Binary</a>, <a href="Document.html" title="Riak::Document (class)">Document</a></p>
 </div>
-
-  <h2>Constant Summary</h2>
-  
-    <dl class="constants">
-      
-        <dt id="SUBCLASS_PRIORITY-constant" class="">SUBCLASS_PRIORITY =
-            <span class="summary_desc">
-The order in which child classes will attempt instantiation when loading a
-response.
-
-</span>
-        </dt>
-        <dd><pre class="code"><span class='lbrack token'>[</span><span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Document constant id'>Document</span><span class='comma token'>,</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Binary constant id'>Binary</span><span class='comma token'>,</span> <span class='self self kw'>self</span><span class='rbrack token'>]</span>
-</pre></dd>
-      
-    </dl>
-  
-
 
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
@@ -359,60 +336,6 @@ The Riak vector clock for the object.
   </ul>
 
 
-  <h2>Class Method Summary</h2>
-
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#load-class_method" title="load (class method)">+ (Riak::RObject) <strong>load</strong>(bucket, key, response) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc">
-Load information for an object from a response given by
-<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>.
-
-</span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#matches%3F-class_method" title="matches? (class method)">+ (true, false) <strong>matches?</strong>(headers) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc">
-Detect whether this is an appropriate wrapper for the data received from
-Riak.
-
-</span>
-  
-</li>
-
-    
-  </ul>
-
   <h2>Instance Method Summary</h2>
 
   <ul class="summary">
@@ -491,7 +414,7 @@ Create a new object manually.
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#inspect-instance_method" title="#inspect (instance method)">- (Object) <strong>inspect</strong> </a>
+      <a href="#inspect-instance_method" title="#inspect (instance method)">- (String) <strong>inspect</strong> </a>
     
 
     
@@ -503,7 +426,10 @@ Create a new object manually.
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc">
+A representation suitable for IRB and debugging output.
+
+</span>
   
 </li>
 
@@ -602,6 +528,29 @@ Store the object in Riak.
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#walk-instance_method" title="#walk (instance method)">- (Object) <strong>walk</strong>(*params) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Walks links from this object to other objects in Riak.
+
+</span>
+  
+</li>
+
+    
   </ul>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -678,12 +627,12 @@ the object is saved.
       <pre class="lines">
 
 
-77
-78
-79</pre>
+52
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 52</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
   <span class='@bucket ivar id'>@bucket</span><span class='comma token'>,</span> <span class='@key ivar id'>@key</span> <span class='assign token'>=</span> <span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='key identifier id'>key</span>
@@ -745,12 +694,12 @@ the bucket in which this object is contained
       <pre class="lines">
 
 
-47
-48
-49</pre>
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 21</span>
 
 <span class='def def kw'>def</span> <span class='bucket identifier id'>bucket</span>
   <span class='@bucket ivar id'>@bucket</span>
@@ -807,12 +756,12 @@ the MIME content type of the object
       <pre class="lines">
 
 
-53
-54
-55</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 27</span>
 
 <span class='def def kw'>def</span> <span class='content_type identifier id'>content_type</span>
   <span class='@content_type ivar id'>@content_type</span>
@@ -871,12 +820,12 @@ subclass, defaulting to String from the response body.
       <pre class="lines">
 
 
-59
-60
-61</pre>
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 34</span>
 
 <span class='def def kw'>def</span> <span class='data identifier id'>data</span>
   <span class='@data ivar id'>@data</span>
@@ -935,12 +884,12 @@ reloading
       <pre class="lines">
 
 
-65
-66
-67</pre>
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 40</span>
 
 <span class='def def kw'>def</span> <span class='etag identifier id'>etag</span>
   <span class='@etag ivar id'>@etag</span>
@@ -997,12 +946,12 @@ the key of this object within its bucket
       <pre class="lines">
 
 
-50
-51
-52</pre>
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 24</span>
 
 <span class='def def kw'>def</span> <span class='key identifier id'>key</span>
   <span class='@key ivar id'>@key</span>
@@ -1061,12 +1010,12 @@ caching and reloading
       <pre class="lines">
 
 
-68
-69
-70</pre>
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 43</span>
 
 <span class='def def kw'>def</span> <span class='last_modified identifier id'>last_modified</span>
   <span class='@last_modified ivar id'>@last_modified</span>
@@ -1125,12 +1074,12 @@ other resources
       <pre class="lines">
 
 
-62
-63
-64</pre>
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 37</span>
 
 <span class='def def kw'>def</span> <span class='links identifier id'>links</span>
   <span class='@links ivar id'>@links</span>
@@ -1189,12 +1138,12 @@ on the trailing portion
       <pre class="lines">
 
 
-71
-72
-73</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 46</span>
 
 <span class='def def kw'>def</span> <span class='meta identifier id'>meta</span>
   <span class='@meta ivar id'>@meta</span>
@@ -1251,12 +1200,12 @@ the Riak vector clock for the object
       <pre class="lines">
 
 
-56
-57
-58</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 30</span>
 
 <span class='def def kw'>def</span> <span class='vclock identifier id'>vclock</span>
   <span class='@vclock ivar id'>@vclock</span>
@@ -1269,177 +1218,6 @@ the Riak vector clock for the object
     
   </div>
 
-
-  <div id="class_method_details" class="method_details_list">
-    <h2>Class Method Details</h2>
-    
-    
-      <div class="method_details first">
-  <p class="signature first" id="load-class_method">
-  
-    + (<tt><a href="" title="Riak::RObject (class)">Riak::RObject</a></tt>) <strong>load</strong>(bucket, key, response) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Load information for an object from a response given by
-<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>. Used mostly internally - use
-<tt><a href="Bucket.html#get-instance_method" title="Riak::Bucket#get (method)">Riak::Bucket#get</a></tt> to retrieve an <tt><a href="" title="Riak::RObject (class)">Riak::RObject</a></tt> instance.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <span class='name'>response</span>
-      
-      
-      
-        &mdash;
-        
-a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>
-
-
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><a href="" title="Riak::RObject (class)">Riak::RObject</a></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-an appropriate instance of a subclass of <tt><a href="" title="Riak::RObject (class)">Riak::RObject</a></tt>
-
-
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-34
-35
-36
-37</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 34</span>
-
-<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='response identifier id'>response</span><span class='rparen token'>)</span>
-  <span class='subclass identifier id'>subclass</span> <span class='assign token'>=</span> <span class='SUBCLASS_PRIORITY constant id'>SUBCLASS_PRIORITY</span><span class='dot token'>.</span><span class='find identifier id'>find</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='k identifier id'>k</span><span class='bitor op'>|</span> <span class='k identifier id'>k</span><span class='dot token'>.</span><span class='matches? fid id'>matches?</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
-  <span class='subclass identifier id'>subclass</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="matches?-class_method">
-  
-    + (<tt>true</tt>, <tt>false</tt>) <strong>matches?</strong>(headers) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Detect whether this is an appropriate wrapper for the data received from
-Riak
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        
-the headers hash received in the response
-
-
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        
-whether the data should be instantiated as this class
-
-
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-42
-43
-44</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 42</span>
-
-<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='matches? fid id'>matches?</span><span class='lparen token'>(</span><span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
-  <span class='true true kw'>true</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-  </div>
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
@@ -1497,12 +1275,12 @@ the serialized response body
       <pre class="lines">
 
 
-162
-163
-164</pre>
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 162</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 139</span>
 
 <span class='def def kw'>def</span> <span class='deserialize identifier id'>deserialize</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
   <span class='body identifier id'>body</span>
@@ -1556,23 +1334,23 @@ hash of HTTP Headers
       <pre class="lines">
 
 
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115</pre>
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 77</span>
 
 <span class='def def kw'>def</span> <span class='headers identifier id'>headers</span>
   <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='tap identifier id'>tap</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='hash identifier id'>hash</span><span class='bitor op'>|</span>
@@ -1597,22 +1375,52 @@ hash of HTTP Headers
       <div class="method_details ">
   <p class="signature " id="inspect-instance_method">
   
-    - (<tt>Object</tt>) <strong>inspect</strong> 
+    - (<tt>String</tt>) <strong>inspect</strong> 
   
 
   
-</p><table class="source_code">
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A representation suitable for IRB and debugging output
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+A representation suitable for IRB and debugging output
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-166
-167
-168</pre>
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 166</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 144</span>
 
 <span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
   <span class='dstring node'>&quot;#&lt;#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}&gt;&quot;</span>
@@ -1668,28 +1476,28 @@ a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPB
       <pre class="lines">
 
 
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98</pre>
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 58</span>
 
 <span class='def def kw'>def</span> <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
-  <span class='extract_header identifier id'>extract_header</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='comma token'>,</span> <span class='string val'>&quot;location&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:key</span><span class='rparen token'>)</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='v identifier id'>v</span><span class='bitor op'>|</span> <span class='v identifier id'>v</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='last identifier id'>last</span> <span class='rbrace token'>}</span>
+  <span class='extract_header identifier id'>extract_header</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='comma token'>,</span> <span class='string val'>&quot;location&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:key</span><span class='rparen token'>)</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='v identifier id'>v</span><span class='bitor op'>|</span> <span class='URI constant id'>URI</span><span class='dot token'>.</span><span class='unescape identifier id'>unescape</span><span class='lparen token'>(</span><span class='v identifier id'>v</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='last identifier id'>last</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
   <span class='extract_header identifier id'>extract_header</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='comma token'>,</span> <span class='string val'>&quot;content-type&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:content_type</span><span class='rparen token'>)</span>
   <span class='extract_header identifier id'>extract_header</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='comma token'>,</span> <span class='string val'>&quot;x-riak-vclock&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:vclock</span><span class='rparen token'>)</span>
   <span class='extract_header identifier id'>extract_header</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='comma token'>,</span> <span class='string val'>&quot;link&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:links</span><span class='rparen token'>)</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='v identifier id'>v</span><span class='bitor op'>|</span> <span class='Link constant id'>Link</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='v identifier id'>v</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
@@ -1818,24 +1626,24 @@ self
       <pre class="lines">
 
 
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148</pre>
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 111</span>
 
 <span class='def def kw'>def</span> <span class='reload identifier id'>reload</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='force identifier id'>force</span> <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='delete identifier id'>delete</span><span class='lparen token'>(</span><span class='symbol val'>:force</span><span class='rparen token'>)</span>
@@ -1910,12 +1718,12 @@ the data to serialize, providing internally when storing an object
       <pre class="lines">
 
 
-155
-156
-157</pre>
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 132</span>
 
 <span class='def def kw'>def</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
   <span class='payload identifier id'>payload</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
@@ -2016,6 +1824,23 @@ the &quot;dw&quot; parameter (Durable-write quorum)
 
         </tr>
       
+        <li>
+          <span class="type">(<tt>Boolean</tt>)</span>
+          <span class="name">:returnbody</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>true</tt>
+            
+          </span>
+          &mdash;
+whether to return the result of a successful write in the body of the
+response. Set to false for fire-and-forget updates, set to true to
+immediately have access to the object&#8217;s stored representation.
+
+
+        </tr>
+      
     </ul>
   
 <h3>Returns:</h3>
@@ -2044,19 +1869,77 @@ self
       <pre class="lines">
 
 
-123
-124
-125
-126
-127</pre>
+99
+100
+101
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 99</span>
 
 <span class='def def kw'>def</span> <span class='store identifier id'>store</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='params identifier id'>params</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='symbol val'>:returnbody</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='rparen token'>)</span>
   <span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='path identifier id'>path</span> <span class='assign token'>=</span> <span class='@key ivar id'>@key</span><span class='dot token'>.</span><span class='present? fid id'>present?</span> <span class='integer val'>? </span><span class='lbrack token'>[</span><span class='symbol val'>:put</span><span class='comma token'>,</span> <span class='dstring node'>&quot;#{@bucket.name}/#{@key}&quot;</span><span class='rbrack token'>]</span> <span class='colon op'>:</span> <span class='lbrack token'>[</span><span class='symbol val'>:post</span><span class='comma token'>,</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span><span class='rbrack token'>]</span>
-  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='integer val'>204</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
+  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='integer val'>204</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='comma token'>,</span> <span class='params identifier id'>params</span><span class='comma token'>,</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='rparen token'>)</span>
   <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="walk-instance_method">
+  
+    - (<tt>Object</tt>) <strong>walk</strong>(*params) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Walks links from this object to other objects in Riak.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 149</span>
+
+<span class='def def kw'>def</span> <span class='walk identifier id'>walk</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
+  <span class='specs identifier id'>specs</span> <span class='assign token'>=</span> <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='normalize identifier id'>normalize</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
+  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='@bucket ivar id'>@bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='@key ivar id'>@key</span><span class='comma token'>,</span> <span class='specs identifier id'>specs</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+  <span class='if if kw'>if</span> <span class='boundary identifier id'>boundary</span> <span class='assign token'>=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Util constant id'>Util</span><span class='colon2 op'>::</span><span class='Multipart constant id'>Multipart</span><span class='dot token'>.</span><span class='extract_boundary identifier id'>extract_boundary</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'content-type'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='first identifier id'>first</span><span class='rparen token'>)</span>
+    <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Util constant id'>Util</span><span class='colon2 op'>::</span><span class='Multipart constant id'>Multipart</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:body</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='boundary identifier id'>boundary</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='group identifier id'>group</span><span class='bitor op'>|</span>
+      <span class='map_walk_group identifier id'>map_walk_group</span><span class='lparen token'>(</span><span class='group identifier id'>group</span><span class='rparen token'>)</span>
+    <span class='end end kw'>end</span>
+  <span class='else else kw'>else</span>
+    <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+  <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -2069,7 +1952,7 @@ self
 </div>
     
     <div id="footer">
-  Generated on Mon Jan 18 11:18:09 2010 by 
+  Generated on Wed Jan 20 19:48:00 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

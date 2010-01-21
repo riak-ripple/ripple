@@ -44,8 +44,39 @@
     <div id="content"><div id='filecontents'><h1>ripple</h1>
 <p>ripple is a Ruby client/wrapper for Riak, Basho&#8217;s distributed database.</p>
 <h2>Dependencies</h2>
-<p>ripple requires ActiveSupport &gt;=2.3.  We highly recommend the &#8220;curb&#8221; gem for better <span class="caps">HTTP</span> client performance.</p>
-<h2>Note on Patches/Pull Requests</h2>
+<p>ripple requires ActiveSupport &gt;=2.3.  We highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
+<p>In development, you will also need these gems:</p>
+<ul>
+	<li>jeweler</li>
+	<li>rspec &gt;= 1.2.9</li>
+	<li>fakeweb &gt;= 1.2</li>
+	<li>curb &gt;= 0.6</li>
+	<li>rack &gt;= 1.0</li>
+	<li>yard &gt;= 0.5.2</li>
+</ul>
+<h2>Basic Example</h2>
+<pre class="code"><span class='require identifier id'>require</span> <span class='string val'>'riak'</span>
+
+<span class='comment val'># Create a client interface</span>
+<span class='client identifier id'>client</span> <span class='assign token'>=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Client constant id'>Client</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
+
+<span class='comment val'># Retrieve a bucket</span>
+<span class='bucket identifier id'>bucket</span> <span class='assign token'>=</span> <span class='client identifier id'>client</span><span class='dot token'>.</span><span class='bucket identifier id'>bucket</span><span class='lparen token'>(</span><span class='string val'>&quot;doc&quot;</span><span class='rparen token'>)</span>  <span class='comment val'># a Riak::Bucket</span>
+
+<span class='comment val'># Get an object from the bucket</span>
+<span class='object identifier id'>object</span> <span class='assign token'>=</span> <span class='bucket identifier id'>bucket</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='string val'>&quot;index.html&quot;</span><span class='rparen token'>)</span>   <span class='comment val'># a Riak::RObject</span>
+
+<span class='comment val'># Change the object's data and save</span>
+<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='string val'>&quot;&lt;html&gt;&lt;body&gt;Hello, world!&lt;/body&gt;&lt;/html&gt;&quot;</span>
+<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='store identifier id'>store</span>
+
+<span class='comment val'># Reload an object you already have</span>
+<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='reload identifier id'>reload</span>                  <span class='comment val'># Works if you have the key and vclock</span>
+<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='reload identifier id'>reload</span> <span class='symbol val'>:force</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span>   <span class='comment val'># Reloads whether you have the vclock or not</span>
+
+<span class='comment val'># Access more like a hash, client[bucket][key]</span>
+<span class='client identifier id'>client</span><span class='lbrack token'>[</span><span class='string val'>'doc'</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'index.html'</span><span class='rbrack token'>]</span>   <span class='comment val'># the Riak::RObject</span>
+</pre><h2>Note on Patches/Pull Requests</h2>
 <ul>
 	<li>Fork the project.  If you have already forked, use <code>git pull --rebase</code> to reapply your changes on top of the mainline. Example:
   <pre class="code">$ <span class='git identifier id'>git</span> <span class='checkout identifier id'>checkout</span> <span class='master identifier id'>master</span><span class='semicolon token'>;</span> <span class='git identifier id'>git</span> <span class='pull identifier id'>pull</span> <span class='minus op'>-</span><span class='minus op'>-</span><span class='rebase identifier id'>rebase</span> <span class='seancribbs identifier id'>seancribbs</span> <span class='master identifier id'>master</span>
@@ -62,7 +93,7 @@
 	<li>Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. <strong>Patches without specs will most often be ignored. Just do it, you&#8217;ll thank me later.</strong></li>
 	<li>Make your feature addition or bug fix. Make your specs and stories pass (green).</li>
 	<li>Run the suite using multiruby or rvm to ensure cross-version compatibility.</li>
-	<li>Commit, do not mess with Rakefile or <span class="caps">VERSION</span>.  If related to an existing issue in the tracker, include &#8220;Closes #X&#8221; in the commit message (where X is the issue number).</li>
+	<li>Commit, do not mess with Rakefile or <span class="caps">VERSION</span>.  If related to an existing issue in the <a href="http://github.com/seancribbs/ripple/issues">tracker</a>, include &#8220;Closes #X&#8221; in the commit message (where X is the issue number).</li>
 	<li>Send me a pull request.</li>
 </ul>
 <h2>License</h2>
@@ -71,7 +102,7 @@
 <p>Copyright &#169; 2010 Sean Cribbs, Sonian Inc., and Basho Technologies Inc.</p></div></div>
     
     <div id="footer">
-  Generated on Mon Jan 18 11:18:07 2010 by 
+  Generated on Wed Jan 20 19:47:58 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

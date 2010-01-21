@@ -80,7 +80,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Represents a link between various things in Riak
+Represents a link from one object to another in Riak
 </p>
 
 
@@ -230,6 +230,26 @@ A new instance of Link.
   <span class="summary_signature">
     
       <a href="#to_s-instance_method" title="#to_s (instance method)">- (Object) <strong>to_s</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_walk_spec-instance_method" title="#to_walk_spec (instance method)">- (Object) <strong>to_walk_spec</strong> </a>
     
 
     
@@ -500,7 +520,7 @@ an array of Riak::Link structs parsed from the header
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 28</span>
 
 <span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='header_string identifier id'>header_string</span><span class='rparen token'>)</span>
-  <span class='header_string identifier id'>header_string</span><span class='dot token'>.</span><span class='scan identifier id'>scan</span><span class='lparen token'>(</span><span class='regexp val'>%r{&lt;([^&gt;]+)&gt;\s*;\s*(?:rel|riaktag)=&quot;([^&quot;]+)&quot;}</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='match identifier id'>match</span><span class='bitor op'>|</span>
+  <span class='header_string identifier id'>header_string</span><span class='dot token'>.</span><span class='scan identifier id'>scan</span><span class='lparen token'>(</span><span class='regexp val'>%r{&lt;([^&gt;]+)&gt;\s*;\s*(?:rel|riaktag)=\&quot;([^\&quot;]+)\&quot;}</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='match identifier id'>match</span><span class='bitor op'>|</span>
     <span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>0</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
   <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
@@ -570,12 +590,45 @@ an array of Riak::Link structs parsed from the header
 </table>
 </div>
     
+      <div class="method_details ">
+  <p class="signature " id="to_walk_spec-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_walk_spec</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+44
+45
+46
+47
+48</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 44</span>
+
+<span class='def def kw'>def</span> <span class='to_walk_spec identifier id'>to_walk_spec</span>
+  <span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='object identifier id'>object</span> <span class='assign token'>=</span> <span class='$1 nth_ref id'>$1</span><span class='comma token'>,</span> <span class='$2 nth_ref id'>$2</span> <span class='if if_mod kw'>if</span> <span class='@url ivar id'>@url</span> <span class='match op'>=~</span> <span class='regexp val'>%r{/raw/([^/]+)/([^/]+)/?}</span>
+  <span class='raise identifier id'>raise</span> <span class='string val'>&quot;Can't convert a bucket link to a walk spec&quot;</span> <span class='if if_mod kw'>if</span> <span class='@rel ivar id'>@rel</span> <span class='eq op'>==</span> <span class='string val'>&quot;up&quot;</span> <span class='orop op'>||</span> <span class='object identifier id'>object</span><span class='dot token'>.</span><span class='nil? fid id'>nil?</span>
+  <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='symbol val'>:tag</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@rel ivar id'>@rel</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
     
     <div id="footer">
-  Generated on Mon Jan 18 11:18:10 2010 by 
+  Generated on Wed Jan 20 19:47:59 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

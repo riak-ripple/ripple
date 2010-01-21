@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Module: Riak::Util::Multipart</title>
+<link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (M)</a> &raquo; 
+    <span class='title'><a href="../../Riak.html" title="Riak (module)">Riak</a></span> &raquo; <span class='title'><a href="../Util.html" title="Riak::Util (module)">Util</a></span>
+     &raquo; 
+    <span class="title">Multipart</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: Riak::Util::Multipart 
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+      <dt class="r1">Extends:</dt>
+      <dd class="r1"><a href="" title="Riak::Util::Multipart (module)">Multipart</a></dd>
+      
+    
+  
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/riak/util/multipart.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Utility methods for handling multipart/mixed responses
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+
+  <h2>Instance Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#extract_boundary-instance_method" title="#extract_boundary (instance method)">- (String) <strong>extract_boundary</strong>(header_string) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Extracts the boundary string from a Content-Type header that is a multipart
+type.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse-instance_method" title="#parse (instance method)">- (Object) <strong>parse</strong>(data, boundary) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Parses a multipart/mixed body into its constituent parts, including nested
+multipart/mixed sections.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="extract_boundary-instance_method">
+  
+    - (<tt>String</tt>) <strong>extract_boundary</strong>(header_string) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Extracts the boundary string from a Content-Type header that is a multipart
+type
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>header_string</span>
+      
+      
+      
+        &mdash;
+        
+the Content-Type header
+
+
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+the boundary string separating each part
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+45
+46
+47</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/util/multipart.rb', line 45</span>
+
+<span class='def def kw'>def</span> <span class='extract_boundary identifier id'>extract_boundary</span><span class='lparen token'>(</span><span class='header_string identifier id'>header_string</span><span class='rparen token'>)</span>
+  <span class='$1 nth_ref id'>$1</span> <span class='if if_mod kw'>if</span> <span class='header_string identifier id'>header_string</span> <span class='match op'>=~</span> <span class='regexp val'>/boundary=([A-Za-z0-9\'()+_,-.\/:=?]+)/</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="parse-instance_method">
+  
+    - (<tt>Object</tt>) <strong>parse</strong>(data, boundary) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Parses a multipart/mixed body into its constituent parts, including nested
+multipart/mixed sections
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>data</span>
+      
+      
+      
+        &mdash;
+        
+the multipart body data
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>boundary</span>
+      
+      
+      
+        &mdash;
+        
+the boundary string given in the Content-Type header
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/util/multipart.rb', line 22</span>
+
+<span class='def def kw'>def</span> <span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='boundary identifier id'>boundary</span><span class='rparen token'>)</span>
+  <span class='contents identifier id'>contents</span> <span class='assign token'>=</span> <span class='data identifier id'>data</span><span class='dot token'>.</span><span class='match identifier id'>match</span><span class='lparen token'>(</span><span class='dregexp node'>/\n--#{Regexp.escape(boundary)}--\n/</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='pre_match identifier id'>pre_match</span> <span class='rescue rescue kw'>rescue</span> <span class='string val'>&quot;&quot;</span>
+  <span class='contents identifier id'>contents</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='dregexp node'>/\n--#{Regexp.escape(boundary)}\n/</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='reject identifier id'>reject</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:blank?</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='part identifier id'>part</span><span class='bitor op'>|</span>
+    <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='Headers constant id'>Headers</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
+    <span class='if if kw'>if</span> <span class='md identifier id'>md</span> <span class='assign token'>=</span> <span class='part identifier id'>part</span><span class='dot token'>.</span><span class='match identifier id'>match</span><span class='lparen token'>(</span><span class='regexp val'>/\r?\n\r?\n/</span><span class='rparen token'>)</span>
+      <span class='body identifier id'>body</span> <span class='assign token'>=</span> <span class='md identifier id'>md</span><span class='dot token'>.</span><span class='post_match identifier id'>post_match</span>
+      <span class='md identifier id'>md</span><span class='dot token'>.</span><span class='pre_match identifier id'>pre_match</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='regexp val'>/\r?\n/</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='each identifier id'>each</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='line identifier id'>line</span><span class='bitor op'>|</span>
+        <span class='headers identifier id'>headers</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='line identifier id'>line</span><span class='rparen token'>)</span>
+      <span class='end end kw'>end</span>
+
+      <span class='if if kw'>if</span> <span class='headers identifier id'>headers</span><span class='lbrack token'>[</span><span class='string val'>&quot;content-type&quot;</span><span class='rbrack token'>]</span> <span class='match op'>=~</span> <span class='regexp val'>/multipart\/mixed/</span>
+        <span class='boundary identifier id'>boundary</span> <span class='assign token'>=</span> <span class='extract_boundary identifier id'>extract_boundary</span><span class='lparen token'>(</span><span class='headers identifier id'>headers</span><span class='dot token'>.</span><span class='to_hash identifier id'>to_hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;content-type&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='first identifier id'>first</span><span class='rparen token'>)</span>
+        <span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='comma token'>,</span> <span class='boundary identifier id'>boundary</span><span class='rparen token'>)</span>
+      <span class='else else kw'>else</span>
+        <span class='lbrace token'>{</span><span class='symbol val'>:headers</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='headers identifier id'>headers</span><span class='dot token'>.</span><span class='to_hash identifier id'>to_hash</span><span class='comma token'>,</span> <span class='symbol val'>:body</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='body identifier id'>body</span><span class='rbrace token'>}</span>
+      <span class='end end kw'>end</span>
+    <span class='end end kw'>end</span>
+  <span class='end end kw'>end</span><span class='dot token'>.</span><span class='compact identifier id'>compact</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Wed Jan 20 19:48:00 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.3 (ruby-1.8.6).
+</div>
+
+  </body>
+</html>
