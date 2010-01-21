@@ -17,6 +17,8 @@ require 'uri'
 require 'net/http'
 require 'yaml'
 
+# The Riak module contains all aspects of the HTTP client interface
+# to Riak.
 module Riak
   # Domain objects
   autoload :Bucket,          "riak/bucket"
