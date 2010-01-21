@@ -351,7 +351,7 @@ The Riak vector clock for the object.
   
   
   
-  <span class="abstract note title">Abstract</span>
+  
   
 
   
@@ -493,7 +493,7 @@ HTTP header hash that will be sent along when reloading the object.
   
   
   
-  <span class="abstract note title">Abstract</span>
+  
   
 
   
@@ -1255,16 +1255,23 @@ the Riak vector clock for the object
   
 </p><div class="docstring">
   <div class="discussion">
-    <p class="note abstract">
-  <strong>This method is abstract.</strong> 
-  
-Subclasses should redefine this method to provide richer functionality
-
-
+    <p>
+Deserializes the internal object data from a Riak response. Differs based
+on the content-type. This method is called internally when loading the
+object. Automatically deserialized formats:
 </p>
-<p>
-Deserializes the internal object data from a Riak response
-</p>
+<ul>
+<li>JSON (application/json)
+
+</li>
+<li>YAML (text/yaml)
+
+</li>
+<li>Marshal (application/octet-stream if meta[&#8216;ruby-serialization&#8217;]
+== &quot;Marshal&quot;)
+
+</li>
+</ul>
 
 
   </div>
@@ -1298,15 +1305,41 @@ the serialized response body
       <pre class="lines">
 
 
-142
-143
-144</pre>
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 142</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 163</span>
 
 <span class='def def kw'>def</span> <span class='deserialize identifier id'>deserialize</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
-  <span class='body identifier id'>body</span>
+  <span class='case case kw'>case</span> <span class='@content_type ivar id'>@content_type</span>
+  <span class='when when kw'>when</span> <span class='regexp val'>/json/</span>
+    <span class='ActiveSupport constant id'>ActiveSupport</span><span class='colon2 op'>::</span><span class='JSON constant id'>JSON</span><span class='dot token'>.</span><span class='decode identifier id'>decode</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
+  <span class='when when kw'>when</span> <span class='regexp val'>/yaml/</span>
+    <span class='YAML constant id'>YAML</span><span class='dot token'>.</span><span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
+  <span class='when when kw'>when</span> <span class='string val'>&quot;application/octet-stream&quot;</span>
+    <span class='if if kw'>if</span> <span class='@meta ivar id'>@meta</span><span class='lbrack token'>[</span><span class='string val'>'ruby-serialization'</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='string val'>&quot;Marshal&quot;</span>
+      <span class='Marshal constant id'>Marshal</span><span class='dot token'>.</span><span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
+    <span class='else else kw'>else</span>
+      <span class='body identifier id'>body</span>
+    <span class='end end kw'>end</span>
+  <span class='else else kw'>else</span>
+    <span class='body identifier id'>body</span>
+  <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -1357,12 +1390,12 @@ A representation suitable for IRB and debugging output
       <pre class="lines">
 
 
-147
-148
-149</pre>
+181
+182
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 181</span>
 
 <span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
   <span class='dstring node'>&quot;#&lt;#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}&gt;&quot;</span>
@@ -1666,16 +1699,23 @@ hash of HTTP headers
   
 </p><div class="docstring">
   <div class="discussion">
-    <p class="note abstract">
-  <strong>This method is abstract.</strong> 
-  
-Subclasses should redefine this method to provide richer functionality
-
-
+    <p>
+Serializes the internal object data for sending to Riak. Differs based on
+the content-type. This method is called internally when storing the object.
+Automatically serialized formats:
 </p>
-<p>
-Serializes the internal object data for sending to Riak.
-</p>
+<ul>
+<li>JSON (application/json)
+
+</li>
+<li>YAML (text/yaml)
+
+</li>
+<li>Marshal (application/octet-stream if meta[&#8216;ruby-serialization&#8217;]
+== &quot;Marshal&quot;)
+
+</li>
+</ul>
 
 
   </div>
@@ -1695,7 +1735,7 @@ Serializes the internal object data for sending to Riak.
       
         &mdash;
         
-the data to serialize, providing internally when storing an object
+the data to serialize
 
 
       
@@ -1709,15 +1749,41 @@ the data to serialize, providing internally when storing an object
       <pre class="lines">
 
 
-135
-136
-137</pre>
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 135</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 139</span>
 
 <span class='def def kw'>def</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
-  <span class='payload identifier id'>payload</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
+  <span class='case case kw'>case</span> <span class='@content_type ivar id'>@content_type</span>
+  <span class='when when kw'>when</span> <span class='regexp val'>/json/</span>
+    <span class='ActiveSupport constant id'>ActiveSupport</span><span class='colon2 op'>::</span><span class='JSON constant id'>JSON</span><span class='dot token'>.</span><span class='encode identifier id'>encode</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
+  <span class='when when kw'>when</span> <span class='regexp val'>/yaml/</span>
+    <span class='YAML constant id'>YAML</span><span class='dot token'>.</span><span class='dump identifier id'>dump</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
+  <span class='when when kw'>when</span> <span class='string val'>&quot;application/octet-stream&quot;</span>
+    <span class='if if kw'>if</span> <span class='@meta ivar id'>@meta</span><span class='lbrack token'>[</span><span class='string val'>'ruby-serialization'</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='string val'>&quot;Marshal&quot;</span>
+      <span class='Marshal constant id'>Marshal</span><span class='dot token'>.</span><span class='dump identifier id'>dump</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
+    <span class='else else kw'>else</span>
+      <span class='payload identifier id'>payload</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
+    <span class='end end kw'>end</span>
+  <span class='else else kw'>else</span>
+    <span class='payload identifier id'>payload</span><span class='dot token'>.</span><span class='to_s identifier id'>to_s</span>
+  <span class='end end kw'>end</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -2008,20 +2074,20 @@ Walks links from this object to other objects in Riak.
       <pre class="lines">
 
 
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162</pre>
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 186</span>
 
 <span class='def def kw'>def</span> <span class='walk identifier id'>walk</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
   <span class='specs identifier id'>specs</span> <span class='assign token'>=</span> <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='normalize identifier id'>normalize</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
@@ -2045,7 +2111,7 @@ Walks links from this object to other objects in Riak.
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 21 12:00:06 2010 by 
+  Generated on Thu Jan 21 12:39:11 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
