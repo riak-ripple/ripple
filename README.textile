@@ -39,9 +39,9 @@ object.reload :force => true   # Reloads whether you have the vclock or not
 # Access more like a hash, client[bucket][key]
 client['doc']['index.html']   # the Riak::RObject</pre></notextile>
 
-h2. Note on Patches/Pull Requests
+h2. How to Contribute
  
-* Fork the project.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
+* Fork the project on "Github":http://github.com/seancribbs/ripple.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
   <notextile><pre>$ git checkout master
 $ git pull --rebase seancribbs master</pre></notextile>
 * Create a topic branch. If you've already created a topic branch, rebase it on top of changes from the mainline "master" branch. Examples:
