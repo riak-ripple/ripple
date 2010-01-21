@@ -4,7 +4,40 @@ ripple is a Ruby client/wrapper for Riak, Basho's distributed database.
 
 h2. Dependencies
 
-ripple requires ActiveSupport >=2.3.  We highly recommend the "curb" gem for better HTTP client performance.
+ripple requires ActiveSupport >=2.3.  We highly recommend the "curb":http://curb.rubyforge.org/ gem for better HTTP client performance.
+
+In development, you will also need these gems:
+
+* jeweler
+* rspec >= 1.2.9
+* fakeweb >= 1.2
+* curb >= 0.6
+* rack >= 1.0
+* yard >= 0.5.2
+
+h2. Basic Example
+
+<notextile><pre>require 'riak'
+
+# Create a client interface
+client = Riak::Client.new
+
+# Retrieve a bucket
+bucket = client.bucket("doc")  # a Riak::Bucket
+
+# Get an object from the bucket
+object = bucket.get("index.html")   # a Riak::RObject
+
+# Change the object's data and save
+object.data = "<html><body>Hello, world!</body></html>"
+object.store
+
+# Reload an object you already have
+object.reload                  # Works if you have the key and vclock
+object.reload :force => true   # Reloads whether you have the vclock or not
+
+# Access more like a hash, client[bucket][key]
+client['doc']['index.html']   # the Riak::RObject</pre></notextile>
 
 h2. Note on Patches/Pull Requests
  

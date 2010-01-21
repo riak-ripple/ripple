@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "ripple"
     gem.summary = %Q{ripple is a simple Ruby client/wrapper for Riak, Basho's distributed database.}
-    gem.description = %Q{ripple is a simple Ruby client for Riak, Basho's distributed database. It interacts with Riak via the "jiak" HTTP/JSON interface and models elements of the Riak database as Ruby objects.}
+    gem.description = %Q{ripple is a Ruby client for Riak, Basho's distributed database. It interacts with the "raw" HTTP interface to Riak, allowing storage of both traditional domain objects as JSON and other formats.}
     gem.email = "seancribbs@gmail.com"
     gem.homepage = "http://seancribbs.github.com/ripple"
     gem.authors = ["Sean Cribbs"]
@@ -17,7 +17,7 @@ begin
     gem.add_development_dependency "yard", ">=0.5.2"
     gem.add_development_dependency "curb", ">=0.6"
     gem.add_dependency "activesupport", ">=2.3"
-    gem.requirements << "curb gem for better performance"
+    gem.requirements << "`gem install curb` for better HTTP performance"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
