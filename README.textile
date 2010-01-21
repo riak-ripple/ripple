@@ -42,7 +42,8 @@ client['doc']['index.html']   # the Riak::RObject</pre></notextile>
 h2. Note on Patches/Pull Requests
  
 * Fork the project.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
-  <pre><notextile>$ git checkout master; git pull --rebase seancribbs master</notextile></pre>
+  <notextile><pre>$ git checkout master
+$ git pull --rebase seancribbs master</pre></notextile>
 * Create a topic branch. If you've already created a topic branch, rebase it on top of changes from the mainline "master" branch. Examples:
 ** New branch:
   <pre>$ git checkout -b topic</pre>
@@ -54,10 +55,18 @@ h2. Note on Patches/Pull Requests
 * Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the "tracker":http://github.com/seancribbs/ripple/issues, include "Closes #X" in the commit message (where X is the issue number).
 * Send me a pull request.
 
-h2. License
+h2. License & Copyright
 
-All included code is subject to the Apache 2.0 license.  See LICENSE for details.
+Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
 
-h2. Copyright
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-Copyright (c) 2010 Sean Cribbs, Sonian Inc., and Basho Technologies Inc.
+"http://www.apache.org/licenses/LICENSE-2.0":http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
