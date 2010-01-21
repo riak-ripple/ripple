@@ -1496,7 +1496,7 @@ the expected response code(s)
   
     <li>
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String</tt>, <tt>IO</tt>)</span>
       
       
         <span class='name'>body</span>
@@ -2565,7 +2565,7 @@ if the body or resource is missing, or if the body is not a String
     <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;You must supply both a resource path and a body.&quot;</span>
   <span class='end end kw'>end</span>
 
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Request body must be a string.&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Request body must be a string or IO.&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span> <span class='orop op'>||</span> <span class='IO constant id'>IO</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span>
   <span class='lbrack token'>[</span><span class='args identifier id'>args</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='rbrack token'>]</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -2579,7 +2579,7 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 21 12:39:13 2010 by 
+  Generated on Thu Jan 21 17:27:26 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
