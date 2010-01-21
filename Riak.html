@@ -57,8 +57,8 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak/util/headers.rb<span class="defines">,<br />
-  lib/riak.rb,<br /> lib/riak/link.rb,<br /> lib/riak/client.rb,<br /> lib/riak/bucket.rb,<br /> lib/riak/robject.rb,<br /> lib/riak/walk_spec.rb,<br /> lib/riak/util/multipart.rb,<br /> lib/riak/failed_request.rb,<br /> lib/riak/invalid_response.rb,<br /> lib/riak/client/http_backend.rb,<br /> lib/riak/client/curb_backend.rb,<br /> lib/riak/client/net_http_backend.rb</span>
+    <dd class="r1 last">lib/riak.rb<span class="defines">,<br />
+  lib/riak/link.rb,<br /> lib/riak/client.rb,<br /> lib/riak/bucket.rb,<br /> lib/riak/robject.rb,<br /> lib/riak/walk_spec.rb,<br /> lib/riak/util/headers.rb,<br /> lib/riak/util/multipart.rb,<br /> lib/riak/failed_request.rb,<br /> lib/riak/invalid_response.rb,<br /> lib/riak/client/http_backend.rb,<br /> lib/riak/client/curb_backend.rb,<br /> lib/riak/client/net_http_backend.rb</span>
 </dd>
   
 </dl>
@@ -67,21 +67,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
+The Riak module contains all aspects of the HTTP client interface to Riak.
 </p>
-<pre class="code">
-   <span class='Licensed constant id'>Licensed</span> <span class='under identifier id'>under</span> <span class='the identifier id'>the</span> <span class='Apache constant id'>Apache</span> <span class='License constant id'>License</span><span class='comma token'>,</span> <span class='Version constant id'>Version</span> <span class='float val'>2.0</span> <span class='lparen token'>(</span><span class='the identifier id'>the</span> <span class='string val'>&quot;License&quot;</span><span class='rparen token'>)</span><span class='semicolon token'>;</span>
-   <span class='you identifier id'>you</span> <span class='may identifier id'>may</span> <span class='not not kw'>not</span> <span class='use identifier id'>use</span> <span class='this identifier id'>this</span> <span class='file identifier id'>file</span> <span class='except identifier id'>except</span> <span class='in in kw'>in</span> <span class='compliance identifier id'>compliance</span> <span class='with identifier id'>with</span> <span class='the identifier id'>the</span> <span class='License constant id'>License</span><span class='dot token'>.</span>
-   <span class='You constant id'>You</span> <span class='may identifier id'>may</span> <span class='obtain identifier id'>obtain</span> <span class='a identifier id'>a</span> <span class='copy identifier id'>copy</span> <span class='of identifier id'>of</span> <span class='the identifier id'>the</span> <span class='License constant id'>License</span> <span class='at identifier id'>at</span>
-
-       <span class='http identifier id'>http</span><span class='symbol val'>:/</span><span class='regexp val'>/www.apache.org/</span><span class='licenses identifier id'>licenses</span><span class='div op'>/</span><span class='LICENSE constant id'>LICENSE</span><span class='minus op'>-</span><span class='float val'>2.0</span>
-
-   <span class='Unless constant id'>Unless</span> <span class='required identifier id'>required</span> <span class='by identifier id'>by</span> <span class='applicable identifier id'>applicable</span> <span class='law identifier id'>law</span> <span class='or or kw'>or</span> <span class='agreed identifier id'>agreed</span> <span class='to identifier id'>to</span> <span class='in in kw'>in</span> <span class='writing identifier id'>writing</span><span class='comma token'>,</span> <span class='software identifier id'>software</span>
-   <span class='distributed identifier id'>distributed</span> <span class='under identifier id'>under</span> <span class='the identifier id'>the</span> <span class='License constant id'>License</span> <span class='is identifier id'>is</span> <span class='distributed identifier id'>distributed</span> <span class='on identifier id'>on</span> <span class='an identifier id'>an</span> <span class='string val'>&quot;AS IS&quot;</span> <span class='BASIS constant id'>BASIS</span><span class='comma token'>,</span>
-   <span class='WITHOUT constant id'>WITHOUT</span> <span class='WARRANTIES constant id'>WARRANTIES</span> <span class='OR constant id'>OR</span> <span class='CONDITIONS constant id'>CONDITIONS</span> <span class='OF constant id'>OF</span> <span class='ANY constant id'>ANY</span> <span class='KIND constant id'>KIND</span><span class='comma token'>,</span> <span class='either identifier id'>either</span> <span class='express identifier id'>express</span> <span class='or or kw'>or</span> <span class='implied identifier id'>implied</span><span class='dot token'>.</span>
-   <span class='See constant id'>See</span> <span class='the identifier id'>the</span> <span class='License constant id'>License</span> <span class='for for kw'>for</span> <span class='the identifier id'>the</span> <span class='specific identifier id'>specific</span> <span class='language identifier id'>language</span> <span class='governing identifier id'>governing</span> <span class='permissions identifier id'>permissions</span> <span class='and and kw'>and</span>
-   <span class='limitations identifier id'>limitations</span> <span class='under identifier id'>under</span> <span class='the identifier id'>the</span> <span class='License constant id'>License</span><span class='dot token'>.</span>
-</pre>
 
 
   </div>
@@ -107,7 +94,7 @@ Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 20 19:48:00 2010 by 
+  Generated on Thu Jan 21 09:12:22 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

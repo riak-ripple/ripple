@@ -204,12 +204,12 @@ the boundary string separating each part
       <pre class="lines">
 
 
-45
-46
-47</pre>
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/util/multipart.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/util/multipart.rb', line 47</span>
 
 <span class='def def kw'>def</span> <span class='extract_boundary identifier id'>extract_boundary</span><span class='lparen token'>(</span><span class='header_string identifier id'>header_string</span><span class='rparen token'>)</span>
   <span class='$1 nth_ref id'>$1</span> <span class='if if_mod kw'>if</span> <span class='header_string identifier id'>header_string</span> <span class='match op'>=~</span> <span class='regexp val'>/boundary=([A-Za-z0-9\'()+_,-.\/:=?]+)/</span>
@@ -283,8 +283,6 @@ the boundary string given in the Content-Type header
       <pre class="lines">
 
 
-22
-23
 24
 25
 26
@@ -301,10 +299,12 @@ the boundary string given in the Content-Type header
 37
 38
 39
-40</pre>
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/util/multipart.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/util/multipart.rb', line 24</span>
 
 <span class='def def kw'>def</span> <span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='boundary identifier id'>boundary</span><span class='rparen token'>)</span>
   <span class='contents identifier id'>contents</span> <span class='assign token'>=</span> <span class='data identifier id'>data</span><span class='dot token'>.</span><span class='match identifier id'>match</span><span class='lparen token'>(</span><span class='dregexp node'>/\n--#{Regexp.escape(boundary)}--\n/</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='pre_match identifier id'>pre_match</span> <span class='rescue rescue kw'>rescue</span> <span class='string val'>&quot;&quot;</span>
@@ -336,7 +336,7 @@ the boundary string given in the Content-Type header
 </div>
     
     <div id="footer">
-  Generated on Wed Jan 20 19:48:00 2010 by 
+  Generated on Thu Jan 21 09:12:21 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
