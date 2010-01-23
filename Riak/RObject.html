@@ -1305,7 +1305,6 @@ the serialized response body
       <pre class="lines">
 
 
-163
 164
 165
 166
@@ -1320,10 +1319,11 @@ the serialized response body
 175
 176
 177
-178</pre>
+178
+179</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 163</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 164</span>
 
 <span class='def def kw'>def</span> <span class='deserialize identifier id'>deserialize</span><span class='lparen token'>(</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
   <span class='case case kw'>case</span> <span class='@content_type ivar id'>@content_type</span>
@@ -1390,12 +1390,12 @@ A representation suitable for IRB and debugging output
       <pre class="lines">
 
 
-181
 182
-183</pre>
+183
+184</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 181</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 182</span>
 
 <span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
   <span class='dstring node'>&quot;#&lt;#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}&gt;&quot;</span>
@@ -1764,12 +1764,14 @@ the data to serialize
 151
 152
 153
-154</pre>
+154
+155</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 139</span>
 
 <span class='def def kw'>def</span> <span class='serialize identifier id'>serialize</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
+  <span class='return return kw'>return</span> <span class='payload identifier id'>payload</span> <span class='if if_mod kw'>if</span> <span class='IO constant id'>IO</span> <span class='eqq op'>===</span> <span class='payload identifier id'>payload</span>
   <span class='case case kw'>case</span> <span class='@content_type ivar id'>@content_type</span>
   <span class='when when kw'>when</span> <span class='regexp val'>/json/</span>
     <span class='ActiveSupport constant id'>ActiveSupport</span><span class='colon2 op'>::</span><span class='JSON constant id'>JSON</span><span class='dot token'>.</span><span class='encode identifier id'>encode</span><span class='lparen token'>(</span><span class='payload identifier id'>payload</span><span class='rparen token'>)</span>
@@ -2074,7 +2076,6 @@ Walks links from this object to other objects in Riak.
       <pre class="lines">
 
 
-186
 187
 188
 189
@@ -2084,10 +2085,11 @@ Walks links from this object to other objects in Riak.
 193
 194
 195
-196</pre>
+196
+197</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 186</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/robject.rb', line 187</span>
 
 <span class='def def kw'>def</span> <span class='walk identifier id'>walk</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
   <span class='specs identifier id'>specs</span> <span class='assign token'>=</span> <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='normalize identifier id'>normalize</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
@@ -2111,7 +2113,7 @@ Walks links from this object to other objects in Riak.
 </div>
     
     <div id="footer">
-  Generated on Thu Jan 21 17:27:24 2010 by 
+  Generated on Sat Jan 23 14:53:59 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
