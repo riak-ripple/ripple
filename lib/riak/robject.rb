@@ -17,6 +17,8 @@ module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
   # the data and metadata stored in a bucket/key pair in the Riak database.
   class RObject
+    include Riak::Util
+    
     # @return [Bucket] the bucket in which this object is contained
     attr_accessor :bucket
 
@@ -187,8 +189,8 @@ module Riak
     def walk(*params)
       specs = WalkSpec.normalize(*params)
       response = @bucket.client.http.get(200, @bucket.name, @key, specs.join("/"))
-      if boundary = Riak::Util::Multipart.extract_boundary(response[:headers]['content-type'].first)
-        Riak::Util::Multipart.parse(response[:body], boundary).map do |group|
+      if boundary = Multipart.extract_boundary(response[:headers]['content-type'].first)
+        Multipart.parse(response[:body], boundary).map do |group|
           map_walk_group(group)
         end
       else
