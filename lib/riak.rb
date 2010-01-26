@@ -26,6 +26,7 @@ module Riak
   autoload :Link,            "riak/link"
   autoload :WalkSpec,        "riak/walk_spec"
   autoload :RObject,         "riak/robject"
+  autoload :MapReduce,       "riak/map_reduce"
 
   # Exceptions
   autoload :FailedRequest,   "riak/failed_request"
