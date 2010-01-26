@@ -181,7 +181,9 @@ module Riak
         end        
         @function = value
       end
-
+      
+      # Converts the phase to JSON for use while invoking a job.
+      # @return [String] a JSON representation of the phase
       def to_json(options={})
         obj = case type
               when :map, :reduce
