@@ -57,6 +57,7 @@ describe Riak::Client::HTTPBackend do
   it "should raise an error if a resource path is too short" do
     lambda { @backend.verify_path!(["/raw/"]) }.should raise_error(ArgumentError)
     lambda { @backend.verify_path!(["/raw/", "foo"]) }.should_not raise_error
+    lambda { @backend.verify_path!(["/mapred"]) }.should_not raise_error
   end
 
   describe "verify_path_and_body!" do

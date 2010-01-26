@@ -39,6 +39,19 @@ object.reload :force => true   # Reloads whether you have the vclock or not
 # Access more like a hash, client[bucket][key]
 client['doc']['index.html']   # the Riak::RObject</pre></notextile>
 
+h2. Map-Reduce Example
+
+<notextile><pre>
+
+# Assuming you've already instantiated a client, get the album titles for The Beatles
+results = Riak::MapReduce.new(client).
+                add("artists","Beatles").
+                link(:bucket => "albums").
+                map("function(v){ return [JSON.parse(v.values[0].data).title]; }").run
+
+p results # => [["Please Please Me", "With The Beatles", "A Hard Day's Night", "Beatles For Sale", "Help!", "Rubber Soul", 
+          #      "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]]</pre></notextile>
+
 h2. How to Contribute
  
 * Fork the project on "Github":http://github.com/seancribbs/ripple.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
