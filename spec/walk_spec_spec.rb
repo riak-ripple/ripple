@@ -20,37 +20,37 @@ describe Riak::WalkSpec do
         spec = Riak::WalkSpec.new({})
         spec.bucket.should == "_"
         spec.tag.should == "_"
-        spec.result.should be_false
+        spec.keep.should be_false
       end
 
       it "should extract the bucket" do
         spec = Riak::WalkSpec.new({:bucket => "foo"})
         spec.bucket.should == "foo"
         spec.tag.should == "_"
-        spec.result.should be_false
+        spec.keep.should be_false
       end
 
       it "should extract the tag" do
         spec = Riak::WalkSpec.new({:tag => "foo"})
         spec.bucket.should == "_"
         spec.tag.should == "foo"
-        spec.result.should be_false
+        spec.keep.should be_false
       end
 
-      it "should extract the result" do
-        spec = Riak::WalkSpec.new({:result => true})
+      it "should extract the keep" do
+        spec = Riak::WalkSpec.new({:keep => true})
         spec.bucket.should == "_"
         spec.tag.should == "_"
-        spec.result.should be_true
+        spec.keep.should be_true
       end
     end
 
-    describe "with three arguments for bucket, tag, and result" do
-      it "should assign the bucket, tag, and result" do
+    describe "with three arguments for bucket, tag, and keep" do
+      it "should assign the bucket, tag, and keep" do
         spec = Riak::WalkSpec.new("foo", "next", false)
         spec.bucket.should == "foo"
         spec.tag.should == "next"
-        spec.result.should be_false
+        spec.keep.should be_false
       end
 
       it "should make the bucket '_' when false or nil" do
@@ -67,11 +67,11 @@ describe Riak::WalkSpec do
         spec.tag.should == "_"
       end
 
-      it "should make the result false when false or nil" do
+      it "should make the keep false when false or nil" do
         spec = Riak::WalkSpec.new(nil, nil, nil)
-        spec.result.should be_false
+        spec.keep.should be_false
         spec = Riak::WalkSpec.new(nil, nil, false)
-        spec.result.should be_false
+        spec.keep.should be_false
       end
     end
 
@@ -101,15 +101,15 @@ describe Riak::WalkSpec do
       @spec.to_s.should == "_,next,_"
     end
 
-    it "should include the result when true" do
-      @spec.result = true
+    it "should include the keep when true" do
+      @spec.keep = true
       @spec.to_s.should == "_,_,1"
     end
   end
 
   describe "creating from a list of parameters" do
     it "should detect hashes and WalkSpecs interleaved with other parameters" do
-      specs = Riak::WalkSpec.normalize(nil,"next",nil,{:bucket => "foo"},Riak::WalkSpec.new({:tag => "child", :result => true}))
+      specs = Riak::WalkSpec.normalize(nil,"next",nil,{:bucket => "foo"},Riak::WalkSpec.new({:tag => "child", :keep => true}))
       specs.should have(3).items
       specs.should be_all {|s| s.kind_of?(Riak::WalkSpec) }
       specs.join("/").should == "_,next,_/foo,_,_/_,child,1"

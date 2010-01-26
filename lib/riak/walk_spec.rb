@@ -30,7 +30,7 @@ module Riak
     attr_accessor :tag
     
     # @return [Boolean] Whether objects should be returned from this phase of link walking. Default is false.
-    attr_accessor :result
+    attr_accessor :keep
 
     # Normalize a list of walk specs into WalkSpec objects.
     def self.normalize(*params)
@@ -60,12 +60,12 @@ module Riak
     #   @param [Hash] hash options for the walk-spec
     #   @option hash [String] :bucket ("_") the bucket the links should point to (default '_' is all)
     #   @option hash [String] :tag ("_") the tag to filter links by (default '_' is all)
-    #   @option hash [Boolean] :result (false) whether to return results from following this link specification
-    # @overload initialize(bucket, tag, result)
+    #   @option hash [Boolean] :keep (false) whether to return results from following this link specification
+    # @overload initialize(bucket, tag, keep)
     #   Creates a walk-spec from a bucket-tag-result triple.
     #   @param [String] bucket the bucket the links should point to (default '_' is all)
     #   @param [String] tag the tag to filter links by (default '_' is all)
-    #   @param [Boolean] result whether to return results from following this link specification
+    #   @param [Boolean] keep whether to return results from following this link specification
     # @see {Riak::RObject#walk}
     def initialize(*args)
       args.flatten!
@@ -73,7 +73,7 @@ module Riak
       when 1
         hash = args.first
         raise ArgumentError, "invalid argument #{hash.inspect}" unless Hash === hash
-        assign(hash[:bucket], hash[:tag], hash[:result])
+        assign(hash[:bucket], hash[:tag], hash[:keep])
       when 3
         assign(*args)
       else
@@ -83,14 +83,14 @@ module Riak
     
     # Converts the walk-spec into the form required by the link-walker resource URL
     def to_s
-      "#{@bucket || '_'},#{@tag || '_'},#{@result ? '1' : '_'}"
+      "#{@bucket || '_'},#{@tag || '_'},#{@keep ? '1' : '_'}"
     end
     
     private
     def assign(bucket, tag, result)
       @bucket = bucket || "_"
       @tag = tag || "_"
-      @result = result || false
+      @keep = result || false
     end
   end
 end
