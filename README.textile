@@ -62,7 +62,7 @@ $ git pull --rebase seancribbs master</pre></notextile>
   <pre>$ git checkout -b topic</pre>
 ** Existing branch:
   <pre>$ git rebase master</pre>
-* Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. *Patches without specs will most often be ignored. Just do it, you'll thank me later.*
+* Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. *Patches without specs will most often be ignored. Just do it, you'll thank me later.* Documentation patches need no specs, of course.
 * Make your feature addition or bug fix. Make your specs and stories pass (green).
 * Run the suite using multiruby or rvm to ensure cross-version compatibility.
 * Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the "tracker":http://github.com/seancribbs/ripple/issues, include "Closes #X" in the commit message (where X is the issue number).
