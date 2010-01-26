@@ -18,6 +18,14 @@ describe Riak::MapReduce do
     @mr.query.should == []
   end
 
+  it "should yield itself when given a block on initializing" do
+    @mr2 = nil
+    @mr = Riak::MapReduce.new(@client) do |mr|
+      @mr2 = mr
+    end
+    @mr2.should == @mr
+  end
+
   describe "adding inputs" do
     it "should return self for chaining" do
       @mr.add("foo", "bar").should == @mr

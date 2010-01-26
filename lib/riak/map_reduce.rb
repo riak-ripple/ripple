@@ -29,8 +29,10 @@ module Riak
     
     # Creates a new map-reduce job.
     # @param [Client] client the Riak::Client interface
+    # @yield [self] helpful for initializing the job
     def initialize(client)
       @client, @inputs, @query = client, [], []
+      yield self if block_given?
     end
     
     # Add or replace inputs for the job.
