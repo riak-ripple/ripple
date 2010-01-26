@@ -22,7 +22,7 @@ module Riak
     attr_accessor :inputs
 
     # @return [Array<Phase>] The map and reduce phases that will be executed
-    # @see map
+    # @see #map
     # @see #reduce
     # @see #link
     attr_accessor :query
