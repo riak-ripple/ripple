@@ -175,6 +175,32 @@ The host or IP address for the Riak endpoint.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#mapred-instance_method" title="#mapred (instance method)">- (String) <strong>mapred</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The URL path to the map-reduce HTTP endpoint.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#port-instance_method" title="#port (instance method)">- (Fixnum) <strong>port</strong> </a>
     
 
@@ -424,6 +450,21 @@ The URL path prefix to the &quot;raw&quot; HTTP endpoint
         </tr>
       
         <li>
+          <span class="type">(<tt>String</tt>)</span>
+          <span class="name">:mapred</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>'/mapred'</tt>
+            
+          </span>
+          &mdash;
+The path to the map-reduce HTTP endpoint
+
+
+        </tr>
+      
+        <li>
           <span class="type">(<tt>Fixnum</tt>, <tt>String</tt>)</span>
           <span class="name">:client_id</span>
           <span class="default">
@@ -466,24 +507,26 @@ raised if any options are invalid
       <pre class="lines">
 
 
-48
-49
-50
-51
 52
 53
 54
-55</pre>
+55
+56
+57
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 52</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
-  <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='assert_valid_keys identifier id'>assert_valid_keys</span><span class='lparen token'>(</span><span class='symbol val'>:host</span><span class='comma token'>,</span> <span class='symbol val'>:port</span><span class='comma token'>,</span> <span class='symbol val'>:prefix</span><span class='comma token'>,</span> <span class='symbol val'>:client_id</span><span class='rparen token'>)</span>
+  <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='assert_valid_keys identifier id'>assert_valid_keys</span><span class='lparen token'>(</span><span class='symbol val'>:host</span><span class='comma token'>,</span> <span class='symbol val'>:port</span><span class='comma token'>,</span> <span class='symbol val'>:prefix</span><span class='comma token'>,</span> <span class='symbol val'>:client_id</span><span class='comma token'>,</span> <span class='symbol val'>:mapred</span><span class='rparen token'>)</span>
   <span class='self self kw'>self</span><span class='dot token'>.</span><span class='host identifier id'>host</span>      <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:host</span><span class='rbrack token'>]</span>      <span class='orop op'>||</span> <span class='string val'>&quot;127.0.0.1&quot;</span>
   <span class='self self kw'>self</span><span class='dot token'>.</span><span class='port identifier id'>port</span>      <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:port</span><span class='rbrack token'>]</span>      <span class='orop op'>||</span> <span class='integer val'>8098</span>
   <span class='self self kw'>self</span><span class='dot token'>.</span><span class='client_id identifier id'>client_id</span> <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:client_id</span><span class='rbrack token'>]</span> <span class='orop op'>||</span> <span class='make_client_id identifier id'>make_client_id</span>
   <span class='self self kw'>self</span><span class='dot token'>.</span><span class='prefix identifier id'>prefix</span>    <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:prefix</span><span class='rbrack token'>]</span>    <span class='orop op'>||</span> <span class='string val'>&quot;/raw/&quot;</span>
+  <span class='self self kw'>self</span><span class='dot token'>.</span><span class='mapred identifier id'>mapred</span>    <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:mapred</span><span class='rbrack token'>]</span>    <span class='orop op'>||</span> <span class='string val'>&quot;/mapred&quot;</span>
   <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;You must specify a host and port, or use the defaults of 127.0.0.1:8098&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='@host ivar id'>@host</span> <span class='andop op'>&amp;&amp;</span> <span class='@port ivar id'>@port</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -614,6 +657,68 @@ The host or IP address for the Riak endpoint
 
 <span class='def def kw'>def</span> <span class='host identifier id'>host</span>
   <span class='@host ivar id'>@host</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="mapred=-instance_method"></span>
+      <span id="mapred-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="mapred-instance_method">
+  
+    - (<tt>String</tt>) <strong>mapred</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The URL path to the map-reduce HTTP endpoint
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+The URL path to the map-reduce HTTP endpoint
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 42</span>
+
+<span class='def def kw'>def</span> <span class='mapred identifier id'>mapred</span>
+  <span class='@mapred ivar id'>@mapred</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -880,18 +985,18 @@ the requested bucket
       <pre class="lines">
 
 
-110
-111
-112
-113
-114</pre>
+115
+116
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 115</span>
 
 <span class='def def kw'>def</span> <span class='bucket identifier id'>bucket</span><span class='lparen token'>(</span><span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='assert_valid_keys identifier id'>assert_valid_keys</span><span class='lparen token'>(</span><span class='symbol val'>:keys</span><span class='comma token'>,</span> <span class='symbol val'>:props</span><span class='rparen token'>)</span>
-  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='http identifier id'>http</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='http identifier id'>http</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='prefix identifier id'>prefix</span><span class='comma token'>,</span> <span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='Bucket constant id'>Bucket</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='self self kw'>self</span><span class='comma token'>,</span> <span class='name identifier id'>name</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -945,18 +1050,18 @@ the HTTP backend for this client
       <pre class="lines">
 
 
-94
-95
-96
-97
-98
 99
 100
 101
-102</pre>
+102
+103
+104
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 99</span>
 
 <span class='def def kw'>def</span> <span class='http identifier id'>http</span>
   <span class='@http ivar id'>@http</span> <span class='opasgn op'>||=</span> <span class='begin begin kw'>begin</span>
@@ -1016,12 +1121,12 @@ A representation suitable for IRB and debugging output.
       <pre class="lines">
 
 
-118
-119
-120</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client.rb', line 123</span>
 
 <span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
   <span class='dstring node'>&quot;#&lt;Riak::Client #{http.root_uri.to_s}&gt;&quot;</span>
@@ -1037,7 +1142,7 @@ A representation suitable for IRB and debugging output.
 </div>
     
     <div id="footer">
-  Generated on Tue Jan 26 14:00:39 2010 by 
+  Generated on Tue Jan 26 16:34:06 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

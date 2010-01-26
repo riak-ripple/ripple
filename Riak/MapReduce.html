@@ -272,6 +272,29 @@ Add a reduce phase to the job.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#run-instance_method" title="#run (instance method)">- (Array&lt;Array&gt;) <strong>run</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Executes this map-reduce job.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#to_json-instance_method" title="#to_json (instance method)">- (String) <strong>to_json</strong>(options = {}) </a>
     
 
@@ -1442,6 +1465,89 @@ self
 </div>
     
       <div class="method_details ">
+  <p class="signature " id="run-instance_method">
+  
+    - (<tt>Array&lt;Array&gt;</tt>) <strong>run</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Executes this map-reduce job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;Array&gt;</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+similar to link-walking, each element is an array of results from a phase
+where &quot;keep&quot; is true. The last phase will implicitly return
+values.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 133</span>
+
+<span class='def def kw'>def</span> <span class='run identifier id'>run</span>
+  <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='post identifier id'>post</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='mapred identifier id'>mapred</span><span class='comma token'>,</span> <span class='to_json identifier id'>to_json</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='string val'>&quot;Content-Type&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;application/json&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Accept&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;application/json&quot;</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='if if kw'>if</span> <span class='response identifier id'>response</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:[]</span><span class='comma token'>,</span> <span class='symbol val'>:headers</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:[]</span><span class='comma token'>,</span><span class='string val'>'content-type'</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='string val'>&quot;application/json&quot;</span><span class='rparen token'>)</span>
+    <span class='JSON constant id'>JSON</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:body</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='else else kw'>else</span>
+    <span class='response identifier id'>response</span>
+  <span class='end end kw'>end</span>
+<span class='rescue rescue kw'>rescue</span> <span class='FailedRequest constant id'>FailedRequest</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='fr identifier id'>fr</span>
+  <span class='if if kw'>if</span> <span class='fr identifier id'>fr</span><span class='dot token'>.</span><span class='code identifier id'>code</span> <span class='eq op'>==</span> <span class='integer val'>500</span> <span class='andop op'>&amp;&amp;</span> <span class='fr identifier id'>fr</span><span class='dot token'>.</span><span class='headers identifier id'>headers</span><span class='lbrack token'>[</span><span class='string val'>'content-type'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='string val'>&quot;application/json&quot;</span><span class='rparen token'>)</span>
+    <span class='raise identifier id'>raise</span> <span class='MapReduceError constant id'>MapReduceError</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='fr identifier id'>fr</span><span class='dot token'>.</span><span class='body identifier id'>body</span><span class='rparen token'>)</span>
+  <span class='else else kw'>else</span>
+    <span class='raise identifier id'>raise</span> <span class='fr identifier id'>fr</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <p class="signature " id="to_json-instance_method">
   
     - (<tt>String</tt>) <strong>to_json</strong>(options = {}) 
@@ -1505,7 +1611,7 @@ the JSON representation
 </div>
     
     <div id="footer">
-  Generated on Tue Jan 26 14:00:39 2010 by 
+  Generated on Tue Jan 26 16:34:05 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
