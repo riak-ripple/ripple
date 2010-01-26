@@ -133,7 +133,7 @@ The bucket followed links should be restricted to.
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#result-instance_method" title="#result (instance method)">- (Boolean) <strong>result</strong> </a>
+      <a href="#keep-instance_method" title="#keep (instance method)">- (Boolean) <strong>keep</strong> </a>
     
 
     
@@ -278,7 +278,7 @@ URL.
     
       <span class="overload">- (<tt>Object</tt>) <strong>initialize</strong>(hash) </span>
     
-      <span class="overload">- (<tt>Object</tt>) <strong>initialize</strong>(bucket, tag, result) </span>
+      <span class="overload">- (<tt>Object</tt>) <strong>initialize</strong>(bucket, tag, keep) </span>
     
   
 
@@ -370,7 +370,7 @@ the tag to filter links by (default &#8216;_&#8217; is all)
       
         <li>
           <span class="type">(<tt>Boolean</tt>)</span>
-          <span class="name">:result</span>
+          <span class="name">:keep</span>
           <span class="default">
             
               &mdash; default:
@@ -391,7 +391,7 @@ whether to return results from following this link specification
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt>Object</tt>) <strong>initialize</strong>(bucket, tag, result) </span>
+        <span class="signature">- (<tt>Object</tt>) <strong>initialize</strong>(bucket, tag, keep) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -444,7 +444,7 @@ the tag to filter links by (default &#8216;_&#8217; is all)
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <span class='name'>result</span>
+        <span class='name'>keep</span>
       
       
       
@@ -499,7 +499,7 @@ whether to return results from following this link specification
   <span class='when when kw'>when</span> <span class='integer val'>1</span>
     <span class='hash identifier id'>hash</span> <span class='assign token'>=</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='first identifier id'>first</span>
     <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='dstring node'>&quot;invalid argument #{hash.inspect}&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='Hash constant id'>Hash</span> <span class='eqq op'>===</span> <span class='hash identifier id'>hash</span>
-    <span class='assign identifier id'>assign</span><span class='lparen token'>(</span><span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:bucket</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:tag</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:result</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+    <span class='assign identifier id'>assign</span><span class='lparen token'>(</span><span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:bucket</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:tag</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='hash identifier id'>hash</span><span class='lbrack token'>[</span><span class='symbol val'>:keep</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
   <span class='when when kw'>when</span> <span class='integer val'>3</span>
     <span class='assign identifier id'>assign</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
   <span class='else else kw'>else</span>
@@ -582,12 +582,12 @@ all buckets.
 </div>
     
       
-      <span id="result=-instance_method"></span>
-      <span id="result-instance_method"></span>
+      <span id="keep=-instance_method"></span>
+      <span id="keep-instance_method"></span>
       <div class="method_details ">
-  <p class="signature " id="result-instance_method">
+  <p class="signature " id="keep-instance_method">
   
-    - (<tt>Boolean</tt>) <strong>result</strong> 
+    - (<tt>Boolean</tt>) <strong>keep</strong> 
   
 
   
@@ -636,8 +636,8 @@ is false.
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 33</span>
 
-<span class='def def kw'>def</span> <span class='result identifier id'>result</span>
-  <span class='@result ivar id'>@result</span>
+<span class='def def kw'>def</span> <span class='keep identifier id'>keep</span>
+  <span class='@keep ivar id'>@keep</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -829,7 +829,7 @@ URL
       <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 85</span>
 
 <span class='def def kw'>def</span> <span class='to_s identifier id'>to_s</span>
-  <span class='dstring node'>&quot;#{@bucket || '_'},#{@tag || '_'},#{@result ? '1' : '_'}&quot;</span>
+  <span class='dstring node'>&quot;#{@bucket || '_'},#{@tag || '_'},#{@keep ? '1' : '_'}&quot;</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -842,7 +842,7 @@ URL
 </div>
     
     <div id="footer">
-  Generated on Sat Jan 23 14:53:58 2010 by 
+  Generated on Tue Jan 26 13:43:39 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

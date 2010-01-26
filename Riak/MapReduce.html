@@ -1,0 +1,1493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Class: Riak::MapReduce</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (M)</a> &raquo; 
+    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
+     &raquo; 
+    <span class="title">MapReduce</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Riak::MapReduce 
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Riak::MapReduce</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/riak/map_reduce.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Class for invoking map-reduce jobs using the HTTP interface.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+  <h2>Instance Attribute Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#inputs-instance_method" title="#inputs (instance method)">- (Array&lt;[bucket,key]&gt;, String) <strong>inputs</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The bucket/keys for input to the job, or the bucket (all keys).
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#query-instance_method" title="#query (instance method)">- (Array&lt;Phase&gt;) <strong>query</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The map and reduce phases that will be executed.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+
+
+  <h2>Instance Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#add-instance_method" title="#add (instance method)">- (MapReduce) <strong>add</strong>(*params) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Add or replace inputs for the job.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (MapReduce) <strong>initialize</strong>(client) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Creates a new map-reduce job.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#link-instance_method" title="#link (instance method)">- (MapReduce) <strong>link</strong>(*params) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Add a link phase to the job.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#map-instance_method" title="#map (instance method)">- (MapReduce) <strong>map</strong>(*params) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Add a map phase to the job.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#reduce-instance_method" title="#reduce (instance method)">- (MapReduce) <strong>reduce</strong>(*params) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Add a reduce phase to the job.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_json-instance_method" title="#to_json (instance method)">- (String) <strong>to_json</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Convert the job to JSON for submission over the HTTP interface.
+
+</span>
+  
+</li>
+
+    
+  </ul>
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>) <strong>initialize</strong>(client) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Creates a new map-reduce job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="Client.html" title="Riak::Client (class)">Client</a></tt>)</span>
+      
+      
+        <span class='name'>client</span>
+      
+      
+      
+        &mdash;
+        
+the Riak::Client interface
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 32</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='rparen token'>)</span>
+  <span class='@client ivar id'>@client</span><span class='comma token'>,</span> <span class='@inputs ivar id'>@inputs</span><span class='comma token'>,</span> <span class='@query ivar id'>@query</span> <span class='assign token'>=</span> <span class='client identifier id'>client</span><span class='comma token'>,</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="inputs=-instance_method"></span>
+      <span id="inputs-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="inputs-instance_method">
+  
+    - (<tt>Array&lt;[bucket,key]&gt;</tt>, <tt>String</tt>) <strong>inputs</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The bucket/keys for input to the job, or the bucket (all keys).
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;[bucket,key]&gt;</tt>, <tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+The bucket/keys for input to the job, or the bucket (all keys).
+
+
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><a href="#add-instance_method" title="Riak::MapReduce#add (method)">#add</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 22</span>
+
+<span class='def def kw'>def</span> <span class='inputs identifier id'>inputs</span>
+  <span class='@inputs ivar id'>@inputs</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="query=-instance_method"></span>
+      <span id="query-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="query-instance_method">
+  
+    - (<tt>Array&lt;<a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a>&gt;</tt>) <strong>query</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The map and reduce phases that will be executed
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;<a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a>&gt;</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+The map and reduce phases that will be executed
+
+
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li>map</li>
+    
+      <li><a href="#reduce-instance_method" title="Riak::MapReduce#reduce (method)">#reduce</a></li>
+    
+      <li><a href="#link-instance_method" title="Riak::MapReduce#link (method)">#link</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+28
+29
+30</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 28</span>
+
+<span class='def def kw'>def</span> <span class='query identifier id'>query</span>
+  <span class='@query ivar id'>@query</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="add-instance_method">
+  
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>add</strong>(bucket) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>add</strong>(bucket, key) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>add</strong>(object) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>add</strong>(bucket, key, keydata) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Add or replace inputs for the job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>add</strong>(bucket) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Run the job across all keys in the bucket. This will replace any other
+inputs previously added.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        
+the bucket to run the job on
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>add</strong>(bucket, key) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Add a bucket/key pair to the job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        
+the bucket of the object
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>key</span>
+      
+      
+      
+        &mdash;
+        
+the key of the object
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>add</strong>(object) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Add an object to the job (by its bucket/key)
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="RObject.html" title="Riak::RObject (class)">RObject</a></tt>)</span>
+      
+      
+        <span class='name'>object</span>
+      
+      
+      
+        &mdash;
+        
+the object to add to the inputs
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>add</strong>(bucket, key, keydata) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        
+the bucket of the object
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>key</span>
+      
+      
+      
+        &mdash;
+        
+the key of the object
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <span class='name'>keydata</span>
+      
+      
+      
+        &mdash;
+        
+extra data to pass along with the object to the job
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+self
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 52</span>
+
+<span class='def def kw'>def</span> <span class='add identifier id'>add</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
+  <span class='params identifier id'>params</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='dup identifier id'>dup</span><span class='dot token'>.</span><span class='flatten identifier id'>flatten</span>
+  <span class='case case kw'>case</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='size identifier id'>size</span>
+  <span class='when when kw'>when</span> <span class='integer val'>1</span>
+    <span class='p identifier id'>p</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='first identifier id'>first</span>
+    <span class='case case kw'>case</span> <span class='p identifier id'>p</span>
+    <span class='when when kw'>when</span> <span class='Bucket constant id'>Bucket</span>
+      <span class='@inputs ivar id'>@inputs</span> <span class='assign token'>=</span> <span class='p identifier id'>p</span><span class='dot token'>.</span><span class='name identifier id'>name</span>
+    <span class='when when kw'>when</span> <span class='RObject constant id'>RObject</span>
+      <span class='@inputs ivar id'>@inputs</span> <span class='lshft op'>&lt;&lt;</span> <span class='lbrack token'>[</span><span class='p identifier id'>p</span><span class='dot token'>.</span><span class='bucket identifier id'>bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='p identifier id'>p</span><span class='dot token'>.</span><span class='key identifier id'>key</span><span class='rbrack token'>]</span>
+    <span class='when when kw'>when</span> <span class='String constant id'>String</span>
+      <span class='@inputs ivar id'>@inputs</span> <span class='assign token'>=</span> <span class='p identifier id'>p</span>
+    <span class='end end kw'>end</span>
+  <span class='when when kw'>when</span> <span class='float val'>2</span><span class='dot2 op'>..</span><span class='integer val'>3</span>
+    <span class='bucket identifier id'>bucket</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span>
+    <span class='bucket identifier id'>bucket</span> <span class='assign token'>=</span> <span class='bucket identifier id'>bucket</span><span class='dot token'>.</span><span class='name identifier id'>name</span> <span class='if if_mod kw'>if</span> <span class='Bucket constant id'>Bucket</span> <span class='eqq op'>===</span> <span class='bucket identifier id'>bucket</span>
+    <span class='@inputs ivar id'>@inputs</span> <span class='lshft op'>&lt;&lt;</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='unshift identifier id'>unshift</span><span class='lparen token'>(</span><span class='bucket identifier id'>bucket</span><span class='rparen token'>)</span>
+  <span class='end end kw'>end</span>
+  <span class='self self kw'>self</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="link-instance_method">
+  
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>link</strong>(walk_spec, options = {}) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>link</strong>(bucket, tag, keep, options = {}) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>link</strong>(options) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Add a link phase to the job. Link phases follow links attached to objects
+automatically (a special case of map).
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>link</strong>(walk_spec, options = {}) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a></tt>)</span>
+      
+      
+        <span class='name'>walk_spec</span>
+      
+      
+      
+        &mdash;
+        
+a WalkSpec that represents the types of links to follow
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+      
+        &mdash;
+        
+extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>link</strong>(bucket, tag, keep, options = {}) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        
+the bucket to limit links to
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+        <span class='name'>tag</span>
+      
+      
+      
+        &mdash;
+        
+the tag to limit links to
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <span class='name'>keep</span>
+      
+      
+      
+        &mdash;
+        
+whether to keep results of this phase (overrides the phase options)
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+      
+        &mdash;
+        
+extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>link</strong>(options) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+      
+        &mdash;
+        
+options for both the walk spec and link phase
+
+
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><a href="WalkSpec.html#initialize-instance_method" title="Riak::WalkSpec#initialize (method)">WalkSpec#initialize</a></li>
+    
+  </ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+self
+
+
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+115
+116
+117
+118
+119
+120
+121</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 115</span>
+
+<span class='def def kw'>def</span> <span class='link identifier id'>link</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
+  <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span>
+  <span class='walk_spec_options identifier id'>walk_spec_options</span> <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='slice! fid id'>slice!</span><span class='lparen token'>(</span><span class='symbol val'>:type</span><span class='comma token'>,</span> <span class='symbol val'>:function</span><span class='comma token'>,</span> <span class='symbol val'>:language</span><span class='comma token'>,</span> <span class='symbol val'>:arg</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='first identifier id'>first</span>
+  <span class='walk_spec identifier id'>walk_spec</span> <span class='assign token'>=</span> <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='normalize identifier id'>normalize</span><span class='lparen token'>(</span><span class='params identifier id'>params</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span> <span class='orop op'>||</span> <span class='walk_spec_options identifier id'>walk_spec_options</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='first identifier id'>first</span>
+  <span class='@query ivar id'>@query</span> <span class='lshft op'>&lt;&lt;</span> <span class='Phase constant id'>Phase</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='symbol val'>:type</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='symbol val'>:link</span><span class='comma token'>,</span> <span class='symbol val'>:function</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='walk_spec identifier id'>walk_spec</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+  <span class='self self kw'>self</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="map-instance_method">
+  
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>map</strong>(function) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>map</strong>(function?, options) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Add a map phase to the job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>map</strong>(function) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array</tt>)</span>
+      
+      
+        <span class='name'>function</span>
+      
+      
+      
+        &mdash;
+        
+a Javascript function that represents the phase, or an Erlang
+[module,function] pair
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>map</strong>(function?, options) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array</tt>)</span>
+      
+      
+        <span class='name'>function</span>
+      
+      
+      
+        &mdash;
+        
+a Javascript function that represents the phase, or an Erlang [module,
+function] pair
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+      
+        &mdash;
+        
+extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+self
+
+
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+81
+82
+83
+84
+85</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 81</span>
+
+<span class='def def kw'>def</span> <span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
+  <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span>
+  <span class='@query ivar id'>@query</span> <span class='lshft op'>&lt;&lt;</span> <span class='Phase constant id'>Phase</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='symbol val'>:type</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='symbol val'>:map</span><span class='comma token'>,</span> <span class='symbol val'>:function</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+  <span class='self self kw'>self</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="reduce-instance_method">
+  
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>reduce</strong>(function) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>reduce</strong>(function?, options) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Add a reduce phase to the job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>reduce</strong>(function) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array</tt>)</span>
+      
+      
+        <span class='name'>function</span>
+      
+      
+      
+        &mdash;
+        
+a Javascript function that represents the phase, or an Erlang
+[module,function] pair
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>reduce</strong>(function?, options) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>, <tt>Array</tt>)</span>
+      
+      
+        <span class='name'>function</span>
+      
+      
+      
+        &mdash;
+        
+a Javascript function that represents the phase, or an Erlang [module,
+function] pair
+
+
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+      
+        &mdash;
+        
+extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+
+
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+self
+
+
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+95
+96
+97
+98
+99</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 95</span>
+
+<span class='def def kw'>def</span> <span class='reduce identifier id'>reduce</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
+  <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span>
+  <span class='@query ivar id'>@query</span> <span class='lshft op'>&lt;&lt;</span> <span class='Phase constant id'>Phase</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='symbol val'>:type</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='symbol val'>:reduce</span><span class='comma token'>,</span> <span class='symbol val'>:function</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='shift identifier id'>shift</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+  <span class='self self kw'>self</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="to_json-instance_method">
+  
+    - (<tt>String</tt>) <strong>to_json</strong>(options = {}) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Convert the job to JSON for submission over the HTTP interface.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+the JSON representation
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+125
+126
+127</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 125</span>
+
+<span class='def def kw'>def</span> <span class='to_json identifier id'>to_json</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='lbrace token'>{</span><span class='string val'>&quot;inputs&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='inputs identifier id'>inputs</span><span class='comma token'>,</span> <span class='string val'>&quot;query&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='query identifier id'>query</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='to_json identifier id'>to_json</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Tue Jan 26 13:43:39 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.3 (ruby-1.8.6).
+</div>
+
+  </body>
+</html>
