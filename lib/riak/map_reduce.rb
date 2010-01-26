@@ -71,7 +71,9 @@ module Riak
       end
       self
     end
-
+    alias :<< :add
+    alias :include :add
+    
     # Add a map phase to the job.
     # @overload map(function)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair
