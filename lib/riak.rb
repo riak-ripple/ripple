@@ -31,7 +31,8 @@ module Riak
   # Exceptions
   autoload :FailedRequest,   "riak/failed_request"
   autoload :InvalidResponse, "riak/invalid_response"
-
+  autoload :MapReduceError,  "riak/map_reduce_error"
+  
   module Util
     autoload :Headers,       "riak/util/headers"
     autoload :Multipart,     "riak/util/multipart"

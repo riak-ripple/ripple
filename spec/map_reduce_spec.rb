@@ -128,7 +128,7 @@ describe Riak::MapReduce do
       phase.function.bucket.should == "foo"
       phase.keep.should be_true
     end
-    
+
     it "should accept a hash of options intermingled with the walk spec options" do
       @mr.link(:tag => "snakes", :arg => [1000])
       @mr.query.should have(1).items
@@ -139,7 +139,7 @@ describe Riak::MapReduce do
     end
   end
 
-  describe "converting to JSON for the job" do    
+  describe "converting to JSON for the job" do
     it "should include the inputs and query keys" do
       @mr.to_json.should =~ /"inputs":/
     end
@@ -159,6 +159,41 @@ describe Riak::MapReduce do
     it "should emit an array of inputs when there are multiple inputs" do
       @mr.add("foo","bar",1000).add("foo","baz")
       @mr.to_json.should include('"inputs":[["foo","bar",1000],["foo","baz"]]')
+    end
+  end
+
+  describe "executing the map reduce job" do
+    it "should issue POST request to the mapred endpoint" do
+      @http.should_receive(:post).with(200, "mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "{}"})
+      @mr.run
+    end
+
+    it "should vivify JSON responses" do
+      @http.stub!(:post).and_return(:headers => {'content-type' => ["application/json"]}, :body => '{"key":"value"}')
+      @mr.run.should == {"key" => "value"}
+    end
+
+    it "should return the full response hash for non-JSON responses" do
+      response = {:code => 200, :headers => {'content-type' => ["text/plain"]}, :body => 'This is some text.'}
+      @http.stub!(:post).and_return(response)
+      @mr.run.should == response
+    end
+
+    it "should interpret failed requests with JSON content-types as map reduce errors" do
+      @http.stub!(:post).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["application/json"]}, '{"error":"syntax error"}'))
+      lambda { @mr.run }.should raise_error(Riak::MapReduceError)
+      begin
+        @mr.run
+      rescue Riak::MapReduceError => mre
+        mre.message.should == '{"error":"syntax error"}'
+      else
+        fail "No exception raised!"
+      end
+    end
+
+    it "should re-raise non-JSON error responses" do
+      @http.stub!(:post).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["text/plain"]}, 'Oops, you bwoke it.'))
+      lambda { @mr.run }.should raise_error(Riak::FailedRequest)
     end
   end
 end
@@ -203,7 +238,7 @@ describe Riak::MapReduce::Phase do
     phase = Riak::MapReduce::Phase.new(:type => :map, :function => {:bucket => "jobs", :key => "awesome_map"})
     phase.language.should == "javascript"
   end
-  
+
   it "should accept a WalkSpec for the function when a link phase" do
     phase = Riak::MapReduce::Phase.new(:type => :link, :function => Riak::WalkSpec.new({}))
     phase.function.should be_kind_of(Riak::WalkSpec)
@@ -212,7 +247,7 @@ describe Riak::MapReduce::Phase do
   it "should raise an error if a WalkSpec is given for a phase type other than :link" do
     lambda { Riak::MapReduce::Phase.new(:type => :map, :function => Riak::WalkSpec.new({})) }.should raise_error(ArgumentError)
   end
-  
+
   describe "converting to JSON for the job" do
     before :each do
       @phase = Riak::MapReduce::Phase.new(:type => :map, :function => "")

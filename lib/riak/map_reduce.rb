@@ -26,7 +26,7 @@ module Riak
     # @see #reduce
     # @see #link
     attr_accessor :query
-    
+
     # Creates a new map-reduce job.
     # @param [Client] client the Riak::Client interface
     # @yield [self] helpful for initializing the job
@@ -34,7 +34,7 @@ module Riak
       @client, @inputs, @query = client, [], []
       yield self if block_given?
     end
-    
+
     # Add or replace inputs for the job.
     # @overload add(bucket)
     #   Run the job across all keys in the bucket.  This will replace any other inputs previously added.
@@ -85,7 +85,7 @@ module Riak
       @query << Phase.new({:type => :map, :function => params.shift}.merge(options))
       self
     end
-    
+
     # Add a reduce phase to the job.
     # @overload reduce(function)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair
@@ -127,7 +127,24 @@ module Riak
     def to_json(options={})
       {"inputs" => inputs, "query" => query}.to_json(options)
     end
-    
+
+    # Executes this map-reduce job.
+    # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true.  The last phase will implicitly return values.
+    def run
+      response = @client.http.post(200, "mapred", to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
+      if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
+        JSON.parse(response[:body])
+      else
+        response
+      end
+    rescue FailedRequest => fr
+      if fr.code == 500 && fr.headers['content-type'].include?("application/json")
+        raise MapReduceError.new(fr.body)
+      else
+        raise fr
+      end
+    end
+
     # Represents an individual phase in a map-reduce pipeline. Generally you'll want to call
     # methods of {MapReduce} instead of using this directly.
     class Phase
@@ -137,7 +154,7 @@ module Riak
       # @return [String, Array<String, String>, Hash, WalkSpec] For :map and :reduce types, the Javascript function to run (as a string or hash with bucket/key), or the module + function in Erlang to run. For a :link type, a {Riak::WalkSpec} or an equivalent hash.
       attr_accessor :function
 
-      # @return [String] the language of the phase's function - "javascript" or "erlang"
+      # @return [String] the language of the phase's function - "javascript" or "erlang". Meaningless for :link type phases.
       attr_accessor :language
 
       # @return [Boolean] whether results of this phase will be returned
@@ -145,7 +162,7 @@ module Riak
 
       # @return [Array] any extra static arguments to pass to the phase
       attr_accessor :arg
-      
+
       # Creates a phase in the map-reduce pipeline
       # @param [Hash] options options for the phase
       # @option options [Symbol] :type one of :map, :reduce, :link
@@ -160,12 +177,12 @@ module Riak
         self.keep = options[:keep] || false
         self.arg = options[:arg]
       end
-      
+
       def type=(value)
         raise ArgumentError, "type must be :map, :reduce, or :link" unless value.to_s =~ /^(map|reduce|link)$/i
         @type = value.to_s.downcase.to_sym
       end
-      
+
       def function=(value)
         case value
         when Array
@@ -180,10 +197,10 @@ module Riak
           raise ArgumentError, "WalkSpec is only valid for a function when the type is :link" unless type == :link
         else
           raise ArgumentError, "invalid value for function: #{value.inspect}"
-        end        
+        end
         @function = value
       end
-      
+
       # Converts the phase to JSON for use while invoking a job.
       # @return [String] a JSON representation of the phase
       def to_json(options={})
@@ -194,7 +211,7 @@ module Riak
                 when Hash
                   defaults.merge(function)
                 when String
-                  defaults.merge("source" => function)                  
+                  defaults.merge("source" => function)
                 when Array
                   defaults.merge("module" => function[0], "function" => function[1])
                 end
