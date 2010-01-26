@@ -61,12 +61,12 @@ module Riak
     # @return [Array<String>] Keys in this bucket
     def keys(options={})
       if block_given?
-        @client.http.get(200, name, {:props => false}, {}) do |chunk|
+        @client.http.get(200, @client.prefix, name, {:props => false}, {}) do |chunk|
           obj = JSON.parse(chunk) rescue {}
           yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
-        response = @client.http.get(200, name, {:props => false}, {})
+        response = @client.http.get(200, @client.prefix, name, {:props => false}, {})
         load(response)
       end
       @keys
@@ -80,7 +80,7 @@ module Riak
     def props=(properties)
       raise ArgumentError, "properties must be a Hash" unless Hash === properties
       body = {'props' => properties}.to_json
-      @client.http.put(204, name, body, {"Content-Type" => "application/json"})
+      @client.http.put(204, @client.prefix, name, body, {"Content-Type" => "application/json"})
       @props = properties
     end
 
@@ -91,14 +91,14 @@ module Riak
     # @return [Riak::RObject] the object
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key, options={})
-      response = @client.http.get(200, name, key, options, {})
+      response = @client.http.get(200, @client.prefix, name, key, options, {})
       RObject.new(self, key).load(response)
     end
     alias :[] :get
 
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
-      "#<Riak::Bucket #{client.http.path(name).to_s}#{" keys=#{keys.join(', ')}" if defined?(@keys)}>"
+      "#<Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{" keys=#{keys.join(', ')}" if defined?(@keys)}>"
     end
   end
 end

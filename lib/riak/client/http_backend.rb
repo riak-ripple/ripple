@@ -134,7 +134,7 @@ module Riak
 
       # @return [URI] The calculated root URI for the Riak HTTP endpoint
       def root_uri
-        URI.join("http://#{@client.host}:#{@client.port}", @client.prefix)
+        URI.parse("http://#{@client.host}:#{@client.port}")
       end
 
       # Calculates an absolute URI from a relative path specification
@@ -166,7 +166,8 @@ module Riak
       # @param [String, Array] resource the resource specification
       # @raise [ArgumentError] if the resource path is too short
       def verify_path!(resource)
-        raise ArgumentError, "Resource path too short" if Array(resource).flatten.empty?
+        resource = Array(resource).flatten
+        raise ArgumentError, "Resource path too short" unless resource.length > 1 || resource.include?(@client.mapred)
       end
       
       # Checks the expected response codes against the actual response code. Use internally when

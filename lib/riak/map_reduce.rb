@@ -131,7 +131,7 @@ module Riak
     # Executes this map-reduce job.
     # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true.  The last phase will implicitly return values.
     def run
-      response = @client.http.post(200, "mapred", to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
+      response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
       if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
         JSON.parse(response[:body])
       else

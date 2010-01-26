@@ -35,50 +35,48 @@ describe Riak::Client::HTTPBackend do
 
   it "should generate a root URI based on the client settings" do
     @backend.root_uri.should be_kind_of(URI)
-    @backend.root_uri.to_s.should == "http://127.0.0.1:8098/raw/"
-    @client.prefix = "jiak"
-    @backend.root_uri.to_s.should == "http://127.0.0.1:8098/jiak"
+    @backend.root_uri.to_s.should == "http://127.0.0.1:8098"
   end
 
   it "should compute a URI from a relative resource path" do
     @backend.path("baz").should be_kind_of(URI)
-    @backend.path("foo").to_s.should == "http://127.0.0.1:8098/raw/foo"
-    @backend.path("foo", "bar").to_s.should == "http://127.0.0.1:8098/raw/foo/bar"
-    @backend.path("/foo/bar").to_s.should == "http://127.0.0.1:8098/raw/foo/bar"
+    @backend.path("foo").to_s.should == "http://127.0.0.1:8098/foo"
+    @backend.path("foo", "bar").to_s.should == "http://127.0.0.1:8098/foo/bar"
+    @backend.path("/foo/bar").to_s.should == "http://127.0.0.1:8098/foo/bar"
   end
 
   it "should escape appropriate characters in a relative resource path" do
-    @backend.path("foo bar").to_s.should == "http://127.0.0.1:8098/raw/foo%20bar"
-    @backend.path("foo", "bar", {"param" => "a string"}).to_s.should == "http://127.0.0.1:8098/raw/foo/bar?param=a+string"
+    @backend.path("foo bar").to_s.should == "http://127.0.0.1:8098/foo%20bar"
+    @backend.path("foo", "bar", {"param" => "a string"}).to_s.should == "http://127.0.0.1:8098/foo/bar?param=a+string"
   end
 
   it "should compute a URI from a relative resource path with a hash of query parameters" do
-    @backend.path("baz", :r => 2).to_s.should == "http://127.0.0.1:8098/raw/baz?r=2"
+    @backend.path("baz", :r => 2).to_s.should == "http://127.0.0.1:8098/baz?r=2"
   end
 
   it "should raise an error if a resource path is too short" do
-    lambda { @backend.verify_path!([]) }.should raise_error(ArgumentError)
-    lambda { @backend.verify_path!(["foo"]) }.should_not raise_error
+    lambda { @backend.verify_path!(["/raw/"]) }.should raise_error(ArgumentError)
+    lambda { @backend.verify_path!(["/raw/", "foo"]) }.should_not raise_error
   end
 
   describe "verify_path_and_body!" do
     it "should separate the path and body from given arguments" do
-      uri, data = @backend.verify_path_and_body!(["foo", "This is the body."])
-      uri.should == ["foo"]
+      uri, data = @backend.verify_path_and_body!(["/raw/", "foo", "This is the body."])
+      uri.should == ["/raw/", "foo"]
       data.should == "This is the body."
     end
 
     it "should raise an error if the body is not a string or IO" do
-      lambda { @backend.verify_path_and_body!(["foo", nil]) }.should raise_error(ArgumentError)
-      lambda { @backend.verify_path_and_body!(["foo", File.open("spec/fixtures/cat.jpg")]) }.should_not raise_error(ArgumentError)
+      lambda { @backend.verify_path_and_body!(["/raw/", "foo", nil]) }.should raise_error(ArgumentError)
+      lambda { @backend.verify_path_and_body!(["/raw/", "foo", File.open("spec/fixtures/cat.jpg")]) }.should_not raise_error(ArgumentError)
     end
 
     it "should raise an error if a body is not given" do
-      lambda { @backend.verify_path_and_body!(["foo"])}.should raise_error(ArgumentError)
+      lambda { @backend.verify_path_and_body!(["/raw/", "foo"])}.should raise_error(ArgumentError)
     end
 
     it "should raise an error if a path is not given" do
-      lambda { @backend.verify_path_and_body!([])}.should raise_error(ArgumentError)
+      lambda { @backend.verify_path_and_body!(["/raw/"])}.should raise_error(ArgumentError)
     end
   end
   

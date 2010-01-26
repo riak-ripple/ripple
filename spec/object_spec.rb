@@ -276,14 +276,14 @@ describe Riak::RObject do
 
     describe "when the object has no key" do
       it "should issue a POST request to the bucket, and update the object properties (returning the body by default)" do
-        @http.should_receive(:post).with([200,204], "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
+        @http.should_receive(:post).with([200,204], "/raw/", "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
 
       it "should include persistence-tuning parameters in the query string" do
-        @http.should_receive(:post).with([200,204], "foo", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
+        @http.should_receive(:post).with([200,204], "/raw/", "foo", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store(:dw => 2)
       end
     end
@@ -294,14 +294,14 @@ describe Riak::RObject do
       end
 
       it "should issue a PUT request to the bucket, and update the object properties (returning the body by default)" do
-        @http.should_receive(:put).with([200,204], "foo/bar", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
+        @http.should_receive(:put).with([200,204], "/raw/", "foo/bar", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
 
       it "should include persistence-tuning parameters in the query string" do
-        @http.should_receive(:put).with([200,204], "foo/bar", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
+        @http.should_receive(:put).with([200,204], "/raw/", "foo/bar", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/raw/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store(:dw => 2)
       end
     end
@@ -336,7 +336,7 @@ describe Riak::RObject do
     it "should pass along the reload_headers" do
       @headers = {"If-None-Match" => "etag"}
       @object.should_receive(:reload_headers).and_return(@headers)
-      @http.should_receive(:get).with([200,304], "foo", "bar", {}, @headers).and_return({:code => 304})
+      @http.should_receive(:get).with([200,304], "/raw/", "foo", "bar", {}, @headers).and_return({:code => 304})
       @object.reload
     end
 
@@ -363,7 +363,7 @@ describe Riak::RObject do
     end
 
     it "should issue a GET request to the given walk spec" do
-      @http.should_receive(:get).with(200, "foo", "bar", "_,next,1").and_return(:headers => {"content-type" => ["multipart/mixed; boundary=12345"]}, :body => "\n--12345\nContent-Type: multipart/mixed; boundary=09876\n\n--09876--\n\n--12345--\n")
+      @http.should_receive(:get).with(200, "/raw/", "foo", "bar", "_,next,1").and_return(:headers => {"content-type" => ["multipart/mixed; boundary=12345"]}, :body => "\n--12345\nContent-Type: multipart/mixed; boundary=09876\n\n--09876--\n\n--12345--\n")
       @object.walk(nil,"next",true)
     end
 

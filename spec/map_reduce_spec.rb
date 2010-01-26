@@ -3,7 +3,7 @@ require File.expand_path("spec_helper", File.dirname(__FILE__))
 describe Riak::MapReduce do
   before :each do
     @client = Riak::Client.new
-    @http = mock("HTTPClient")
+    @http = mock("HTTPBackend")
     @client.stub!(:http).and_return(@http)
     @mr = Riak::MapReduce.new(@client)
   end
@@ -164,7 +164,7 @@ describe Riak::MapReduce do
 
   describe "executing the map reduce job" do
     it "should issue POST request to the mapred endpoint" do
-      @http.should_receive(:post).with(200, "mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "{}"})
+      @http.should_receive(:post).with(200, "/mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "{}"})
       @mr.run
     end
 

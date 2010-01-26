@@ -37,20 +37,25 @@ module Riak
 
     # @return [String] The URL path prefix to the "raw" HTTP endpoint
     attr_accessor :prefix
-
+    
+    # @return [String] The URL path to the map-reduce HTTP endpoint
+    attr_accessor :mapred
+    
     # Creates a client connection to Riak
     # @param [Hash] options configuration options for the client
     # @option options [String] :host ('127.0.0.1') The host or IP address for the Riak endpoint
     # @option options [Fixnum] :port (8098) The port of the Riak HTTP endpoint
     # @option options [String] :prefix ('/raw/') The URL path prefix to the "raw" HTTP endpoint
+    # @option options [String] :mapred ('/mapred') The path to the map-reduce HTTP endpoint
     # @option options [Fixnum, String] :client_id (rand(MAX_CLIENT_ID)) The internal client ID used by Riak to route responses
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
-      options.assert_valid_keys(:host, :port, :prefix, :client_id)
+      options.assert_valid_keys(:host, :port, :prefix, :client_id, :mapred)
       self.host      = options[:host]      || "127.0.0.1"
       self.port      = options[:port]      || 8098
       self.client_id = options[:client_id] || make_client_id
       self.prefix    = options[:prefix]    || "/raw/"
+      self.mapred    = options[:mapred]    || "/mapred"
       raise ArgumentError, "You must specify a host and port, or use the defaults of 127.0.0.1:8098" unless @host && @port
     end
 
@@ -109,7 +114,7 @@ module Riak
     # @return [Bucket] the requested bucket
     def bucket(name, options={})
       options.assert_valid_keys(:keys, :props)
-      response = http.get(200, name, options, {})
+      response = http.get(200, prefix, name, options, {})
       Bucket.new(self, name).load(response)
     end
     alias :[] :bucket

@@ -80,19 +80,19 @@ describe Riak::Bucket do
     end
 
     it "should load the keys if not present" do
-      @http.should_receive(:get).with(200, "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @http.should_receive(:get).with(200, "/raw/", "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       @bucket.keys.should == ["bar"]
     end
 
     it "should allow reloading of the keys" do
-      @http.should_receive(:get).with(200, "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @http.should_receive(:get).with(200, "/raw/","foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       do_load # Ensures they're already loaded
       @bucket.keys(:reload => true).should == ["bar"]
     end
 
     it "should allow streaming keys through block" do
       # pending "Needs support in the raw_http_resource"
-      @http.should_receive(:get).with(200, "foo", {:props => false}, {}).and_yield("{}").and_yield('{"keys":[]}').and_yield('{"keys":["bar"]}').and_yield('{"keys":["baz"]}')
+      @http.should_receive(:get).with(200, "/raw/","foo", {:props => false}, {}).and_yield("{}").and_yield('{"keys":[]}').and_yield('{"keys":["bar"]}').and_yield('{"keys":["baz"]}')
       all_keys = []
       @bucket.keys do |list|
         all_keys.concat(list)
@@ -101,7 +101,7 @@ describe Riak::Bucket do
     end
 
     it "should unescape key names" do
-      @http.should_receive(:get).with(200, "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
+      @http.should_receive(:get).with(200, "/raw/","foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
       @bucket.keys.should == ["bar baz"]
     end
   end
@@ -113,7 +113,7 @@ describe Riak::Bucket do
     end
 
     it "should PUT the new properties to the bucket" do
-      @http.should_receive(:put).with(204, "foo", '{"props":{"name":"foo"}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
+      @http.should_receive(:put).with(204, "/raw/","foo", '{"props":{"name":"foo"}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
       @bucket.props = { :name => "foo" }
     end
 
@@ -129,12 +129,12 @@ describe Riak::Bucket do
     end
 
     it "should load the object from the server as a Riak::RObject" do
-      @http.should_receive(:get).with(200, "foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @http.should_receive(:get).with(200, "/raw/","foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @bucket.get("db").should be_kind_of(Riak::RObject)
     end
 
     it "should use the given query parameters (for R value, etc)" do
-      @http.should_receive(:get).with(200, "foo", "db", {:r => 2}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @http.should_receive(:get).with(200, "/raw/","foo", "db", {:r => 2}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @bucket.get("db", :r => 2).should be_kind_of(Riak::RObject)
     end
   end

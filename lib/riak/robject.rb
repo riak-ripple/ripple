@@ -112,7 +112,7 @@ module Riak
       raise ArgumentError, "content_type is not defined!" unless @content_type.present?
       params = {:returnbody => true}.merge(options)
       method, path = @key.present? ? [:put, "#{@bucket.name}/#{@key}"] : [:post, @bucket.name]
-      response = @bucket.client.http.send(method, [200, 204], path, params, serialize(data), store_headers)
+      response = @bucket.client.http.send(method, [200, 204], @bucket.client.prefix, path, params, serialize(data), store_headers)
       load(response)
     end
 
@@ -124,7 +124,7 @@ module Riak
     def reload(options={})
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
-      response = @bucket.client.http.get([200, 304], @bucket.name, @key, options, reload_headers)
+      response = @bucket.client.http.get([200, 304], @bucket.client.prefix, @bucket.name, @key, options, reload_headers)
       load(response) if response[:code] == 200
       self
     end
@@ -188,7 +188,7 @@ module Riak
     # Walks links from this object to other objects in Riak.
     def walk(*params)
       specs = WalkSpec.normalize(*params)
-      response = @bucket.client.http.get(200, @bucket.name, @key, specs.join("/"))
+      response = @bucket.client.http.get(200, @bucket.client.prefix, @bucket.name, @key, specs.join("/"))
       if boundary = Multipart.extract_boundary(response[:headers]['content-type'].first)
         Multipart.parse(response[:body], boundary).map do |group|
           map_walk_group(group)
