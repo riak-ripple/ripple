@@ -279,6 +279,12 @@ describe Riak::MapReduce::Phase do
           @phase.to_json.should =~ /"source":/
         end
 
+        it "should include the function name when the function is not a lambda" do
+          @phase.function = "Riak.mapValues"
+          @phase.to_json.should include('"name":"Riak.mapValues"')
+          @phase.to_json.should_not include('"source"')
+        end
+        
         it "should include the bucket and key when referring to a stored function" do
           @phase.function = {:bucket => "design", :key => "wordcount_map"}
           @phase.to_json.should include('"bucket":"design"')

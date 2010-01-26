@@ -49,8 +49,8 @@ results = Riak::MapReduce.new(client).
                 link(:bucket => "albums").
                 map("function(v){ return [JSON.parse(v.values[0].data).title]; }").run
 
-p results # => [["Please Please Me", "With The Beatles", "A Hard Day's Night", "Beatles For Sale", "Help!", "Rubber Soul", 
-          #      "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]]</pre></notextile>
+p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night", "Beatles For Sale", "Help!", "Rubber Soul",
+          #      "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]</pre></notextile>
 
 h2. How to Contribute
  

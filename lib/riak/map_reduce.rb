@@ -213,7 +213,11 @@ module Riak
                 when Hash
                   defaults.merge(function)
                 when String
-                  defaults.merge("source" => function)
+                  if function =~ /\s*function/
+                    defaults.merge("source" => function)
+                  else
+                    defaults.merge("name" => function)
+                  end
                 when Array
                   defaults.merge("module" => function[0], "function" => function[1])
                 end
