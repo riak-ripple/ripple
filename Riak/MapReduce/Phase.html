@@ -417,16 +417,16 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-173
-174
 175
 176
 177
 178
-179</pre>
+179
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 175</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='self self kw'>self</span><span class='dot token'>.</span><span class='type identifier id'>type</span> <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:type</span><span class='rbrack token'>]</span>
@@ -492,12 +492,12 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-164
-165
-166</pre>
+166
+167
+168</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 166</span>
 
 <span class='def def kw'>def</span> <span class='arg identifier id'>arg</span>
   <span class='@arg ivar id'>@arg</span>
@@ -558,12 +558,12 @@ hash with bucket/key), or the module + function in Erlang to run. For a
       <pre class="lines">
 
 
-155
-156
-157</pre>
+157
+158
+159</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 157</span>
 
 <span class='def def kw'>def</span> <span class='function identifier id'>function</span>
   <span class='@function ivar id'>@function</span>
@@ -620,12 +620,12 @@ whether results of this phase will be returned
       <pre class="lines">
 
 
-161
-162
-163</pre>
+163
+164
+165</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 161</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 163</span>
 
 <span class='def def kw'>def</span> <span class='keep identifier id'>keep</span>
   <span class='@keep ivar id'>@keep</span>
@@ -684,12 +684,12 @@ the language of the phase&#8217;s function - &quot;javascript&quot; or
       <pre class="lines">
 
 
-158
-159
-160</pre>
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 158</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 160</span>
 
 <span class='def def kw'>def</span> <span class='language identifier id'>language</span>
   <span class='@language ivar id'>@language</span>
@@ -746,12 +746,12 @@ the type of phase - :map, :reduce, or :link
       <pre class="lines">
 
 
-152
-153
-154</pre>
+154
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 154</span>
 
 <span class='def def kw'>def</span> <span class='type identifier id'>type</span>
   <span class='@type ivar id'>@type</span>
@@ -812,8 +812,6 @@ a JSON representation of the phase
       <pre class="lines">
 
 
-206
-207
 208
 209
 210
@@ -830,10 +828,12 @@ a JSON representation of the phase
 221
 222
 223
-224</pre>
+224
+225
+226</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 206</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 208</span>
 
 <span class='def def kw'>def</span> <span class='to_json identifier id'>to_json</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='obj identifier id'>obj</span> <span class='assign token'>=</span> <span class='case case kw'>case</span> <span class='type identifier id'>type</span>
@@ -865,7 +865,7 @@ a JSON representation of the phase
 </div>
     
     <div id="footer">
-  Generated on Tue Jan 26 17:48:04 2010 by 
+  Generated on Tue Jan 26 17:50:28 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

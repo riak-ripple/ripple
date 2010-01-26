@@ -159,6 +159,8 @@ The map and reduce phases that will be executed.
     
 
     
+      (also: #include, #&lt;&lt;)
+    
   </span>
   
   
@@ -569,6 +571,10 @@ The map and reduce phases that will be executed
     
   
 
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='include-instance_method'>include</span>, <span id='<<-instance_method'>&lt;&lt;</span></span>
+    </span>
   
 </p><div class="docstring">
   <div class="discussion">
@@ -1104,16 +1110,16 @@ self
       <pre class="lines">
 
 
-117
-118
 119
 120
 121
 122
-123</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 119</span>
 
 <span class='def def kw'>def</span> <span class='link identifier id'>link</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
   <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span>
@@ -1276,14 +1282,14 @@ self
       <pre class="lines">
 
 
-83
-84
 85
 86
-87</pre>
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 85</span>
 
 <span class='def def kw'>def</span> <span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
   <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span>
@@ -1444,14 +1450,14 @@ self
       <pre class="lines">
 
 
-97
-98
 99
 100
-101</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 99</span>
 
 <span class='def def kw'>def</span> <span class='reduce identifier id'>reduce</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='params identifier id'>params</span><span class='rparen token'>)</span>
   <span class='options identifier id'>options</span> <span class='assign token'>=</span> <span class='params identifier id'>params</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span>
@@ -1509,8 +1515,6 @@ values.
       <pre class="lines">
 
 
-133
-134
 135
 136
 137
@@ -1522,10 +1526,12 @@ values.
 143
 144
 145
-146</pre>
+146
+147
+148</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 133</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 135</span>
 
 <span class='def def kw'>def</span> <span class='run identifier id'>run</span>
   <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='post identifier id'>post</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='mapred identifier id'>mapred</span><span class='comma token'>,</span> <span class='to_json identifier id'>to_json</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='string val'>&quot;Content-Type&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;application/json&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;Accept&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;application/json&quot;</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
@@ -1590,12 +1596,12 @@ the JSON representation
       <pre class="lines">
 
 
-127
-128
-129</pre>
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 129</span>
 
 <span class='def def kw'>def</span> <span class='to_json identifier id'>to_json</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='lbrace token'>{</span><span class='string val'>&quot;inputs&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='inputs identifier id'>inputs</span><span class='comma token'>,</span> <span class='string val'>&quot;query&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='query identifier id'>query</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='to_json identifier id'>to_json</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='rparen token'>)</span>
@@ -1611,7 +1617,7 @@ the JSON representation
 </div>
     
     <div id="footer">
-  Generated on Tue Jan 26 17:48:04 2010 by 
+  Generated on Tue Jan 26 17:50:26 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
