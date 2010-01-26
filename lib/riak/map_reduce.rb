@@ -17,14 +17,14 @@ module Riak
   # Class for invoking map-reduce jobs using the HTTP interface.
   class MapReduce
 
-    # @return [Array<[bucket,key]>] The bucket/keys for input to the job.
-    # @see {#add}
+    # @return [Array<[bucket,key]>,String] The bucket/keys for input to the job, or the bucket (all keys).
+    # @see #add
     attr_accessor :inputs
 
     # @return [Array<Phase>] The map and reduce phases that will be executed
-    # @see {#map}
-    # @see {#reduce}
-    # @see {#link}
+    # @see map
+    # @see #reduce
+    # @see #link
     attr_accessor :query
     
     # Creates a new map-reduce job.
@@ -75,9 +75,9 @@ module Riak
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair
     # @overload map(function?, options)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module, function] pair
-    #   @param [Hash] options extra options for the phase (see {Phase#new})
+    #   @param [Hash] options extra options for the phase (see {Phase#initialize})
     # @return [MapReduce] self
-    # @see {Phase#new}
+    # @see Phase#initialize
     def map(*params)
       options = params.extract_options!
       @query << Phase.new({:type => :map, :function => params.shift}.merge(options))
@@ -89,9 +89,9 @@ module Riak
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair
     # @overload reduce(function?, options)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module, function] pair
-    #   @param [Hash] options extra options for the phase (see {Phase#new})
+    #   @param [Hash] options extra options for the phase (see {Phase#initialize})
     # @return [MapReduce] self
-    # @see {Phase#new}
+    # @see Phase#initialize
     def reduce(*params)
       options = params.extract_options!
       @query << Phase.new({:type => :reduce, :function => params.shift}.merge(options))
@@ -101,17 +101,17 @@ module Riak
     # Add a link phase to the job. Link phases follow links attached to objects automatically (a special case of map).
     # @overload link(walk_spec, options={})
     #   @param [WalkSpec] walk_spec a WalkSpec that represents the types of links to follow
-    #   @param [Hash] options extra options for the phase (see {Phase#new})
+    #   @param [Hash] options extra options for the phase (see {Phase#initialize})
     # @overload link(bucket, tag, keep, options={})
     #   @param [String, nil] bucket the bucket to limit links to
     #   @param [String, nil] tag the tag to limit links to
     #   @param [Boolean] keep whether to keep results of this phase (overrides the phase options)
-    #   @param [Hash] options extra options for the phase (see {Phase#new})
+    #   @param [Hash] options extra options for the phase (see {Phase#initialize})
     # @overload link(options)
     #   @param [Hash] options options for both the walk spec and link phase
-    #   @see {WalkSpec#new}
+    #   @see WalkSpec#initialize
     # @return [MapReduce] self
-    # @see {Phase#new}
+    # @see Phase#initialize
     def link(*params)
       options = params.extract_options!
       walk_spec_options = options.slice!(:type, :function, :language, :arg) unless params.first
@@ -149,8 +149,8 @@ module Riak
       # @option options [Symbol] :type one of :map, :reduce, :link
       # @option options [String] :language ("javascript") "erlang" or "javascript"
       # @option options [String, Array, Hash] :function In the case of Javascript, a literal function in a string, or a hash with :bucket and :key. In the case of Erlang, an Array of [module, function].  For a :link phase, a hash including any of :bucket, :tag or a WalkSpec.
-      # @options options [Boolean] :keep (false) whether to return the results of this phase
-      # @options options [Array] :arg (nil) any extra static arguments to pass to the phase
+      # @option options [Boolean] :keep (false) whether to return the results of this phase
+      # @option options [Array] :arg (nil) any extra static arguments to pass to the phase
       def initialize(options={})
         self.type = options[:type]
         self.language = options[:language] || "javascript"
