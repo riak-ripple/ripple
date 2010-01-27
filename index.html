@@ -85,8 +85,10 @@
                 <span class='link identifier id'>link</span><span class='lparen token'>(</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;albums&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span>
                 <span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='string val'>&quot;function(v){ return [JSON.parse(v.values[0].data).title]; }&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:keep</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='run identifier id'>run</span>
 
-<span class='p identifier id'>p</span> <span class='results identifier id'>results</span> <span class='comment val'># =&gt; [&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,</span>
-          <span class='comment val'>#      &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span>
+<span class='p identifier id'>p</span> <span class='results identifier id'>results</span> <span class='comment val'># =&gt; [&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, </span>
+          <span class='comment val'>#     &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,</span>
+          <span class='comment val'>#     &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;Magical Mystery Tour&quot;, </span>
+          <span class='comment val'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span>
 </pre><h2>How to Contribute</h2>
 <ul>
 	<li>Fork the project on <a href="http://github.com/seancribbs/ripple">Github</a>.  If you have already forked, use <code>git pull --rebase</code> to reapply your changes on top of the mainline. Example:
@@ -124,7 +126,7 @@ limitations under the License.</p>
 licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creative Commons Attribution Non-Commercial 3.0</a> license. <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" alt="" /></p></div></div>
     
     <div id="footer">
-  Generated on Wed Jan 27 12:08:36 2010 by 
+  Generated on Wed Jan 27 12:18:42 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
