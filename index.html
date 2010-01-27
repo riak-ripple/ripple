@@ -83,10 +83,10 @@
 <span class='results identifier id'>results</span> <span class='assign token'>=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='MapReduce constant id'>MapReduce</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='rparen token'>)</span><span class='dot token'>.</span>
                 <span class='add identifier id'>add</span><span class='lparen token'>(</span><span class='string val'>&quot;artists&quot;</span><span class='comma token'>,</span><span class='string val'>&quot;Beatles&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span>
                 <span class='link identifier id'>link</span><span class='lparen token'>(</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;albums&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span>
-                <span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='string val'>&quot;function(v){ return [JSON.parse(v.values[0].data).title]; }&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='run identifier id'>run</span>
+                <span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='string val'>&quot;function(v){ return [JSON.parse(v.values[0].data).title]; }&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:keep</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='run identifier id'>run</span>
 
-<span class='p identifier id'>p</span> <span class='results identifier id'>results</span> <span class='comment val'># =&gt; [[&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;, </span>
-          <span class='comment val'>#      &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]]</span>
+<span class='p identifier id'>p</span> <span class='results identifier id'>results</span> <span class='comment val'># =&gt; [&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,</span>
+          <span class='comment val'>#      &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span>
 </pre><h2>How to Contribute</h2>
 <ul>
 	<li>Fork the project on <a href="http://github.com/seancribbs/ripple">Github</a>.  If you have already forked, use <code>git pull --rebase</code> to reapply your changes on top of the mainline. Example:
@@ -102,7 +102,7 @@ $ <span class='git identifier id'>git</span> <span class='pull identifier id'>pu
   <pre class="code">$ <span class='git identifier id'>git</span> <span class='rebase identifier id'>rebase</span> <span class='master identifier id'>master</span>
 </pre></li>
 	</ul></li>
-	<li>Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. <strong>Patches without specs will most often be ignored. Just do it, you&#8217;ll thank me later.</strong></li>
+	<li>Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. <strong>Patches without specs will most often be ignored. Just do it, you&#8217;ll thank me later.</strong> Documentation patches need no specs, of course.</li>
 	<li>Make your feature addition or bug fix. Make your specs and stories pass (green).</li>
 	<li>Run the suite using multiruby or rvm to ensure cross-version compatibility.</li>
 	<li>Commit, do not mess with Rakefile or <span class="caps">VERSION</span>.  If related to an existing issue in the <a href="http://github.com/seancribbs/ripple/issues">tracker</a>, include &#8220;Closes #X&#8221; in the commit message (where X is the issue number).</li>
@@ -124,7 +124,7 @@ limitations under the License.</p>
 licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creative Commons Attribution Non-Commercial 3.0</a> license. <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" alt="" /></p></div></div>
     
     <div id="footer">
-  Generated on Tue Jan 26 17:50:24 2010 by 
+  Generated on Wed Jan 27 12:08:36 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>

@@ -1500,8 +1500,8 @@ Executes this map-reduce job.
         &mdash;
         
 similar to link-walking, each element is an array of results from a phase
-where &quot;keep&quot; is true. The last phase will implicitly return
-values.
+where &quot;keep&quot; is true. If there is only one &quot;keep&quot;
+phase, only the results from that phase will be returned.
 
 
       
@@ -1617,7 +1617,7 @@ the JSON representation
 </div>
     
     <div id="footer">
-  Generated on Tue Jan 26 17:50:26 2010 by 
+  Generated on Wed Jan 27 12:08:38 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.6).
 </div>
