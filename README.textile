@@ -47,7 +47,7 @@ h2. Map-Reduce Example
 results = Riak::MapReduce.new(client).
                 add("artists","Beatles").
                 link(:bucket => "albums").
-                map("function(v){ return [JSON.parse(v.values[0].data).title]; }").run
+                map("function(v){ return [JSON.parse(v.values[0].data).title]; }", :keep => true).run
 
 p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night", "Beatles For Sale", "Help!", "Rubber Soul",
           #      "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]</pre></notextile>
