@@ -18,7 +18,7 @@ module Riak
   # the data and metadata stored in a bucket/key pair in the Riak database.
   class RObject
     include Riak::Util
-    
+
     # @return [Bucket] the bucket in which this object is contained
     attr_accessor :bucket
 
@@ -53,6 +53,7 @@ module Riak
     # @see Bucket#get
     def initialize(bucket, key=nil)
       @bucket, @key = bucket, key
+      @links, @meta = [], {}
     end
 
     # Load object data from an HTTP response
@@ -90,7 +91,7 @@ module Riak
         end
       end
     end
-    
+
     # HTTP header hash that will be sent along when reloading the object
     # @return [Hash] hash of HTTP headers
     def reload_headers
@@ -99,7 +100,7 @@ module Riak
         h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?
       end
     end
-    
+
     # Store the object in Riak
     # @param [Hash] options query parameters
     # @option options [Fixnum] :r the "r" parameter (Read quorum for the implicit read performed when validating the store operation)
@@ -130,6 +131,14 @@ module Riak
     end
 
     alias :fetch :reload
+
+    # Delete the object from Riak and freeze this instance.  Will work whether or not the object actually
+    # exists in the Riak database.
+    def delete
+      return if key.blank?
+      @bucket.client.http.delete([204,404], @bucket.client.prefix, @bucket.name, key)
+      freeze
+    end
 
     # Serializes the internal object data for sending to Riak. Differs based on the content-type.
     # This method is called internally when storing the object.

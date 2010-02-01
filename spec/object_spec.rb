@@ -19,6 +19,28 @@ describe Riak::RObject do
     @bucket = Riak::Bucket.new(@client, "foo")
   end
 
+  describe "initialization" do
+    it "should set the bucket" do
+      @object = Riak::RObject.new(@bucket)
+      @object.bucket.should == @bucket
+    end
+
+    it "should set the key" do
+      @object = Riak::RObject.new(@bucket, "bar")
+      @object.key.should == "bar"
+    end
+
+    it "should initialize the links to an empty array" do
+      @object = Riak::RObject.new(@bucket, "bar")
+      @object.links.should == []
+    end
+
+    it "should initialize the meta to an empty hash" do
+      @object = Riak::RObject.new(@bucket, "bar")
+      @object.meta.should == {}
+    end
+  end
+
   describe "serialization" do
     before :each do
       @object = Riak::RObject.new(@bucket, "bar")
@@ -76,7 +98,6 @@ describe Riak::RObject do
     describe "when the content type is an octet-stream" do
       before :each do
         @object.content_type = "application/octet-stream"
-        @object.meta ||= {}
       end
 
       describe "if the ruby-serialization meta field is set to Marshal" do
@@ -383,6 +404,31 @@ describe Riak::RObject do
       @http.stub!(:get).and_return(:headers => {"content-type" => ["multipart/mixed; boundary=5EiMOjuGavQ2IbXAqsJPLLfJNlA"]}, :body => @body)
       @client.should_receive(:bucket).with("foo", :keys => false).and_return(@bucket)
       @object.walk(nil,"next",true)
+    end
+  end
+
+  describe "when deleting" do
+    before :each do
+      @http = mock("HTTPBackend")
+      @client.stub!(:http).and_return(@http)
+      @object = Riak::RObject.new(@bucket, "bar")
+    end
+
+    it "should make a DELETE request to the Riak server and freeze the object" do
+      @http.should_receive(:delete).with([204,404], "/raw/", "foo", "bar").and_return({:code => 204, :headers => {}})
+      @object.delete
+      @object.should be_frozen
+    end
+
+    it "should do nothing when the key is blank" do
+      @http.should_not_receive(:delete)
+      @object.key = nil
+      @object.delete
+    end
+
+    it "should pass through a failed request exception" do
+      @http.should_receive(:delete).and_raise(Riak::FailedRequest.new(:delete, [204,404], 500, {}, ""))
+      lambda { @object.delete }.should raise_error(Riak::FailedRequest)
     end
   end
 end
