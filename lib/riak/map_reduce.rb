@@ -73,7 +73,7 @@ module Riak
     end
     alias :<< :add
     alias :include :add
-    
+
     # Add a map phase to the job.
     # @overload map(function)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair
@@ -127,7 +127,7 @@ module Riak
     # Convert the job to JSON for submission over the HTTP interface.
     # @return [String] the JSON representation
     def to_json(options={})
-      {"inputs" => inputs, "query" => query}.to_json(options)
+      ActiveSupport::JSON.encode({"inputs" => inputs, "query" => query.map(&:as_json)}, options)
     end
 
     # Executes this map-reduce job.
@@ -205,7 +205,13 @@ module Riak
 
       # Converts the phase to JSON for use while invoking a job.
       # @return [String] a JSON representation of the phase
-      def to_json(options={})
+      def to_json(options=nil)
+        ActiveSupport::JSON.encode(as_json, options)
+      end
+
+      # Converts the phase to its JSON-compatible representation for job invocation.
+      # @return [Hash] a Hash-equivalent of the phase
+      def as_json(options=nil)
         obj = case type
               when :map, :reduce
                 defaults = {"language" => language, "keep" => keep}
@@ -226,7 +232,7 @@ module Riak
                 {"bucket" => spec.bucket, "tag" => spec.tag, "keep" => spec.keep || keep}
               end
         obj["arg"] = arg if arg
-        { type => obj }.to_json(options)
+        { type => obj }
       end
     end
   end

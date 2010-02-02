@@ -11,7 +11,14 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'active_support'
+$KCODE = "UTF8" if RUBY_VERSION < "1.9"
+begin
+  require 'active_support'
+  require 'active_support/json'
+rescue LoadError
+  require 'rubygems' # Need a better solution to this
+  retry
+end
 require 'base64'
 require 'uri'
 require 'net/http'
