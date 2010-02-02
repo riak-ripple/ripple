@@ -15,9 +15,13 @@ $KCODE = "UTF8" if RUBY_VERSION < "1.9"
 begin
   require 'active_support'
   require 'active_support/json'
-rescue LoadError
-  require 'rubygems' # Need a better solution to this
-  retry
+rescue LoadError => e
+  if defined?(Gem)
+    raise e
+  else
+    require 'rubygems'
+    retry
+  end
 end
 require 'base64'
 require 'uri'
