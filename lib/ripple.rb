@@ -18,12 +18,14 @@ vendor_libs.each { |dir| $LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir)
 
 require 'riak'
 require 'active_support/all'
-
+require 'active_model'
 # Contains the classes and modules related to the ODM built on top of
 # the basic Riak client.
 module Ripple
   extend ActiveSupport::Autoload
   include ActiveSupport::Configurable
+
+  autoload :Document
 
   class << self
     # @return [Riak::Client] The client for the current thread.
