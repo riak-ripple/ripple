@@ -10,8 +10,8 @@
 #    distributed under the License is distributed on an "AS IS" BASIS,
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
-#    limitations under the License.
-require File.join(File.dirname(__FILE__), "spec_helper")
+#    limitations under the License
+require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Riak::Client::HTTPBackend do
   before :each do

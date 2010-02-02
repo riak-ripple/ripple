@@ -11,8 +11,8 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require File.join(File.dirname(__FILE__), "spec_helper")
-
+require File.expand_path("../spec_helper", File.dirname(__FILE__))
+                  
 describe Riak::Client::NetHTTPBackend do
   before :each do
     @client = Riak::Client.new

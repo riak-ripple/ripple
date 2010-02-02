@@ -11,7 +11,7 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require File.join(File.dirname(__FILE__), "spec_helper")
+require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Riak::Util::Multipart do
   it "should extract the boundary string from a header value" do
@@ -19,12 +19,12 @@ describe Riak::Util::Multipart do
   end
 
   it "should parse an empty multipart body into empty arrays" do
-    data = File.read(File.join(File.dirname(__FILE__), "fixtures", "multipart-blank.txt"))
+    data = File.read(File.expand_path("#{File.dirname(__FILE__)}/../fixtures/multipart-blank.txt"))
     Riak::Util::Multipart.parse(data, "73NmmA8dJxSB5nL2dVerpFIi8ze").should == [[]]
   end
 
   it "should parse multipart body into nested arrays with response-like results" do
-    data = File.read(File.join(File.dirname(__FILE__), "fixtures", "multipart-with-body.txt"))
+    data = File.read(File.expand_path("#{File.dirname(__FILE__)}/../fixtures/multipart-with-body.txt"))
     results = Riak::Util::Multipart.parse(data, "5EiMOjuGavQ2IbXAqsJPLLfJNlA")
     results.should be_kind_of(Array)
     results.first.should be_kind_of(Array)

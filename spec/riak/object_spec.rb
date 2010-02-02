@@ -11,7 +11,7 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require File.join(File.dirname(__FILE__), "spec_helper")
+require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Riak::RObject do
   before :each do
@@ -52,7 +52,7 @@ describe Riak::RObject do
     end
 
     it "should not change the data when it is an IO" do
-      file = File.open("#{File.dirname(__FILE__)}/fixtures/cat.jpg", "r")
+      file = File.open("#{File.dirname(__FILE__)}/../fixtures/cat.jpg", "r")
       file.should_not_receive(:to_s)
       @object.serialize(file).should == file
     end
@@ -380,7 +380,7 @@ describe Riak::RObject do
       @client.stub!(:http).and_return(@http)
       @client.stub!(:bucket).and_return(@bucket)
       @object = Riak::RObject.new(@bucket, "bar")
-      @body = File.read(File.join(File.dirname(__FILE__), "fixtures", "multipart-with-body.txt"))
+      @body = File.read(File.expand_path("#{File.dirname(__FILE__)}/../fixtures/multipart-with-body.txt"))
     end
 
     it "should issue a GET request to the given walk spec" do
