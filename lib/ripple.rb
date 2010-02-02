@@ -11,4 +11,35 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
+
+# Vendoring relevant Rails 3 libs for now.
+vendor_libs = Dir["#{File.dirname(__FILE__)}/../vendor/*/lib"].map {|d| File.expand_path(d) }
+vendor_libs.each { |dir| $LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir) }
+
 require 'riak'
+require 'active_support/all'
+
+# Contains the classes and modules related to the ODM built on top of
+# the basic Riak client.
+module Ripple
+  extend ActiveSupport::Autoload
+  include ActiveSupport::Configurable
+
+  class << self
+    # @return [Riak::Client] The client for the current thread.
+    def client
+      Thread.current[:ripple_client] ||= Riak::Client.new
+    end
+
+    # Sets the client for the current thread.
+    # @param [Riak::Client] value the client
+    def client=(value)
+      Thread.current[:ripple_client] = value
+    end
+
+    def config=(value)
+      self.client = nil
+      super
+    end
+  end
+end
