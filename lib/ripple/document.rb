@@ -14,6 +14,30 @@
 require 'ripple'
 
 module Ripple
+  # Represents a model stored in Riak, serialized in JSON object (document).
+  # Ripple::Document models aim to be fully ActiveModel compatible, with a keen
+  # eye toward features that developers expect from ActiveRecord, DataMapper and MongoMapper.
+  #
+  # Example:
+  #
+  #   class Email
+  #     include Ripple::Document
+  #     property :from,    String, :presence => true
+  #     property :to,      String, :presence => true
+  #     property :sent,    Time,   :default => proc { Time.now }
+  #     property :body,    String
+  #   end
+  #
+  #   email = Email.find("37458abc752f8413e")  # GET /raw/emails/37458abc752f8413e
+  #   email.from = "someone@nowhere.net"
+  #   email.save                               # PUT /raw/emails/37458abc752f8413e
+  #
+  #   reply = Email.new
+  #   reply.from = "justin@bashoooo.com"
+  #   reply.to   = "sean@geeemail.com"
+  #   reply.body = "Riak is a good fit for scalable Ruby apps."
+  #   reply.save                               # POST /raw/emails (Riak-assigned key)
+  #
   module Document
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
