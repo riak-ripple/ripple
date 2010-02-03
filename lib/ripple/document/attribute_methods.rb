@@ -55,6 +55,19 @@ module Ripple
           end.with_indifferent_access
         end
 
+        # Mass assign the document's attributes.
+        # @param [Hash] value the attributes to assign
+        def attributes=(value)
+          raise ArgumentError, "value of attributes must be a Hash" unless Hash === value
+          value.each do |k,v|
+            if respond_to?("#{k}=")
+              __send__("#{k}=",v)
+            else
+              write_attribute(k,v)
+            end
+          end
+        end
+
         # @private
         def initialize
           @attributes = {}.with_indifferent_access

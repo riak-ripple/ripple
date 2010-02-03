@@ -92,6 +92,17 @@ describe Ripple::Document::AttributeMethods do
   it "should refresh the attribute methods when adding a new property" do
     Widget.should_receive(:undefine_attribute_methods)
     Widget.property :start_date, Date
+    Widget.properties.delete(:start_date) # cleanup
+  end
+
+  it "should provide a hash representation of all of the attributes" do
+    @widget.attributes.should == {"name" => "widget", "size" => nil}
+  end
+
+  it "should load attributes from mass assignment" do
+    @widget.attributes = {"name" => "Riak", "size" => 100000 }
+    @widget.name.should == "Riak"
+    @widget.size.should == 100000
   end
 
   after :all do
