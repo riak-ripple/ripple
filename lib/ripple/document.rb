@@ -42,13 +42,16 @@ module Ripple
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
 
+    autoload :AttributeMethods
     autoload :BucketAccess
     autoload :Properties
+    autoload :Property, "ripple/document/properties"
 
     included do
       extend ActiveModel::Naming
       extend BucketAccess
       extend Properties
+      include AttributeMethods
     end
   end
 end
