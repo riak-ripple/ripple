@@ -43,10 +43,12 @@ module Ripple
     extend ActiveSupport::Autoload
 
     autoload :BucketAccess
+    autoload :Properties
 
     included do
-      extend BucketAccess
       extend ActiveModel::Naming
+      extend BucketAccess
+      extend Properties
     end
   end
 end
