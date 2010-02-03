@@ -56,7 +56,6 @@ task :default => :spec
 require 'yard'
 YARD::Rake::YardocTask.new do |yard|
   docfiles = FileList['lib/**/*.rb', 'README*', 'VERSION', 'LICENSE']
-  docfiles.exclude 'lib/ripple.rb'
   yard.files = docfiles
   yard.options = ["--no-private"]
 end
