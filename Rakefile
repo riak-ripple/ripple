@@ -58,12 +58,12 @@ YARD::Rake::YardocTask.new do |yard|
   docfiles = FileList['lib/**/*.rb', 'README*', 'VERSION', 'LICENSE']
   docfiles.exclude 'lib/ripple.rb'
   yard.files = docfiles
+  yard.options = ["--no-private"]
 end
 
 task :doc => :yard do
   original_dir = Dir.pwd
   docs_dir = File.expand_path(File.join(original_dir, "..", "ripple-docs"))
-  commit = `git log --pretty=oneline -1`
   rm_rf File.join(docs_dir, "*")
   cp_r File.join(original_dir, "doc", "."), docs_dir
   touch File.join(docs_dir, '.nojekyll')
