@@ -21,6 +21,21 @@ module Ripple
         include ActiveModel::Dirty
 
         # @private
+        def save
+          if result = super
+            changed_attributes.clear
+          end
+          result
+        end
+
+        # @private
+        def reload
+          returning super do
+            changed_attributes.clear
+          end
+        end
+
+        # @private
         def initialize(attrs={})
           super(attrs)
           changed_attributes.clear

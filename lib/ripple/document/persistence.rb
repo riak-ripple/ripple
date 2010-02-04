@@ -17,7 +17,7 @@ module Ripple
   module Document
     module Persistence
       extend ActiveSupport::Concern
-
+      
       module InstanceMethods
         # @private
         def initialize
@@ -31,7 +31,8 @@ module Ripple
         end
         alias :new_record? :new?
 
-        # Saves the object in Riak.
+        # Saves the document in Riak.
+        # @return [true,false] whether the document succeeded in saving
         def save
           @robject ||= Riak::RObject.new(self.class.bucket, key)
           @robject.content_type = "application/json"
@@ -44,6 +45,15 @@ module Ripple
           false
         end
 
+        # Reloads the document from Riak
+        # @return self
+        def reload
+          return self if new?
+          @robject.reload(:force => true)
+          @attributes.merge!(@robject.data)
+          self
+        end
+        
         private
         def attributes_for_persistence
           self.class.superclass < Ripple::Document ? attributes.merge("_type" => self.class.name) : attributes

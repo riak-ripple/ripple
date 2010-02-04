@@ -37,7 +37,20 @@ describe Ripple::Document::Persistence do
     @widget.save
     @widget.key.should == "new_widget"
     @widget.should_not be_new_record
+    @widget.changes.should be_blank
   end
+
+  it "should reload a saved object" do
+    json = @widget.attributes.to_json
+    @http.should_receive(:post).with(201, "/raw/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
+    @widget.save
+    @http.should_receive(:get).and_return(:code => 200, :headers => {'content-type' => ["application/json"]}, :body => '{"name":"spring","size":10}')
+    @widget.reload
+    @widget.changes.should be_blank
+    @widget.name.should == "spring"
+    @widget.size.should == 10
+  end
+
   describe "when storing a class using single-bucket inheritance" do
     before :all do
       class Cog < Widget; property :name, String, :default => "cog"; end
