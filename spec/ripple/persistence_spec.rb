@@ -51,6 +51,20 @@ describe Ripple::Document::Persistence do
     @widget.size.should == 10
   end
 
+  it "should destroy a saved object" do
+    @http.should_receive(:post).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
+    @widget.save
+    @http.should_receive(:delete).and_return(:code => 204, :headers => {})
+    @widget.destroy.should be_true
+    @widget.should be_frozen
+  end
+
+  it "should freeze an unsaved object when destroying" do
+    @http.should_not_receive(:delete)
+    @widget.destroy.should be_true
+    @widget.should be_frozen
+  end
+
   describe "when storing a class using single-bucket inheritance" do
     before :all do
       class Cog < Widget; property :name, String, :default => "cog"; end
@@ -59,7 +73,7 @@ describe Ripple::Document::Persistence do
 
     it "should store the _type field as the class name" do
       json = @cog.attributes.merge("_type" => "Cog").to_json
-      @http.should_receive(:post).with(201, "/raw/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
+      @http.should_receive(:post).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
       @cog.save
       @cog.should_not be_new_record
     end

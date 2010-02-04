@@ -17,7 +17,7 @@ module Ripple
   module Document
     module Persistence
       extend ActiveSupport::Concern
-      
+
       module InstanceMethods
         # @private
         def initialize
@@ -41,7 +41,7 @@ module Ripple
           self.key = @robject.key
           @new = false
           true
-        rescue Riak::FailedRequest => fr
+        rescue Riak::FailedRequest
           false
         end
 
@@ -53,7 +53,21 @@ module Ripple
           @attributes.merge!(@robject.data)
           self
         end
-        
+
+        # Deletes the document from Riak and freezes this instance
+        def destroy
+          freeze
+          @robject.delete unless new?
+          true
+        rescue Riak::FailedRequest
+          false
+        end
+
+        # Freezes the document, preventing further modification.
+        def freeze
+          @attributes.freeze; super
+        end
+
         private
         def attributes_for_persistence
           self.class.superclass < Ripple::Document ? attributes.merge("_type" => self.class.name) : attributes

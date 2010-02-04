@@ -191,7 +191,7 @@ module Riak
 
     # @return [String] A representation suitable for IRB and debugging output
     def inspect
-      "#<#{self.class.name} #{@bucket.client.http.path(@bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}>"
+      "#<#{self.class.name} #{@bucket.client.http.path(@bucket.client.prefix, @bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}>"
     end
 
     # Walks links from this object to other objects in Riak.
