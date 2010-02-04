@@ -112,8 +112,8 @@ module Riak
     def store(options={})
       raise ArgumentError, "content_type is not defined!" unless @content_type.present?
       params = {:returnbody => true}.merge(options)
-      method, path = @key.present? ? [:put, "#{@bucket.name}/#{@key}"] : [:post, @bucket.name]
-      response = @bucket.client.http.send(method, [200, 204], @bucket.client.prefix, path, params, serialize(data), store_headers)
+      method, codes, path = @key.present? ? [:put, [200,204], "#{@bucket.name}/#{@key}"] : [:post, [200,201], @bucket.name]
+      response = @bucket.client.http.send(method, codes, @bucket.client.prefix, path, params, serialize(data), store_headers)
       load(response)
     end
 
