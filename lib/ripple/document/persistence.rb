@@ -35,7 +35,7 @@ module Ripple
         def save
           @robject ||= Riak::RObject.new(self.class.bucket, key)
           @robject.content_type = "application/json"
-          @robject.data = attributes
+          @robject.data = attributes_for_persistence
           @robject.store
           self.key = @robject.key
           @new = false
@@ -45,6 +45,9 @@ module Ripple
         end
 
         private
+        def attributes_for_persistence
+          self.class.superclass < Ripple::Document ? attributes.merge("_type" => self.class.name) : attributes
+        end
       end
     end
   end

@@ -38,6 +38,23 @@ describe Ripple::Document::Persistence do
     @widget.key.should == "new_widget"
     @widget.should_not be_new_record
   end
+  describe "when storing a class using single-bucket inheritance" do
+    before :all do
+      class Cog < Widget; property :name, String, :default => "cog"; end
+      @cog = Cog.new(:size => 1000)
+    end
+
+    it "should store the _type field as the class name" do
+      json = @cog.attributes.merge("_type" => "Cog").to_json
+      @http.should_receive(:post).with(201, "/raw/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
+      @cog.save
+      @cog.should_not be_new_record
+    end
+
+    after :all do
+      Object.send(:remove_const, :Cog)
+    end
+  end
 
   after :all do
     Object.send(:remove_const, :Widget)
