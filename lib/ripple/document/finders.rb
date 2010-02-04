@@ -46,6 +46,7 @@ module Ripple
         #   @return [Array<Document>] all found documents in the bucket
         # @override all() {|doc| }
         #   Stream all documents in the bucket through the block.
+        #   TODO: Make this work with the CurbBackend (currently single-request oriented).
         #   @yield [Document] doc a found document
         def all
           if block_given?
@@ -72,7 +73,9 @@ module Ripple
 
         def instantiate(robject)
           klass = robject.data['_type'].constantize rescue self
-          klass.new(robject.data.merge('key' => robject.key))
+          klass.new(robject.data.merge('key' => robject.key)).tap do |doc|
+            doc.instance_variable_set(:@robject, robject)
+          end
         end
       end
     end
