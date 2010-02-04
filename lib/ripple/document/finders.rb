@@ -15,21 +15,21 @@ require 'ripple'
 
 module Ripple
   module Document
-    module AttributeMethods
-      module Dirty
-        extend ActiveSupport::Concern
-        include ActiveModel::Dirty
+    module Finders
+      extend ActiveSupport::Concern
 
-        # @private
-        def initialize(attrs={})
-          super(attrs)
-          changed_attributes.clear
+      module ClassMethods
+        def find(key)
+          instantiate(bucket.get(key))
+        rescue Riak::FailedRequest => fr
+          return nil if fr.code.to_i == 404
+          raise fr
         end
 
         private
-        def attribute=(attr_name, value)
-          attribute_will_change!(attr_name)
-          super
+        def instantiate(robject)
+          klass = robject.data['_type'].constantize rescue self
+          klass.new(robject.data.merge('key' => robject.key))
         end
       end
     end

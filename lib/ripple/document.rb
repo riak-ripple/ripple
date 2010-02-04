@@ -44,6 +44,7 @@ module Ripple
 
     autoload :AttributeMethods
     autoload :BucketAccess
+    autoload :Finders
     autoload :Properties
     autoload :Property, "ripple/document/properties"
 
@@ -52,6 +53,7 @@ module Ripple
       extend BucketAccess
       extend Properties
       include AttributeMethods
+      include Finders
     end
   end
 end

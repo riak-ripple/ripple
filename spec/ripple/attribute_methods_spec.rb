@@ -42,6 +42,7 @@ describe Ripple::Document::AttributeMethods do
       @widget.attributes = {:key => "cog"}
       @widget.key.should == "cog"
     end
+
   end
 
   describe "accessors" do
@@ -115,6 +116,7 @@ describe Ripple::Document::AttributeMethods do
     @widget.changes.should == {"name" => ["widget", "foobar"]}
   end
 
+
   it "should refresh the attribute methods when adding a new property" do
     Widget.should_receive(:undefine_attribute_methods)
     Widget.property :start_date, Date
@@ -134,6 +136,11 @@ describe Ripple::Document::AttributeMethods do
   it "should assign attributes on initialization" do
     @widget = Widget.new(:name => "Riak")
     @widget.name.should == "Riak"
+  end
+
+  it "should have no changed attributes after initialization" do
+    @widget = Widget.new(:name => "Riak")
+    @widget.changes.should be_blank
   end
 
   after :all do
