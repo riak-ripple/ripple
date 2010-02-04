@@ -41,6 +41,7 @@ describe Ripple::Document::Finders do
       box.shape.should == "square"
       box.key.should == "square"
       box.instance_variable_get(:@robject).should_not be_nil
+      box.should_not be_new_record
     end
 
     it "should return nil when no object exists at that key" do
