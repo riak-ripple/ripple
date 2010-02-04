@@ -26,6 +26,17 @@ module Ripple
           args.map {|key| find_one(key) }
         end
 
+        def all
+          if block_given?
+            bucket.keys do |key|
+              yield find_one(key)
+            end
+            []
+          else
+            bucket.keys.inject([]) {|acc, k| obj = find_one(k); obj ? acc << obj : acc }
+          end
+        end
+
         private
         def find_one(key)
           instantiate(bucket.get(key))

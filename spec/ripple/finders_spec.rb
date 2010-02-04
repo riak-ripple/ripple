@@ -74,6 +74,39 @@ describe Ripple::Document::Finders do
     end
   end
 
+  describe "finding all documents in the bucket" do
+    it "should load all objects in the bucket" do
+      @bucket.should_receive(:keys).and_return(["square", "rectangle"])
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "rectangle", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"rectangle"}'})
+      boxes = Box.all
+      boxes.should have(2).items
+      boxes.first.shape.should == "square"
+      boxes.last.shape.should == "rectangle"
+    end
+
+    it "should exclude objects that are not found" do
+      @bucket.should_receive(:keys).and_return(["square", "rectangle"])
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "rectangle", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "404 not found"))
+      boxes = Box.all
+      boxes.should have(1).item
+      boxes.first.shape.should == "square"
+    end
+
+    it "should yield found objects to the passed block and return an empty array" do
+      @bucket.should_receive(:keys).and_yield("square").and_yield("rectangle")
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "rectangle", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"rectangle"}'})
+      @block = mock()
+      @block.should_receive(:ping).twice
+      Box.all do |box|
+        @block.ping
+        ["square", "rectangle"].should include(box.shape)
+      end.should == []
+    end
+  end
+
   after :all do
     Object.send(:remove_const, :Box)
   end
