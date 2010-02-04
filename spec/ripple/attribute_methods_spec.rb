@@ -107,6 +107,14 @@ describe Ripple::Document::AttributeMethods do
     end
   end
 
+  it "should track changes to attributes" do
+    @widget.name = "foobar"
+    @widget.changed?.should be_true
+    @widget.name_changed?.should be_true
+    @widget.name_change.should == ["widget", "foobar"]
+    @widget.changes.should == {"name" => ["widget", "foobar"]}
+  end
+
   it "should refresh the attribute methods when adding a new property" do
     Widget.should_receive(:undefine_attribute_methods)
     Widget.property :start_date, Date

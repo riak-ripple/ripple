@@ -25,12 +25,14 @@ module Ripple
       autoload :Read
       autoload :Write
       autoload :Query
+      autoload :Dirty
 
       included do
         attr_accessor :key
         include Read
         include Write
         include Query
+        include Dirty
       end
 
       module ClassMethods
