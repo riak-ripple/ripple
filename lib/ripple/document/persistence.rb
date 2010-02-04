@@ -17,6 +17,13 @@ module Ripple
   module Document
     module Persistence
       extend ActiveSupport::Concern
+      extend ActiveSupport::Autoload
+
+      autoload :Callbacks
+
+      included do
+        include Callbacks
+      end
 
       module InstanceMethods
         # @private
