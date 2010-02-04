@@ -26,6 +26,24 @@ describe Ripple::Document::AttributeMethods do
     @widget = Widget.new
   end
 
+  describe "object key" do
+    it "should provide access to the key" do
+      @widget.should respond_to(:key)
+      @widget.key.should be_nil
+    end
+
+    it "should provide a mutator for the key" do
+      @widget.should respond_to(:key=)
+      @widget.key = "cog"
+      @widget.key.should == "cog"
+    end
+
+    it "should accept the key in mass assignment" do
+      @widget.attributes = {:key => "cog"}
+      @widget.key.should == "cog"
+    end
+  end
+
   describe "accessors" do
     it "should be defined for defined properties" do
       @widget.should respond_to(:size)

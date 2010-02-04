@@ -27,6 +27,7 @@ module Ripple
       autoload :Query
 
       included do
+        attr_accessor :key
         include Read
         include Write
         include Query
