@@ -29,6 +29,10 @@ describe Ripple::Document::Finders do
     @client.stub!(:[]).and_return(@bucket)
   end
 
+  it "should return an empty array if no keys are passed to find" do
+    Box.find().should == []
+  end
+
   describe "finding single documents" do
     it "should find a single document by key and assign its attributes" do
       @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
@@ -47,6 +51,26 @@ describe Ripple::Document::Finders do
     it "should re-raise the failed request exception if not a 404" do
       @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, "500 internal server error"))
       lambda { Box.find("square") }.should raise_error(Riak::FailedRequest)
+    end
+  end
+
+  describe "finding multiple documents" do
+    it "should find multiple documents by the keys" do
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "rectangle", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"rectangle"}'})
+      boxes = Box.find("square", "rectangle")
+      boxes.should have(2).items
+      boxes.first.shape.should == "square"
+      boxes.last.shape.should == "rectangle"
+    end
+
+    it "should return nil for documents that no longer exist" do
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "rectangle", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "404 not found"))
+      boxes = Box.find("square", "rectangle")
+      boxes.should have(2).items
+      boxes.first.shape.should == "square"
+      boxes.last.should be_nil
     end
   end
 

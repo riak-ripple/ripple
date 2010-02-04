@@ -19,14 +19,21 @@ module Ripple
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def find(key)
+        def find(*args)
+          args.flatten!
+          return [] if args.length == 0
+          return find_one(args.first) if args.length == 1
+          args.map {|key| find_one(key) }
+        end
+
+        private
+        def find_one(key)
           instantiate(bucket.get(key))
         rescue Riak::FailedRequest => fr
           return nil if fr.code.to_i == 404
           raise fr
         end
 
-        private
         def instantiate(robject)
           klass = robject.data['_type'].constantize rescue self
           klass.new(robject.data.merge('key' => robject.key))
