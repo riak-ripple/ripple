@@ -105,6 +105,11 @@ describe Ripple::Document::AttributeMethods do
     @widget.size.should == 100000
   end
 
+  it "should assign attributes on initialization" do
+    @widget = Widget.new(:name => "Riak")
+    @widget.name.should == "Riak"
+  end
+
   after :all do
     Object.send(:remove_const, :Widget)
   end

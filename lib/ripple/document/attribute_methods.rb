@@ -15,6 +15,8 @@ require 'ripple'
 
 module Ripple
   module Document
+    # Makes ActiveRecord-like attribute accessors based on your
+    # {Document}'s properties.
     module AttributeMethods
       extend ActiveSupport::Concern
       extend ActiveSupport::Autoload
@@ -31,6 +33,7 @@ module Ripple
       end
 
       module ClassMethods
+        # @private
         def property(key, type, options={})
           undefine_attribute_methods
           super
@@ -46,7 +49,7 @@ module Ripple
       module InstanceMethods
         # A copy of the values of all attributes in the Document. The result
         # is not memoized, so use sparingly.  This does not include associated objects,
-        # included embedded documents.
+        # nor embedded documents.
         # @return [Hash] all document attributes, by key
         def attributes
           self.class.properties.values.inject({}) do |hash, prop|
@@ -56,22 +59,23 @@ module Ripple
         end
 
         # Mass assign the document's attributes.
-        # @param [Hash] value the attributes to assign
-        def attributes=(value)
-          raise ArgumentError, "value of attributes must be a Hash" unless Hash === value
-          value.each do |k,v|
+        # @param [Hash] attrs the attributes to assign
+        def attributes=(attrs)
+          raise ArgumentError, "value of attributes must be a Hash" unless Hash === attrs
+          attrs.each do |k,v|
             if respond_to?("#{k}=")
               __send__("#{k}=",v)
             else
-              write_attribute(k,v)
+              __send__(:attribute=,k,v)
             end
           end
         end
 
         # @private
-        def initialize
-          @attributes = {}.with_indifferent_access
-          super
+        def initialize(attrs={})
+          super()
+          @attributes = attributes_from_property_defaults
+          self.attributes = attrs
         end
 
         # @private
@@ -90,6 +94,13 @@ module Ripple
         # @private
         def attribute_method?(attr_name)
           self.class.properties.include?(attr_name)
+        end
+
+        def attributes_from_property_defaults
+          self.class.properties.values.inject({}) do |hash, prop|
+            hash[prop.key] = prop.default if prop.default
+            hash
+          end.with_indifferent_access
         end
       end
     end

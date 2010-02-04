@@ -27,9 +27,7 @@ module Ripple
         def attribute(attr_name)
           if @attributes.include?(attr_name)
             value = @attributes[attr_name]
-            value.duplicable? ? value.dup : value
-          elsif prop = self.class.properties[attr_name]
-            prop.default.duplicable? ? prop.default.dup : prop.default
+            value.duplicable? ? value.clone : value
           else
             nil
           end
