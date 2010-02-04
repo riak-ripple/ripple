@@ -119,6 +119,25 @@ describe Ripple::Document::Finders do
     end
   end
 
+  describe "single-bucket inheritance" do
+    before :all do
+      class CardboardBox < Box; end
+    end
+
+    it "should instantiate as the proper type if defined in the document" do
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "rectangle", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"rectangle", "_type":"CardboardBox"}'})
+      boxes = Box.find("square", "rectangle")
+      boxes.should have(2).items
+      boxes.first.should_not be_kind_of(CardboardBox)
+      boxes.last.should be_kind_of(CardboardBox)
+    end
+
+    after :all do
+      Object.send(:remove_const, :CardboardBox)
+    end
+  end
+
   after :all do
     Object.send(:remove_const, :Box)
   end
