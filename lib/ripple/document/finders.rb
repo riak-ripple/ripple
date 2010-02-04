@@ -19,6 +19,20 @@ module Ripple
       extend ActiveSupport::Concern
 
       module ClassMethods
+        # Retrieve single or multiple documents from Riak.
+        # @override find(key)
+        #   Find a single document.
+        #   @param [String] key the key of a document to find
+        #   @return [Document] the found document, or nil
+        # @override find(key1, key2, ...)
+        #   Find a list of documents.
+        #   @param [String] key1 the key of a document to find
+        #   @param [String] key2 the key of a document to find
+        #   @return [Array<Document>] a list of found documents, including nil for missing documents
+        # @override find(keylist)
+        #   Find a list of documents.
+        #   @param [Array<String>] keylist an array of keys to find
+        #   @return [Array<Document>] a list of found documents, including nil for missing documents
         def find(*args)
           args.flatten!
           return [] if args.length == 0
@@ -26,14 +40,25 @@ module Ripple
           args.map {|key| find_one(key) }
         end
 
+        # Find all documents in the Document's bucket and return them.
+        # @override all()
+        #   Get all documents and return them in an array.
+        #   @return [Array<Document>] all found documents in the bucket
+        # @override all() {|doc| }
+        #   Stream all documents in the bucket through the block.
+        #   @yield [Document] doc a found document
         def all
           if block_given?
             bucket.keys do |key|
-              yield find_one(key)
+              obj = find_one(key)
+              yield obj if obj
             end
             []
           else
-            bucket.keys.inject([]) {|acc, k| obj = find_one(k); obj ? acc << obj : acc }
+            bucket.keys.inject([]) do |acc, k|
+              obj = find_one(k)
+              obj ? acc << obj : acc
+            end
           end
         end
 

@@ -105,6 +105,18 @@ describe Ripple::Document::Finders do
         ["square", "rectangle"].should include(box.shape)
       end.should == []
     end
+
+    it "should yield found objects to the passed block, excluding missing objects, and return an empty array" do
+      @bucket.should_receive(:keys).and_yield("square").and_yield("rectangle")
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      @http.should_receive(:get).with(200, "/raw/", "boxes", "rectangle", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "404 not found"))
+      @block = mock()
+      @block.should_receive(:ping).once
+      Box.all do |box|
+        @block.ping
+        ["square", "rectangle"].should include(box.shape)
+      end.should == []
+    end
   end
 
   after :all do
