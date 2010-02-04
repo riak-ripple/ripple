@@ -33,7 +33,7 @@ describe Ripple::Document::Persistence do
 
   it "should save a new object to Riak" do
     json = @widget.attributes.to_json
-    @http.should_receive(:post).with([200,201], "/raw/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
+    @http.should_receive(:post).with(201, "/raw/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
     @widget.save
     @widget.key.should == "new_widget"
     @widget.should_not be_new_record
