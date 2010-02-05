@@ -18,6 +18,11 @@ describe Ripple::EmbeddedDocument do
     class Address; include Ripple::EmbeddedDocument; end
   end
 
+  it "should have a model name when included" do
+    Address.should respond_to(:model_name)
+    Address.model_name.should be_kind_of(ActiveModel::Name)
+  end
+
   it "should be embeddable" do
     Address.should be_embeddable
   end

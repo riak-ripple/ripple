@@ -18,11 +18,6 @@ describe Ripple::Document do
     class Page; include Ripple::Document; end
   end
 
-  it "should have a model name when included" do
-    Page.should respond_to(:model_name)
-    Page.model_name.should be_kind_of(ActiveModel::Name)
-  end
-
   it "should add bucket access methods to classes when included" do
     Page.metaclass.included_modules.should include(Ripple::Document::BucketAccess)
     Page.should respond_to(:bucket_name)
