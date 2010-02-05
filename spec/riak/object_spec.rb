@@ -436,4 +436,9 @@ describe Riak::RObject do
     @object = Riak::RObject.new(@bucket, "bar")
     @object.to_link.should == Riak::Link.new("/raw/foo/bar", nil)
   end
+
+  it "should convert to a link having the same url and a supplied tag" do
+    @object = Riak::RObject.new(@bucket, "bar")
+    @object.to_link("next").should == Riak::Link.new("/raw/foo/bar", "next")
+  end
 end
