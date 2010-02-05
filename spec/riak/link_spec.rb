@@ -39,4 +39,8 @@ describe Riak::Link do
     Riak::Link.new("/raw/foo/bar", "next").to_walk_spec.to_s.should == "foo,next,_"
     lambda { Riak::Link.new("/raw/foo", "up").to_walk_spec }.should raise_error
   end
+
+  it "should be equivalent to a link with the same url and rel" do
+    Riak::Link.new("/raw/foo/bar", "next").should == Riak::Link.new("/raw/foo/bar", "next")
+  end
 end

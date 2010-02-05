@@ -14,7 +14,7 @@
 require 'riak'
 
 module Riak
-  
+
   # The specification of how to follow links from one object to another in Riak,
   # when using the link-walker resource.
   # Example link-walking operation:
@@ -25,10 +25,10 @@ module Riak
   class WalkSpec
     # @return [String] The bucket followed links should be restricted to. "_" represents all buckets.
     attr_accessor :bucket
-    
+
     # @return [String] The "riaktag" or "rel" that followed links should be restricted to. "_" represents all tags.
     attr_accessor :tag
-    
+
     # @return [Boolean] Whether objects should be returned from this phase of link walking. Default is false.
     attr_accessor :keep
 
@@ -53,7 +53,7 @@ module Riak
       end
       specs
     end
-    
+
     # Creates a walk-spec for use in finding other objects in Riak.
     # @overload initialize(hash)
     #   Creates a walk-spec from a hash.
@@ -80,12 +80,28 @@ module Riak
         raise ArgumentError, "wrong number of arguments (one Hash or bucket,tag,result required)"
       end
     end
-    
+
     # Converts the walk-spec into the form required by the link-walker resource URL
     def to_s
       "#{@bucket || '_'},#{@tag || '_'},#{@keep ? '1' : '_'}"
     end
-    
+
+    def ==(other)
+      other.is_a?(WalkSpec) && other.bucket == bucket && other.tag == tag && other.keep == keep
+    end
+
+    def ===(other)
+      self == other || case other
+                       when WalkSpec
+                         other.keep == keep &&
+                           (bucket == "_" || bucket == other.bucket) &&
+                           (tag == "_" || tag == other.tag)
+                       when Link
+                         (bucket == "_" || bucket == other.url.split("/")[2]) &&
+                           (tag == "_" || tag == other.rel)
+                       end
+    end
+
     private
     def assign(bucket, tag, result)
       @bucket = bucket || "_"

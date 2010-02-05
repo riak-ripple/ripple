@@ -115,4 +115,94 @@ describe Riak::WalkSpec do
       specs.join("/").should == "_,next,_/foo,_,_/_,child,1"
     end
   end
+
+  describe "matching other objects with ===" do
+    before :each do
+      @spec = Riak::WalkSpec.new({})
+    end
+
+    it "should not match objects that aren't links or walk specs" do
+      @spec.should_not === "foo"
+    end
+
+    describe "matching links" do
+      before :each do
+        @link = Riak::Link.new("/raw/foo/bar", "next")
+      end
+
+      it "should match a link when the bucket and tag are not specified" do
+        @spec.should === @link
+      end
+
+      it "should match a link when the bucket is the same" do
+        @spec.bucket = "foo"
+        @spec.should === @link
+      end
+
+      it "should not match a link when the bucket is different" do
+        @spec.bucket = "bar"
+        @spec.should_not === @link
+      end
+
+      it "should match a link when the tag is the same" do
+        @spec.tag = "next"
+        @spec.should === @link
+      end
+
+      it "should not match a link when the tag is different" do
+        @spec.tag = "previous"
+        @spec.should_not === @link
+      end
+
+      it "should match a link when the bucket and tag are the same" do
+        @spec.bucket = "foo"
+        @spec.should === @link
+      end
+    end
+
+    describe "matching walk specs" do
+      before :each do
+        @other = Riak::WalkSpec.new({})
+      end
+
+      it "should match a walk spec that is equivalent" do
+        @spec.should === @other
+      end
+
+      it "should not match a walk spec that has a different keep value" do
+        @other.keep = true
+        @spec.should_not === @other
+      end
+
+      it "should match a walk spec with a more specific bucket" do
+        @other.bucket = "foo"
+        @spec.should === @other
+      end
+
+      it "should match a walk spec with the same bucket" do
+        @other.bucket = "foo"; @spec.bucket = "foo"
+        @spec.should === @other
+      end
+
+      it "should not match a walk spec with a different bucket" do
+        @other.bucket = "foo"; @spec.bucket = "bar"
+        @spec.should_not === @other
+      end
+
+      it "should match a walk spec with a more specific tag" do
+        @other.tag = "next"
+        @spec.should === @other
+      end
+
+      it "should match a walk spec with the same tag" do
+        @other.tag = "next"; @spec.tag = "next"
+        @spec.should === @other
+      end
+
+      it "should not match a walk spec with a different tag" do
+        @other.tag = "next"; @spec.tag = "previous"
+        @spec.should_not === @other
+      end
+    end
+  end
 end

@@ -41,6 +41,10 @@ module Riak
       %Q[<#{@url}>; riaktag="#{@rel}"]
     end
 
+    def ==(other)
+      other.is_a?(Link) && url == other.url && rel == other.rel
+    end
+
     def to_walk_spec
       bucket, object = $1, $2 if @url =~ %r{/raw/([^/]+)/([^/]+)/?}
       raise "Can't convert a bucket link to a walk spec" if @rel == "up" || object.nil?
