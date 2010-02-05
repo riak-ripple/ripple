@@ -32,6 +32,12 @@ module Ripple
         def save
           valid? && super
         end
+
+        # @private
+        def valid?
+          @_on_validate = new? ? :create : :update
+          super
+        end
       end
     end
   end
