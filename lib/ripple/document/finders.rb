@@ -20,16 +20,16 @@ module Ripple
 
       module ClassMethods
         # Retrieve single or multiple documents from Riak.
-        # @override find(key)
+        # @overload find(key)
         #   Find a single document.
         #   @param [String] key the key of a document to find
         #   @return [Document] the found document, or nil
-        # @override find(key1, key2, ...)
+        # @overload find(key1, key2, ...)
         #   Find a list of documents.
         #   @param [String] key1 the key of a document to find
         #   @param [String] key2 the key of a document to find
         #   @return [Array<Document>] a list of found documents, including nil for missing documents
-        # @override find(keylist)
+        # @overload find(keylist)
         #   Find a list of documents.
         #   @param [Array<String>] keylist an array of keys to find
         #   @return [Array<Document>] a list of found documents, including nil for missing documents
@@ -41,10 +41,10 @@ module Ripple
         end
 
         # Find all documents in the Document's bucket and return them.
-        # @override all()
+        # @overload all()
         #   Get all documents and return them in an array.
         #   @return [Array<Document>] all found documents in the bucket
-        # @override all() {|doc| ... }
+        # @overload all() {|doc| ... }
         #   Stream all documents in the bucket through the block.
         #   TODO: Make this work with the CurbBackend (currently single-request oriented).
         #   @yield [Document] doc a found document

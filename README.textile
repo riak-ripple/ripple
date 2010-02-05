@@ -1,10 +1,13 @@
 h1. ripple
 
-ripple is a Ruby client/wrapper for Riak, Basho's distributed database.
+ripple is a rich Ruby client for Riak, Basho's distributed database. It includes two namespaces:
+
+* @Riak@ contains a basic wrapper around typical operations, including bucket manipulation, object CRUD, link-walking, and map-reduce.
+* @Ripple@ contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMappter, and MongoMapper.
 
 h2. Dependencies
 
-ripple requires ActiveSupport >=2.3.  We highly recommend the "curb":http://curb.rubyforge.org/ gem for better HTTP client performance.
+ripple requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport.  For now, the dependency is bundled.  I highly recommend the "curb":http://curb.rubyforge.org/ gem for better HTTP client performance.
 
 In development, you will also need these gems:
 
@@ -53,6 +56,28 @@ p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night",
           #     "Beatles For Sale", "Help!", "Rubber Soul",
           #     "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "Magical Mystery Tour", 
           #     "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]</pre></notextile>
+
+h2. Document model Example
+
+<notextile><pre>
+class Email
+  include Ripple::Document
+  property :from,    String, :presence => true
+  property :to,      String, :presence => true
+  property :sent,    Time,   :default => proc { Time.now }
+  property :body,    String
+end
+
+email = Email.find("37458abc752f8413e")  # GET /raw/emails/37458abc752f8413e
+email.from = "someone@nowhere.net"
+email.save                               # PUT /raw/emails/37458abc752f8413e
+
+reply = Email.new
+reply.from = "justin@bashoooo.com"
+reply.to   = "sean@geeemail.com"
+reply.body = "Riak is a good fit for scalable Ruby apps."
+reply.save                               # POST /raw/emails (Riak-assigned key)
+</pre></notextile>
 
 h2. How to Contribute
  
