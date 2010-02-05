@@ -42,6 +42,8 @@ module Ripple
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
 
+    autoload :Association, "ripple/document/associations"
+    autoload :Associations
     autoload :AttributeMethods
     autoload :BucketAccess
     autoload :Finders

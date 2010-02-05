@@ -27,6 +27,7 @@ module Ripple
       include Persistence
       include Document::AttributeMethods
       include Document::Validations
+      include Document::Associations
     end
 
     module ClassMethods
