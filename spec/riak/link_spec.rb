@@ -41,6 +41,10 @@ describe Riak::Link do
   end
 
   it "should be equivalent to a link with the same url and rel" do
-    Riak::Link.new("/raw/foo/bar", "next").should == Riak::Link.new("/raw/foo/bar", "next")
+    one = Riak::Link.new("/raw/foo/bar", "next")
+    two = Riak::Link.new("/raw/foo/bar", "next")
+    one.should == two
+    [one].should include(two)
+    [two].should include(one)
   end
 end
