@@ -431,4 +431,9 @@ describe Riak::RObject do
       lambda { @object.delete }.should raise_error(Riak::FailedRequest)
     end
   end
+
+  it "should convert to a link having the same url and an empty tag" do
+    @object = Riak::RObject.new(@bucket, "bar")
+    @object.to_link.should == Riak::Link.new("/raw/foo/bar", nil)
+  end
 end

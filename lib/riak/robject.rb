@@ -206,7 +206,12 @@ module Riak
         []
       end
     end
-
+    
+    # Converts the object to a link suitable for linking other objects to it
+    def to_link
+      Link.new(@bucket.client.http.path(@bucket.client.prefix, @bucket.name, @key).path, nil)
+    end
+    
     private
     def extract_header(response, name, attribute=nil)
       if response[:headers][name].present?
