@@ -48,6 +48,7 @@ module Ripple
     autoload :Persistence
     autoload :Properties
     autoload :Property, "ripple/document/properties"
+    autoload :Validations
 
     included do
       extend ActiveModel::Naming
@@ -56,6 +57,7 @@ module Ripple
       include Persistence
       include AttributeMethods
       include Finders
+      include Validations
     end
   end
 end

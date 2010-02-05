@@ -63,6 +63,11 @@ describe Ripple::Document::Property do
     prop.options.should == {:default => "bar"}
   end
 
+  it "should expose validation options" do
+    prop = Ripple::Document::Property.new('foo', String, 'default' => "bar", :presence => true)
+    prop.validation_options.should == {:presence => true}
+  end
+
   describe "default value" do
     it "should be nil when not specified" do
       prop = Ripple::Document::Property.new('foo', String)
