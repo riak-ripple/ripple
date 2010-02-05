@@ -63,8 +63,8 @@ module Ripple
 
         # Deletes the document from Riak and freezes this instance
         def destroy
-          freeze
           @robject.delete unless new?
+          freeze
           true
         rescue Riak::FailedRequest
           false
