@@ -51,13 +51,10 @@ module Ripple
     autoload :Validations
 
     included do
-      extend ActiveModel::Naming
       extend BucketAccess
-      extend Properties
       include Persistence
-      include AttributeMethods
+      include EmbeddedDocument
       include Finders
-      include Validations
     end
   end
 end

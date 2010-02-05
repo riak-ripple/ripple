@@ -27,6 +27,7 @@ module Ripple
   extend ActiveSupport::Autoload
   include ActiveSupport::Configurable
 
+  autoload :EmbeddedDocument
   autoload :Document
   autoload :PropertyTypeMismatch
 

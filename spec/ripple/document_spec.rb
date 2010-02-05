@@ -30,6 +30,10 @@ describe Ripple::Document do
     Page.should respond_to(:bucket_name=)
   end
 
+  it "should not be embeddable" do
+    Page.should_not be_embeddable
+  end
+
   after :all do
     Object.module_eval { remove_const(:Page) }
   end
