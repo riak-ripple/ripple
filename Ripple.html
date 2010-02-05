@@ -1,0 +1,343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+<title>Module: Ripple</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (R)</a> &raquo; 
+    
+    
+    <span class="title">Ripple</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: Ripple 
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+      <dt class="r1">Extends:</dt>
+      <dd class="r1">ActiveSupport::Autoload</dd>
+      
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2">ActiveSupport::Configurable</dd>
+      
+    
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/ripple.rb<span class="defines">,<br />
+  lib/ripple/document.rb,<br /> lib/ripple/document/finders.rb,<br /> lib/ripple/embedded_document.rb,<br /> lib/ripple/document/properties.rb,<br /> lib/ripple/document/persistence.rb,<br /> lib/ripple/document/validations.rb,<br /> lib/ripple/property_type_mismatch.rb,<br /> lib/ripple/document/bucket_access.rb,<br /> lib/ripple/document/attribute_methods.rb,<br /> lib/ripple/embedded_document/persistence.rb,<br /> lib/ripple/document/persistence/callbacks.rb,<br /> lib/ripple/document/attribute_methods/read.rb,<br /> lib/ripple/document/attribute_methods/write.rb,<br /> lib/ripple/document/attribute_methods/dirty.rb,<br /> lib/ripple/document/attribute_methods/query.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Contains the classes and modules related to the ODM built on top of the
+basic Riak client.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+      <strong class="modules">Modules:</strong> <a href="Ripple/Document.html" title="Ripple::Document (module)">Document</a>, <a href="Ripple/EmbeddedDocument.html" title="Ripple::EmbeddedDocument (module)">EmbeddedDocument</a>
+    
+   
+    
+      <strong class="classes">Classes:</strong> <a href="Ripple/PropertyTypeMismatch.html" title="Ripple::PropertyTypeMismatch (class)">PropertyTypeMismatch</a>
+    
+  
+</p>
+
+
+  
+
+  <h2>Class Method Summary</h2>
+
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#client-class_method" title="client (class method)">+ (Riak::Client) <strong>client</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+The client for the current thread.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#client%3D-class_method" title="client= (class method)">+ (Object) <strong>client</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc">
+Sets the client for the current thread.
+
+</span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#config%3D-class_method" title="config= (class method)">+ (Object) <strong>config</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"></span>
+  
+</li>
+
+    
+  </ul>
+
+  
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="client-class_method">
+  
+    + (<tt><a href="Riak/Client.html" title="Riak::Client (class)">Riak::Client</a></tt>) <strong>client</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The client for the current thread.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="Riak/Client.html" title="Riak::Client (class)">Riak::Client</a></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        
+The client for the current thread.
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 36</span>
+
+<span class='def def kw'>def</span> <span class='client identifier id'>client</span>
+  <span class='Thread constant id'>Thread</span><span class='dot token'>.</span><span class='current identifier id'>current</span><span class='lbrack token'>[</span><span class='symbol val'>:ripple_client</span><span class='rbrack token'>]</span> <span class='opasgn op'>||=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Client constant id'>Client</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="client=-class_method">
+  
+    + (<tt><a href="Object.html" title="Object (class)">Object</a></tt>) <strong>client=</strong>(value) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Sets the client for the current thread.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="Riak/Client.html" title="Riak::Client (class)">Riak::Client</a></tt>)</span>
+      
+      
+        <span class='name'>value</span>
+      
+      
+      
+        &mdash;
+        
+the client
+
+
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 42</span>
+
+<span class='def def kw'>def</span> <span class='client= identifier id'>client=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='Thread constant id'>Thread</span><span class='dot token'>.</span><span class='current identifier id'>current</span><span class='lbrack token'>[</span><span class='symbol val'>:ripple_client</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="config=-class_method">
+  
+    + (<tt><a href="Object.html" title="Object (class)">Object</a></tt>) <strong>config=</strong>(value) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+46
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 46</span>
+
+<span class='def def kw'>def</span> <span class='config= identifier id'>config=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='self self kw'>self</span><span class='dot token'>.</span><span class='client identifier id'>client</span> <span class='assign token'>=</span> <span class='nil nil kw'>nil</span>
+  <span class='super super kw'>super</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Fri Feb  5 16:55:03 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.3 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

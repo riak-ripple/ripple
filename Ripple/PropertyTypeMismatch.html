@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta name="Content-Type" content="text/html; charset=UTF-8" />
-<title>Exception: Riak::InvalidResponse</title>
+<title>Exception: Ripple::PropertyTypeMismatch</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -23,10 +23,10 @@
     <div id="header">
       <div id="menu">
   
-    <a href="../_index.html">Index (I)</a> &raquo; 
-    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
+    <a href="../_index.html">Index (P)</a> &raquo; 
+    <span class='title'><a href="../Ripple.html" title="Ripple (module)">Ripple</a></span>
      &raquo; 
-    <span class="title">InvalidResponse</span>
+    <span class="title">PropertyTypeMismatch</span>
   
   
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
@@ -43,7 +43,7 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Exception: Riak::InvalidResponse 
+    <div id="content"><h1>Exception: Ripple::PropertyTypeMismatch 
   
   
 </h1>
@@ -59,7 +59,7 @@
           
             <li class="next">StandardError</li>
           
-            <li class="next">Riak::InvalidResponse</li>
+            <li class="next">Ripple::PropertyTypeMismatch</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -74,23 +74,12 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/riak/invalid_response.rb</dd>
+    <dd class="r2 last">lib/ripple/property_type_mismatch.rb</dd>
   
 </dl>
 <div class="clear"></div>
 
-<h2>Overview</h2><div class="docstring">
-  <div class="discussion">
-    <p>
-Raised when Riak returns a response that is in an unexpected format
-</p>
 
-
-  </div>
-</div>
-<div class="tags">
-  
-</div>
 
   
 
@@ -101,7 +90,7 @@ Raised when Riak returns a response that is in an unexpected format
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (InvalidResponse) <strong>initialize</strong>(expected, received, extra = &quot;&quot;) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (PropertyTypeMismatch) <strong>initialize</strong>(klass, value) </a>
     
 
     
@@ -116,7 +105,7 @@ Raised when Riak returns a response that is in an unexpected format
 
   
     <span class="summary_desc">
-A new instance of InvalidResponse.
+A new instance of PropertyTypeMismatch.
 
 </span>
   
@@ -131,14 +120,14 @@ A new instance of InvalidResponse.
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Riak::InvalidResponse (class)">InvalidResponse</a></tt>) <strong>initialize</strong>(expected, received, extra = &quot;&quot;) 
+    - (<tt><a href="" title="Ripple::PropertyTypeMismatch (class)">PropertyTypeMismatch</a></tt>) <strong>initialize</strong>(klass, value) 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-A new instance of InvalidResponse
+A new instance of PropertyTypeMismatch
 </p>
 
 
@@ -152,19 +141,15 @@ A new instance of InvalidResponse
       <pre class="lines">
 
 
+18
 19
-20
-21
-22
-23</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/invalid_response.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple/property_type_mismatch.rb', line 18</span>
 
-<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='comma token'>,</span> <span class='received identifier id'>received</span><span class='comma token'>,</span> <span class='extra identifier id'>extra</span><span class='assign token'>=</span><span class='string val'>&quot;&quot;</span><span class='rparen token'>)</span>
-  <span class='expected identifier id'>expected</span> <span class='assign token'>=</span> <span class='expected identifier id'>expected</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span> <span class='if if_mod kw'>if</span> <span class='Hash constant id'>Hash</span> <span class='eqq op'>===</span> <span class='expected identifier id'>expected</span>
-  <span class='received identifier id'>received</span> <span class='assign token'>=</span> <span class='received identifier id'>received</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span> <span class='if if_mod kw'>if</span> <span class='Hash constant id'>Hash</span> <span class='eqq op'>===</span> <span class='received identifier id'>received</span>
-  <span class='super super kw'>super</span> <span class='dstring node'>&quot;Expected #{expected} but received #{received} from Riak #{extra}&quot;</span>
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='klass identifier id'>klass</span><span class='comma token'>,</span> <span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='super super kw'>super</span> <span class='I18n constant id'>I18n</span><span class='dot token'>.</span><span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;ripple.errors.property_type_mismatch&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:class</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='klass identifier id'>klass</span><span class='comma token'>,</span> <span class='symbol val'>:value</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='value identifier id'>value</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -178,7 +163,7 @@ A new instance of InvalidResponse
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:55:08 2010 by 
+  Generated on Fri Feb  5 16:55:05 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>

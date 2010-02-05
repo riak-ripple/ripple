@@ -42,9 +42,13 @@
     <iframe id="search_frame"></iframe>
     
     <div id="content"><div id='filecontents'><h1>ripple</h1>
-<p>ripple is a Ruby client/wrapper for Riak, Basho&#8217;s distributed database.</p>
+<p>ripple is a rich Ruby client for Riak, Basho&#8217;s distributed database. It includes two namespaces:</p>
+<ul>
+	<li><code>Riak</code> contains a basic wrapper around typical operations, including bucket manipulation, object <span class="caps">CRUD</span>, link-walking, and map-reduce.</li>
+	<li><code>Ripple</code> contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMappter, and MongoMapper.</li>
+</ul>
 <h2>Dependencies</h2>
-<p>ripple requires ActiveSupport &gt;=2.3.  We highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
+<p>ripple requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport.  For now, the dependency is bundled.  I highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
 <p>In development, you will also need these gems:</p>
 <ul>
 	<li>jeweler</li>
@@ -89,6 +93,25 @@
           <span class='comment val'>#     &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,</span>
           <span class='comment val'>#     &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;Magical Mystery Tour&quot;, </span>
           <span class='comment val'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span>
+</pre><h2>Document model Example</h2>
+<pre class="code">
+<span class='class class kw'>class</span> <span class='Email constant id'>Email</span>
+  <span class='include identifier id'>include</span> <span class='Ripple constant id'>Ripple</span><span class='colon2 op'>::</span><span class='Document constant id'>Document</span>
+  <span class='property identifier id'>property</span> <span class='symbol val'>:from</span><span class='comma token'>,</span>    <span class='String constant id'>String</span><span class='comma token'>,</span> <span class='symbol val'>:presence</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span>
+  <span class='property identifier id'>property</span> <span class='symbol val'>:to</span><span class='comma token'>,</span>      <span class='String constant id'>String</span><span class='comma token'>,</span> <span class='symbol val'>:presence</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span>
+  <span class='property identifier id'>property</span> <span class='symbol val'>:sent</span><span class='comma token'>,</span>    <span class='Time constant id'>Time</span><span class='comma token'>,</span>   <span class='symbol val'>:default</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='proc identifier id'>proc</span> <span class='lbrace token'>{</span> <span class='Time constant id'>Time</span><span class='dot token'>.</span><span class='now identifier id'>now</span> <span class='rbrace token'>}</span>
+  <span class='property identifier id'>property</span> <span class='symbol val'>:body</span><span class='comma token'>,</span>    <span class='String constant id'>String</span>
+<span class='end end kw'>end</span>
+
+<span class='email identifier id'>email</span> <span class='assign token'>=</span> <span class='Email constant id'>Email</span><span class='dot token'>.</span><span class='find identifier id'>find</span><span class='lparen token'>(</span><span class='string val'>&quot;37458abc752f8413e&quot;</span><span class='rparen token'>)</span>  <span class='comment val'># GET /raw/emails/37458abc752f8413e</span>
+<span class='email identifier id'>email</span><span class='dot token'>.</span><span class='from identifier id'>from</span> <span class='assign token'>=</span> <span class='string val'>&quot;someone@nowhere.net&quot;</span>
+<span class='email identifier id'>email</span><span class='dot token'>.</span><span class='save identifier id'>save</span>                               <span class='comment val'># PUT /raw/emails/37458abc752f8413e</span>
+
+<span class='reply identifier id'>reply</span> <span class='assign token'>=</span> <span class='Email constant id'>Email</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
+<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='from identifier id'>from</span> <span class='assign token'>=</span> <span class='string val'>&quot;justin@bashoooo.com&quot;</span>
+<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='to identifier id'>to</span>   <span class='assign token'>=</span> <span class='string val'>&quot;sean@geeemail.com&quot;</span>
+<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='body identifier id'>body</span> <span class='assign token'>=</span> <span class='string val'>&quot;Riak is a good fit for scalable Ruby apps.&quot;</span>
+<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='save identifier id'>save</span>                               <span class='comment val'># POST /raw/emails (Riak-assigned key)</span>
 </pre><h2>How to Contribute</h2>
 <ul>
 	<li>Fork the project on <a href="http://github.com/seancribbs/ripple">Github</a>.  If you have already forked, use <code>git pull --rebase</code> to reapply your changes on top of the mainline. Example:
@@ -107,6 +130,7 @@ $ <span class='git identifier id'>git</span> <span class='pull identifier id'>pu
 	<li>Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. <strong>Patches without specs will most often be ignored. Just do it, you&#8217;ll thank me later.</strong> Documentation patches need no specs, of course.</li>
 	<li>Make your feature addition or bug fix. Make your specs and stories pass (green).</li>
 	<li>Run the suite using multiruby or rvm to ensure cross-version compatibility.</li>
+	<li>Cleanup any trailing whitespace in your code (try <code>whitespace-mode</code> in Emacs, or &#8220;Remove Trailing Spaces in Document&#8221; in the &#8220;Text&#8221; bundle in Textmate).</li>
 	<li>Commit, do not mess with Rakefile or <span class="caps">VERSION</span>.  If related to an existing issue in the <a href="http://github.com/seancribbs/ripple/issues">tracker</a>, include &#8220;Closes #X&#8221; in the commit message (where X is the issue number).</li>
 	<li>Send me a pull request.</li>
 </ul>
@@ -126,9 +150,9 @@ limitations under the License.</p>
 licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creative Commons Attribution Non-Commercial 3.0</a> license. <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" alt="" /></p></div></div>
     
     <div id="footer">
-  Generated on Wed Jan 27 12:18:43 2010 by 
+  Generated on Fri Feb  5 16:54:57 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.6).
+  0.5.3 (ruby-1.8.7).
 </div>
 
   </body>
