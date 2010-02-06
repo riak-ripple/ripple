@@ -12,17 +12,9 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 $KCODE = "UTF8" if RUBY_VERSION < "1.9"
-begin
-  require 'active_support'
-  require 'active_support/json'
-rescue LoadError => e
-  if defined?(Gem)
-    raise e
-  else
-    require 'rubygems'
-    retry
-  end
-end
+
+require 'active_support'
+require 'active_support/json'
 require 'base64'
 require 'uri'
 require 'net/http'

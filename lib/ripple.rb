@@ -12,10 +12,6 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-# Vendoring relevant Rails 3 libs for now.
-vendor_libs = Dir["#{File.dirname(__FILE__)}/../vendor/*/lib"].map {|d| File.expand_path(d) }
-vendor_libs.each { |dir| $LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir) }
-
 require 'riak'
 require 'active_support/all'
 require 'active_model'

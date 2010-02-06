@@ -11,13 +11,13 @@ begin
     gem.email = "seancribbs@gmail.com"
     gem.homepage = "http://seancribbs.github.com/ripple"
     gem.authors = ["Sean Cribbs"]
-    gem.add_development_dependency "rspec", ">= 1.2.9"
-    # gem.add_development_dependency "cucumber", ">= 0.4.0"
+    gem.add_development_dependency "rspec", ">= 1.3"
     gem.add_development_dependency "fakeweb", ">=1.2"
     gem.add_development_dependency "rack", ">=1.0"
     gem.add_development_dependency "yard", ">=0.5.2"
     gem.add_development_dependency "curb", ">=0.6"
-    gem.add_dependency "activesupport", ">=2.3"
+    gem.add_dependency "activesupport", "3.0.0.beta"
+    gem.add_dependency "activemodel", "3.0.0.beta"
     gem.requirements << "`gem install curb` for better HTTP performance"
   end
   Jeweler::GemcutterTasks.new
@@ -40,16 +40,16 @@ end
 
 task :spec => :check_dependencies
 
-begin
-  require 'cucumber/rake/task'
-  Cucumber::Rake::Task.new(:features)
+# begin
+#   require 'cucumber/rake/task'
+#   Cucumber::Rake::Task.new(:features)
 
-  task :features => :check_dependencies
-rescue LoadError
-  task :features do
-    abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"
-  end
-end
+#   task :features => :check_dependencies
+# rescue LoadError
+#   task :features do
+#     abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"
+#   end
+# end
 
 task :default => :spec
 

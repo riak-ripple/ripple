@@ -60,6 +60,8 @@ p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night",
 h2. Document model Example
 
 <notextile><pre>
+require 'ripple'
+
 class Email
   include Ripple::Document
   property :from,    String, :presence => true
