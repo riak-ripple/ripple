@@ -15,8 +15,9 @@ require 'ripple'
 
 module Ripple
   class PropertyTypeMismatch < StandardError
+    include Translation
     def initialize(klass, value)
-      super I18n.t("ripple.errors.property_type_mismatch", :class => klass, :value => value)
+      super t("property_type_mismatch", :class => klass, :value => value.inspect)
     end
   end
 end

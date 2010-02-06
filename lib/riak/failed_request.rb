@@ -17,6 +17,7 @@ module Riak
   # Exception raised when the expected response code from Riak
   # fails to match the actual response code.
   class FailedRequest < StandardError
+    include Util::Translation
     # @return [Symbol] the HTTP method, one of :head, :get, :post, :put, :delete
     attr_reader :method
     # @return [Fixnum] the expected response code
@@ -30,7 +31,7 @@ module Riak
 
     def initialize(method, expected_code, received_code, headers, body)
       @method, @expected, @code, @headers, @body = method, expected_code, received_code, headers, body
-      super "Expected #{@expected} from Riak but received #{@code}."
+      super t("failed_request", :expected => @expected.inspect, :code => @code, :body => @body)
     end
   end
 end

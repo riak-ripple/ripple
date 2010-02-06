@@ -13,12 +13,13 @@
 #    limitations under the License.
 $KCODE = "UTF8" if RUBY_VERSION < "1.9"
 
-require 'active_support'
+require 'active_support/all'
 require 'active_support/json'
 require 'base64'
 require 'uri'
 require 'net/http'
 require 'yaml'
+require 'riak/i18n'
 
 # The Riak module contains all aspects of the HTTP client interface
 # to Riak.
@@ -39,5 +40,6 @@ module Riak
   module Util
     autoload :Headers,       "riak/util/headers"
     autoload :Multipart,     "riak/util/multipart"
+    autoload :Translation,   "riak/util/translation"
   end
 end

@@ -14,25 +14,11 @@
 require 'ripple'
 
 module Ripple
-  module EmbeddedDocument
-    extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
+  module Translation
+    include Riak::Util::Translation
 
-    autoload :Persistence
-    include Translation
-
-    included do
-      extend ActiveModel::Naming
-      extend Document::Properties
-      include Persistence
-      include Document::AttributeMethods
-      include Document::Validations
-    end
-
-    module ClassMethods
-      def embeddable?
-        !included_modules.include?(Document)
-      end
+    def i18n_scope
+      :ripple
     end
   end
 end

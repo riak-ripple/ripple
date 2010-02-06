@@ -16,7 +16,7 @@ require 'riak'
 module Riak
   # Represents a link from one object to another in Riak
   class Link
-
+    include Util::Translation
     # @return [String] the URL (relative or absolute) of the related resource
     attr_accessor :url
 
@@ -47,7 +47,7 @@ module Riak
 
     def to_walk_spec
       bucket, object = $1, $2 if @url =~ %r{/raw/([^/]+)/([^/]+)/?}
-      raise "Can't convert a bucket link to a walk spec" if @rel == "up" || object.nil?
+      raise t("bucket_link_conversion") if @rel == "up" || object.nil?
       WalkSpec.new(:bucket => bucket, :tag => @rel)
     end
   end

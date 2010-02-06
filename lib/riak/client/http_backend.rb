@@ -16,13 +16,14 @@ require 'riak'
 module Riak
   class Client
     class HTTPBackend
+      include Util::Translation
       # The Riak::Client that uses this backend
       attr_reader :client
 
       # Create an HTTPBackend for the Riak::Client.
       # @param [Client] client the client
       def initialize(client)
-        raise ArgumentError, "Riak::Client instance required" unless Client === client
+        raise ArgumentError, t("client_type", :client => client) unless Client === client
         @client = client
       end
 
@@ -155,10 +156,10 @@ module Riak
         begin
           verify_path!(args)
         rescue ArgumentError
-          raise ArgumentError, "You must supply both a resource path and a body."
+          raise ArgumentError, t("path_and_body_required")
         end
 
-        raise ArgumentError, "Request body must be a string or IO." unless String === body || IO === body
+        raise ArgumentError, t("request_body_type") unless String === body || IO === body
         [args, body]
       end
 
@@ -167,7 +168,7 @@ module Riak
       # @raise [ArgumentError] if the resource path is too short
       def verify_path!(resource)
         resource = Array(resource).flatten
-        raise ArgumentError, "Resource path too short" unless resource.length > 1 || resource.include?(@client.mapred)
+        raise ArgumentError, t("resource_path_short") unless resource.length > 1 || resource.include?(@client.mapred)
       end
       
       # Checks the expected response codes against the actual response code. Use internally when

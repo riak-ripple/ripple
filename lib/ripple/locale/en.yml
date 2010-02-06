@@ -13,5 +13,4 @@
 #    limitations under the License.
 en:
   ripple:
-    errors:
-      property_type_mismatch: "Cannot cast {{value.inspect}} into a {{class}}"
+    property_type_mismatch: "Cannot cast {{value}} into a {{class}}"

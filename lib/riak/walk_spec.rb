@@ -23,6 +23,7 @@ module Riak
   #   Riak::WalkSpec.new({:bucket => 'albums'})
   #   Riak::WalkSpec.new({:bucket => 'tracks', :result => true})
   class WalkSpec
+    include Util::Translation
     # @return [String] The bucket followed links should be restricted to. "_" represents all buckets.
     attr_accessor :bucket
 
@@ -47,7 +48,7 @@ module Riak
           if params.length >= 2
             specs << new(param, params.shift, params.shift)
           else
-            raise ArgumentError, "too few arguments: #{params.inspect}"
+            raise ArgumentError, t("too_few_arguments", :params => params.inspect)
           end
         end
       end
@@ -72,12 +73,12 @@ module Riak
       case args.size
       when 1
         hash = args.first
-        raise ArgumentError, "invalid argument #{hash.inspect}" unless Hash === hash
+        raise ArgumentError, t("hash_type", :hash => hash.inspect) unless Hash === hash
         assign(hash[:bucket], hash[:tag], hash[:keep])
       when 3
         assign(*args)
       else
-        raise ArgumentError, "wrong number of arguments (one Hash or bucket,tag,result required)"
+        raise ArgumentError, t("wrong_argument_count_walk_spec")
       end
     end
 

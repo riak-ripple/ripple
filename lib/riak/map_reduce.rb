@@ -16,7 +16,7 @@ require 'riak'
 module Riak
   # Class for invoking map-reduce jobs using the HTTP interface.
   class MapReduce
-
+    include Util::Translation
     # @return [Array<[bucket,key]>,String] The bucket/keys for input to the job, or the bucket (all keys).
     # @see #add
     attr_accessor :inputs
@@ -150,6 +150,7 @@ module Riak
     # Represents an individual phase in a map-reduce pipeline. Generally you'll want to call
     # methods of {MapReduce} instead of using this directly.
     class Phase
+      include Util::Translation
       # @return [Symbol] the type of phase - :map, :reduce, or :link
       attr_accessor :type
 
@@ -181,24 +182,24 @@ module Riak
       end
 
       def type=(value)
-        raise ArgumentError, "type must be :map, :reduce, or :link" unless value.to_s =~ /^(map|reduce|link)$/i
+        raise ArgumentError, t("invalid_phase_type") unless value.to_s =~ /^(map|reduce|link)$/i
         @type = value.to_s.downcase.to_sym
       end
 
       def function=(value)
         case value
         when Array
-          raise ArgumentError, "function must have two elements when an array" unless value.size == 2
+          raise ArgumentError, t("module_function_pair_required") unless value.size == 2
           @language = "erlang"
         when Hash
-          raise ArgumentError, "function must have :bucket and :key when a hash" unless type == :link || value.has_key?(:bucket) && value.has_key?(:key)
+          raise ArgumentError, t("stored_function_invalid") unless type == :link || value.has_key?(:bucket) && value.has_key?(:key)
           @language = "javascript"
         when String
           @language = "javascript"
         when WalkSpec
-          raise ArgumentError, "WalkSpec is only valid for a function when the type is :link" unless type == :link
+          raise ArgumentError, t("walk_spec_invalid_unless_link") unless type == :link
         else
-          raise ArgumentError, "invalid value for function: #{value.inspect}"
+          raise ArgumentError, t("invalid_function_value", :value => value.inspect)
         end
         @function = value
       end

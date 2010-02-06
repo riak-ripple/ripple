@@ -26,6 +26,7 @@ module Ripple
   autoload :EmbeddedDocument
   autoload :Document
   autoload :PropertyTypeMismatch
+  autoload :Translation
 
   class << self
     # @return [Riak::Client] The client for the current thread.

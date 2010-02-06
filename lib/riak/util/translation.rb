@@ -11,28 +11,19 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+require 'riak'
 
-module Ripple
-  module EmbeddedDocument
-    extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
+module Riak
+  module Util
+    module Translation
+      def i18n_scope
+        :riak
+      end
 
-    autoload :Persistence
-    include Translation
-
-    included do
-      extend ActiveModel::Naming
-      extend Document::Properties
-      include Persistence
-      include Document::AttributeMethods
-      include Document::Validations
-    end
-
-    module ClassMethods
-      def embeddable?
-        !included_modules.include?(Document)
+      def t(message, options={})
+        I18n.t("#{i18n_scope}.#{message}", options)
       end
     end
   end
 end
+

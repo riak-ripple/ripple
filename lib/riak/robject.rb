@@ -17,7 +17,8 @@ module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
   # the data and metadata stored in a bucket/key pair in the Riak database.
   class RObject
-    include Riak::Util
+    include Util
+    include Util::Translation
 
     # @return [Bucket] the bucket in which this object is contained
     attr_accessor :bucket
@@ -110,7 +111,7 @@ module Riak
     # @return [Riak::RObject] self
     # @raise [ArgumentError] if the content_type is not defined
     def store(options={})
-      raise ArgumentError, "content_type is not defined!" unless @content_type.present?
+      raise ArgumentError, t("content_type_undefined") unless @content_type.present?
       params = {:returnbody => true}.merge(options)
       method, codes, path = @key.present? ? [:put, [200,204], "#{@bucket.name}/#{@key}"] : [:post, 201, @bucket.name]
       response = @bucket.client.http.send(method, codes, @bucket.client.prefix, path, params, serialize(data), store_headers)

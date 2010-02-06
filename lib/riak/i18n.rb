@@ -11,28 +11,5 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
-
-module Ripple
-  module EmbeddedDocument
-    extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
-
-    autoload :Persistence
-    include Translation
-
-    included do
-      extend ActiveModel::Naming
-      extend Document::Properties
-      include Persistence
-      include Document::AttributeMethods
-      include Document::Validations
-    end
-
-    module ClassMethods
-      def embeddable?
-        !included_modules.include?(Document)
-      end
-    end
-  end
-end
+require 'active_support/i18n'
+I18n.load_path << File.expand_path("../locale/en.yml", __FILE__)

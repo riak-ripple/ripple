@@ -16,6 +16,8 @@ require 'riak'
 module Riak
   # A client connection to Riak.
   class Client
+    include Util::Translation
+
     autoload :HTTPBackend,    "riak/client/http_backend"
     autoload :NetHTTPBackend, "riak/client/net_http_backend"
     autoload :CurbBackend,    "riak/client/curb_backend"
@@ -37,10 +39,10 @@ module Riak
 
     # @return [String] The URL path prefix to the "raw" HTTP endpoint
     attr_accessor :prefix
-    
+
     # @return [String] The URL path to the map-reduce HTTP endpoint
     attr_accessor :mapred
-    
+
     # Creates a client connection to Riak
     # @param [Hash] options configuration options for the client
     # @option options [String] :host ('127.0.0.1') The host or IP address for the Riak endpoint
@@ -56,7 +58,7 @@ module Riak
       self.client_id = options[:client_id] || make_client_id
       self.prefix    = options[:prefix]    || "/raw/"
       self.mapred    = options[:mapred]    || "/mapred"
-      raise ArgumentError, "You must specify a host and port, or use the defaults of 127.0.0.1:8098" unless @host && @port
+      raise ArgumentError, t("missing_host_and_port") unless @host && @port
     end
 
     # Set the client ID for this client. Must be a string or Fixnum value 0 =< value < MAX_CLIENT_ID.
@@ -70,7 +72,7 @@ module Riak
                    when String
                      value
                    else
-                     raise ArgumentError, "Invalid client ID, must be a string or between 0 and #{MAX_CLIENT_ID}"
+                     raise ArgumentError, t("invalid_client_id", :max_id => MAX_CLIENT_ID)
                    end
     end
 
@@ -79,7 +81,7 @@ module Riak
     # @raise [ArgumentError] if an invalid hostname is given
     # @return [String] the assigned hostname
     def host=(value)
-      raise ArgumentError, "host must be a valid hostname" unless String === value && value.present? && value =~ HOST_REGEX
+      raise ArgumentError, t("hostname_invalid") unless String === value && value.present? && value =~ HOST_REGEX
       @host = value
     end
 
@@ -88,7 +90,7 @@ module Riak
     # @raise [ArgumentError] if an invalid port number is given
     # @return [Fixnum] the assigned port number
     def port=(value)
-      raise ArgumentError, "port must be an integer between 0 and 65535" unless (0..65535).include?(value)
+      raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
       @port = value
     end
 
@@ -101,7 +103,7 @@ module Riak
                   require 'curb'
                   CurbBackend.new(self)
                 rescue LoadError, NameError
-                  warn "curb library not found! Please `gem install curb` for better performance."
+                  warn t("install_curb")
                   NetHTTPBackend.new(self)
                 end
     end
@@ -118,7 +120,7 @@ module Riak
       Bucket.new(self, name).load(response)
     end
     alias :[] :bucket
-    
+
     # @return [String] A representation suitable for IRB and debugging output.
     def inspect
       "#<Riak::Client #{http.root_uri.to_s}>"

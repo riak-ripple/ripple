@@ -17,6 +17,7 @@ module Riak
   # Represents and encapsulates operations on a Riak bucket.  You may retrieve a bucket
   # using {Client#bucket}, or create it manually and retrieve its meta-information later.
   class Bucket
+    include Util::Translation
     # @return [Riak::Client] the associated client
     attr_reader :client
 
@@ -31,8 +32,8 @@ module Riak
     # @param [Client] client the {Riak::Client} for this bucket
     # @param [String] name the name of the bucket
     def initialize(client, name)
-      raise ArgumentError, "invalid argument #{client} is not a Riak::Client" unless Client === client
-      raise ArgumentError, "invalid argument #{name} is not a String" unless String === name
+      raise ArgumentError, t("client_type", :client => client.inspect) unless Client === client
+      raise ArgumentError, t("string_type", :string => name.inspect) unless String === name
       @client, @name = client, name
     end
 
@@ -43,7 +44,7 @@ module Riak
     # @see Client#bucket
     def load(response={})
       unless response.try(:[], :headers).try(:[],'content-type').try(:first) =~ /json$/
-        raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], "while loading bucket '#{name}'")
+        raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], t("loading_bucket", :name => name))
       end
       payload = JSON.parse(response[:body])
       @keys = payload['keys'].map {|k| URI.unescape(k) }  if payload['keys']
@@ -78,7 +79,7 @@ module Riak
     # @return [Hash] the properties that were accepted
     # @raise [FailedRequest] if the new properties were not accepted by the Riak server
     def props=(properties)
-      raise ArgumentError, "properties must be a Hash" unless Hash === properties
+      raise ArgumentError, t("hash_type", :hash => properties.inspect) unless Hash === properties
       body = {'props' => properties}.to_json
       @client.http.put(204, @client.prefix, name, body, {"Content-Type" => "application/json"})
       @props = properties
@@ -98,7 +99,7 @@ module Riak
 
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
-      "#<Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{" keys=#{keys.join(', ')}" if defined?(@keys)}>"
+      "#<Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
     end
   end
 end
