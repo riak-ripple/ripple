@@ -77,7 +77,7 @@ module Ripple
 
         private
         def attributes_for_persistence
-          self.class.superclass < Ripple::Document ? attributes.merge("_type" => self.class.name) : attributes
+          attributes.merge("_type" => self.class.name)
         end
       end
     end

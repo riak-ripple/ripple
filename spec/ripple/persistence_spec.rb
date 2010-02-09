@@ -32,7 +32,7 @@ describe Ripple::Document::Persistence do
   end
 
   it "should save a new object to Riak" do
-    json = @widget.attributes.to_json
+    json = @widget.attributes.merge("_type" => "Widget").to_json
     @http.should_receive(:post).with(201, "/raw/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
     @widget.save
     @widget.key.should == "new_widget"
@@ -41,7 +41,7 @@ describe Ripple::Document::Persistence do
   end
 
   it "should reload a saved object" do
-    json = @widget.attributes.to_json
+    json = @widget.attributes.merge("_type" => "Widget").to_json
     @http.should_receive(:post).with(201, "/raw/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/raw/widgets/new_widget"]})
     @widget.save
     @http.should_receive(:get).and_return(:code => 200, :headers => {'content-type' => ["application/json"]}, :body => '{"name":"spring","size":10}')
