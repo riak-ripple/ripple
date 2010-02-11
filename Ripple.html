@@ -66,7 +66,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">lib/ripple.rb<span class="defines">,<br />
-  lib/ripple/document.rb,<br /> lib/ripple/document/finders.rb,<br /> lib/ripple/embedded_document.rb,<br /> lib/ripple/document/properties.rb,<br /> lib/ripple/document/persistence.rb,<br /> lib/ripple/document/validations.rb,<br /> lib/ripple/property_type_mismatch.rb,<br /> lib/ripple/document/bucket_access.rb,<br /> lib/ripple/document/attribute_methods.rb,<br /> lib/ripple/embedded_document/persistence.rb,<br /> lib/ripple/document/persistence/callbacks.rb,<br /> lib/ripple/document/attribute_methods/read.rb,<br /> lib/ripple/document/attribute_methods/write.rb,<br /> lib/ripple/document/attribute_methods/dirty.rb,<br /> lib/ripple/document/attribute_methods/query.rb</span>
+  lib/ripple/document.rb,<br /> lib/ripple/translation.rb,<br /> lib/ripple/document/finders.rb,<br /> lib/ripple/embedded_document.rb,<br /> lib/ripple/document/properties.rb,<br /> lib/ripple/document/validations.rb,<br /> lib/ripple/document/persistence.rb,<br /> lib/ripple/document/bucket_access.rb,<br /> lib/ripple/property_type_mismatch.rb,<br /> lib/ripple/document/attribute_methods.rb,<br /> lib/ripple/embedded_document/persistence.rb,<br /> lib/ripple/document/persistence/callbacks.rb,<br /> lib/ripple/document/attribute_methods/read.rb,<br /> lib/ripple/document/attribute_methods/query.rb,<br /> lib/ripple/document/attribute_methods/dirty.rb,<br /> lib/ripple/document/attribute_methods/write.rb</span>
 </dd>
   
 </dl>
@@ -88,7 +88,7 @@ basic Riak client.
 <p class="children">
    
     
-      <strong class="modules">Modules:</strong> <a href="Ripple/Document.html" title="Ripple::Document (module)">Document</a>, <a href="Ripple/EmbeddedDocument.html" title="Ripple::EmbeddedDocument (module)">EmbeddedDocument</a>
+      <strong class="modules">Modules:</strong> <a href="Ripple/Document.html" title="Ripple::Document (module)">Document</a>, <a href="Ripple/EmbeddedDocument.html" title="Ripple::EmbeddedDocument (module)">EmbeddedDocument</a>, <a href="Ripple/Translation.html" title="Ripple::Translation (module)">Translation</a>
     
    
     
@@ -221,12 +221,12 @@ The client for the current thread.
       <pre class="lines">
 
 
-36
-37
-38</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 33</span>
 
 <span class='def def kw'>def</span> <span class='client identifier id'>client</span>
   <span class='Thread constant id'>Thread</span><span class='dot token'>.</span><span class='current identifier id'>current</span><span class='lbrack token'>[</span><span class='symbol val'>:ripple_client</span><span class='rbrack token'>]</span> <span class='opasgn op'>||=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Client constant id'>Client</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
@@ -282,12 +282,12 @@ the client
       <pre class="lines">
 
 
-42
-43
-44</pre>
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 39</span>
 
 <span class='def def kw'>def</span> <span class='client= identifier id'>client=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
   <span class='Thread constant id'>Thread</span><span class='dot token'>.</span><span class='current identifier id'>current</span><span class='lbrack token'>[</span><span class='symbol val'>:ripple_client</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
@@ -311,13 +311,13 @@ the client
       <pre class="lines">
 
 
-46
-47
-48
-49</pre>
+43
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 43</span>
 
 <span class='def def kw'>def</span> <span class='config= identifier id'>config=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
   <span class='self self kw'>self</span><span class='dot token'>.</span><span class='client identifier id'>client</span> <span class='assign token'>=</span> <span class='nil nil kw'>nil</span>
@@ -334,7 +334,7 @@ the client
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:55:03 2010 by 
+  Generated on Wed Feb 10 22:14:19 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>

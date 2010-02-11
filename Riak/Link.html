@@ -69,10 +69,14 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
+      
+    
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/riak/link.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/riak/link.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -90,6 +94,10 @@ Represents a link from one object to another in Riak
   
 </div>
 
+  
+  
+  
+  
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
     
@@ -287,6 +295,14 @@ A new instance of Link.
 
     
   </ul>
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></h3>
+  <p class="inherited"><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -663,7 +679,7 @@ an array of Riak::Link structs parsed from the header
 
 <span class='def def kw'>def</span> <span class='to_walk_spec identifier id'>to_walk_spec</span>
   <span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='object identifier id'>object</span> <span class='assign token'>=</span> <span class='$1 nth_ref id'>$1</span><span class='comma token'>,</span> <span class='$2 nth_ref id'>$2</span> <span class='if if_mod kw'>if</span> <span class='@url ivar id'>@url</span> <span class='match op'>=~</span> <span class='regexp val'>%r{/raw/([^/]+)/([^/]+)/?}</span>
-  <span class='raise identifier id'>raise</span> <span class='string val'>&quot;Can't convert a bucket link to a walk spec&quot;</span> <span class='if if_mod kw'>if</span> <span class='@rel ivar id'>@rel</span> <span class='eq op'>==</span> <span class='string val'>&quot;up&quot;</span> <span class='orop op'>||</span> <span class='object identifier id'>object</span><span class='dot token'>.</span><span class='nil? fid id'>nil?</span>
+  <span class='raise identifier id'>raise</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;bucket_link_conversion&quot;</span><span class='rparen token'>)</span> <span class='if if_mod kw'>if</span> <span class='@rel ivar id'>@rel</span> <span class='eq op'>==</span> <span class='string val'>&quot;up&quot;</span> <span class='orop op'>||</span> <span class='object identifier id'>object</span><span class='dot token'>.</span><span class='nil? fid id'>nil?</span>
   <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='symbol val'>:tag</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@rel ivar id'>@rel</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -677,7 +693,7 @@ an array of Riak::Link structs parsed from the header
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:54:58 2010 by 
+  Generated on Wed Feb 10 22:14:17 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>

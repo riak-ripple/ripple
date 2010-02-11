@@ -71,10 +71,14 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
+      
+    
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/riak/failed_request.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/riak/failed_request.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -93,6 +97,10 @@ the actual response code.
   
 </div>
 
+  
+  
+  
+  
   
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
@@ -261,6 +269,14 @@ A new instance of FailedRequest.
     
   </ul>
 
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></h3>
+  <p class="inherited"><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -288,17 +304,17 @@ A new instance of FailedRequest
       <pre class="lines">
 
 
-31
 32
 33
-34</pre>
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 32</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='expected_code identifier id'>expected_code</span><span class='comma token'>,</span> <span class='received_code identifier id'>received_code</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='rparen token'>)</span>
   <span class='@method ivar id'>@method</span><span class='comma token'>,</span> <span class='@expected ivar id'>@expected</span><span class='comma token'>,</span> <span class='@code ivar id'>@code</span><span class='comma token'>,</span> <span class='@headers ivar id'>@headers</span><span class='comma token'>,</span> <span class='@body ivar id'>@body</span> <span class='assign token'>=</span> <span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='expected_code identifier id'>expected_code</span><span class='comma token'>,</span> <span class='received_code identifier id'>received_code</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='body identifier id'>body</span>
-  <span class='super super kw'>super</span> <span class='dstring node'>&quot;Expected #{@expected} from Riak but received #{@code}.&quot;</span>
+  <span class='super super kw'>super</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;failed_request&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:expected</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@expected ivar id'>@expected</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span><span class='comma token'>,</span> <span class='symbol val'>:code</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@code ivar id'>@code</span><span class='comma token'>,</span> <span class='symbol val'>:body</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@body ivar id'>@body</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -357,12 +373,12 @@ the response body, if present
       <pre class="lines">
 
 
-29
 30
-31</pre>
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 30</span>
 
 <span class='def def kw'>def</span> <span class='body identifier id'>body</span>
   <span class='@body ivar id'>@body</span>
@@ -419,12 +435,12 @@ the received response code
       <pre class="lines">
 
 
-25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 26</span>
 
 <span class='def def kw'>def</span> <span class='code identifier id'>code</span>
   <span class='@code ivar id'>@code</span>
@@ -481,12 +497,12 @@ the expected response code
       <pre class="lines">
 
 
-23
 24
-25</pre>
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 24</span>
 
 <span class='def def kw'>def</span> <span class='expected identifier id'>expected</span>
   <span class='@expected ivar id'>@expected</span>
@@ -543,12 +559,12 @@ the response headers
       <pre class="lines">
 
 
-27
 28
-29</pre>
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 28</span>
 
 <span class='def def kw'>def</span> <span class='headers identifier id'>headers</span>
   <span class='@headers ivar id'>@headers</span>
@@ -605,12 +621,12 @@ the HTTP method, one of :head, :get, :post, :put, :delete
       <pre class="lines">
 
 
-21
 22
-23</pre>
+23
+24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/failed_request.rb', line 22</span>
 
 <span class='def def kw'>def</span> <span class='method identifier id'>method</span>
   <span class='@method ivar id'>@method</span>
@@ -627,7 +643,7 @@ the HTTP method, one of :head, :get, :post, :put, :delete
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:54:59 2010 by 
+  Generated on Wed Feb 10 22:14:21 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>

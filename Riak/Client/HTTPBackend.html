@@ -69,10 +69,14 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></dd>
+      
+    
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/riak/client/http_backend.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/riak/client/http_backend.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -83,6 +87,10 @@
 </div>
 
 
+  
+  
+  
+  
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
     
@@ -447,6 +455,14 @@ Verifies that both a resource path and body are present in the arguments.
 
     
   </ul>
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></h3>
+  <p class="inherited"><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -508,16 +524,16 @@ the client
       <pre class="lines">
 
 
-24
 25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 25</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='rparen token'>)</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Riak::Client instance required&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='Client constant id'>Client</span> <span class='eqq op'>===</span> <span class='client identifier id'>client</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;client_type&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:client</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='client identifier id'>client</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='Client constant id'>Client</span> <span class='eqq op'>===</span> <span class='client identifier id'>client</span>
   <span class='@client ivar id'>@client</span> <span class='assign token'>=</span> <span class='client identifier id'>client</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -558,12 +574,12 @@ The Riak::Client that uses this backend
       <pre class="lines">
 
 
-20
 21
-22</pre>
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 21</span>
 
 <span class='def def kw'>def</span> <span class='client identifier id'>client</span>
   <span class='@client ivar id'>@client</span>
@@ -625,15 +641,15 @@ headers that will be merged with user-specified headers on every request
       <pre class="lines">
 
 
-31
 32
 33
 34
 35
-36</pre>
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 32</span>
 
 <span class='def def kw'>def</span> <span class='default_headers identifier id'>default_headers</span>
   <span class='lbrace token'>{</span>
@@ -874,14 +890,14 @@ if the response code doesn&#8217;t match the expected response
       <pre class="lines">
 
 
-129
 130
 131
 132
-133</pre>
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 130</span>
 
 <span class='def def kw'>def</span> <span class='delete identifier id'>delete</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
   <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
@@ -1121,14 +1137,14 @@ if the response code doesn&#8217;t match the expected response
       <pre class="lines">
 
 
-67
 68
 69
 70
-71</pre>
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 68</span>
 
 <span class='def def kw'>def</span> <span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
   <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
@@ -1290,14 +1306,14 @@ if the response code doesn&#8217;t match the expected response
       <pre class="lines">
 
 
-47
 48
 49
 50
-51</pre>
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 48</span>
 
 <span class='def def kw'>def</span> <span class='head identifier id'>head</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
   <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
@@ -1375,15 +1391,15 @@ an absolute URI for the resource
       <pre class="lines">
 
 
-143
 144
 145
 146
 147
-148</pre>
+148
+149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 144</span>
 
 <span class='def def kw'>def</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='segments identifier id'>segments</span><span class='rparen token'>)</span>
   <span class='query identifier id'>query</span> <span class='assign token'>=</span> <span class='segments identifier id'>segments</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='dot token'>.</span><span class='to_param identifier id'>to_param</span>
@@ -1580,12 +1596,12 @@ if a subclass does not implement this method
       <pre class="lines">
 
 
-203
 204
-205</pre>
+205
+206</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 203</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 204</span>
 
 <span class='def def kw'>def</span> <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
   <span class='raise identifier id'>raise</span> <span class='NotImplementedError constant id'>NotImplementedError</span>
@@ -1840,14 +1856,14 @@ if the response code doesn&#8217;t match the expected response
       <pre class="lines">
 
 
-109
 110
 111
 112
-113</pre>
+113
+114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 110</span>
 
 <span class='def def kw'>def</span> <span class='post identifier id'>post</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
   <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
@@ -2104,14 +2120,14 @@ if the response code doesn&#8217;t match the expected response
       <pre class="lines">
 
 
-88
 89
 90
 91
-92</pre>
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 89</span>
 
 <span class='def def kw'>def</span> <span class='put identifier id'>put</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
   <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
@@ -2225,12 +2241,12 @@ whether to return the body in the response hash
       <pre class="lines">
 
 
-188
 189
-190</pre>
+190
+191</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 189</span>
 
 <span class='def def kw'>def</span> <span class='return_body? fid id'>return_body?</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='code identifier id'>code</span><span class='comma token'>,</span> <span class='has_block identifier id'>has_block</span><span class='rparen token'>)</span>
   <span class='method identifier id'>method</span> <span class='neq op'>!=</span> <span class='symbol val'>:head</span> <span class='andop op'>&amp;&amp;</span> <span class='notop op'>!</span><span class='valid_response? fid id'>valid_response?</span><span class='lparen token'>(</span><span class='lbrack token'>[</span><span class='integer val'>204</span><span class='comma token'>,</span><span class='integer val'>205</span><span class='comma token'>,</span><span class='integer val'>304</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='code identifier id'>code</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span> <span class='notop op'>!</span><span class='has_block identifier id'>has_block</span>
@@ -2284,12 +2300,12 @@ The calculated root URI for the Riak HTTP endpoint
       <pre class="lines">
 
 
-136
 137
-138</pre>
+138
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 136</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 137</span>
 
 <span class='def def kw'>def</span> <span class='root_uri identifier id'>root_uri</span>
   <span class='URI constant id'>URI</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='dstring node'>&quot;http://#{@client.host}:#{@client.port}&quot;</span><span class='rparen token'>)</span>
@@ -2382,12 +2398,12 @@ whether the actual response code is acceptable given the expectations
       <pre class="lines">
 
 
-178
 179
-180</pre>
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 178</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 179</span>
 
 <span class='def def kw'>def</span> <span class='valid_response? fid id'>valid_response?</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='comma token'>,</span> <span class='actual identifier id'>actual</span><span class='rparen token'>)</span>
   <span class='Array constant id'>Array</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_i</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='actual identifier id'>actual</span><span class='dot token'>.</span><span class='to_i identifier id'>to_i</span><span class='rparen token'>)</span>
@@ -2462,17 +2478,17 @@ if the resource path is too short
       <pre class="lines">
 
 
-168
 169
 170
-171</pre>
+171
+172</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 168</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 169</span>
 
 <span class='def def kw'>def</span> <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
   <span class='resource identifier id'>resource</span> <span class='assign token'>=</span> <span class='Array constant id'>Array</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='flatten identifier id'>flatten</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Resource path too short&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='length identifier id'>length</span> <span class='gt op'>&gt;</span> <span class='integer val'>1</span> <span class='orop op'>||</span> <span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='mapred identifier id'>mapred</span><span class='rparen token'>)</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;resource_path_short&quot;</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='length identifier id'>length</span> <span class='gt op'>&gt;</span> <span class='integer val'>1</span> <span class='orop op'>||</span> <span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='mapred identifier id'>mapred</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -2544,7 +2560,6 @@ if the body or resource is missing, or if the body is not a String
       <pre class="lines">
 
 
-153
 154
 155
 156
@@ -2554,20 +2569,21 @@ if the body or resource is missing, or if the body is not a String
 160
 161
 162
-163</pre>
+163
+164</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 153</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 154</span>
 
 <span class='def def kw'>def</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
   <span class='body identifier id'>body</span> <span class='assign token'>=</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='pop identifier id'>pop</span>
   <span class='begin begin kw'>begin</span>
     <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
   <span class='rescue rescue kw'>rescue</span> <span class='ArgumentError constant id'>ArgumentError</span>
-    <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;You must supply both a resource path and a body.&quot;</span>
+    <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;path_and_body_required&quot;</span><span class='rparen token'>)</span>
   <span class='end end kw'>end</span>
 
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>&quot;Request body must be a string or IO.&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span> <span class='orop op'>||</span> <span class='IO constant id'>IO</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;request_body_type&quot;</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span> <span class='orop op'>||</span> <span class='IO constant id'>IO</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span>
   <span class='lbrack token'>[</span><span class='args identifier id'>args</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='rbrack token'>]</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -2581,7 +2597,7 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:55:01 2010 by 
+  Generated on Wed Feb 10 22:14:19 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>

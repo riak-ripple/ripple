@@ -69,10 +69,14 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
+      
+    
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/riak/bucket.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/riak/bucket.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -92,6 +96,10 @@ meta-information later.
   
 </div>
 
+  
+  
+  
+  
   <h2>Instance Attribute Summary</h2>
   <ul class="summary">
     
@@ -301,6 +309,14 @@ Load information for the bucket from a response given by the
 
     
   </ul>
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></h3>
+  <p class="inherited"><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -379,18 +395,18 @@ the name of the bucket
       <pre class="lines">
 
 
-33
 34
 35
 36
-37</pre>
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 34</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='comma token'>,</span> <span class='name identifier id'>name</span><span class='rparen token'>)</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='dstring node'>&quot;invalid argument #{client} is not a Riak::Client&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='Client constant id'>Client</span> <span class='eqq op'>===</span> <span class='client identifier id'>client</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='dstring node'>&quot;invalid argument #{name} is not a String&quot;</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='name identifier id'>name</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;client_type&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:client</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='client identifier id'>client</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='Client constant id'>Client</span> <span class='eqq op'>===</span> <span class='client identifier id'>client</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;string_type&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:string</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='name identifier id'>name</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='name identifier id'>name</span>
   <span class='@client ivar id'>@client</span><span class='comma token'>,</span> <span class='@name ivar id'>@name</span> <span class='assign token'>=</span> <span class='client identifier id'>client</span><span class='comma token'>,</span> <span class='name identifier id'>name</span>
 <span class='end end kw'>end</span>
 </pre>
@@ -450,12 +466,12 @@ the associated client
       <pre class="lines">
 
 
-21
 22
-23</pre>
+23
+24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 22</span>
 
 <span class='def def kw'>def</span> <span class='client identifier id'>client</span>
   <span class='@client ivar id'>@client</span>
@@ -512,12 +528,12 @@ the bucket name
       <pre class="lines">
 
 
-24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 25</span>
 
 <span class='def def kw'>def</span> <span class='name identifier id'>name</span>
   <span class='@name ivar id'>@name</span>
@@ -574,12 +590,12 @@ Internal Riak bucket properties.
       <pre class="lines">
 
 
-27
 28
-29</pre>
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 28</span>
 
 <span class='def def kw'>def</span> <span class='props identifier id'>props</span>
   <span class='@props ivar id'>@props</span>
@@ -730,13 +746,13 @@ if the object is not found or some other error occurs
       <pre class="lines">
 
 
-93
 94
 95
-96</pre>
+96
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 94</span>
 
 <span class='def def kw'>def</span> <span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='response identifier id'>response</span> <span class='assign token'>=</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='http identifier id'>http</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='integer val'>200</span><span class='comma token'>,</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='prefix identifier id'>prefix</span><span class='comma token'>,</span> <span class='name identifier id'>name</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
@@ -791,15 +807,15 @@ a representation suitable for IRB and debugging output
       <pre class="lines">
 
 
-100
 101
-102</pre>
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 101</span>
 
 <span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span>
-  <span class='dstring node'>&quot;#&lt;Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{&quot; keys=#{keys.join(', ')}&quot; if defined?(@keys)}&gt;&quot;</span>
+  <span class='dstring node'>&quot;#&lt;Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{&quot; keys=[#{keys.join(',')}]&quot; if defined?(@keys)}&gt;&quot;</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -919,7 +935,6 @@ Keys in this bucket
       <pre class="lines">
 
 
-62
 63
 64
 65
@@ -930,10 +945,11 @@ Keys in this bucket
 70
 71
 72
-73</pre>
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 63</span>
 
 <span class='def def kw'>def</span> <span class='keys identifier id'>keys</span><span class='lparen token'>(</span><span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='if if kw'>if</span> <span class='block_given? fid id'>block_given?</span>
@@ -1028,7 +1044,6 @@ self
       <pre class="lines">
 
 
-44
 45
 46
 47
@@ -1036,14 +1051,15 @@ self
 49
 50
 51
-52</pre>
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 45</span>
 
 <span class='def def kw'>def</span> <span class='load identifier id'>load</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
   <span class='unless unless kw'>unless</span> <span class='response identifier id'>response</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:[]</span><span class='comma token'>,</span> <span class='symbol val'>:headers</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:[]</span><span class='comma token'>,</span><span class='string val'>'content-type'</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='try identifier id'>try</span><span class='lparen token'>(</span><span class='symbol val'>:first</span><span class='rparen token'>)</span> <span class='match op'>=~</span> <span class='regexp val'>/json$/</span>
-    <span class='raise identifier id'>raise</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='InvalidResponse constant id'>InvalidResponse</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='string val'>&quot;content-type&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrack token'>[</span><span class='string val'>&quot;application/json&quot;</span><span class='rbrack token'>]</span><span class='rbrace token'>}</span><span class='comma token'>,</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='dstring node'>&quot;while loading bucket '#{name}'&quot;</span><span class='rparen token'>)</span>
+    <span class='raise identifier id'>raise</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='InvalidResponse constant id'>InvalidResponse</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='string val'>&quot;content-type&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrack token'>[</span><span class='string val'>&quot;application/json&quot;</span><span class='rbrack token'>]</span><span class='rbrace token'>}</span><span class='comma token'>,</span> <span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:headers</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;loading_bucket&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:name</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='name identifier id'>name</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
   <span class='end end kw'>end</span>
   <span class='payload identifier id'>payload</span> <span class='assign token'>=</span> <span class='JSON constant id'>JSON</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='response identifier id'>response</span><span class='lbrack token'>[</span><span class='symbol val'>:body</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
   <span class='@keys ivar id'>@keys</span> <span class='assign token'>=</span> <span class='payload identifier id'>payload</span><span class='lbrack token'>[</span><span class='string val'>'keys'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='k identifier id'>k</span><span class='bitor op'>|</span> <span class='URI constant id'>URI</span><span class='dot token'>.</span><span class='unescape identifier id'>unescape</span><span class='lparen token'>(</span><span class='k identifier id'>k</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>  <span class='if if_mod kw'>if</span> <span class='payload identifier id'>payload</span><span class='lbrack token'>[</span><span class='string val'>'keys'</span><span class='rbrack token'>]</span>
@@ -1061,7 +1077,7 @@ self
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:55:02 2010 by 
+  Generated on Wed Feb 10 22:14:21 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>

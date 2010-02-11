@@ -217,19 +217,19 @@ Deletes the document from Riak and freezes this instance
       <pre class="lines">
 
 
+64
 65
 66
 67
 68
 69
-70
-71</pre>
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 64</span>
 
 <span class='def def kw'>def</span> <span class='destroy identifier id'>destroy</span>
-  <span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='delete identifier id'>delete</span> <span class='unless unless_mod kw'>unless</span> <span class='new? fid id'>new?</span>
+  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='delete identifier id'>delete</span> <span class='unless unless_mod kw'>unless</span> <span class='new? fid id'>new?</span>
   <span class='freeze identifier id'>freeze</span>
   <span class='true true kw'>true</span>
 <span class='rescue rescue kw'>rescue</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='FailedRequest constant id'>FailedRequest</span>
@@ -265,12 +265,12 @@ Freezes the document, preventing further modification.
       <pre class="lines">
 
 
+73
 74
-75
-76</pre>
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 73</span>
 
 <span class='def def kw'>def</span> <span class='freeze identifier id'>freeze</span>
   <span class='@attributes ivar id'>@attributes</span><span class='dot token'>.</span><span class='freeze identifier id'>freeze</span><span class='semicolon token'>;</span> <span class='super super kw'>super</span>
@@ -381,19 +381,19 @@ self
       <pre class="lines">
 
 
+56
 57
 58
 59
 60
-61
-62</pre>
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 56</span>
 
 <span class='def def kw'>def</span> <span class='reload identifier id'>reload</span>
   <span class='return return kw'>return</span> <span class='self self kw'>self</span> <span class='if if_mod kw'>if</span> <span class='new? fid id'>new?</span>
-  <span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='reload identifier id'>reload</span><span class='lparen token'>(</span><span class='symbol val'>:force</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rparen token'>)</span>
+  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='reload identifier id'>reload</span><span class='lparen token'>(</span><span class='symbol val'>:force</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rparen token'>)</span>
   <span class='@attributes ivar id'>@attributes</span><span class='dot token'>.</span><span class='merge! fid id'>merge!</span><span class='lparen token'>(</span><span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='data identifier id'>data</span><span class='rparen token'>)</span>
   <span class='self self kw'>self</span>
 <span class='end end kw'>end</span>
@@ -455,18 +455,16 @@ whether the document succeeded in saving
 49
 50
 51
-52
-53</pre>
+52</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 43</span>
 
 <span class='def def kw'>def</span> <span class='save identifier id'>save</span>
-  <span class='@robject ivar id'>@robject</span> <span class='opasgn op'>||=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='RObject constant id'>RObject</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='self self kw'>self</span><span class='dot token'>.</span><span class='class identifier id'>class</span><span class='dot token'>.</span><span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='key identifier id'>key</span><span class='rparen token'>)</span>
-  <span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='content_type identifier id'>content_type</span> <span class='assign token'>=</span> <span class='string val'>&quot;application/json&quot;</span>
-  <span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='attributes_for_persistence identifier id'>attributes_for_persistence</span>
-  <span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='store identifier id'>store</span>
-  <span class='self self kw'>self</span><span class='dot token'>.</span><span class='key identifier id'>key</span> <span class='assign token'>=</span> <span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='key identifier id'>key</span>
+  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='key identifier id'>key</span> <span class='assign token'>=</span> <span class='key identifier id'>key</span> <span class='if if_mod kw'>if</span> <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='key identifier id'>key</span> <span class='neq op'>!=</span> <span class='key identifier id'>key</span>
+  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='attributes_for_persistence identifier id'>attributes_for_persistence</span>
+  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='store identifier id'>store</span>
+  <span class='self self kw'>self</span><span class='dot token'>.</span><span class='key identifier id'>key</span> <span class='assign token'>=</span> <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='key identifier id'>key</span>
   <span class='@new ivar id'>@new</span> <span class='assign token'>=</span> <span class='false false kw'>false</span>
   <span class='true true kw'>true</span>
 <span class='rescue rescue kw'>rescue</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='FailedRequest constant id'>FailedRequest</span>
@@ -483,7 +481,7 @@ whether the document succeeded in saving
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:54:59 2010 by 
+  Generated on Wed Feb 10 22:14:19 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>

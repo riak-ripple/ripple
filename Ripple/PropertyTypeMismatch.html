@@ -71,16 +71,28 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><a href="Translation.html" title="Ripple::Translation (module)">Translation</a></dd>
+      
+    
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/ripple/property_type_mismatch.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/ripple/property_type_mismatch.rb</dd>
   
 </dl>
 <div class="clear"></div>
 
 
 
+  
+  
+  
+  
+  
+  
+  
+  
   
 
   <h2>Instance Method Summary</h2>
@@ -114,6 +126,22 @@ A new instance of PropertyTypeMismatch.
     
   </ul>
 
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Translation.html" title="Ripple::Translation (module)">Translation</a></h3>
+  <p class="inherited"><a href="Translation.html#i18n_scope-instance_method" title="Ripple::Translation#i18n_scope (method)">#i18n_scope</a></p>
+
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="../Riak/Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></h3>
+  <p class="inherited"><a href="../Riak/Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="../Riak/Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -141,15 +169,15 @@ A new instance of PropertyTypeMismatch
       <pre class="lines">
 
 
-18
 19
-20</pre>
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/property_type_mismatch.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple/property_type_mismatch.rb', line 19</span>
 
 <span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='klass identifier id'>klass</span><span class='comma token'>,</span> <span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='super super kw'>super</span> <span class='I18n constant id'>I18n</span><span class='dot token'>.</span><span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;ripple.errors.property_type_mismatch&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:class</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='klass identifier id'>klass</span><span class='comma token'>,</span> <span class='symbol val'>:value</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='super super kw'>super</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;property_type_mismatch&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:class</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='klass identifier id'>klass</span><span class='comma token'>,</span> <span class='symbol val'>:value</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='value identifier id'>value</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span><span class='rparen token'>)</span>
 <span class='end end kw'>end</span>
 </pre>
     </td>
@@ -163,7 +191,7 @@ A new instance of PropertyTypeMismatch
 </div>
     
     <div id="footer">
-  Generated on Fri Feb  5 16:55:05 2010 by 
+  Generated on Wed Feb 10 22:14:20 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.3 (ruby-1.8.7).
 </div>
