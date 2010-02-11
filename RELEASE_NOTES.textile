@@ -1,0 +1,24 @@
+h1. Ripple Release Notes
+
+h2. 0.5 Initial Release - 2010-02-10
+
+This is the first release of Ripple, which would not have been possible
+without the generous support of Sonian and Basho Technologies.  Many thanks.
+It includes:
+
+* A robust basic client, @Riak@, with:
+** multiple HTTP backends (curb, net/http)
+** sensible client defaults (local, default port)
+** bucket access and manipulation, including key-streaming
+** object reading, storing, deleting and reloading
+** automatic de-serialization of JSON, YAML, and Marshal (when given the right content type)
+** streaming POST/PUT bodies (when given an IO)
+** method-chained map-reduce job construction
+* A document-style modeling library, Ripple, with:
+** ActiveModel 3.0 compatibility
+** Property/attribute definition with automatic type-casting
+** Bucket selection based on class name, with single-bucket inheritance (configurable)
+** Validations
+** Dirty-tracking
+** Simple finders - all documents, by key
+** Reloading

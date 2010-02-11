@@ -6,8 +6,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "ripple"
-    gem.summary = %Q{ripple is a simple Ruby client/wrapper for Riak, Basho's distributed database.}
-    gem.description = %Q{ripple is a Ruby client for Riak, Basho's distributed database. It interacts with the "raw" HTTP interface to Riak, allowing storage of both traditional domain objects as JSON and other formats.}
+    gem.summary = %Q{ripple is a rich Ruby client for Riak, Basho's distributed database.}
+    gem.description = %Q{ripple is a rich Ruby client for Riak, Basho's distributed database.  It includes all the basics of accessing and manipulating Riak buckets and objects, and an object mapper library for building a rich domain on top of Riak.}
     gem.email = "seancribbs@gmail.com"
     gem.homepage = "http://seancribbs.github.com/ripple"
     gem.authors = ["Sean Cribbs"]
@@ -40,22 +40,11 @@ end
 
 task :spec => :check_dependencies
 
-# begin
-#   require 'cucumber/rake/task'
-#   Cucumber::Rake::Task.new(:features)
-
-#   task :features => :check_dependencies
-# rescue LoadError
-#   task :features do
-#     abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"
-#   end
-# end
-
 task :default => :spec
 
 require 'yard'
 YARD::Rake::YardocTask.new do |yard|
-  docfiles = FileList['lib/**/*.rb', 'README*', 'VERSION', 'LICENSE']
+  docfiles = FileList['lib/**/*.rb', 'README*', 'VERSION', 'LICENSE', 'RELEASE_NOTES.textile']
   yard.files = docfiles
   yard.options = ["--no-private"]
 end
