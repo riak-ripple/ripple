@@ -41,11 +41,10 @@ module Ripple
         # Saves the document in Riak.
         # @return [true,false] whether the document succeeded in saving
         def save
-          @robject ||= Riak::RObject.new(self.class.bucket, key)
-          @robject.content_type = "application/json"
-          @robject.data = attributes_for_persistence
-          @robject.store
-          self.key = @robject.key
+          robject.key = key if robject.key != key
+          robject.data = attributes_for_persistence
+          robject.store
+          self.key = robject.key
           @new = false
           true
         rescue Riak::FailedRequest
@@ -56,14 +55,14 @@ module Ripple
         # @return self
         def reload
           return self if new?
-          @robject.reload(:force => true)
+          robject.reload(:force => true)
           @attributes.merge!(@robject.data)
           self
         end
 
         # Deletes the document from Riak and freezes this instance
         def destroy
-          @robject.delete unless new?
+          robject.delete unless new?
           freeze
           true
         rescue Riak::FailedRequest
@@ -73,6 +72,15 @@ module Ripple
         # Freezes the document, preventing further modification.
         def freeze
           @attributes.freeze; super
+        end
+
+        protected
+        attr_writer :robject
+
+        def robject
+          @robject ||= Riak::RObject.new(self.class.bucket, key).tap do |obj|
+            obj.content_type = "application/json"
+          end
         end
 
         private
