@@ -125,7 +125,7 @@ describe Ripple::Document::Property do
         if RUBY_VERSION < "1.9"
           @prop.type_cast([]).should == ""
         else
-          @prop.type_cast([]).should == ""
+          @prop.type_cast([]).should == "[]"
         end
       end
     end
