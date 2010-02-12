@@ -23,10 +23,10 @@ module Ripple
 
     included do
       extend ActiveModel::Naming
-      extend Document::Properties
+      extend Ripple::Document::Properties
       include Persistence
-      include Document::AttributeMethods
-      include Document::Validations
+      include Ripple::Document::AttributeMethods
+      include Ripple::Document::Validations
     end
 
     module ClassMethods

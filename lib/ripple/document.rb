@@ -53,7 +53,7 @@ module Ripple
     included do
       extend BucketAccess
       include Persistence
-      include EmbeddedDocument
+      include Ripple::EmbeddedDocument
       include Finders
     end
   end
