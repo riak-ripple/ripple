@@ -15,9 +15,11 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Finders do
   before :all do
-    class Box
-      include Ripple::Document
-      property :shape, String
+    Object.module_eval do
+      class Box
+        include Ripple::Document
+        property :shape, String
+      end
     end
   end
 
@@ -123,7 +125,7 @@ describe Ripple::Document::Finders do
 
   describe "single-bucket inheritance" do
     before :all do
-      class CardboardBox < Box; end
+      Object.module_eval { class CardboardBox < Box; end }
     end
 
     it "should instantiate as the proper type if defined in the document" do

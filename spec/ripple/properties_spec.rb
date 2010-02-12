@@ -15,7 +15,7 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Properties do
   before :all do
-    class Email; include Ripple::Document; end
+    Object.module_eval { class Email; include Ripple::Document; end }
   end
 
   it "should make the model class have a property definition method" do
@@ -122,7 +122,11 @@ describe Ripple::Document::Property do
         @prop.type_cast("s").should == "s"
         @prop.type_cast(1).should == "1"
         @prop.type_cast(true).should == "true"
-        @prop.type_cast([]).should == ""
+        if RUBY_VERSION < "1.9"
+          @prop.type_cast([]).should == ""
+        else
+          @prop.type_cast([]).should == ""
+        end
       end
     end
 

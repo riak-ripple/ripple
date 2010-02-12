@@ -22,7 +22,7 @@ module Ripple
       autoload :Callbacks
 
       included do
-        include Callbacks
+        include Ripple::Document::Persistence::Callbacks
       end
 
       module InstanceMethods

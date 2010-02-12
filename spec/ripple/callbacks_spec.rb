@@ -15,12 +15,12 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Persistence::Callbacks do
   before :all do
-    class Box; include Ripple::Document; property :shape, String end
+    Object.module_eval { class Box; include Ripple::Document; property :shape, String end }
   end
 
   it "should add create, update, save, and destroy callback declarations" do
     [:save, :create, :update, :destroy].each do |event|
-      Box.private_instance_methods.should include("_run_#{event}_callbacks")
+      Box.private_instance_methods.map(&:to_s).should include("_run_#{event}_callbacks")
       [:before, :after, :around].each do |time|
         Box.should respond_to("#{time}_#{event}")
       end

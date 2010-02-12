@@ -15,10 +15,12 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::AttributeMethods do
   before :all do
-    class Widget
-      include Ripple::Document
-      property :size, Integer
-      property :name, String, :default => "widget"
+    Object.module_eval do
+      class Widget
+        include Ripple::Document
+        property :size, Integer
+        property :name, String, :default => "widget"
+      end
     end
   end
 

@@ -15,7 +15,7 @@ require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Ripple::Document do
   before :all do
-    class Page; include Ripple::Document; end
+    Object.module_eval { class Page; include Ripple::Document; end }
   end
 
   it "should add bucket access methods to classes when included" do
