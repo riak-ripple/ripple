@@ -21,13 +21,18 @@ describe Riak::Link do
       result.should be_all {|i| Riak::Link === i }
     end
 
-    it "should set the url and rel parameters properly" do
+    it "should set the bucket, key, url and rel parameters properly" do
       result = Riak::Link.parse('</raw/foo/bar>; riaktag="tag", </raw/foo>; rel="up"')
       result[0].url.should == "/raw/foo/bar"
+      result[0].bucket.should == "foo"
+      result[0].key.should == "bar"
       result[0].rel.should == "tag"
       result[1].url.should == "/raw/foo"
+      result[1].bucket.should == nil
+      result[1].key.should == nil
       result[1].rel.should == "up"
     end
+    
   end
 
   it "should convert to a string appropriate for use in the Link header" do
