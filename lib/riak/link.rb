@@ -18,16 +18,10 @@ module Riak
   class Link
     include Util::Translation
     # @return [String] the URL (relative or absolute) of the related resource
-    attr_reader :url
-
-    # @return [String] the bucket name of the related resource
-    attr_reader :bucket
-
-    # @return [String] the key name of the related resource
-    attr_reader :key
+    attr_accessor :url
 
     # @return [String] the relationship ("rel") of the other resource to this one
-    attr_reader :rel
+    attr_accessor :rel
 
     # @param [String] header_string the string value of the Link: HTTP header from a Riak response
     # @return [Array<Link>] an array of Riak::Link structs parsed from the header
@@ -39,7 +33,16 @@ module Riak
 
     def initialize(url, rel)
       @url, @rel = url, rel
-      @bucket, @key = $1, $2 if url =~ %r{/raw/([^/]+)/([^/]+)/?}
+    end
+
+    # @return [String] bucket_name, if the Link url is a known Riak link ("/raw/<bucket>/<key>")
+    def bucket
+      $1 if url =~ %r{/raw/([^/]+)/?}
+    end
+    
+    # @return [String] key, if the Link url is a known Riak link ("/raw/<bucket>/<key>")
+    def key
+      $1 if url =~ %r{/raw/[^/]+/([^/]+)/?}
     end
 
     def inspect; to_s; end
@@ -53,8 +56,8 @@ module Riak
     end
 
     def to_walk_spec
-      raise t("bucket_link_conversion") if @rel == "up" || @key.nil?
-      WalkSpec.new(:bucket => @bucket, :tag => @rel)
+      raise t("bucket_link_conversion") if @rel == "up" || key.nil?
+      WalkSpec.new(:bucket => bucket, :tag => @rel)
     end
   end
 end

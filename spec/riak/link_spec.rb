@@ -28,11 +28,24 @@ describe Riak::Link do
       result[0].key.should == "bar"
       result[0].rel.should == "tag"
       result[1].url.should == "/raw/foo"
-      result[1].bucket.should == nil
+      result[1].bucket.should == "foo"
       result[1].key.should == nil
       result[1].rel.should == "up"
     end
     
+    it "should set url properly, and set bucket and key to nil for non-Riak links" do
+      result = Riak::Link.parse('<http://www.example.com/123.html>; riaktag="tag", </raw/foo>; rel="up"')
+      result[0].url.should == "http://www.example.com/123.html"
+      result[0].bucket.should == nil
+      result[0].key.should == nil
+      result[0].rel.should == "tag"
+
+      result = Riak::Link.parse('<http://www.example.com/>; riaktag="tag", </raw/foo>; rel="up"')
+      result[0].url.should == "http://www.example.com/"
+      result[0].bucket.should == nil
+      result[0].key.should == nil
+      result[0].rel.should == "tag"
+    end
   end
 
   it "should convert to a string appropriate for use in the Link header" do
