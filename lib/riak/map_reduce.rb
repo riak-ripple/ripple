@@ -135,7 +135,7 @@ module Riak
     def run
       response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
       if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
-        JSON.parse(response[:body])
+        ActiveSupport::JSON.decode(response[:body])
       else
         response
       end

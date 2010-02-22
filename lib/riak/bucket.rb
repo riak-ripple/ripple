@@ -46,7 +46,7 @@ module Riak
       unless response.try(:[], :headers).try(:[],'content-type').try(:first) =~ /json$/
         raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], t("loading_bucket", :name => name))
       end
-      payload = JSON.parse(response[:body])
+      payload = ActiveSupport::JSON.decode(response[:body])
       @keys = payload['keys'].map {|k| URI.unescape(k) }  if payload['keys']
       @props = payload['props'] if payload['props']
       self
@@ -63,7 +63,7 @@ module Riak
     def keys(options={})
       if block_given?
         @client.http.get(200, @client.prefix, name, {:props => false}, {}) do |chunk|
-          obj = JSON.parse(chunk) rescue {}
+          obj = ActiveSupport::JSON.decode(chunk) rescue {}
           yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
