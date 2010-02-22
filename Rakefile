@@ -16,8 +16,8 @@ begin
     gem.add_development_dependency "rack", ">=1.0"
     gem.add_development_dependency "yard", ">=0.5.2"
     gem.add_development_dependency "curb", ">=0.6"
-    gem.add_dependency "activesupport", "3.0.0.beta"
-    gem.add_dependency "activemodel", "3.0.0.beta"
+    gem.add_dependency "activesupport", "~>3.0.0.beta"
+    gem.add_dependency "activemodel", "~>3.0.0.beta"
     gem.requirements << "`gem install curb` for better HTTP performance"
   end
   Jeweler::GemcutterTasks.new
