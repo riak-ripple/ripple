@@ -1,5 +1,16 @@
 h1. Ripple Release Notes
 
+h2. 0.5.1 Patch Release - 2010-02-22
+
+This is a minor release with fixes for Ruby 1.9, bundler/edge Rails,
+and a minor feature addition. Changes:
+
+* Qualify namespaces for Ruby 1.9.
+* Decoupled a few specs that gave the appearance of failure.
+* Added "bucket" and "key" properties on Riak::Link objects. [John Lynch]
+* Fully-qualify the @JSON@ constant, using @ActiveSupport::JSON@ instead.
+* Adjusted gem specification to accommodate edge Rails. [Preston Marshall]
+
 h2. 0.5 Initial Release - 2010-02-10
 
 This is the first release of Ripple, which would not have been possible
