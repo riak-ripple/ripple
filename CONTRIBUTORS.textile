@@ -1,0 +1,4 @@
+These developers have contributed code to Ripple:
+
+* Sean Cribbs - sean@basho.com
+* John Lynch - john@rigelgroupllc.com
