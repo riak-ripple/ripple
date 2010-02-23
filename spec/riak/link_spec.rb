@@ -16,31 +16,31 @@ require File.expand_path("../spec_helper", File.dirname(__FILE__))
 describe Riak::Link do
   describe "parsing a link header" do
     it "should create Link objects from the data" do
-      result = Riak::Link.parse('</raw/foo/bar>; rel="tag", </raw/foo>; rel="up"')
+      result = Riak::Link.parse('</riak/foo/bar>; rel="tag", </riak/foo>; rel="up"')
       result.should be_kind_of(Array)
       result.should be_all {|i| Riak::Link === i }
     end
 
     it "should set the bucket, key, url and rel parameters properly" do
-      result = Riak::Link.parse('</raw/foo/bar>; riaktag="tag", </raw/foo>; rel="up"')
-      result[0].url.should == "/raw/foo/bar"
+      result = Riak::Link.parse('</riak/foo/bar>; riaktag="tag", </riak/foo>; rel="up"')
+      result[0].url.should == "/riak/foo/bar"
       result[0].bucket.should == "foo"
       result[0].key.should == "bar"
       result[0].rel.should == "tag"
-      result[1].url.should == "/raw/foo"
+      result[1].url.should == "/riak/foo"
       result[1].bucket.should == "foo"
       result[1].key.should == nil
       result[1].rel.should == "up"
     end
     
     it "should set url properly, and set bucket and key to nil for non-Riak links" do
-      result = Riak::Link.parse('<http://www.example.com/123.html>; riaktag="tag", </raw/foo>; rel="up"')
+      result = Riak::Link.parse('<http://www.example.com/123.html>; riaktag="tag", </riak/foo>; rel="up"')
       result[0].url.should == "http://www.example.com/123.html"
       result[0].bucket.should == nil
       result[0].key.should == nil
       result[0].rel.should == "tag"
 
-      result = Riak::Link.parse('<http://www.example.com/>; riaktag="tag", </raw/foo>; rel="up"')
+      result = Riak::Link.parse('<http://www.example.com/>; riaktag="tag", </riak/foo>; rel="up"')
       result[0].url.should == "http://www.example.com/"
       result[0].bucket.should == nil
       result[0].key.should == nil
@@ -49,18 +49,18 @@ describe Riak::Link do
   end
 
   it "should convert to a string appropriate for use in the Link header" do
-    Riak::Link.new("/raw/foo", "up").to_s.should == '</raw/foo>; riaktag="up"'
-    Riak::Link.new("/raw/foo/bar", "next").to_s.should == '</raw/foo/bar>; riaktag="next"'
+    Riak::Link.new("/riak/foo", "up").to_s.should == '</riak/foo>; riaktag="up"'
+    Riak::Link.new("/riak/foo/bar", "next").to_s.should == '</riak/foo/bar>; riaktag="next"'
   end
 
   it "should convert to a walk spec when pointing to an object" do
-    Riak::Link.new("/raw/foo/bar", "next").to_walk_spec.to_s.should == "foo,next,_"
-    lambda { Riak::Link.new("/raw/foo", "up").to_walk_spec }.should raise_error
+    Riak::Link.new("/riak/foo/bar", "next").to_walk_spec.to_s.should == "foo,next,_"
+    lambda { Riak::Link.new("/riak/foo", "up").to_walk_spec }.should raise_error
   end
 
   it "should be equivalent to a link with the same url and rel" do
-    one = Riak::Link.new("/raw/foo/bar", "next")
-    two = Riak::Link.new("/raw/foo/bar", "next")
+    one = Riak::Link.new("/riak/foo/bar", "next")
+    two = Riak::Link.new("/riak/foo/bar", "next")
     one.should == two
     [one].should include(two)
     [two].should include(one)

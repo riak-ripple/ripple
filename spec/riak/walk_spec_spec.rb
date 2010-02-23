@@ -127,7 +127,7 @@ describe Riak::WalkSpec do
 
     describe "matching links" do
       before :each do
-        @link = Riak::Link.new("/raw/foo/bar", "next")
+        @link = Riak::Link.new("/riak/foo/bar", "next")
       end
 
       it "should match a link when the bucket and tag are not specified" do

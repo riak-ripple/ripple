@@ -35,14 +35,14 @@ module Riak
       @url, @rel = url, rel
     end
 
-    # @return [String] bucket_name, if the Link url is a known Riak link ("/raw/<bucket>/<key>")
+    # @return [String] bucket_name, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
     def bucket
-      $1 if url =~ %r{/raw/([^/]+)/?}
+      $1 if url =~ %r{/riak/([^/]+)/?}
     end
     
-    # @return [String] key, if the Link url is a known Riak link ("/raw/<bucket>/<key>")
+    # @return [String] key, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
     def key
-      $1 if url =~ %r{/raw/[^/]+/([^/]+)/?}
+      $1 if url =~ %r{/riak/[^/]+/([^/]+)/?}
     end
 
     def inspect; to_s; end

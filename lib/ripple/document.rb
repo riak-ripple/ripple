@@ -28,15 +28,15 @@ module Ripple
   #     property :body,    String
   #   end
   #
-  #   email = Email.find("37458abc752f8413e")  # GET /raw/emails/37458abc752f8413e
+  #   email = Email.find("37458abc752f8413e")  # GET /riak/emails/37458abc752f8413e
   #   email.from = "someone@nowhere.net"
-  #   email.save                               # PUT /raw/emails/37458abc752f8413e
+  #   email.save                               # PUT /riak/emails/37458abc752f8413e
   #
   #   reply = Email.new
   #   reply.from = "justin@bashoooo.com"
   #   reply.to   = "sean@geeemail.com"
   #   reply.body = "Riak is a good fit for scalable Ruby apps."
-  #   reply.save                               # POST /raw/emails (Riak-assigned key)
+  #   reply.save                               # POST /riak/emails (Riak-assigned key)
   #
   module Document
     extend ActiveSupport::Concern

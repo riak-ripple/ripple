@@ -47,7 +47,7 @@ module Riak
     # @param [Hash] options configuration options for the client
     # @option options [String] :host ('127.0.0.1') The host or IP address for the Riak endpoint
     # @option options [Fixnum] :port (8098) The port of the Riak HTTP endpoint
-    # @option options [String] :prefix ('/raw/') The URL path prefix to the "raw" HTTP endpoint
+    # @option options [String] :prefix ('/riak/') The URL path prefix to the main HTTP endpoint
     # @option options [String] :mapred ('/mapred') The path to the map-reduce HTTP endpoint
     # @option options [Fixnum, String] :client_id (rand(MAX_CLIENT_ID)) The internal client ID used by Riak to route responses
     # @raise [ArgumentError] raised if any options are invalid
@@ -56,7 +56,7 @@ module Riak
       self.host      = options[:host]      || "127.0.0.1"
       self.port      = options[:port]      || 8098
       self.client_id = options[:client_id] || make_client_id
-      self.prefix    = options[:prefix]    || "/raw/"
+      self.prefix    = options[:prefix]    || "/riak/"
       self.mapred    = options[:mapred]    || "/mapred"
       raise ArgumentError, t("missing_host_and_port") unless @host && @port
     end

@@ -50,8 +50,8 @@ describe Riak::Client do
       client.prefix.should == "/jiak/"
     end
 
-    it "should default the prefix to /raw/ if not specified" do
-      Riak::Client.new.prefix.should == "/raw/"
+    it "should default the prefix to /riak/ if not specified" do
+      Riak::Client.new.prefix.should == "/riak/"
     end
 
     it "should accept a mapreduce path" do
@@ -157,12 +157,12 @@ describe Riak::Client do
     end
 
     it "should send a GET request to the bucket name and return a Riak::Bucket" do
-      @http.should_receive(:get).with(200, "/raw/", "foo", {}, {}).and_return(@payload)
+      @http.should_receive(:get).with(200, "/riak/", "foo", {}, {}).and_return(@payload)
       @client.bucket("foo").should be_kind_of(Riak::Bucket)
     end
 
     it "should allow requesting bucket properties without the keys" do
-      @http.should_receive(:get).with(200, "/raw/", "foo", {:keys => false}, {}).and_return(@payload)
+      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => false}, {}).and_return(@payload)
       @client.bucket("foo", :keys => false)
     end
   end

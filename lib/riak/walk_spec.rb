@@ -18,7 +18,7 @@ module Riak
   # The specification of how to follow links from one object to another in Riak,
   # when using the link-walker resource.
   # Example link-walking operation:
-  #   GET /raw/artists/REM/albums,_,_/tracks,_,1
+  #   GET /riak/artists/REM/albums,_,_/tracks,_,1
   # This operation would have two WalkSpecs:
   #   Riak::WalkSpec.new({:bucket => 'albums'})
   #   Riak::WalkSpec.new({:bucket => 'tracks', :result => true})
