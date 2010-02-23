@@ -46,13 +46,14 @@ module Ripple
         #   @return [Array<Document>] all found documents in the bucket
         # @overload all() {|doc| ... }
         #   Stream all documents in the bucket through the block.
-        #   TODO: Make this work with the CurbBackend (currently single-request oriented).
         #   @yield [Document] doc a found document
         def all
           if block_given?
-            bucket.keys do |key|
-              obj = find_one(key)
-              yield obj if obj
+            bucket.keys do |keys|
+              keys.each do |key|
+                obj = find_one(key)
+                yield obj if obj
+              end
             end
             []
           else

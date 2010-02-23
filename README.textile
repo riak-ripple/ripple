@@ -120,7 +120,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-h2. Auxillary License
+h2. Auxillary Licenses
 
 The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 "Sean Cribbs":http://seancribbs.com/, and is 
 licensed under the "Creative Commons Attribution Non-Commercial 3.0":http://creativecommons.org/licenses/by-nc/3.0 license. !http://i.creativecommons.org/l/by-nc/3.0/88x31.png!
+
+The "Poor Man's Fibers" implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.
