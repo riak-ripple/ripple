@@ -138,4 +138,39 @@ describe Riak::Bucket do
       @bucket.get("db", :r => 2).should be_kind_of(Riak::RObject)
     end
   end
+
+  describe "creating a new blank object" do
+    it "should instantiate the object with the given key, default to JSON" do
+      obj = @bucket.new('bar')
+      obj.should be_kind_of(Riak::RObject)
+      obj.key.should == 'bar'
+      obj.content_type.should == 'application/json'
+    end
+  end
+
+  describe "fetching or creating a new object" do
+    before :each do
+      @http = mock("HTTPBackend")
+      @client.stub!(:http).and_return(@http)
+    end
+
+    it "should return the existing object if present" do
+      @http.should_receive(:get).with(200, "/riak/","foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      obj = @bucket.get_or_new('db')
+      obj.key.should == 'db'
+      obj.data['name'].should == "Riak"
+    end
+
+    it "should create a new blank object if the key does not exist" do
+      @http.should_receive(:get).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "File not found"))
+      obj = @bucket.get_or_new('db')
+      obj.key.should == 'db'
+      obj.data.should be_blank
+    end
+
+    it "should bubble up non-ok non-missing errors" do
+      @http.should_receive(:get).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, "File not found"))
+      lambda { @bucket.get_or_new('db') }.should raise_error(Riak::FailedRequest)
+    end
+  end
 end

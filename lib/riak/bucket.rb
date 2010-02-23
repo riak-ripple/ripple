@@ -97,6 +97,30 @@ module Riak
     end
     alias :[] :get
 
+    # Create a new blank object
+    # @param [String] key the key of the new object
+    # @return [RObject] the new, unsaved object
+    def new(key=nil)
+      RObject.new(self, key).tap do |obj|
+        obj.content_type = "application/json"
+      end
+    end
+
+    # Fetches an object if it exists, otherwise creates a new one with the given key
+    # @param [String] key the key to fetch or create
+    # @return [RObject] the new or existing object
+    def get_or_new(key, options={})
+      begin
+        get(key, options)
+      rescue Riak::FailedRequest => fr
+        if fr.code.to_i == 404
+          new(key)
+        else
+          raise fr
+        end
+      end
+    end
+
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
       "#<Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
