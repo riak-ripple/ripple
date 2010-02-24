@@ -173,4 +173,34 @@ describe Riak::Bucket do
       lambda { @bucket.get_or_new('db') }.should raise_error(Riak::FailedRequest)
     end
   end
+
+  describe "get/set allow_mult property" do
+    before :each do
+      do_load
+    end
+
+    it "should extract the allow_mult property" do
+      @bucket.allow_mult.should be_false
+    end
+
+    it "should set the allow_mult property" do
+      @bucket.should_receive(:props=).with(hash_including('allow_mult' => true))
+      @bucket.allow_mult = true
+    end
+  end
+
+  describe "get/set the N value" do
+    before :each do
+      do_load
+    end
+    
+    it "should extract the N value" do
+      @bucket.n_value.should == 3
+    end
+
+    it "should set the N value" do
+      @bucket.should_receive(:props=).with(hash_including('n_val' => 1))
+      @bucket.n_value = 1
+    end
+  end
 end

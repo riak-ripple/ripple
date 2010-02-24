@@ -121,6 +121,31 @@ module Riak
       end
     end
 
+    # @return [true, false] whether the bucket allows divergent siblings
+    def allow_mult
+      props['allow_mult']
+    end
+    
+    # Set the allow_mult property.  *NOTE* This will result in a PUT request to Riak.
+    # @param [true, false] value whether the bucket should allow siblings
+    def allow_mult=(value)
+      self.props = props.merge('allow_mult' => value)
+      value
+    end
+
+    # @return [Fixnum] the N value, or number of replicas for this bucket
+    def n_value
+      props['n_val']
+    end
+
+    # Set the N value (number of replicas). *NOTE* This will result in a PUT request to Riak.
+    # Setting this value after the bucket has objects stored in it may have unpredictable results.
+    # @param [Fixnum] value the number of replicas the bucket should keep of each object
+    def n_value=(value)
+      self.props = props.merge('n_val' => value)
+      value
+    end
+    
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
       "#<Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
