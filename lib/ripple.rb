@@ -28,10 +28,12 @@ module Ripple
   autoload :PropertyTypeMismatch
   autoload :Translation
 
+  DEFAULT_CONFIG = {}
+
   class << self
     # @return [Riak::Client] The client for the current thread.
     def client
-      Thread.current[:ripple_client] ||= Riak::Client.new
+      Thread.current[:ripple_client] ||= Riak::Client.new(config)
     end
 
     # Sets the client for the current thread.

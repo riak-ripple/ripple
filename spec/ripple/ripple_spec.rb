@@ -39,5 +39,6 @@ describe Ripple do
     c = Ripple.client
     Ripple.config = {:port => 9000}
     Ripple.client.should_not == c
+    Ripple.client.port.should == 9000
   end
 end
