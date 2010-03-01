@@ -7,6 +7,10 @@ describe Ripple::Document::Timestamps do
   end
   
   before :each do
+    response = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
+    @client = Ripple.client
+    @http = mock("HTTP Backend", :get => response, :put => response, :post => response, :delete => response)
+    @client.stub!(:http).and_return(@http)
     @box = Box.new
   end
   
@@ -36,6 +40,10 @@ describe Ripple::Document::Timestamps do
     start = @box.updated_at
     @box.save
     @box.updated_at.should > start
+  end
+  
+  after :all do
+    Object.send(:remove_const, :Box)
   end
   
 end
