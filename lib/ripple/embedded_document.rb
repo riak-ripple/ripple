@@ -26,6 +26,7 @@ module Ripple
       extend Ripple::Document::Properties
       include Persistence
       include Ripple::Document::AttributeMethods
+      include Ripple::Document::Timestamps
       include Ripple::Document::Validations
     end
 

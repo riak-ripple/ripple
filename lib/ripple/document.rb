@@ -48,6 +48,7 @@ module Ripple
     autoload :Persistence
     autoload :Properties
     autoload :Property, "ripple/document/properties"
+    autoload :Timestamps
     autoload :Validations
 
     included do
