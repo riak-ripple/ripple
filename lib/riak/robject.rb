@@ -12,6 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+require 'set'
 
 module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
