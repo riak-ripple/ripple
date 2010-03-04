@@ -64,7 +64,7 @@ module Ripple
         # Mass assign the document's attributes.
         # @param [Hash] attrs the attributes to assign
         def attributes=(attrs)
-          raise ArgumentError, "value of attributes must be a Hash" unless Hash === attrs
+          raise ArgumentError, t('attribute_hash') unless Hash === attrs
           attrs.each do |k,v|
             if respond_to?("#{k}=")
               __send__("#{k}=",v)
