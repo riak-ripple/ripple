@@ -32,7 +32,7 @@ describe Riak::RObject do
 
     it "should initialize the links to an empty array" do
       @object = Riak::RObject.new(@bucket, "bar")
-      @object.links.should == []
+      @object.links.should == Set.new
     end
 
     it "should initialize the meta to an empty hash" do

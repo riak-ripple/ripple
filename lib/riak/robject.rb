@@ -36,7 +36,7 @@ module Riak
     # @return [Object] the data stored in Riak at this object's key. Varies in format by content-type, defaulting to String from the response body.
     attr_accessor :data
 
-    # @return [Array<Link>] an array of {Riak::Link} objects for relationships between this object and other resources
+    # @return [Set<Link>] an Set of {Riak::Link} objects for relationships between this object and other resources
     attr_accessor :links
 
     # @return [String] the ETag header from the most recent HTTP response, useful for caching and reloading
@@ -54,7 +54,7 @@ module Riak
     # @see Bucket#get
     def initialize(bucket, key=nil)
       @bucket, @key = bucket, key
-      @links, @meta = [], {}
+      @links, @meta = Set.new, {}
     end
 
     # Load object data from an HTTP response
@@ -63,7 +63,7 @@ module Riak
       extract_header(response, "location", :key) {|v| URI.unescape(v.split("/").last) }
       extract_header(response, "content-type", :content_type)
       extract_header(response, "x-riak-vclock", :vclock)
-      extract_header(response, "link", :links) {|v| Link.parse(v) }
+      extract_header(response, "link", :links) {|v| Set.new(Link.parse(v)) }
       extract_header(response, "etag", :etag)
       extract_header(response, "last-modified", :last_modified) {|v| Time.httpdate(v) }
       @meta = response[:headers].inject({}) do |h,(k,v)|
