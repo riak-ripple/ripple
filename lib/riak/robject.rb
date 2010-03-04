@@ -55,6 +55,7 @@ module Riak
     def initialize(bucket, key=nil)
       @bucket, @key = bucket, key
       @links, @meta = Set.new, {}
+      yield self if block_given?
     end
 
     # Load object data from an HTTP response
@@ -72,6 +73,7 @@ module Riak
         end
         h
       end
+      @conflict = response[:code].try(:to_i) == 300 && content_type =~ /multipart\/mixed/
       @data = deserialize(response[:body]) if response[:body].present?
       self
     end
@@ -141,6 +143,24 @@ module Riak
       freeze
     end
 
+    # Returns sibling objects when in conflict.
+    # @return [Array<RObject>] an array of conflicting sibling objects for this key
+    # @return [self] this object when not in conflict
+    def siblings
+      return self unless conflict?
+      @siblings ||= Multipart.parse(data, Multipart.extract_boundary(content_type)).map do |part|
+        RObject.new(self.bucket, self.key) do |sibling|
+          sibling.load(part)
+          sibling.vclock = vclock
+        end
+      end
+    end
+
+    # @return [true,false] Whether this object has conflicting sibling objects (divergent vclocks)
+    def conflict?
+      @conflict.present?
+    end
+
     # Serializes the internal object data for sending to Riak. Differs based on the content-type.
     # This method is called internally when storing the object.
     # Automatically serialized formats:
@@ -207,12 +227,12 @@ module Riak
         []
       end
     end
-    
+
     # Converts the object to a link suitable for linking other objects to it
     def to_link(tag=nil)
       Link.new(@bucket.client.http.path(@bucket.client.prefix, @bucket.name, @key).path, tag)
     end
-    
+
     private
     def extract_header(response, name, attribute=nil)
       if response[:headers][name].present?

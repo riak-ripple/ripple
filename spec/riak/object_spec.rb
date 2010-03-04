@@ -39,6 +39,12 @@ describe Riak::RObject do
       @object = Riak::RObject.new(@bucket, "bar")
       @object.meta.should == {}
     end
+
+    it "should yield itself to a given block" do
+      Riak::RObject.new(@bucket, "bar") do |r|
+        r.key.should == "bar"
+      end
+    end
   end
 
   describe "serialization" do
@@ -190,6 +196,32 @@ describe Riak::RObject do
     it "should parse the location header into the key when present" do
       @object.load({:headers => {"content-type" => ["application/json"], "location" => ["/riak/foo/baz"]}})
       @object.key.should == "baz"
+    end
+
+    it "should be in conflict when the response code is 300 and the content-type is multipart/mixed" do
+      @object.load({:headers => {"content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300 })
+      @object.should be_conflict
+    end
+  end
+
+  describe "extracting siblings" do
+    before :each do
+      @object = Riak::RObject.new(@bucket, "bar").load({:headers => {"x-riak-vclock" => ["merged"], "content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300, :body => "\n--foo\nContent-Type: text/plain\n\nbar\n--foo\nContent-Type: text/plain\n\nbaz\n--foo--\n"})
+    end
+
+    it "should extract the siblings" do
+      @object.should have(2).siblings
+      siblings = @object.siblings
+      siblings[0].data.should == "bar"
+      siblings[1].data.should == "baz"
+    end
+
+    it "should set the key on both siblings" do
+      @object.siblings.should be_all {|s| s.key == "bar" }
+    end
+
+    it "should set the vclock on both siblings to the merged vclock" do
+      @object.siblings.should be_all {|s| s.vclock == "merged" }
     end
   end
 
