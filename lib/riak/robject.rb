@@ -75,6 +75,7 @@ module Riak
         h
       end
       @conflict = response[:code].try(:to_i) == 300 && content_type =~ /multipart\/mixed/
+      @siblings = nil
       @data = deserialize(response[:body]) if response[:body].present?
       self
     end
@@ -129,8 +130,9 @@ module Riak
     def reload(options={})
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
-      response = @bucket.client.http.get([200, 304], @bucket.client.prefix, @bucket.name, @key, options, reload_headers)
-      load(response) if response[:code] == 200
+      codes = @bucket.allow_mult ? [200,300,304] : [200,304]
+      response = @bucket.client.http.get(codes, @bucket.client.prefix, @bucket.name, @key, options, reload_headers)
+      load(response) unless response[:code] == 304
       self
     end
 

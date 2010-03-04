@@ -404,6 +404,12 @@ describe Riak::RObject do
       @object.should_not_receive(:load)
       lambda { @object.reload }.should raise_error(Riak::FailedRequest)
     end
+
+    it "should include 300 in valid responses if the bucket has allow_mult set" do
+      @object.bucket.should_receive(:allow_mult).and_return(true)
+      @http.should_receive(:get).with([200,300,304], "/riak/", "foo", "bar", {}, {}).and_return({:code => 304})
+      @object.reload
+    end
   end
 
   describe "walking from the object to linked objects" do

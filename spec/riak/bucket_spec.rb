@@ -137,6 +137,12 @@ describe Riak::Bucket do
       @http.should_receive(:get).with(200, "/riak/","foo", "db", {:r => 2}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @bucket.get("db", :r => 2).should be_kind_of(Riak::RObject)
     end
+
+    it "should allow 300 responses if allow_mult is set" do
+      @bucket.instance_variable_set(:@props, {'allow_mult' => true})
+      @http.should_receive(:get).with([200,300], "/riak/","foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @bucket.get('db')
+    end
   end
 
   describe "creating a new blank object" do
@@ -193,7 +199,7 @@ describe Riak::Bucket do
     before :each do
       do_load
     end
-    
+
     it "should extract the N value" do
       @bucket.n_value.should == 3
     end

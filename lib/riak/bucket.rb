@@ -34,7 +34,7 @@ module Riak
     def initialize(client, name)
       raise ArgumentError, t("client_type", :client => client.inspect) unless Client === client
       raise ArgumentError, t("string_type", :string => name.inspect) unless String === name
-      @client, @name = client, name
+      @client, @name, @props = client, name, {}
     end
 
     # Load information for the bucket from a response given by the {Riak::Client::HTTPBackend}.
@@ -92,7 +92,8 @@ module Riak
     # @return [Riak::RObject] the object
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key, options={})
-      response = @client.http.get(200, @client.prefix, name, key, options, {})
+      code = allow_mult ? [200,300] : 200
+      response = @client.http.get(code, @client.prefix, name, key, options, {})
       RObject.new(self, key).load(response)
     end
     alias :[] :get
