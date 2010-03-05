@@ -532,11 +532,10 @@ the client
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 25</span>
 
-<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='rparen token'>)</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;client_type&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:client</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='client identifier id'>client</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='Client constant id'>Client</span> <span class='eqq op'>===</span> <span class='client identifier id'>client</span>
-  <span class='@client ivar id'>@client</span> <span class='assign token'>=</span> <span class='client identifier id'>client</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span>
+  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_type</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:client</span> <span class='op'>=&gt;</span> <span class='id client'>client</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Client</span> <span class='op'>===</span> <span class='id client'>client</span>
+  <span class='ivar'>@client</span> <span class='op'>=</span> <span class='id client'>client</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -581,10 +580,9 @@ The Riak::Client that uses this backend
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 21</span>
 
-<span class='def def kw'>def</span> <span class='client identifier id'>client</span>
-  <span class='@client ivar id'>@client</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id client'>client</span>
+  <span class='ivar'>@client</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -651,13 +649,12 @@ headers that will be merged with user-specified headers on every request
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 32</span>
 
-<span class='def def kw'>def</span> <span class='default_headers identifier id'>default_headers</span>
-  <span class='lbrace token'>{</span>
-    <span class='string val'>&quot;Accept&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;multipart/mixed, application/json;q=0.7, */*;q=0.5&quot;</span><span class='comma token'>,</span>
-    <span class='string val'>&quot;X-Riak-ClientId&quot;</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='client_id identifier id'>client_id</span>
-  <span class='rbrace token'>}</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id default_headers'>default_headers</span>
+  <span class='lbrace'>{</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>multipart/mixed, application/json;q=0.7, */*;q=0.5</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>X-Riak-ClientId</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id client_id'>client_id</span>
+  <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -899,12 +896,11 @@ if the response code doesn&#8217;t match the expected response
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 130</span>
 
-<span class='def def kw'>def</span> <span class='delete identifier id'>delete</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
-  <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
-  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:delete</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id delete'>delete</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
+  <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
+  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:delete</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1146,12 +1142,11 @@ if the response code doesn&#8217;t match the expected response
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 68</span>
 
-<span class='def def kw'>def</span> <span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
-  <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
-  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:get</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
+  <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
+  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:get</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1315,12 +1310,11 @@ if the response code doesn&#8217;t match the expected response
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 48</span>
 
-<span class='def def kw'>def</span> <span class='head identifier id'>head</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
-  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
-  <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
-  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:head</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id head'>head</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span>
+  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
+  <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
+  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:head</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1401,13 +1395,12 @@ an absolute URI for the resource
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 144</span>
 
-<span class='def def kw'>def</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='segments identifier id'>segments</span><span class='rparen token'>)</span>
-  <span class='query identifier id'>query</span> <span class='assign token'>=</span> <span class='segments identifier id'>segments</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='dot token'>.</span><span class='to_param identifier id'>to_param</span>
-  <span class='root_uri identifier id'>root_uri</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='URI constant id'>URI</span><span class='dot token'>.</span><span class='escape identifier id'>escape</span><span class='lparen token'>(</span><span class='segments identifier id'>segments</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='gsub identifier id'>gsub</span><span class='lparen token'>(</span><span class='regexp val'>/\/+/</span><span class='comma token'>,</span> <span class='string val'>&quot;/&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='sub identifier id'>sub</span><span class='lparen token'>(</span><span class='regexp val'>/^\//</span><span class='comma token'>,</span> <span class='string val'>''</span><span class='rparen token'>)</span><span class='rparen token'>)</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='tap identifier id'>tap</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='uri identifier id'>uri</span><span class='bitor op'>|</span>
-    <span class='uri identifier id'>uri</span><span class='dot token'>.</span><span class='query identifier id'>query</span> <span class='assign token'>=</span> <span class='query identifier id'>query</span> <span class='if if_mod kw'>if</span> <span class='query identifier id'>query</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
-  <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id segments'>segments</span><span class='rparen'>)</span>
+  <span class='id query'>query</span> <span class='op'>=</span> <span class='id segments'>segments</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='period'>.</span><span class='id to_param'>to_param</span>
+  <span class='id root_uri'>root_uri</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='const'>URI</span><span class='period'>.</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id segments'>segments</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\/+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\/</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id uri'>uri</span><span class='op'>|</span>
+    <span class='id uri'>uri</span><span class='period'>.</span><span class='id query'>query</span> <span class='op'>=</span> <span class='id query'>query</span> <span class='kw'>if</span> <span class='id query'>query</span><span class='period'>.</span><span class='id present?'>present?</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1603,10 +1596,9 @@ if a subclass does not implement this method
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 204</span>
 
-<span class='def def kw'>def</span> <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='assign token'>=</span><span class='nil nil kw'>nil</span><span class='rparen token'>)</span>
-  <span class='raise identifier id'>raise</span> <span class='NotImplementedError constant id'>NotImplementedError</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id perform'>perform</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id uri'>uri</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='id body'>body</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id raise'>raise</span> <span class='const'>NotImplementedError</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1865,12 +1857,11 @@ if the response code doesn&#8217;t match the expected response
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 110</span>
 
-<span class='def def kw'>def</span> <span class='post identifier id'>post</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
-  <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
-  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:post</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='uri identifier id'>uri</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id post'>post</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
+  <span class='id uri'>uri</span><span class='comma'>,</span> <span class='id data'>data</span> <span class='op'>=</span> <span class='id verify_path_and_body!'>verify_path_and_body!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
+  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:post</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id uri'>uri</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='id data'>data</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2129,12 +2120,11 @@ if the response code doesn&#8217;t match the expected response
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 89</span>
 
-<span class='def def kw'>def</span> <span class='put identifier id'>put</span><span class='lparen token'>(</span><span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='mult op'>*</span><span class='resource identifier id'>resource</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-  <span class='headers identifier id'>headers</span> <span class='assign token'>=</span> <span class='default_headers identifier id'>default_headers</span><span class='dot token'>.</span><span class='merge identifier id'>merge</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='extract_options! fid id'>extract_options!</span><span class='rparen token'>)</span>
-  <span class='uri identifier id'>uri</span><span class='comma token'>,</span> <span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
-  <span class='perform identifier id'>perform</span><span class='lparen token'>(</span><span class='symbol val'>:put</span><span class='comma token'>,</span> <span class='path identifier id'>path</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='uri identifier id'>uri</span><span class='rparen token'>)</span><span class='comma token'>,</span> <span class='headers identifier id'>headers</span><span class='comma token'>,</span> <span class='expect identifier id'>expect</span><span class='comma token'>,</span> <span class='data identifier id'>data</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id put'>put</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
+  <span class='id uri'>uri</span><span class='comma'>,</span> <span class='id data'>data</span> <span class='op'>=</span> <span class='id verify_path_and_body!'>verify_path_and_body!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
+  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:put</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id uri'>uri</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='id data'>data</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2248,10 +2238,9 @@ whether to return the body in the response hash
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 189</span>
 
-<span class='def def kw'>def</span> <span class='return_body? fid id'>return_body?</span><span class='lparen token'>(</span><span class='method identifier id'>method</span><span class='comma token'>,</span> <span class='code identifier id'>code</span><span class='comma token'>,</span> <span class='has_block identifier id'>has_block</span><span class='rparen token'>)</span>
-  <span class='method identifier id'>method</span> <span class='neq op'>!=</span> <span class='symbol val'>:head</span> <span class='andop op'>&amp;&amp;</span> <span class='notop op'>!</span><span class='valid_response? fid id'>valid_response?</span><span class='lparen token'>(</span><span class='lbrack token'>[</span><span class='integer val'>204</span><span class='comma token'>,</span><span class='integer val'>205</span><span class='comma token'>,</span><span class='integer val'>304</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='code identifier id'>code</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span> <span class='notop op'>!</span><span class='has_block identifier id'>has_block</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id return_body?'>return_body?</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id code'>code</span><span class='comma'>,</span> <span class='id has_block'>has_block</span><span class='rparen'>)</span>
+  <span class='id method'>method</span> <span class='op'>!=</span> <span class='symbol'>:head</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id valid_response?'>valid_response?</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>205</span><span class='comma'>,</span><span class='int'>304</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id code'>code</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id has_block'>has_block</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2307,10 +2296,9 @@ The calculated root URI for the Riak HTTP endpoint
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 137</span>
 
-<span class='def def kw'>def</span> <span class='root_uri identifier id'>root_uri</span>
-  <span class='URI constant id'>URI</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='dstring node'>&quot;http://#{@client.host}:#{@client.port}&quot;</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id root_uri'>root_uri</span>
+  <span class='const'>URI</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://</span><span class='embexpr_beg'>#{</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id host'>host</span><span class='rbrace'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id port'>port</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2405,10 +2393,9 @@ whether the actual response code is acceptable given the expectations
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 179</span>
 
-<span class='def def kw'>def</span> <span class='valid_response? fid id'>valid_response?</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='comma token'>,</span> <span class='actual identifier id'>actual</span><span class='rparen token'>)</span>
-  <span class='Array constant id'>Array</span><span class='lparen token'>(</span><span class='expected identifier id'>expected</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_i</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='actual identifier id'>actual</span><span class='dot token'>.</span><span class='to_i identifier id'>to_i</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id valid_response?'>valid_response?</span><span class='lparen'>(</span><span class='id expected'>expected</span><span class='comma'>,</span> <span class='id actual'>actual</span><span class='rparen'>)</span>
+  <span class='const'>Array</span><span class='lparen'>(</span><span class='id expected'>expected</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='id actual'>actual</span><span class='period'>.</span><span class='id to_i'>to_i</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2486,11 +2473,10 @@ if the resource path is too short
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 169</span>
 
-<span class='def def kw'>def</span> <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span>
-  <span class='resource identifier id'>resource</span> <span class='assign token'>=</span> <span class='Array constant id'>Array</span><span class='lparen token'>(</span><span class='resource identifier id'>resource</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='flatten identifier id'>flatten</span>
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;resource_path_short&quot;</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='length identifier id'>length</span> <span class='gt op'>&gt;</span> <span class='integer val'>1</span> <span class='orop op'>||</span> <span class='resource identifier id'>resource</span><span class='dot token'>.</span><span class='include? fid id'>include?</span><span class='lparen token'>(</span><span class='@client ivar id'>@client</span><span class='dot token'>.</span><span class='mapred identifier id'>mapred</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
+  <span class='id resource'>resource</span> <span class='op'>=</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='period'>.</span><span class='id flatten'>flatten</span>
+  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>resource_path_short</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id resource'>resource</span><span class='period'>.</span><span class='id length'>length</span> <span class='op'>&gt;</span> <span class='int'>1</span> <span class='op'>||</span> <span class='id resource'>resource</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id mapred'>mapred</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2575,18 +2561,17 @@ if the body or resource is missing, or if the body is not a String
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 154</span>
 
-<span class='def def kw'>def</span> <span class='verify_path_and_body! fid id'>verify_path_and_body!</span><span class='lparen token'>(</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
-  <span class='body identifier id'>body</span> <span class='assign token'>=</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='pop identifier id'>pop</span>
-  <span class='begin begin kw'>begin</span>
-    <span class='verify_path! fid id'>verify_path!</span><span class='lparen token'>(</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
-  <span class='rescue rescue kw'>rescue</span> <span class='ArgumentError constant id'>ArgumentError</span>
-    <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;path_and_body_required&quot;</span><span class='rparen token'>)</span>
-  <span class='end end kw'>end</span>
+<span class='kw'>def</span> <span class='id verify_path_and_body!'>verify_path_and_body!</span><span class='lparen'>(</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id body'>body</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id pop'>pop</span>
+  <span class='kw'>begin</span>
+    <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>rescue</span> <span class='const'>ArgumentError</span>
+    <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>path_and_body_required</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 
-  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;request_body_type&quot;</span><span class='rparen token'>)</span> <span class='unless unless_mod kw'>unless</span> <span class='String constant id'>String</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span> <span class='orop op'>||</span> <span class='IO constant id'>IO</span> <span class='eqq op'>===</span> <span class='body identifier id'>body</span>
-  <span class='lbrack token'>[</span><span class='args identifier id'>args</span><span class='comma token'>,</span> <span class='body identifier id'>body</span><span class='rbrack token'>]</span>
-<span class='end end kw'>end</span>
-</pre>
+  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>request_body_type</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>String</span> <span class='op'>===</span> <span class='id body'>body</span> <span class='op'>||</span> <span class='const'>IO</span> <span class='op'>===</span> <span class='id body'>body</span>
+  <span class='lbracket'>[</span><span class='id args'>args</span><span class='comma'>,</span> <span class='id body'>body</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -2597,9 +2582,9 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:18 2010 by 
+  Generated on Fri Mar  5 13:45:41 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

@@ -140,23 +140,22 @@ Stand-in for true/false property types.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/core_ext/casting.rb', line 66</span>
 
-<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='ripple_cast identifier id'>ripple_cast</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='case case kw'>case</span> <span class='value identifier id'>value</span>
-  <span class='when when kw'>when</span> <span class='NilClass constant id'>NilClass</span>
-    <span class='nil nil kw'>nil</span>
-  <span class='when when kw'>when</span> <span class='Numeric constant id'>Numeric</span>
-    <span class='notop op'>!</span><span class='value identifier id'>value</span><span class='dot token'>.</span><span class='zero? fid id'>zero?</span>
-  <span class='when when kw'>when</span> <span class='TrueClass constant id'>TrueClass</span><span class='comma token'>,</span> <span class='FalseClass constant id'>FalseClass</span>
-    <span class='value identifier id'>value</span>
-  <span class='when when kw'>when</span> <span class='regexp val'>/^\s*t/i</span>
-    <span class='true true kw'>true</span>
-  <span class='when when kw'>when</span> <span class='regexp val'>/^\s*f/i</span>
-    <span class='false false kw'>false</span>
-  <span class='else else kw'>else</span>
-    <span class='value identifier id'>value</span><span class='dot token'>.</span><span class='present? fid id'>present?</span>
-  <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id ripple_cast'>ripple_cast</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id value'>value</span>
+  <span class='kw'>when</span> <span class='const'>NilClass</span>
+    <span class='kw'>nil</span>
+  <span class='kw'>when</span> <span class='const'>Numeric</span>
+    <span class='op'>!</span><span class='id value'>value</span><span class='period'>.</span><span class='id zero?'>zero?</span>
+  <span class='kw'>when</span> <span class='const'>TrueClass</span><span class='comma'>,</span> <span class='const'>FalseClass</span>
+    <span class='id value'>value</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\s*t</span><span class='regexp_end'>/i</span></span>
+    <span class='kw'>true</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\s*f</span><span class='regexp_end'>/i</span></span>
+    <span class='kw'>false</span>
+  <span class='kw'>else</span>
+    <span class='id value'>value</span><span class='period'>.</span><span class='id present?'>present?</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -167,9 +166,9 @@ Stand-in for true/false property types.
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:18 2010 by 
+  Generated on Fri Mar  5 13:45:40 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

@@ -66,7 +66,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">lib/ripple.rb<span class="defines">,<br />
-  lib/ripple/document.rb,<br /> lib/ripple/translation.rb,<br /> lib/ripple/document/finders.rb,<br /> lib/ripple/embedded_document.rb,<br /> lib/ripple/document/properties.rb,<br /> lib/ripple/document/validations.rb,<br /> lib/ripple/document/persistence.rb,<br /> lib/ripple/document/bucket_access.rb,<br /> lib/ripple/property_type_mismatch.rb,<br /> lib/ripple/document/attribute_methods.rb,<br /> lib/ripple/embedded_document/persistence.rb,<br /> lib/ripple/document/persistence/callbacks.rb,<br /> lib/ripple/document/attribute_methods/read.rb,<br /> lib/ripple/document/attribute_methods/query.rb,<br /> lib/ripple/document/attribute_methods/dirty.rb,<br /> lib/ripple/document/attribute_methods/write.rb</span>
+  lib/ripple/document.rb,<br /> lib/ripple/translation.rb,<br /> lib/ripple/document/finders.rb,<br /> lib/ripple/embedded_document.rb,<br /> lib/ripple/document/timestamps.rb,<br /> lib/ripple/document/properties.rb,<br /> lib/ripple/document/validations.rb,<br /> lib/ripple/document/persistence.rb,<br /> lib/ripple/document/bucket_access.rb,<br /> lib/ripple/property_type_mismatch.rb,<br /> lib/ripple/document/attribute_methods.rb,<br /> lib/ripple/embedded_document/persistence.rb,<br /> lib/ripple/document/persistence/callbacks.rb,<br /> lib/ripple/document/attribute_methods/read.rb,<br /> lib/ripple/document/attribute_methods/query.rb,<br /> lib/ripple/document/attribute_methods/dirty.rb,<br /> lib/ripple/document/attribute_methods/write.rb</span>
 </dd>
   
 </dl>
@@ -96,6 +96,18 @@ basic Riak client.
     
   
 </p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="DEFAULT_CONFIG-constant" class="">DEFAULT_CONFIG =
+            <span class="summary_desc"></span>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span><span class='rbrace'>}</span></pre></dd>
+      
+    </dl>
+  
 
 
   
@@ -221,17 +233,16 @@ The client for the current thread.
       <pre class="lines">
 
 
-33
-34
-35</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 35</span>
 
-<span class='def def kw'>def</span> <span class='client identifier id'>client</span>
-  <span class='Thread constant id'>Thread</span><span class='dot token'>.</span><span class='current identifier id'>current</span><span class='lbrack token'>[</span><span class='symbol val'>:ripple_client</span><span class='rbrack token'>]</span> <span class='opasgn op'>||=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Client constant id'>Client</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id client'>client</span>
+  <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id config'>config</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -282,17 +293,16 @@ the client
       <pre class="lines">
 
 
-39
-40
-41</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 41</span>
 
-<span class='def def kw'>def</span> <span class='client= identifier id'>client=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='Thread constant id'>Thread</span><span class='dot token'>.</span><span class='current identifier id'>current</span><span class='lbrack token'>[</span><span class='symbol val'>:ripple_client</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='value identifier id'>value</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id client='>client=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id value'>value</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -311,19 +321,18 @@ the client
       <pre class="lines">
 
 
-43
-44
 45
-46</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 45</span>
 
-<span class='def def kw'>def</span> <span class='config= identifier id'>config=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='self self kw'>self</span><span class='dot token'>.</span><span class='client identifier id'>client</span> <span class='assign token'>=</span> <span class='nil nil kw'>nil</span>
-  <span class='super super kw'>super</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id config='>config=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id client'>client</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='kw'>super</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -334,9 +343,9 @@ the client
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:18 2010 by 
+  Generated on Fri Mar  5 13:45:38 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

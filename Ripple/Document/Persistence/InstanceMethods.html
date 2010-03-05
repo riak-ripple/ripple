@@ -228,14 +228,13 @@ Deletes the document from Riak and freezes this instance
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 64</span>
 
-<span class='def def kw'>def</span> <span class='destroy identifier id'>destroy</span>
-  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='delete identifier id'>delete</span> <span class='unless unless_mod kw'>unless</span> <span class='new? fid id'>new?</span>
-  <span class='freeze identifier id'>freeze</span>
-  <span class='true true kw'>true</span>
-<span class='rescue rescue kw'>rescue</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='FailedRequest constant id'>FailedRequest</span>
-  <span class='false false kw'>false</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id destroy'>destroy</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id delete'>delete</span> <span class='kw'>unless</span> <span class='id new?'>new?</span>
+  <span class='id freeze'>freeze</span>
+  <span class='kw'>true</span>
+<span class='kw'>rescue</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>FailedRequest</span>
+  <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -272,10 +271,9 @@ Freezes the document, preventing further modification.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 73</span>
 
-<span class='def def kw'>def</span> <span class='freeze identifier id'>freeze</span>
-  <span class='@attributes ivar id'>@attributes</span><span class='dot token'>.</span><span class='freeze identifier id'>freeze</span><span class='semicolon token'>;</span> <span class='super super kw'>super</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id freeze'>freeze</span>
+  <span class='ivar'>@attributes</span><span class='period'>.</span><span class='id freeze'>freeze</span><span class='semicolon'>;</span> <span class='kw'>super</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -329,10 +327,9 @@ Determines whether this is a new document.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 36</span>
 
-<span class='def def kw'>def</span> <span class='new? fid id'>new?</span>
-  <span class='@new ivar id'>@new</span> <span class='orop op'>||</span> <span class='false false kw'>false</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id new?'>new?</span>
+  <span class='ivar'>@new</span> <span class='op'>||</span> <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -391,13 +388,12 @@ self
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 56</span>
 
-<span class='def def kw'>def</span> <span class='reload identifier id'>reload</span>
-  <span class='return return kw'>return</span> <span class='self self kw'>self</span> <span class='if if_mod kw'>if</span> <span class='new? fid id'>new?</span>
-  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='reload identifier id'>reload</span><span class='lparen token'>(</span><span class='symbol val'>:force</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rparen token'>)</span>
-  <span class='@attributes ivar id'>@attributes</span><span class='dot token'>.</span><span class='merge! fid id'>merge!</span><span class='lparen token'>(</span><span class='@robject ivar id'>@robject</span><span class='dot token'>.</span><span class='data identifier id'>data</span><span class='rparen token'>)</span>
-  <span class='self self kw'>self</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id reload'>reload</span>
+  <span class='kw'>return</span> <span class='kw'>self</span> <span class='kw'>if</span> <span class='id new?'>new?</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id reload'>reload</span><span class='lparen'>(</span><span class='symbol'>:force</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='ivar'>@attributes</span><span class='period'>.</span><span class='id merge!'>merge!</span><span class='lparen'>(</span><span class='ivar'>@robject</span><span class='period'>.</span><span class='id data'>data</span><span class='rparen'>)</span>
+  <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -460,17 +456,16 @@ whether the document succeeded in saving
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 43</span>
 
-<span class='def def kw'>def</span> <span class='save identifier id'>save</span>
-  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='key identifier id'>key</span> <span class='assign token'>=</span> <span class='key identifier id'>key</span> <span class='if if_mod kw'>if</span> <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='key identifier id'>key</span> <span class='neq op'>!=</span> <span class='key identifier id'>key</span>
-  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='attributes_for_persistence identifier id'>attributes_for_persistence</span>
-  <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='store identifier id'>store</span>
-  <span class='self self kw'>self</span><span class='dot token'>.</span><span class='key identifier id'>key</span> <span class='assign token'>=</span> <span class='robject identifier id'>robject</span><span class='dot token'>.</span><span class='key identifier id'>key</span>
-  <span class='@new ivar id'>@new</span> <span class='assign token'>=</span> <span class='false false kw'>false</span>
-  <span class='true true kw'>true</span>
-<span class='rescue rescue kw'>rescue</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='FailedRequest constant id'>FailedRequest</span>
-  <span class='false false kw'>false</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id save'>save</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>=</span> <span class='id key'>key</span> <span class='kw'>if</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>!=</span> <span class='id key'>key</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id data'>data</span> <span class='op'>=</span> <span class='id attributes_for_persistence'>attributes_for_persistence</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id store'>store</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>=</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span>
+  <span class='ivar'>@new</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='kw'>true</span>
+<span class='kw'>rescue</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>FailedRequest</span>
+  <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -481,9 +476,9 @@ whether the document succeeded in saving
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:19 2010 by 
+  Generated on Fri Mar  5 13:45:41 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

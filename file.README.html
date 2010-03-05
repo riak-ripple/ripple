@@ -59,81 +59,76 @@
 	<li>yard &gt;= 0.5.2</li>
 </ul>
 <h2>Basic Example</h2>
-<pre class="code"><span class='require identifier id'>require</span> <span class='string val'>'riak'</span>
+<pre class="code"><span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>riak</span><span class='tstring_end'>'</span></span>
 
-<span class='comment val'># Create a client interface</span>
-<span class='client identifier id'>client</span> <span class='assign token'>=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='Client constant id'>Client</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
+<span class='comment'># Create a client interface
+</span><span class='id client'>client</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span>
 
-<span class='comment val'># Retrieve a bucket</span>
-<span class='bucket identifier id'>bucket</span> <span class='assign token'>=</span> <span class='client identifier id'>client</span><span class='dot token'>.</span><span class='bucket identifier id'>bucket</span><span class='lparen token'>(</span><span class='string val'>&quot;doc&quot;</span><span class='rparen token'>)</span>  <span class='comment val'># a Riak::Bucket</span>
+<span class='comment'># Retrieve a bucket
+</span><span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id client'>client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>doc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>  <span class='comment'># a Riak::Bucket
+</span>
+<span class='comment'># Get an object from the bucket
+</span><span class='id object'>object</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>index.html</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>   <span class='comment'># a Riak::RObject
+</span>
+<span class='comment'># Change the object's data and save
+</span><span class='id object'>object</span><span class='period'>.</span><span class='id data'>data</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;html&gt;&lt;body&gt;Hello, world!&lt;/body&gt;&lt;/html&gt;</span><span class='tstring_end'>&quot;</span></span>
+<span class='id object'>object</span><span class='period'>.</span><span class='id store'>store</span>
 
-<span class='comment val'># Get an object from the bucket</span>
-<span class='object identifier id'>object</span> <span class='assign token'>=</span> <span class='bucket identifier id'>bucket</span><span class='dot token'>.</span><span class='get identifier id'>get</span><span class='lparen token'>(</span><span class='string val'>&quot;index.html&quot;</span><span class='rparen token'>)</span>   <span class='comment val'># a Riak::RObject</span>
-
-<span class='comment val'># Change the object's data and save</span>
-<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='string val'>&quot;&lt;html&gt;&lt;body&gt;Hello, world!&lt;/body&gt;&lt;/html&gt;&quot;</span>
-<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='store identifier id'>store</span>
-
-<span class='comment val'># Reload an object you already have</span>
-<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='reload identifier id'>reload</span>                  <span class='comment val'># Works if you have the key and vclock, using conditional GET</span>
-<span class='object identifier id'>object</span><span class='dot token'>.</span><span class='reload identifier id'>reload</span> <span class='symbol val'>:force</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span>   <span class='comment val'># Reloads whether you have the vclock or not</span>
-
-<span class='comment val'># Access more like a hash, client[bucket][key]</span>
-<span class='client identifier id'>client</span><span class='lbrack token'>[</span><span class='string val'>'doc'</span><span class='rbrack token'>]</span><span class='lbrack token'>[</span><span class='string val'>'index.html'</span><span class='rbrack token'>]</span>   <span class='comment val'># the Riak::RObject</span>
-
-<span class='comment val'># Create a new object</span>
-<span class='new_one identifier id'>new_one</span> <span class='assign token'>=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='RObject constant id'>RObject</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='string val'>&quot;application.js&quot;</span><span class='rparen token'>)</span>
-<span class='new_one identifier id'>new_one</span><span class='dot token'>.</span><span class='content_type identifier id'>content_type</span> <span class='assign token'>=</span> <span class='string val'>&quot;application/javascript&quot;</span> <span class='comment val'># You must set the content type.</span>
-<span class='new_one identifier id'>new_one</span><span class='dot token'>.</span><span class='data identifier id'>data</span> <span class='assign token'>=</span> <span class='string val'>&quot;alert('Hello, World!')&quot;</span>
-<span class='new_one identifier id'>new_one</span><span class='dot token'>.</span><span class='store identifier id'>store</span>
-</pre><h2>Map-Reduce Example</h2>
+<span class='comment'># Reload an object you already have
+</span><span class='id object'>object</span><span class='period'>.</span><span class='id reload'>reload</span>                  <span class='comment'># Works if you have the key and vclock, using conditional GET
+</span><span class='id object'>object</span><span class='period'>.</span><span class='id reload'>reload</span> <span class='symbol'>:force</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>   <span class='comment'># Reloads whether you have the vclock or not
+</span>
+<span class='comment'># Access more like a hash, client[bucket][key]
+</span><span class='id client'>client</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>doc</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>index.html</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>   <span class='comment'># the Riak::RObject
+</span>
+<span class='comment'># Create a new object
+</span><span class='id new_one'>new_one</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>RObject</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application.js</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id new_one'>new_one</span><span class='period'>.</span><span class='id content_type'>content_type</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/javascript</span><span class='tstring_end'>&quot;</span></span> <span class='comment'># You must set the content type.
+</span><span class='id new_one'>new_one</span><span class='period'>.</span><span class='id data'>data</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>alert('Hello, World!')</span><span class='tstring_end'>&quot;</span></span>
+<span class='id new_one'>new_one</span><span class='period'>.</span><span class='id store'>store</span></pre><h2>Map-Reduce Example</h2>
 <pre class="code">
 
-<span class='comment val'># Assuming you've already instantiated a client, get the album titles for The Beatles</span>
-<span class='results identifier id'>results</span> <span class='assign token'>=</span> <span class='Riak constant id'>Riak</span><span class='colon2 op'>::</span><span class='MapReduce constant id'>MapReduce</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='rparen token'>)</span><span class='dot token'>.</span>
-                <span class='add identifier id'>add</span><span class='lparen token'>(</span><span class='string val'>&quot;artists&quot;</span><span class='comma token'>,</span><span class='string val'>&quot;Beatles&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span>
-                <span class='link identifier id'>link</span><span class='lparen token'>(</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='string val'>&quot;albums&quot;</span><span class='rparen token'>)</span><span class='dot token'>.</span>
-                <span class='map identifier id'>map</span><span class='lparen token'>(</span><span class='string val'>&quot;function(v){ return [JSON.parse(v.values[0].data).title]; }&quot;</span><span class='comma token'>,</span> <span class='symbol val'>:keep</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='run identifier id'>run</span>
+<span class='comment'># Assuming you've already instantiated a client, get the album titles for The Beatles
+</span><span class='id results'>results</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>MapReduce</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span><span class='period'>.</span>
+                <span class='id add'>add</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>artists</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Beatles</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span>
+                <span class='id link'>link</span><span class='lparen'>(</span><span class='symbol'>:bucket</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>albums</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span>
+                <span class='id map'>map</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>function(v){ return [JSON.parse(v.values[0].data).title]; }</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:keep</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='period'>.</span><span class='id run'>run</span>
 
-<span class='p identifier id'>p</span> <span class='results identifier id'>results</span> <span class='comment val'># =&gt; [&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, </span>
-          <span class='comment val'>#     &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,</span>
-          <span class='comment val'>#     &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;Magical Mystery Tour&quot;, </span>
-          <span class='comment val'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span>
-</pre><h2>Document model Example</h2>
+<span class='id p'>p</span> <span class='id results'>results</span> <span class='comment'># =&gt; [&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, 
+</span>          <span class='comment'>#     &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,
+</span>          <span class='comment'>#     &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;Magical Mystery Tour&quot;, 
+</span>          <span class='comment'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span></pre><h2>Document model Example</h2>
 <pre class="code">
-<span class='require identifier id'>require</span> <span class='string val'>'ripple'</span>
+<span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ripple</span><span class='tstring_end'>'</span></span>
 
-<span class='class class kw'>class</span> <span class='Email constant id'>Email</span>
-  <span class='include identifier id'>include</span> <span class='Ripple constant id'>Ripple</span><span class='colon2 op'>::</span><span class='Document constant id'>Document</span>
-  <span class='property identifier id'>property</span> <span class='symbol val'>:from</span><span class='comma token'>,</span>    <span class='String constant id'>String</span><span class='comma token'>,</span> <span class='symbol val'>:presence</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span>
-  <span class='property identifier id'>property</span> <span class='symbol val'>:to</span><span class='comma token'>,</span>      <span class='String constant id'>String</span><span class='comma token'>,</span> <span class='symbol val'>:presence</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='true true kw'>true</span>
-  <span class='property identifier id'>property</span> <span class='symbol val'>:sent</span><span class='comma token'>,</span>    <span class='Time constant id'>Time</span><span class='comma token'>,</span>   <span class='symbol val'>:default</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='proc identifier id'>proc</span> <span class='lbrace token'>{</span> <span class='Time constant id'>Time</span><span class='dot token'>.</span><span class='now identifier id'>now</span> <span class='rbrace token'>}</span>
-  <span class='property identifier id'>property</span> <span class='symbol val'>:body</span><span class='comma token'>,</span>    <span class='String constant id'>String</span>
-<span class='end end kw'>end</span>
+<span class='kw'>class</span> <span class='const'>Email</span>
+  <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>Document</span>
+  <span class='id property'>property</span> <span class='symbol'>:from</span><span class='comma'>,</span>    <span class='const'>String</span><span class='comma'>,</span> <span class='symbol'>:presence</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
+  <span class='id property'>property</span> <span class='symbol'>:to</span><span class='comma'>,</span>      <span class='const'>String</span><span class='comma'>,</span> <span class='symbol'>:presence</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
+  <span class='id property'>property</span> <span class='symbol'>:sent</span><span class='comma'>,</span>    <span class='const'>Time</span><span class='comma'>,</span>   <span class='symbol'>:default</span> <span class='op'>=&gt;</span> <span class='id proc'>proc</span> <span class='lbrace'>{</span> <span class='const'>Time</span><span class='period'>.</span><span class='id now'>now</span> <span class='rbrace'>}</span>
+  <span class='id property'>property</span> <span class='symbol'>:body</span><span class='comma'>,</span>    <span class='const'>String</span>
+<span class='kw'>end</span>
 
-<span class='email identifier id'>email</span> <span class='assign token'>=</span> <span class='Email constant id'>Email</span><span class='dot token'>.</span><span class='find identifier id'>find</span><span class='lparen token'>(</span><span class='string val'>&quot;37458abc752f8413e&quot;</span><span class='rparen token'>)</span>  <span class='comment val'># GET /raw/emails/37458abc752f8413e</span>
-<span class='email identifier id'>email</span><span class='dot token'>.</span><span class='from identifier id'>from</span> <span class='assign token'>=</span> <span class='string val'>&quot;someone@nowhere.net&quot;</span>
-<span class='email identifier id'>email</span><span class='dot token'>.</span><span class='save identifier id'>save</span>                               <span class='comment val'># PUT /raw/emails/37458abc752f8413e</span>
-
-<span class='reply identifier id'>reply</span> <span class='assign token'>=</span> <span class='Email constant id'>Email</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
-<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='from identifier id'>from</span> <span class='assign token'>=</span> <span class='string val'>&quot;justin@bashoooo.com&quot;</span>
-<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='to identifier id'>to</span>   <span class='assign token'>=</span> <span class='string val'>&quot;sean@geeemail.com&quot;</span>
-<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='body identifier id'>body</span> <span class='assign token'>=</span> <span class='string val'>&quot;Riak is a good fit for scalable Ruby apps.&quot;</span>
-<span class='reply identifier id'>reply</span><span class='dot token'>.</span><span class='save identifier id'>save</span>                               <span class='comment val'># POST /raw/emails (Riak-assigned key)</span>
-</pre><h2>How to Contribute</h2>
+<span class='id email'>email</span> <span class='op'>=</span> <span class='const'>Email</span><span class='period'>.</span><span class='id find'>find</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>37458abc752f8413e</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>  <span class='comment'># GET /riak/emails/37458abc752f8413e
+</span><span class='id email'>email</span><span class='period'>.</span><span class='id from'>from</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>someone@nowhere.net</span><span class='tstring_end'>&quot;</span></span>
+<span class='id email'>email</span><span class='period'>.</span><span class='id save'>save</span>                               <span class='comment'># PUT /riak/emails/37458abc752f8413e
+</span>
+<span class='id reply'>reply</span> <span class='op'>=</span> <span class='const'>Email</span><span class='period'>.</span><span class='id new'>new</span>
+<span class='id reply'>reply</span><span class='period'>.</span><span class='id from'>from</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>justin@bashoooo.com</span><span class='tstring_end'>&quot;</span></span>
+<span class='id reply'>reply</span><span class='period'>.</span><span class='id to'>to</span>   <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sean@geeemail.com</span><span class='tstring_end'>&quot;</span></span>
+<span class='id reply'>reply</span><span class='period'>.</span><span class='id body'>body</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Riak is a good fit for scalable Ruby apps.</span><span class='tstring_end'>&quot;</span></span>
+<span class='id reply'>reply</span><span class='period'>.</span><span class='id save'>save</span>                               <span class='comment'># POST /riak/emails (Riak-assigned key)
+</span></pre><h2>How to Contribute</h2>
 <ul>
 	<li>Fork the project on <a href="http://github.com/seancribbs/ripple">Github</a>.  If you have already forked, use <code>git pull --rebase</code> to reapply your changes on top of the mainline. Example:
-  <pre class="code">$ <span class='git identifier id'>git</span> <span class='checkout identifier id'>checkout</span> <span class='master identifier id'>master</span>
-$ <span class='git identifier id'>git</span> <span class='pull identifier id'>pull</span> <span class='minus op'>-</span><span class='minus op'>-</span><span class='rebase identifier id'>rebase</span> <span class='seancribbs identifier id'>seancribbs</span> <span class='master identifier id'>master</span>
-</pre></li>
+  <pre class="code">$ git checkout master
+$ git pull --rebase seancribbs master</pre></li>
 	<li>Create a topic branch. If you&#8217;ve already created a topic branch, rebase it on top of changes from the mainline &#8220;master&#8221; branch. Examples:
 	<ul>
 		<li>New branch:
-  <pre class="code">$ <span class='git identifier id'>git</span> <span class='checkout identifier id'>checkout</span> <span class='minus op'>-</span><span class='b identifier id'>b</span> <span class='topic identifier id'>topic</span>
-</pre></li>
+  <pre class="code">$ git checkout -b topic</pre></li>
 		<li>Existing branch:
-  <pre class="code">$ <span class='git identifier id'>git</span> <span class='rebase identifier id'>rebase</span> <span class='master identifier id'>master</span>
-</pre></li>
+  <pre class="code">$ git rebase master</pre></li>
 	</ul></li>
 	<li>Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. <strong>Patches without specs will most often be ignored. Just do it, you&#8217;ll thank me later.</strong> Documentation patches need no specs, of course.</li>
 	<li>Make your feature addition or bug fix. Make your specs and stories pass (green).</li>
@@ -153,14 +148,15 @@ distributed under the License is distributed on an &#8220;AS IS&#8221; <span cla
 <span class="caps">WITHOUT</span> <span class="caps">WARRANTIES</span> OR <span class="caps">CONDITIONS</span> OF <span class="caps">ANY</span> <span class="caps">KIND</span>, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</p>
-<h2>Auxillary License</h2>
+<h2>Auxillary Licenses</h2>
 <p>The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 <a href="http://seancribbs.com/">Sean Cribbs</a>, and is 
-licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creative Commons Attribution Non-Commercial 3.0</a> license. <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" alt="" /></p></div></div>
+licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creative Commons Attribution Non-Commercial 3.0</a> license. <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" alt="" /></p>
+<p>The &#8220;Poor Man&#8217;s Fibers&#8221; implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.</p></div></div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:14 2010 by 
+  Generated on Fri Mar  5 13:45:38 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

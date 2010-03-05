@@ -189,8 +189,7 @@ all found documents in the bucket
         <div class="docstring">
   <div class="discussion">
     <p>
-Stream all documents in the bucket through the block. TODO: Make this work
-with the CurbBackend (currently single-request oriented).
+Stream all documents in the bucket through the block.
 </p>
 
 
@@ -228,6 +227,7 @@ doc a found document
       <pre class="lines">
 
 
+50
 51
 52
 53
@@ -241,26 +241,28 @@ doc a found document
 61
 62
 63
-64</pre>
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/finders.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple/document/finders.rb', line 50</span>
 
-<span class='def def kw'>def</span> <span class='all identifier id'>all</span>
-  <span class='if if kw'>if</span> <span class='block_given? fid id'>block_given?</span>
-    <span class='bucket identifier id'>bucket</span><span class='dot token'>.</span><span class='keys identifier id'>keys</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='key identifier id'>key</span><span class='bitor op'>|</span>
-      <span class='obj identifier id'>obj</span> <span class='assign token'>=</span> <span class='find_one identifier id'>find_one</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='rparen token'>)</span>
-      <span class='yield yield kw'>yield</span> <span class='obj identifier id'>obj</span> <span class='if if_mod kw'>if</span> <span class='obj identifier id'>obj</span>
-    <span class='end end kw'>end</span>
-    <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
-  <span class='else else kw'>else</span>
-    <span class='bucket identifier id'>bucket</span><span class='dot token'>.</span><span class='keys identifier id'>keys</span><span class='dot token'>.</span><span class='inject identifier id'>inject</span><span class='lparen token'>(</span><span class='lbrack token'>[</span><span class='rbrack token'>]</span><span class='rparen token'>)</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='acc identifier id'>acc</span><span class='comma token'>,</span> <span class='k identifier id'>k</span><span class='bitor op'>|</span>
-      <span class='obj identifier id'>obj</span> <span class='assign token'>=</span> <span class='find_one identifier id'>find_one</span><span class='lparen token'>(</span><span class='k identifier id'>k</span><span class='rparen token'>)</span>
-      <span class='obj identifier id'>obj</span> <span class='integer val'>? </span><span class='acc identifier id'>acc</span> <span class='lshft op'>&lt;&lt;</span> <span class='obj identifier id'>obj</span> <span class='colon op'>:</span> <span class='acc identifier id'>acc</span>
-    <span class='end end kw'>end</span>
-  <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id all'>all</span>
+  <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
+    <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id keys'>keys</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id keys'>keys</span><span class='op'>|</span>
+      <span class='id keys'>keys</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id key'>key</span><span class='op'>|</span>
+        <span class='id obj'>obj</span> <span class='op'>=</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span>
+        <span class='kw'>yield</span> <span class='id obj'>obj</span> <span class='kw'>if</span> <span class='id obj'>obj</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+    <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='kw'>else</span>
+    <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id acc'>acc</span><span class='comma'>,</span> <span class='id k'>k</span><span class='op'>|</span>
+      <span class='id obj'>obj</span> <span class='op'>=</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id k'>k</span><span class='rparen'>)</span>
+      <span class='id obj'>obj</span> <span class='op'>?</span> <span class='id acc'>acc</span> <span class='op'>&lt;&lt;</span> <span class='id obj'>obj</span> <span class='op'>:</span> <span class='id acc'>acc</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -499,13 +501,12 @@ a list of found documents, including nil for missing documents
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/finders.rb', line 36</span>
 
-<span class='def def kw'>def</span> <span class='find identifier id'>find</span><span class='lparen token'>(</span><span class='mult op'>*</span><span class='args identifier id'>args</span><span class='rparen token'>)</span>
-  <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='flatten! fid id'>flatten!</span>
-  <span class='return return kw'>return</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span> <span class='if if_mod kw'>if</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='length identifier id'>length</span> <span class='eq op'>==</span> <span class='integer val'>0</span>
-  <span class='return return kw'>return</span> <span class='find_one identifier id'>find_one</span><span class='lparen token'>(</span><span class='args identifier id'>args</span><span class='dot token'>.</span><span class='first identifier id'>first</span><span class='rparen token'>)</span> <span class='if if_mod kw'>if</span> <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='length identifier id'>length</span> <span class='eq op'>==</span> <span class='integer val'>1</span>
-  <span class='args identifier id'>args</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='key identifier id'>key</span><span class='bitor op'>|</span> <span class='find_one identifier id'>find_one</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id find'>find</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id args'>args</span><span class='period'>.</span><span class='id flatten!'>flatten!</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id args'>args</span><span class='period'>.</span><span class='id length'>length</span> <span class='op'>==</span> <span class='int'>0</span>
+  <span class='kw'>return</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id args'>args</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id args'>args</span><span class='period'>.</span><span class='id length'>length</span> <span class='op'>==</span> <span class='int'>1</span>
+  <span class='id args'>args</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id key'>key</span><span class='op'>|</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -516,9 +517,9 @@ a list of found documents, including nil for missing documents
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:16 2010 by 
+  Generated on Fri Mar  5 13:45:40 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

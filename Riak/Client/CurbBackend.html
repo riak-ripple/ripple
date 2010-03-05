@@ -110,7 +110,7 @@ Riak::Client::HTTPBackend interface.
   
   
   <h3 class="inherited">Methods inherited from <a href="HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></h3>
-  <p class="inherited"><a href="HTTPBackend.html#default_headers-instance_method" title="Riak::Client::HTTPBackend#default_headers (method)">#default_headers</a>, <a href="HTTPBackend.html#delete-instance_method" title="Riak::Client::HTTPBackend#delete (method)">#delete</a>, <a href="HTTPBackend.html#get-instance_method" title="Riak::Client::HTTPBackend#get (method)">#get</a>, <a href="HTTPBackend.html#head-instance_method" title="Riak::Client::HTTPBackend#head (method)">#head</a>, <a href="HTTPBackend.html#path-instance_method" title="Riak::Client::HTTPBackend#path (method)">#path</a>, <a href="HTTPBackend.html#post-instance_method" title="Riak::Client::HTTPBackend#post (method)">#post</a>, <a href="HTTPBackend.html#put-instance_method" title="Riak::Client::HTTPBackend#put (method)">#put</a>, <a href="HTTPBackend.html#return_body%3F-instance_method" title="Riak::Client::HTTPBackend#return_body? (method)">#return_body?</a>, <a href="HTTPBackend.html#root_uri-instance_method" title="Riak::Client::HTTPBackend#root_uri (method)">#root_uri</a>, <a href="HTTPBackend.html#valid_response%3F-instance_method" title="Riak::Client::HTTPBackend#valid_response? (method)">#valid_response?</a>, <a href="HTTPBackend.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend#verify_path! (method)">#verify_path!</a>, <a href="HTTPBackend.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend#verify_path_and_body! (method)">#verify_path_and_body!</a></p>
+  <p class="inherited"><a href="HTTPBackend.html#default_headers-instance_method" title="Riak::Client::HTTPBackend#default_headers (method)">#default_headers</a>, <a href="HTTPBackend.html#delete-instance_method" title="Riak::Client::HTTPBackend#delete (method)">#delete</a>, <a href="HTTPBackend.html#get-instance_method" title="Riak::Client::HTTPBackend#get (method)">#get</a>, <a href="HTTPBackend.html#head-instance_method" title="Riak::Client::HTTPBackend#head (method)">#head</a>, <a href="HTTPBackend.html#initialize-instance_method" title="Riak::Client::HTTPBackend#initialize (method)">#initialize</a>, <a href="HTTPBackend.html#path-instance_method" title="Riak::Client::HTTPBackend#path (method)">#path</a>, <a href="HTTPBackend.html#post-instance_method" title="Riak::Client::HTTPBackend#post (method)">#post</a>, <a href="HTTPBackend.html#put-instance_method" title="Riak::Client::HTTPBackend#put (method)">#put</a>, <a href="HTTPBackend.html#return_body%3F-instance_method" title="Riak::Client::HTTPBackend#return_body? (method)">#return_body?</a>, <a href="HTTPBackend.html#root_uri-instance_method" title="Riak::Client::HTTPBackend#root_uri (method)">#root_uri</a>, <a href="HTTPBackend.html#valid_response%3F-instance_method" title="Riak::Client::HTTPBackend#valid_response? (method)">#valid_response?</a>, <a href="HTTPBackend.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend#verify_path! (method)">#verify_path!</a>, <a href="HTTPBackend.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend#verify_path_and_body! (method)">#verify_path_and_body!</a></p>
 
   
   
@@ -122,57 +122,7 @@ Riak::Client::HTTPBackend interface.
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
-    <div class="method_details first">
-  <p class="signature first" id="initialize-instance_method">
-  
-    - (<tt><a href="" title="Riak::Client::CurbBackend (class)">CurbBackend</a></tt>) <strong>initialize</strong>(client) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-A new instance of CurbBackend
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-24
-25
-26
-27
-28
-29
-30
-31
-32</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/curb_backend.rb', line 24</span>
-
-<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='client identifier id'>client</span><span class='rparen token'>)</span>
-  <span class='super super kw'>super</span>
-  <span class='@curl ivar id'>@curl</span> <span class='assign token'>=</span> <span class='Curl constant id'>Curl</span><span class='colon2 op'>::</span><span class='Easy constant id'>Easy</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
-  <span class='@curl ivar id'>@curl</span><span class='dot token'>.</span><span class='follow_location identifier id'>follow_location</span> <span class='assign token'>=</span> <span class='false false kw'>false</span>
-  <span class='@curl ivar id'>@curl</span><span class='dot token'>.</span><span class='on_header identifier id'>on_header</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='header_line identifier id'>header_line</span><span class='bitor op'>|</span>
-    <span class='@response_headers ivar id'>@response_headers</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='header_line identifier id'>header_line</span><span class='rparen token'>)</span>
-    <span class='header_line identifier id'>header_line</span><span class='dot token'>.</span><span class='size identifier id'>size</span>
-  <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
-    </td>
-  </tr>
-</table>
-</div>
+    <p class="notice">This class inherits a constructor from <a href="HTTPBackend.html#initialize-instance_method" title="Riak::Client::HTTPBackend#initialize (method)">Riak::Client::HTTPBackend</a></p>
   
 </div>
 
@@ -180,9 +130,9 @@ A new instance of CurbBackend
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:18 2010 by 
+  Generated on Fri Mar  5 13:45:41 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

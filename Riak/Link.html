@@ -120,7 +120,7 @@ Represents a link from one object to another in Riak
 
   
     <span class="summary_desc">
-The relationship (&quot;rel&quot;) of the other resource to this one.
+The relationship (&#8220;rel&#8221;) of the other resource to this one.
 
 </span>
   
@@ -226,7 +226,7 @@ An array of Riak::Link structs parsed from the header.
   
     <span class="summary_desc">
 Bucket_name, if the Link url is a known Riak link
-(&quot;/raw/&lt;bucket&gt;/&lt;key&gt;&quot;).
+(&#8220;/riak/<bucket>/<key>&#8221;).
 
 </span>
   
@@ -295,7 +295,7 @@ A new instance of Link.
   
     <span class="summary_desc">
 Key, if the Link url is a known Riak link
-(&quot;/raw/&lt;bucket&gt;/&lt;key&gt;&quot;).
+(&#8220;/riak/<bucket>/<key>&#8221;).
 
 </span>
   
@@ -385,10 +385,9 @@ A new instance of Link
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 34</span>
 
-<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='url identifier id'>url</span><span class='comma token'>,</span> <span class='rel identifier id'>rel</span><span class='rparen token'>)</span>
-  <span class='@url ivar id'>@url</span><span class='comma token'>,</span> <span class='@rel ivar id'>@rel</span> <span class='assign token'>=</span> <span class='url identifier id'>url</span><span class='comma token'>,</span> <span class='rel identifier id'>rel</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id url'>url</span><span class='comma'>,</span> <span class='id rel'>rel</span><span class='rparen'>)</span>
+  <span class='ivar'>@url</span><span class='comma'>,</span> <span class='ivar'>@rel</span> <span class='op'>=</span> <span class='id url'>url</span><span class='comma'>,</span> <span class='id rel'>rel</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -412,7 +411,7 @@ A new instance of Link
 </p><div class="docstring">
   <div class="discussion">
     <p>
-The relationship (&quot;rel&quot;) of the other resource to this one
+The relationship (&#8220;rel&#8221;) of the other resource to this one
 </p>
 
 
@@ -431,7 +430,7 @@ The relationship (&quot;rel&quot;) of the other resource to this one
       
         &mdash;
         
-the relationship (&quot;rel&quot;) of the other resource to this one
+the relationship (&#8220;rel&#8221;) of the other resource to this one
 
 
       
@@ -452,10 +451,9 @@ the relationship (&quot;rel&quot;) of the other resource to this one
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 24</span>
 
-<span class='def def kw'>def</span> <span class='rel identifier id'>rel</span>
-  <span class='@rel ivar id'>@rel</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id rel'>rel</span>
+  <span class='ivar'>@rel</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -514,10 +512,9 @@ the URL (relative or absolute) of the related resource
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 21</span>
 
-<span class='def def kw'>def</span> <span class='url identifier id'>url</span>
-  <span class='@url ivar id'>@url</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id url'>url</span>
+  <span class='ivar'>@url</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -603,12 +600,11 @@ an array of Riak::Link structs parsed from the header
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 28</span>
 
-<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='header_string identifier id'>header_string</span><span class='rparen token'>)</span>
-  <span class='header_string identifier id'>header_string</span><span class='dot token'>.</span><span class='scan identifier id'>scan</span><span class='lparen token'>(</span><span class='regexp val'>%r{&lt;([^&gt;]+)&gt;\s*;\s*(?:rel|riaktag)=\&quot;([^\&quot;]+)\&quot;}</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='match identifier id'>match</span><span class='bitor op'>|</span>
-    <span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>0</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='match identifier id'>match</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
-  <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id header_string'>header_string</span><span class='rparen'>)</span>
+  <span class='id header_string'>header_string</span><span class='period'>.</span><span class='id scan'>scan</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>&lt;([^&gt;]+)&gt;\s*;\s*(?:rel|riaktag)=\&quot;([^\&quot;]+)\&quot;</span><span class='regexp_end'>}</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id match'>match</span><span class='op'>|</span>
+    <span class='id new'>new</span><span class='lparen'>(</span><span class='id match'>match</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id match'>match</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -640,10 +636,9 @@ an array of Riak::Link structs parsed from the header
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 54</span>
 
-<span class='def def kw'>def</span> <span class='eq op'>==</span><span class='lparen token'>(</span><span class='other identifier id'>other</span><span class='rparen token'>)</span>
-  <span class='other identifier id'>other</span><span class='dot token'>.</span><span class='is_a? fid id'>is_a?</span><span class='lparen token'>(</span><span class='Link constant id'>Link</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span> <span class='url identifier id'>url</span> <span class='eq op'>==</span> <span class='other identifier id'>other</span><span class='dot token'>.</span><span class='url identifier id'>url</span> <span class='andop op'>&amp;&amp;</span> <span class='rel identifier id'>rel</span> <span class='eq op'>==</span> <span class='other identifier id'>other</span><span class='dot token'>.</span><span class='rel identifier id'>rel</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
+  <span class='id other'>other</span><span class='period'>.</span><span class='id is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Link</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id url'>url</span> <span class='op'>==</span> <span class='id other'>other</span><span class='period'>.</span><span class='id url'>url</span> <span class='op'>&amp;&amp;</span> <span class='id rel'>rel</span> <span class='op'>==</span> <span class='id other'>other</span><span class='period'>.</span><span class='id rel'>rel</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -660,7 +655,7 @@ an array of Riak::Link structs parsed from the header
   <div class="discussion">
     <p>
 Bucket_name, if the Link url is a known Riak link
-(&quot;/raw/&lt;bucket&gt;/&lt;key&gt;&quot;)
+(&#8220;/riak/<bucket>/<key>&#8221;)
 </p>
 
 
@@ -680,7 +675,7 @@ Bucket_name, if the Link url is a known Riak link
         &mdash;
         
 bucket_name, if the Link url is a known Riak link
-(&quot;/raw/&lt;bucket&gt;/&lt;key&gt;&quot;)
+(&#8220;/riak/<bucket>/<key>&#8221;)
 
 
       
@@ -701,10 +696,9 @@ bucket_name, if the Link url is a known Riak link
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 39</span>
 
-<span class='def def kw'>def</span> <span class='bucket identifier id'>bucket</span>
-  <span class='$1 nth_ref id'>$1</span> <span class='if if_mod kw'>if</span> <span class='url identifier id'>url</span> <span class='match op'>=~</span> <span class='regexp val'>%r{/raw/([^/]+)/?}</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id bucket'>bucket</span>
+  <span class='backref'>$1</span> <span class='kw'>if</span> <span class='id url'>url</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/riak/([^/]+)/?</span><span class='regexp_end'>}</span></span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -728,8 +722,7 @@ bucket_name, if the Link url is a known Riak link
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 48</span>
 
-<span class='def def kw'>def</span> <span class='inspect identifier id'>inspect</span><span class='semicolon token'>;</span> <span class='to_s identifier id'>to_s</span> <span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id inspect'>inspect</span><span class='semicolon'>;</span> <span class='id to_s'>to_s</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -746,7 +739,7 @@ bucket_name, if the Link url is a known Riak link
   <div class="discussion">
     <p>
 Key, if the Link url is a known Riak link
-(&quot;/raw/&lt;bucket&gt;/&lt;key&gt;&quot;)
+(&#8220;/riak/<bucket>/<key>&#8221;)
 </p>
 
 
@@ -766,7 +759,7 @@ Key, if the Link url is a known Riak link
         &mdash;
         
 key, if the Link url is a known Riak link
-(&quot;/raw/&lt;bucket&gt;/&lt;key&gt;&quot;)
+(&#8220;/riak/<bucket>/<key>&#8221;)
 
 
       
@@ -787,10 +780,9 @@ key, if the Link url is a known Riak link
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 44</span>
 
-<span class='def def kw'>def</span> <span class='key identifier id'>key</span>
-  <span class='$1 nth_ref id'>$1</span> <span class='if if_mod kw'>if</span> <span class='url identifier id'>url</span> <span class='match op'>=~</span> <span class='regexp val'>%r{/raw/[^/]+/([^/]+)/?}</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id key'>key</span>
+  <span class='backref'>$1</span> <span class='kw'>if</span> <span class='id url'>url</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/riak/[^/]+/([^/]+)/?</span><span class='regexp_end'>}</span></span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -816,10 +808,9 @@ key, if the Link url is a known Riak link
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 50</span>
 
-<span class='def def kw'>def</span> <span class='to_s identifier id'>to_s</span>
-  <span class='dstring node'>%Q[&lt;#{@url}&gt;; riaktag=&quot;#{@rel}&quot;]</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id to_s'>to_s</span>
+  <span class='tstring'><span class='tstring_beg'>%Q[</span><span class='tstring_content'>&lt;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@url</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;; riaktag=&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@rel</span><span class='rbrace'>}</span><span class='tstring_content'>&quot;</span><span class='tstring_end'>]</span></span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -846,11 +837,10 @@ key, if the Link url is a known Riak link
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/link.rb', line 58</span>
 
-<span class='def def kw'>def</span> <span class='to_walk_spec identifier id'>to_walk_spec</span>
-  <span class='raise identifier id'>raise</span> <span class='t identifier id'>t</span><span class='lparen token'>(</span><span class='string val'>&quot;bucket_link_conversion&quot;</span><span class='rparen token'>)</span> <span class='if if_mod kw'>if</span> <span class='@rel ivar id'>@rel</span> <span class='eq op'>==</span> <span class='string val'>&quot;up&quot;</span> <span class='orop op'>||</span> <span class='key identifier id'>key</span><span class='dot token'>.</span><span class='nil? fid id'>nil?</span>
-  <span class='WalkSpec constant id'>WalkSpec</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='symbol val'>:bucket</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='bucket identifier id'>bucket</span><span class='comma token'>,</span> <span class='symbol val'>:tag</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='@rel ivar id'>@rel</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id to_walk_spec'>to_walk_spec</span>
+  <span class='id raise'>raise</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bucket_link_conversion</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@rel</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>up</span><span class='tstring_end'>&quot;</span></span> <span class='op'>||</span> <span class='id key'>key</span><span class='period'>.</span><span class='id nil?'>nil?</span>
+  <span class='const'>WalkSpec</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:bucket</span> <span class='op'>=&gt;</span> <span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='symbol'>:tag</span> <span class='op'>=&gt;</span> <span class='ivar'>@rel</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -861,9 +851,9 @@ key, if the Link url is a known Riak link
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:15 2010 by 
+  Generated on Fri Mar  5 13:45:38 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

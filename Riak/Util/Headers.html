@@ -213,10 +213,9 @@ A new instance of Headers
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/util/headers.rb', line 22</span>
 
-<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span>
-  <span class='initialize_http_header identifier id'>initialize_http_header</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id initialize'>initialize</span>
+  <span class='id initialize_http_header'>initialize_http_header</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -285,14 +284,13 @@ a single header line
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/util/headers.rb', line 28</span>
 
-<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='chunk identifier id'>chunk</span><span class='rparen token'>)</span>
-  <span class='line identifier id'>line</span> <span class='assign token'>=</span> <span class='chunk identifier id'>chunk</span><span class='dot token'>.</span><span class='strip identifier id'>strip</span>
-  <span class='comment val'># thanks Net::HTTPResponse</span>
-  <span class='return return kw'>return</span> <span class='lbrack token'>[</span><span class='nil nil kw'>nil</span><span class='comma token'>,</span><span class='nil nil kw'>nil</span><span class='rbrack token'>]</span> <span class='if if_mod kw'>if</span> <span class='chunk identifier id'>chunk</span> <span class='match op'>=~</span> <span class='regexp val'>/\AHTTP(?:\/(\d+\.\d+))?\s+(\d\d\d)\s*(.*)\z/i</span><span class='n identifier id'>n</span>
-  <span class='m identifier id'>m</span> <span class='assign token'>=</span> <span class='regexp val'>/\A([^:]+):\s*/</span><span class='dot token'>.</span><span class='match identifier id'>match</span><span class='lparen token'>(</span><span class='line identifier id'>line</span><span class='rparen token'>)</span>
-  <span class='lbrack token'>[</span><span class='m identifier id'>m</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='m identifier id'>m</span><span class='dot token'>.</span><span class='post_match identifier id'>post_match</span><span class='rbrack token'>]</span> <span class='rescue rescue kw'>rescue</span> <span class='lbrack token'>[</span><span class='nil nil kw'>nil</span><span class='comma token'>,</span> <span class='nil nil kw'>nil</span><span class='rbrack token'>]</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span>
+  <span class='id line'>line</span> <span class='op'>=</span> <span class='id chunk'>chunk</span><span class='period'>.</span><span class='id strip'>strip</span>
+  <span class='comment'># thanks Net::HTTPResponse
+</span>  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='kw'>nil</span><span class='comma'>,</span><span class='kw'>nil</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id chunk'>chunk</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\AHTTP(?:\/(\d+\.\d+))?\s+(\d\d\d)\s*(.*)\z</span><span class='regexp_end'>/in</span></span>
+  <span class='id m'>m</span> <span class='op'>=</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A([^:]+):\s*</span><span class='regexp_end'>/</span></span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='id line'>line</span><span class='rparen'>)</span>
+  <span class='lbracket'>[</span><span class='id m'>m</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id m'>m</span><span class='period'>.</span><span class='id post_match'>post_match</span><span class='rbracket'>]</span> <span class='kw'>rescue</span> <span class='lbracket'>[</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -357,11 +355,10 @@ a single header line
     <td>
       <pre class="code"><span class="info file"># File 'lib/riak/util/headers.rb', line 38</span>
 
-<span class='def def kw'>def</span> <span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='chunk identifier id'>chunk</span><span class='rparen token'>)</span>
-  <span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='value identifier id'>value</span> <span class='assign token'>=</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='class identifier id'>class</span><span class='dot token'>.</span><span class='parse identifier id'>parse</span><span class='lparen token'>(</span><span class='chunk identifier id'>chunk</span><span class='rparen token'>)</span>
-  <span class='add_field identifier id'>add_field</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='value identifier id'>value</span><span class='rparen token'>)</span> <span class='if if_mod kw'>if</span> <span class='key identifier id'>key</span> <span class='andop op'>&amp;&amp;</span> <span class='value identifier id'>value</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id parse'>parse</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span>
+  <span class='id key'>key</span><span class='comma'>,</span> <span class='id value'>value</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span>
+  <span class='id add_field'>add_field</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id value'>value</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id key'>key</span> <span class='op'>&amp;&amp;</span> <span class='id value'>value</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -372,9 +369,9 @@ a single header line
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:16 2010 by 
+  Generated on Fri Mar  5 13:45:40 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

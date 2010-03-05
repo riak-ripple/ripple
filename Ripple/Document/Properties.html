@@ -182,10 +182,9 @@ the properties defined on the document
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 30</span>
 
-<span class='def def kw'>def</span> <span class='properties identifier id'>properties</span>
-  <span class='@properties ivar id'>@properties</span> <span class='opasgn op'>||=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='with_indifferent_access identifier id'>with_indifferent_access</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id properties'>properties</span>
+  <span class='ivar'>@properties</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -212,11 +211,10 @@ the properties defined on the document
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 34</span>
 
-<span class='def def kw'>def</span> <span class='property identifier id'>property</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='type identifier id'>type</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
-  <span class='prop identifier id'>prop</span> <span class='assign token'>=</span> <span class='Property constant id'>Property</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='type identifier id'>type</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='rparen token'>)</span>
-  <span class='properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='prop identifier id'>prop</span><span class='dot token'>.</span><span class='key identifier id'>key</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='prop identifier id'>prop</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id property'>property</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id type'>type</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id prop'>prop</span> <span class='op'>=</span> <span class='const'>Property</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id type'>type</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
+  <span class='id properties'>properties</span><span class='lbracket'>[</span><span class='id prop'>prop</span><span class='period'>.</span><span class='id key'>key</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id prop'>prop</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -227,9 +225,9 @@ the properties defined on the document
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:20 2010 by 
+  Generated on Fri Mar  5 13:45:41 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

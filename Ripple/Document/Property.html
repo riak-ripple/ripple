@@ -395,12 +395,11 @@ the default.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 54</span>
 
-<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='type identifier id'>type</span><span class='comma token'>,</span> <span class='options identifier id'>options</span><span class='assign token'>=</span><span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
-  <span class='@options ivar id'>@options</span> <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='dot token'>.</span><span class='to_options identifier id'>to_options</span>
-  <span class='@key ivar id'>@key</span> <span class='assign token'>=</span> <span class='key identifier id'>key</span><span class='dot token'>.</span><span class='to_sym identifier id'>to_sym</span>
-  <span class='@type ivar id'>@type</span> <span class='assign token'>=</span> <span class='type identifier id'>type</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id type'>type</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id to_options'>to_options</span>
+  <span class='ivar'>@key</span> <span class='op'>=</span> <span class='id key'>key</span><span class='period'>.</span><span class='id to_sym'>to_sym</span>
+  <span class='ivar'>@type</span> <span class='op'>=</span> <span class='id type'>type</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -464,10 +463,9 @@ the key of this property in the Document
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 43</span>
 
-<span class='def def kw'>def</span> <span class='key identifier id'>key</span>
-  <span class='@key ivar id'>@key</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id key'>key</span>
+  <span class='ivar'>@key</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -526,10 +524,9 @@ configuration options
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 47</span>
 
-<span class='def def kw'>def</span> <span class='options identifier id'>options</span>
-  <span class='@options ivar id'>@options</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id options'>options</span>
+  <span class='ivar'>@options</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -588,10 +585,9 @@ the Ruby type of property.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 45</span>
 
-<span class='def def kw'>def</span> <span class='type identifier id'>type</span>
-  <span class='@type ivar id'>@type</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id type'>type</span>
+  <span class='ivar'>@type</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -656,12 +652,11 @@ The default value for this property if defined, or nil.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 61</span>
 
-<span class='def def kw'>def</span> <span class='default identifier id'>default</span>
-  <span class='if if kw'>if</span> <span class='default identifier id'>default</span> <span class='assign token'>=</span> <span class='options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:default</span><span class='rbrack token'>]</span>
-    <span class='type_cast identifier id'>type_cast</span><span class='lparen token'>(</span><span class='default identifier id'>default</span><span class='dot token'>.</span><span class='respond_to? fid id'>respond_to?</span><span class='lparen token'>(</span><span class='symbol val'>:call</span><span class='rparen token'>)</span> <span class='question op'>?</span> <span class='default identifier id'>default</span><span class='dot token'>.</span><span class='call identifier id'>call</span> <span class='colon op'>:</span> <span class='default identifier id'>default</span><span class='rparen token'>)</span>
-  <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id default'>default</span>
+  <span class='kw'>if</span> <span class='id default'>default</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span>
+    <span class='id type_cast'>type_cast</span><span class='lparen'>(</span><span class='id default'>default</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:call</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id default'>default</span><span class='period'>.</span><span class='id call'>call</span> <span class='op'>:</span> <span class='id default'>default</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -761,14 +756,13 @@ if the value cannot be coerced into the property&#8217;s type
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 76</span>
 
-<span class='def def kw'>def</span> <span class='type_cast identifier id'>type_cast</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='if if kw'>if</span> <span class='@type ivar id'>@type</span><span class='dot token'>.</span><span class='respond_to? fid id'>respond_to?</span><span class='lparen token'>(</span><span class='symbol val'>:ripple_cast</span><span class='rparen token'>)</span>
-    <span class='@type ivar id'>@type</span><span class='dot token'>.</span><span class='ripple_cast identifier id'>ripple_cast</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='else else kw'>else</span>
-    <span class='value identifier id'>value</span>
-  <span class='end end kw'>end</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id type_cast'>type_cast</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='ivar'>@type</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:ripple_cast</span><span class='rparen'>)</span>
+    <span class='ivar'>@type</span><span class='period'>.</span><span class='id ripple_cast'>ripple_cast</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='id value'>value</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -824,10 +818,9 @@ options appropriate for the validates class method
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 68</span>
 
-<span class='def def kw'>def</span> <span class='validation_options identifier id'>validation_options</span>
-  <span class='@options ivar id'>@options</span><span class='dot token'>.</span><span class='dup identifier id'>dup</span><span class='dot token'>.</span><span class='except identifier id'>except</span><span class='lparen token'>(</span><span class='symbol val'>:default</span><span class='rparen token'>)</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id validation_options'>validation_options</span>
+  <span class='ivar'>@options</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id except'>except</span><span class='lparen'>(</span><span class='symbol'>:default</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -838,9 +831,9 @@ options appropriate for the validates class method
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:20 2010 by 
+  Generated on Fri Mar  5 13:45:41 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>

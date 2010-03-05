@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta name="Content-Type" content="text/html; charset=UTF-8" />
-<title>Module: Ripple::Document::AttributeMethods::ClassMethods</title>
+<title>Module: Ripple::Document::Timestamps::InstanceMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -23,10 +23,10 @@
     <div id="header">
       <div id="menu">
   
-    <a href="../../../_index.html">Index (C)</a> &raquo; 
-    <span class='title'><a href="../../../Ripple.html" title="Ripple (module)">Ripple</a></span> &raquo; <span class='title'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span> &raquo; <span class='title'><a href="../AttributeMethods.html" title="Ripple::Document::AttributeMethods (module)">AttributeMethods</a></span>
+    <a href="../../../_index.html">Index (I)</a> &raquo; 
+    <span class='title'><a href="../../../Ripple.html" title="Ripple (module)">Ripple</a></span> &raquo; <span class='title'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span> &raquo; <span class='title'><a href="../Timestamps.html" title="Ripple::Document::Timestamps (module)">Timestamps</a></span>
      &raquo; 
-    <span class="title">ClassMethods</span>
+    <span class="title">InstanceMethods</span>
   
   
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
@@ -43,7 +43,7 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Module: Ripple::Document::AttributeMethods::ClassMethods 
+    <div id="content"><h1>Module: Ripple::Document::Timestamps::InstanceMethods 
   
   
 </h1>
@@ -57,7 +57,7 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/attribute_methods.rb</dd>
+    <dd class="r1 last">lib/ripple/document/timestamps.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -72,7 +72,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#define_attribute_methods-instance_method" title="#define_attribute_methods (instance method)">- (Object) <strong>define_attribute_methods</strong> </a>
+      <a href="#touch-instance_method" title="#touch (instance method)">- (Object) <strong>touch</strong> </a>
     
 
     
@@ -84,11 +84,7 @@
   
 
   
-    <span class="summary_desc">
-Generates all the attribute-related methods for properties defined on the
-document, including accessors, mutators and query methods.
-
-</span>
+    <span class="summary_desc"></span>
   
 </li>
 
@@ -101,39 +97,27 @@ document, including accessors, mutators and query methods.
     
     
       <div class="method_details first">
-  <p class="signature first" id="define_attribute_methods-instance_method">
+  <p class="signature first" id="touch-instance_method">
   
-    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>define_attribute_methods</strong> 
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>touch</strong> 
   
 
   
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Generates all the attribute-related methods for properties defined on the
-document, including accessors, mutators and query methods.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-</div><table class="source_code">
+</p><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-47
-48
-49</pre>
+15
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/attribute_methods.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'lib/ripple/document/timestamps.rb', line 15</span>
 
-<span class='kw'>def</span> <span class='id define_attribute_methods'>define_attribute_methods</span>
-  <span class='kw'>super</span><span class='lparen'>(</span><span class='id properties'>properties</span><span class='period'>.</span><span class='id keys'>keys</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id touch'>touch</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id updated_at'>updated_at</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id now'>now</span><span class='period'>.</span><span class='id utc'>utc</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>

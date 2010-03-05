@@ -207,10 +207,9 @@ The bucket assigned to this class.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/bucket_access.rb', line 27</span>
 
-<span class='def def kw'>def</span> <span class='bucket identifier id'>bucket</span>
-  <span class='Ripple constant id'>Ripple</span><span class='dot token'>.</span><span class='client identifier id'>client</span><span class='lbrack token'>[</span><span class='bucket_name identifier id'>bucket_name</span><span class='comma token'>,</span> <span class='lbrace token'>{</span><span class='symbol val'>:keys</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='false false kw'>false</span><span class='rbrace token'>}</span><span class='rbrack token'>]</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id bucket'>bucket</span>
+  <span class='const'>Ripple</span><span class='period'>.</span><span class='id client'>client</span><span class='lbracket'>[</span><span class='id bucket_name'>bucket_name</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -268,10 +267,9 @@ their bucket name from their parent class unless they redefine it.
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/bucket_access.rb', line 22</span>
 
-<span class='def def kw'>def</span> <span class='bucket_name identifier id'>bucket_name</span>
-  <span class='superclass identifier id'>superclass</span><span class='dot token'>.</span><span class='respond_to? fid id'>respond_to?</span><span class='lparen token'>(</span><span class='symbol val'>:bucket_name</span><span class='rparen token'>)</span> <span class='question op'>?</span> <span class='superclass identifier id'>superclass</span><span class='dot token'>.</span><span class='bucket_name identifier id'>bucket_name</span> <span class='colon op'>:</span> <span class='model_name identifier id'>model_name</span><span class='dot token'>.</span><span class='plural identifier id'>plural</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id bucket_name'>bucket_name</span>
+  <span class='id superclass'>superclass</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:bucket_name</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id superclass'>superclass</span><span class='period'>.</span><span class='id bucket_name'>bucket_name</span> <span class='op'>:</span> <span class='id model_name'>model_name</span><span class='period'>.</span><span class='id plural'>plural</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -329,10 +327,9 @@ the new bucket name
     <td>
       <pre class="code"><span class="info file"># File 'lib/ripple/document/bucket_access.rb', line 33</span>
 
-<span class='def def kw'>def</span> <span class='bucket_name= identifier id'>bucket_name=</span><span class='lparen token'>(</span><span class='value identifier id'>value</span><span class='rparen token'>)</span>
-  <span class='metaclass identifier id'>metaclass</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='symbol val'>:define_method</span><span class='comma token'>,</span> <span class='symbol val'>:bucket_name</span><span class='rparen token'>)</span><span class='lbrace token'>{</span> <span class='value identifier id'>value</span> <span class='rbrace token'>}</span>
-<span class='end end kw'>end</span>
-</pre>
+<span class='kw'>def</span> <span class='id bucket_name='>bucket_name=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='id metaclass'>metaclass</span><span class='period'>.</span><span class='id send'>send</span><span class='lparen'>(</span><span class='symbol'>:define_method</span><span class='comma'>,</span> <span class='symbol'>:bucket_name</span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='id value'>value</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -343,9 +340,9 @@ the new bucket name
 </div>
     
     <div id="footer">
-  Generated on Mon Feb 22 08:43:20 2010 by 
+  Generated on Fri Mar  5 13:45:41 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.8.7).
+  0.5.3 (ruby-1.9.1).
 </div>
 
   </body>
