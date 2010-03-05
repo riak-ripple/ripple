@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ripple}
-  s.version = "0.5.1"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sean Cribbs"]
-  s.date = %q{2010-02-22}
+  s.date = %q{2010-03-05}
   s.description = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.  It includes all the basics of accessing and manipulating Riak buckets and objects, and an object mapper library for building a rich domain on top of Riak.}
   s.email = %q{seancribbs@gmail.com}
   s.extra_rdoc_files = [
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
      "lib/riak/map_reduce.rb",
      "lib/riak/map_reduce_error.rb",
      "lib/riak/robject.rb",
+     "lib/riak/util/fiber1.8.rb",
      "lib/riak/util/headers.rb",
      "lib/riak/util/multipart.rb",
      "lib/riak/util/translation.rb",
@@ -56,6 +57,7 @@ Gem::Specification.new do |s|
      "lib/ripple/document/persistence.rb",
      "lib/ripple/document/persistence/callbacks.rb",
      "lib/ripple/document/properties.rb",
+     "lib/ripple/document/timestamps.rb",
      "lib/ripple/document/validations.rb",
      "lib/ripple/embedded_document.rb",
      "lib/ripple/embedded_document/persistence.rb",
@@ -87,6 +89,7 @@ Gem::Specification.new do |s|
      "spec/ripple/persistence_spec.rb",
      "spec/ripple/properties_spec.rb",
      "spec/ripple/ripple_spec.rb",
+     "spec/ripple/timestamps_spec.rb",
      "spec/ripple/validations_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
@@ -120,6 +123,7 @@ Gem::Specification.new do |s|
      "spec/ripple/persistence_spec.rb",
      "spec/ripple/properties_spec.rb",
      "spec/ripple/ripple_spec.rb",
+     "spec/ripple/timestamps_spec.rb",
      "spec/ripple/validations_spec.rb",
      "spec/spec_helper.rb",
      "spec/support/http_backend_implementation_examples.rb",

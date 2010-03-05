@@ -1,5 +1,25 @@
 h1. Ripple Release Notes
 
+h2. 0.6.0 Feature Release - 2010-03-05
+
+This release contains enhancements and bugfixes in preparation for the
+Riak 0.9 release.
+
+* The CurbBackend now uses fibers to prevent curl-handle corruption when
+  a block is given to streaming operations.
+* The default prefix is now "/riak/" to match the latest version of Riak.
+* The client configuration for Ripple is now used.
+* Added Bucket#new and Bucket#get_or_new for easily creating new objects.
+* Added Bucket#allow_mult and Bucket#n_value accessors for more easily setting
+  bucket properties.
+* Added timestamps! method for easily adding created_at/updated_at to documents.
+  [Adam Hunter]
+* The 'links' collection on RObject is now a Set instead of an Array.
+* All literal messages are now stored in YAML localization files.
+* Object siblings (caused by concurrent updates when allow_mult is true) can now
+  be accessed directly.
+* Map-reduce jobs now have timeouts (in parity with Riak).
+
 h2. 0.5.1 Patch Release - 2010-02-22
 
 This is a minor release with fixes for Ruby 1.9, bundler/edge Rails,
