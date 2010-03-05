@@ -173,6 +173,11 @@ describe Riak::MapReduce do
       @mr.add("foo","bar",1000).add("foo","baz")
       @mr.to_json.should include('"inputs":[["foo","bar",1000],["foo","baz"]]')
     end
+
+    it "should add the timeout value when set" do
+      @mr.timeout(50000)
+      @mr.to_json.should include('"timeout":50000')
+    end
   end
 
   describe "executing the map reduce job" do

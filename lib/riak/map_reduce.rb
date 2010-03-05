@@ -124,10 +124,18 @@ module Riak
       self
     end
 
+    # Sets the timeout for the map-reduce job.
+    # @param [Fixnum] value the job timeout, in milliseconds
+    def timeout(value)
+      @timeout = value
+    end
+
     # Convert the job to JSON for submission over the HTTP interface.
     # @return [String] the JSON representation
     def to_json(options={})
-      ActiveSupport::JSON.encode({"inputs" => inputs, "query" => query.map(&:as_json)}, options)
+      hash = {"inputs" => inputs, "query" => query.map(&:as_json)}
+      hash['timeout'] = @timeout.to_i if @timeout
+      ActiveSupport::JSON.encode(hash, options)
     end
 
     # Executes this map-reduce job.
