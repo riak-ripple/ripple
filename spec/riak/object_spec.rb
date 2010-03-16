@@ -142,7 +142,7 @@ describe Riak::RObject do
     before :each do
       @object = Riak::RObject.new(@bucket, "bar")
     end
-
+    
     it "should load the content type" do
       @object.load({:headers => {"content-type" => ["application/json"]}})
       @object.content_type.should == "application/json"
@@ -247,7 +247,7 @@ describe Riak::RObject do
 
     describe "when links are defined" do
       before :each do
-        @object.links = [Riak::Link.new("/riak/foo/baz", "next")]
+        @object.links << Riak::Link.new("/riak/foo/baz", "next")
       end
 
       it "should include a Link header with references to other objects" do
@@ -260,6 +260,12 @@ describe Riak::RObject do
         @object.store_headers.should have_key("Link")
         @object.store_headers["Link"].should_not include('riaktag="up"')
       end
+
+      it "should not allow duplicate links" do
+        @object.links << Riak::Link.new("/riak/foo/baz", "next")
+        @object.links.length.should == 1
+      end
+
     end
 
     it "should exclude the Link header when no links are present" do

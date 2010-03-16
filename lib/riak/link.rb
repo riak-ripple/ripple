@@ -51,6 +51,14 @@ module Riak
       %Q[<#{@url}>; riaktag="#{@rel}"]
     end
 
+    def hash
+      self.to_s.hash
+    end
+
+    def eql?(other)
+      self == other
+    end
+
     def ==(other)
       other.is_a?(Link) && url == other.url && rel == other.rel
     end
