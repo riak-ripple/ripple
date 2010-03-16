@@ -17,6 +17,7 @@ module Riak
   # A client connection to Riak.
   class Client
     include Util::Translation
+    include Util::Escape
 
     autoload :HTTPBackend,    "riak/client/http_backend"
     autoload :NetHTTPBackend, "riak/client/net_http_backend"
@@ -116,7 +117,7 @@ module Riak
     # @return [Bucket] the requested bucket
     def bucket(name, options={})
       options.assert_valid_keys(:keys, :props)
-      response = http.get(200, prefix, name, options, {})
+      response = http.get(200, prefix, escape(name), options, {})
       Bucket.new(self, name).load(response)
     end
     alias :[] :bucket

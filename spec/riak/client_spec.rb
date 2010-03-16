@@ -165,5 +165,10 @@ describe Riak::Client do
       @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => false}, {}).and_return(@payload)
       @client.bucket("foo", :keys => false)
     end
+
+    it "should escape bucket names with invalid characters" do
+      @http.should_receive(:get).with(200, "/riak/", "foo%2Fbar%20", {:keys => false}, {}).and_return(@payload)
+      @client.bucket("foo/bar ", :keys => false)
+    end
   end
 end

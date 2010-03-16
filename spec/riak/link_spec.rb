@@ -65,4 +65,18 @@ describe Riak::Link do
     [one].should include(two)
     [two].should include(one)
   end
+
+  it "should unescape the bucket name" do
+    Riak::Link.new("/riak/bucket%20spaces/key", "foo").bucket.should == "bucket spaces"
+  end
+
+  it "should unescape the key name" do
+    Riak::Link.new("/riak/bucket/key%2Fname", "foo").key.should == "key/name"
+  end
+
+  it "should not rely on the prefix to equal /riak/ when extracting the bucket and key" do
+    link = Riak::Link.new("/raw/bucket/key", "foo")
+    link.bucket.should == "bucket"
+    link.key.should == "key"
+  end
 end

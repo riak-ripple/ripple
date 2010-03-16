@@ -104,6 +104,12 @@ describe Riak::Bucket do
       @http.should_receive(:get).with(200, "/riak/","foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
       @bucket.keys.should == ["bar baz"]
     end
+
+    it "should escape the bucket name" do
+      @bucket.instance_variable_set :@name, "unescaped "
+      @http.should_receive(:get).with(200, "/riak/","unescaped%20", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @bucket.keys.should == ["bar"]
+    end
   end
 
   describe "setting the bucket properties" do
@@ -119,6 +125,12 @@ describe Riak::Bucket do
 
     it "should raise an error if an invalid property is given" do
       lambda { @bucket.props = "blah" }.should raise_error(ArgumentError)
+    end
+
+    it "should escape the bucket name" do
+      @bucket.instance_variable_set :@name, "foo bar"
+      @http.should_receive(:put).with(204, "/riak/","foo%20bar", '{"props":{"n_val":2}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
+      @bucket.props = {:n_val => 2}
     end
   end
 
@@ -142,6 +154,12 @@ describe Riak::Bucket do
       @bucket.instance_variable_set(:@props, {'allow_mult' => true})
       @http.should_receive(:get).with([200,300], "/riak/","foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @bucket.get('db')
+    end
+
+    it "should escape the bucket and key names" do
+      @bucket.instance_variable_set(:@name, "foo ")
+      @http.should_receive(:get).with(200, "/riak/","foo%20", "%20bar", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @bucket.get(' bar')
     end
   end
 

@@ -22,6 +22,8 @@ module Riak
 
     # @return [String] the relationship ("rel") of the other resource to this one
     attr_accessor :rel
+    alias :tag :rel
+    alias :tag= :rel=
 
     # @param [String] header_string the string value of the Link: HTTP header from a Riak response
     # @return [Array<Link>] an array of Riak::Link structs parsed from the header
@@ -37,12 +39,12 @@ module Riak
 
     # @return [String] bucket_name, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
     def bucket
-      $1 if url =~ %r{/riak/([^/]+)/?}
+      URI.unescape($1) if url =~ %r{^/[^/]+/([^/]+)/?}
     end
     
     # @return [String] key, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
     def key
-      $1 if url =~ %r{/riak/[^/]+/([^/]+)/?}
+      URI.unescape($1) if url =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
     end
 
     def inspect; to_s; end

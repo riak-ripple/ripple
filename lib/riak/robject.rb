@@ -20,6 +20,7 @@ module Riak
   class RObject
     include Util
     include Util::Translation
+    include Util::Escape
 
     # @return [Bucket] the bucket in which this object is contained
     attr_accessor :bucket
@@ -117,7 +118,7 @@ module Riak
     def store(options={})
       raise ArgumentError, t("content_type_undefined") unless @content_type.present?
       params = {:returnbody => true}.merge(options)
-      method, codes, path = @key.present? ? [:put, [200,204], "#{@bucket.name}/#{@key}"] : [:post, 201, @bucket.name]
+      method, codes, path = @key.present? ? [:put, [200,204,300], "#{escape(@bucket.name)}/#{escape(@key)}"] : [:post, 201, escape(@bucket.name)]
       response = @bucket.client.http.send(method, codes, @bucket.client.prefix, path, params, serialize(data), store_headers)
       load(response)
     end
@@ -131,7 +132,7 @@ module Riak
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
       codes = @bucket.allow_mult ? [200,300,304] : [200,304]
-      response = @bucket.client.http.get(codes, @bucket.client.prefix, @bucket.name, @key, options, reload_headers)
+      response = @bucket.client.http.get(codes, @bucket.client.prefix, escape(@bucket.name), escape(@key), options, reload_headers)
       load(response) unless response[:code] == 304
       self
     end
@@ -142,7 +143,7 @@ module Riak
     # exists in the Riak database.
     def delete
       return if key.blank?
-      @bucket.client.http.delete([204,404], @bucket.client.prefix, @bucket.name, key)
+      @bucket.client.http.delete([204,404], @bucket.client.prefix, escape(@bucket.name), escape(@key))
       freeze
     end
 
@@ -215,13 +216,13 @@ module Riak
 
     # @return [String] A representation suitable for IRB and debugging output
     def inspect
-      "#<#{self.class.name} #{@bucket.client.http.path(@bucket.client.prefix, @bucket.name, @key).to_s} [#{@content_type}]:#{@data.inspect}>"
+      "#<#{self.class.name} #{@bucket.client.http.path(@bucket.client.prefix, escape(@bucket.name), escape(@key)).to_s} [#{@content_type}]:#{@data.inspect}>"
     end
 
     # Walks links from this object to other objects in Riak.
     def walk(*params)
       specs = WalkSpec.normalize(*params)
-      response = @bucket.client.http.get(200, @bucket.client.prefix, @bucket.name, @key, specs.join("/"))
+      response = @bucket.client.http.get(200, @bucket.client.prefix, escape(@bucket.name), escape(@key), specs.join("/"))
       if boundary = Multipart.extract_boundary(response[:headers]['content-type'].first)
         Multipart.parse(response[:body], boundary).map do |group|
           map_walk_group(group)
@@ -233,7 +234,7 @@ module Riak
 
     # Converts the object to a link suitable for linking other objects to it
     def to_link(tag=nil)
-      Link.new(@bucket.client.http.path(@bucket.client.prefix, @bucket.name, @key).path, tag)
+      Link.new(@bucket.client.http.path(@bucket.client.prefix, escape(@bucket.name), escape(@key)).path, tag)
     end
 
     private

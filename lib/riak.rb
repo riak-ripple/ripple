@@ -38,6 +38,7 @@ module Riak
   autoload :MapReduceError,  "riak/map_reduce_error"
   
   module Util
+    autoload :Escape,        "riak/util/escape"
     autoload :Headers,       "riak/util/headers"
     autoload :Multipart,     "riak/util/multipart"
     autoload :Translation,   "riak/util/translation"

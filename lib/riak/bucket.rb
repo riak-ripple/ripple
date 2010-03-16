@@ -18,6 +18,8 @@ module Riak
   # using {Client#bucket}, or create it manually and retrieve its meta-information later.
   class Bucket
     include Util::Translation
+    include Util::Escape
+
     # @return [Riak::Client] the associated client
     attr_reader :client
 
@@ -62,12 +64,12 @@ module Riak
     # @return [Array<String>] Keys in this bucket
     def keys(options={})
       if block_given?
-        @client.http.get(200, @client.prefix, name, {:props => false}, {}) do |chunk|
+        @client.http.get(200, @client.prefix, escape(name), {:props => false}, {}) do |chunk|
           obj = ActiveSupport::JSON.decode(chunk) rescue {}
           yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
-        response = @client.http.get(200, @client.prefix, name, {:props => false}, {})
+        response = @client.http.get(200, @client.prefix, escape(name), {:props => false}, {})
         load(response)
       end
       @keys
@@ -81,7 +83,7 @@ module Riak
     def props=(properties)
       raise ArgumentError, t("hash_type", :hash => properties.inspect) unless Hash === properties
       body = {'props' => properties}.to_json
-      @client.http.put(204, @client.prefix, name, body, {"Content-Type" => "application/json"})
+      @client.http.put(204, @client.prefix, escape(name), body, {"Content-Type" => "application/json"})
       @props = properties
     end
 
@@ -93,7 +95,7 @@ module Riak
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key, options={})
       code = allow_mult ? [200,300] : 200
-      response = @client.http.get(code, @client.prefix, name, key, options, {})
+      response = @client.http.get(code, @client.prefix, escape(name), escape(key), options, {})
       RObject.new(self, key).load(response)
     end
     alias :[] :get
@@ -126,7 +128,7 @@ module Riak
     def allow_mult
       props['allow_mult']
     end
-    
+
     # Set the allow_mult property.  *NOTE* This will result in a PUT request to Riak.
     # @param [true, false] value whether the bucket should allow siblings
     def allow_mult=(value)
@@ -146,10 +148,10 @@ module Riak
       self.props = props.merge('n_val' => value)
       value
     end
-    
+
     # @return [String] a representation suitable for IRB and debugging output
     def inspect
-      "#<Riak::Bucket #{client.http.path(client.prefix, name).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
+      "#<Riak::Bucket #{client.http.path(client.prefix, escape(name)).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
     end
   end
 end

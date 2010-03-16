@@ -24,6 +24,8 @@ module Riak
   #   Riak::WalkSpec.new({:bucket => 'tracks', :result => true})
   class WalkSpec
     include Util::Translation
+    include Util::Escape
+
     # @return [String] The bucket followed links should be restricted to. "_" represents all buckets.
     attr_accessor :bucket
 
@@ -84,7 +86,9 @@ module Riak
 
     # Converts the walk-spec into the form required by the link-walker resource URL
     def to_s
-      "#{@bucket || '_'},#{@tag || '_'},#{@keep ? '1' : '_'}"
+      b = @bucket && escape(@bucket) || '_'
+      t = @tag && escape(@tag) || '_'
+      "#{b},#{t},#{@keep ? '1' : '_'}"
     end
 
     def ==(other)
