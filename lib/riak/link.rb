@@ -52,9 +52,7 @@ module Riak
     end
 
     def hash
-      hval = 0
-      "#{bucket}#{key}#{rel}".each_byte{|b| hval += b}
-      hval
+      self.to_s.hash
     end
 
     def eql?(other)
