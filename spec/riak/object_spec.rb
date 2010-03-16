@@ -247,7 +247,7 @@ describe Riak::RObject do
 
     describe "when links are defined" do
       before :each do
-        @object.links = [Riak::Link.new("/riak/foo/baz", "next")]
+        @object.links << Riak::Link.new("/riak/foo/baz", "next")
       end
 
       it "should include a Link header with references to other objects" do
