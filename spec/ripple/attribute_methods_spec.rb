@@ -60,6 +60,11 @@ describe Ripple::Document::AttributeMethods do
     it "should return the property default if defined and not set" do
       @widget.name.should == "widget"
     end
+
+    it "should expose the property directly" do
+      @widget.name.gsub!("w","f")
+      @widget.name.should == "fidget"
+    end
   end
 
   describe "mutators" do

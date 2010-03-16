@@ -26,8 +26,7 @@ module Ripple
         private
         def attribute(attr_name)
           if @attributes.include?(attr_name)
-            value = @attributes[attr_name]
-            value.duplicable? ? value.clone : value
+            @attributes[attr_name]
           else
             nil
           end
