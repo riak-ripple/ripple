@@ -15,3 +15,4 @@ en:
   ripple:
     property_type_mismatch: "Cannot cast {{value}} into a {{class}}"
     attribute_hash: "value of attributes must be a Hash"
+    document_invalid: "Validation failed: {{errors}}"

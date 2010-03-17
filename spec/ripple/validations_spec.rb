@@ -47,6 +47,28 @@ describe Ripple::Document::Validations do
     @box.should_not_receive(:valid?)
     @box.save(:validate => false).should be_true
   end
+  
+  describe "when using save! on an invalid record" do
+    before(:each) { @box.stub!(:valid?).and_return(false) }
+    
+    it "should raise DocumentInvalid" do
+      lambda { @box.save! }.should raise_exception(Ripple::DocumentInvalid)
+    end
+  
+    it "should raise an exception that has the invalid document" do
+      begin
+        @box.save!
+      rescue Ripple::DocumentInvalid => invalid
+        invalid.document.should == @box
+      end
+    end
+  end
+  
+  it "should not raise an error when save! is called and the document is valid" do
+    @box.stub!(:save_without_validation).and_return(true)
+    @box.stub!(:valid?).and_return(true)
+    lambda { @box.save! }.should_not raise_exception(Ripple::DocumentInvalid)
+  end
 
   it "should automatically add validations from property options" do
     Box.property :size, Integer, :inclusion => {:in => 1..30 }
