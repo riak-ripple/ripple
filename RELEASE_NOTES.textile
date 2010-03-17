@@ -1,5 +1,18 @@
 h1. Ripple Release Notes
 
+h2. 0.6.1 Patch Release - 2010-03-17
+
+This is a minor release with fixes for a few issues:
+
+* Riak::Link objects will now be unique when added to RObject#links
+  Set. [John Lynch]
+* Attributes on Ripple::Document classes are no longer clone, which had
+  prevented non-scalar properties from being modified directly (e.g. Array).
+* Buckets, keys, and walk specs are properly escaped in URLs
+  (including slashes).
+* Time-related properties properly convert to string formats in JSON that
+  they will work in the context of MapReduce jobs.
+
 h2. 0.6.0 Feature Release - 2010-03-05
 
 This release contains enhancements and bugfixes in preparation for the

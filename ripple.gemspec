@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ripple}
-  s.version = "0.6.0"
+  s.version = "0.6.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sean Cribbs"]
-  s.date = %q{2010-03-05}
+  s.date = %q{2010-03-17}
   s.description = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.  It includes all the basics of accessing and manipulating Riak buckets and objects, and an object mapper library for building a rich domain on top of Riak.}
   s.email = %q{seancribbs@gmail.com}
   s.extra_rdoc_files = [
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
      "lib/riak/map_reduce.rb",
      "lib/riak/map_reduce_error.rb",
      "lib/riak/robject.rb",
+     "lib/riak/util/escape.rb",
      "lib/riak/util/fiber1.8.rb",
      "lib/riak/util/headers.rb",
      "lib/riak/util/multipart.rb",
@@ -72,6 +73,7 @@ Gem::Specification.new do |s|
      "spec/riak/bucket_spec.rb",
      "spec/riak/client_spec.rb",
      "spec/riak/curb_backend_spec.rb",
+     "spec/riak/escape_spec.rb",
      "spec/riak/headers_spec.rb",
      "spec/riak/http_backend_spec.rb",
      "spec/riak/link_spec.rb",
@@ -83,6 +85,7 @@ Gem::Specification.new do |s|
      "spec/ripple/attribute_methods_spec.rb",
      "spec/ripple/bucket_access_spec.rb",
      "spec/ripple/callbacks_spec.rb",
+     "spec/ripple/core_ext_spec.rb",
      "spec/ripple/document_spec.rb",
      "spec/ripple/embedded_document_spec.rb",
      "spec/ripple/finders_spec.rb",
@@ -100,12 +103,13 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.requirements = ["`gem install curb` for better HTTP performance"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.}
   s.test_files = [
     "spec/riak/bucket_spec.rb",
      "spec/riak/client_spec.rb",
      "spec/riak/curb_backend_spec.rb",
+     "spec/riak/escape_spec.rb",
      "spec/riak/headers_spec.rb",
      "spec/riak/http_backend_spec.rb",
      "spec/riak/link_spec.rb",
@@ -117,6 +121,7 @@ Gem::Specification.new do |s|
      "spec/ripple/attribute_methods_spec.rb",
      "spec/ripple/bucket_access_spec.rb",
      "spec/ripple/callbacks_spec.rb",
+     "spec/ripple/core_ext_spec.rb",
      "spec/ripple/document_spec.rb",
      "spec/ripple/embedded_document_spec.rb",
      "spec/ripple/finders_spec.rb",
