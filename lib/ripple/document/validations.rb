@@ -33,7 +33,7 @@ module Ripple
 
       module InstanceMethods
         # @private
-        def save_with_validation(options={})
+        def save_with_validation(options={:validate => true})
           return false if options[:validate] && !valid?
           save_without_validation
         end

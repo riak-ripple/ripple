@@ -41,6 +41,12 @@ describe Ripple::Document::Validations do
     @box.should_receive(:valid?).and_return(false)
     @box.save.should be_false
   end
+  
+  it "should allow skipping validations by padding save :validate => false" do
+    @box.stub!(:save_without_validation).and_return(true)
+    @box.should_not_receive(:valid?)
+    @box.save(:validate => false).should be_true
+  end
 
   it "should automatically add validations from property options" do
     Box.property :size, Integer, :inclusion => {:in => 1..30 }
