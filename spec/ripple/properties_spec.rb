@@ -195,5 +195,29 @@ describe Ripple::Document::Property do
         end
       end
     end
+
+    describe "when type is a Time type" do
+      before :each do
+        @prop = Ripple::Document::Property.new(:foo, Time)
+      end
+
+      ["Tue, 16 Mar 2010 12:00:00 -0000","2010/03/16 12:00:00 GMT", Time.utc(2010,03,16,12)].each do |v|
+        it "should cast #{v.inspect} to #{Time.utc(2010,03,16,12).inspect}" do
+          @prop.type_cast(v).should == Time.utc(2010,03,16,12)
+        end
+      end
+    end
+
+    describe "when type is a Date type" do
+      before :each do
+        @prop = Ripple::Document::Property.new(:foo, Date)
+      end
+
+      ["Tue, 16 Mar 2010 00:00:00 -0000", "2010/03/16 12:00:00 GMT", Time.utc(2010,03,16,12), "2010/03/16"].each do |v|
+        it "should cast #{v.inspect} to 2010/03/16" do
+          @prop.type_cast(v).should == Date.civil(2010,3,16)
+        end
+      end
+    end
   end
 end

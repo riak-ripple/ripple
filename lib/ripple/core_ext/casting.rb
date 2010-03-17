@@ -94,3 +94,36 @@ class FalseClass
     Boolean.ripple_cast(value)
   end
 end
+
+# @private
+class Time
+  def as_json(options={})
+    self.utc.rfc822
+  end
+
+  def self.ripple_cast(value)
+    value.respond_to?(:to_time) && value.to_time or raise Ripple::PropertyTypeMismatch.new(self, value)
+  end
+end
+
+# @private
+class Date
+  def as_json(options={})
+    self.to_s(:rfc822)
+  end
+
+  def self.ripple_cast(value)
+    value.respond_to?(:to_date) && value.to_date or raise Ripple::PropertyTypeMismatch.new(self, value)
+  end
+end
+
+# @private
+class DateTime
+  def as_json(options={})
+    self.utc.to_s(:rfc822)
+  end
+
+  def self.ripple_cast(value)
+    value.respond_to?(:to_datetime) && value.to_datetime or raise Ripple::PropertyTypeMismatch.new(self, value)
+  end
+end
