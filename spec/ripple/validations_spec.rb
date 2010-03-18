@@ -65,7 +65,7 @@ describe Ripple::Document::Validations do
   end
   
   it "should not raise an error when save! is called and the document is valid" do
-    @box.stub!(:save_without_validation).and_return(true)
+    @box.stub!(:save).and_return(true)
     @box.stub!(:valid?).and_return(true)
     lambda { @box.save! }.should_not raise_exception(Ripple::DocumentInvalid)
   end
