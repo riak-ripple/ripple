@@ -56,6 +56,13 @@ describe Ripple::Document::Finders do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, "500 internal server error"))
       lambda { Box.find("square") }.should raise_error(Riak::FailedRequest)
     end
+    
+    it "should handle a key with a nil value" do
+      @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => nil})
+      box = Box.find("square")
+      box.should be_kind_of(Box)
+    end
+      
   end
 
   describe "finding multiple documents" do
