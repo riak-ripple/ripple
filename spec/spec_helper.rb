@@ -30,3 +30,7 @@ Spec::Runner.configure do |config|
     FakeWeb.clean_registry
   end
 end
+
+def mock_response(overrides={})
+  {:headers => {"content-type" => ["application/json"]}, :body => '{}'}.merge(overrides)
+end
