@@ -24,10 +24,9 @@ module Ripple
   class DocumentNotFound < StandardError
     include Translation
     def initialize(keys, found)
-      case keys
-      when keys.empty?
+      if keys.empty?
         super(t("document_not_found.no_key"))
-      when keys.one?
+      elsif keys.one?
         super(t("document_not_found.one_key", :key => keys.first))
       else
         missing = keys - found.compact.map(&:key)

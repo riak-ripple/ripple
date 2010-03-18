@@ -36,7 +36,7 @@ describe Ripple::Document::Finders do
   end
   
   it "should raise Ripple::DocumentNotFound if an empty array is passed to find!" do
-    lambda { Box.find!() }.should raise_exception(Ripple::DocumentNotFound)
+    lambda { Box.find!() }.should raise_exception(Ripple::DocumentNotFound, "Couldn't find document without a key")
   end
 
   describe "finding single documents" do
@@ -58,7 +58,7 @@ describe Ripple::Document::Finders do
     
     it "should raise DocumentNotFound when using find! if no object exists at that key" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "404 not found"))
-      lambda { Box.find!("square") }.should raise_exception(Ripple::DocumentNotFound)
+      lambda { Box.find!("square") }.should raise_exception(Ripple::DocumentNotFound, "Couldn't find document with key: square")
     end
 
     it "should re-raise the failed request exception if not a 404" do
@@ -91,16 +91,7 @@ describe Ripple::Document::Finders do
       end
     
       it "should raise Ripple::DocumentNotFound when calling find! if some of the documents do not exist" do
-        lambda { Box.find!("square", "rectangle") }.should raise_exception(Ripple::DocumentNotFound)
-      end
-    
-      it "should have the only the keys of the missing documents in the Ripple::DocumentNotFound error message" do
-        begin
-          Box.find!("square", "rectangle")
-        rescue Ripple::DocumentNotFound => e
-          e.message.should_not =~ /square/
-          e.message.should =~ /rectangle/
-        end
+        lambda { Box.find!("square", "rectangle") }.should raise_exception(Ripple::DocumentNotFound, "Couldn't find documents with keys: rectangle")
       end
     end
   end
