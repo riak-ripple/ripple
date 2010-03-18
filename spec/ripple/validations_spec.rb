@@ -43,7 +43,7 @@ describe Ripple::Document::Validations do
   end
   
   it "should allow skipping validations by padding save :validate => false" do
-    @box.stub!(:save_without_validation).and_return(true)
+    @box.stub!(:save).and_return(true)
     @box.should_not_receive(:valid?)
     @box.save(:validate => false).should be_true
   end

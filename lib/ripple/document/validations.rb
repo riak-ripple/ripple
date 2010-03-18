@@ -36,10 +36,6 @@ module Ripple
     module Validations
       extend ActiveSupport::Concern
       include ActiveModel::Validations
-      
-      included do
-        alias_method_chain :save, :validation
-      end
 
       module ClassMethods
         # @private
@@ -51,13 +47,13 @@ module Ripple
 
       module InstanceMethods
         # @private
-        def save_with_validation(options={:validate => true})
+        def save(options={:validate => true})
           return false if options[:validate] && !valid?
-          save_without_validation
+          super()
         end
         
         def save!
-          raise Ripple::DocumentInvalid.new(self) unless save_with_validation
+          raise Ripple::DocumentInvalid.new(self) unless save
         end
         
         # @private
