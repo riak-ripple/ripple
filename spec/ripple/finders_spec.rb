@@ -49,6 +49,17 @@ describe Ripple::Document::Finders do
       box.instance_variable_get(:@robject).should_not be_nil
       box.should_not be_new_record
     end
+    
+    it "should not raise an exception when finding an existing document with find!" do
+      @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      lambda { Box.find!("square") }.should_not raise_exception(Ripple::DocumentNotFound)
+    end
+    
+    it "should return the document when calling find!" do
+      @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
+      box = Box.find!("square")
+      box.should be_kind_of(Box)
+    end
 
     it "should return nil when no object exists at that key" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "404 not found"))

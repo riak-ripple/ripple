@@ -65,8 +65,9 @@ module Ripple
         # but raise Ripple::DocumentNotFound if a key can
         # not be found in the bucket.
         def find!(*args)
-          found = [find(*args)].flatten
-          raise DocumentNotFound.new(args, found) if found.include?(nil)
+          found = find(*args)
+          raise DocumentNotFound.new(args, found) if !found || Array(found).include?(nil)
+          found
         end
 
         # Find all documents in the Document's bucket and return them.
