@@ -102,6 +102,7 @@ class Time
   end
 
   def self.ripple_cast(value)
+    return nil if value.nil?
     value.respond_to?(:to_time) && value.to_time or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
@@ -113,6 +114,7 @@ class Date
   end
 
   def self.ripple_cast(value)
+    return nil if value.nil?
     value.respond_to?(:to_date) && value.to_date or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
@@ -124,6 +126,7 @@ class DateTime
   end
 
   def self.ripple_cast(value)
+    return nil if value.nil?
     value.respond_to?(:to_datetime) && value.to_datetime or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
