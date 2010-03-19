@@ -14,6 +14,24 @@
 require 'ripple'
 
 module Ripple
+  
+  # Raised by <tt>save!</tt> when the document is invalid.  Use the
+  # +document+ method to retrieve the document which did not validate.
+  #   begin
+  #     invalid_document.save!
+  #   rescue Ripple::DocumentInvalid => invalid
+  #     puts invalid.document.errors
+  #   end
+  class DocumentInvalid < StandardError
+    include Translation
+    attr_reader :document
+    def initialize(document)
+      @document = document
+      errors = @document.errors.full_messages.join(", ")
+      super(t("document_invalid", :errors => errors))
+    end
+  end
+  
   module Document
     module Validations
       extend ActiveSupport::Concern
@@ -29,10 +47,15 @@ module Ripple
 
       module InstanceMethods
         # @private
-        def save
-          valid? && super
+        def save(options={:validate => true})
+          return false if options[:validate] && !valid?
+          super()
         end
-
+        
+        def save!
+          raise Ripple::DocumentInvalid.new(self) unless save
+        end
+        
         # @private
         def valid?
           @_on_validate = new? ? :create : :update

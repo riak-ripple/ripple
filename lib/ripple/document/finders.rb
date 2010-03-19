@@ -14,6 +14,27 @@
 require 'ripple'
 
 module Ripple
+  
+  # Raised by <tt>find!</tt> when a document cannot be found with the given key.
+  #   begin
+  #     Example.find!('badkey')
+  #   rescue Ripple::DocumentNotFound
+  #     puts 'No Document here!'
+  #   end
+  class DocumentNotFound < StandardError
+    include Translation
+    def initialize(keys, found)
+      if keys.empty?
+        super(t("document_not_found.no_key"))
+      elsif keys.one?
+        super(t("document_not_found.one_key", :key => keys.first))
+      else
+        missing = keys - found.compact.map(&:key)
+        super(t("document_not_found.many_keys", :keys => missing.join(', ')))
+      end
+    end
+  end
+  
   module Document
     module Finders
       extend ActiveSupport::Concern
@@ -35,9 +56,18 @@ module Ripple
         #   @return [Array<Document>] a list of found documents, including nil for missing documents
         def find(*args)
           args.flatten!
-          return [] if args.length == 0
-          return find_one(args.first) if args.length == 1
+          return nil if args.empty?
+          return find_one(args.first) if args.one?
           args.map {|key| find_one(key) }
+        end
+        
+        # Retrieve single or multiple documents from Riak
+        # but raise Ripple::DocumentNotFound if a key can
+        # not be found in the bucket.
+        def find!(*args)
+          found = find(*args)
+          raise DocumentNotFound.new(args, found) if !found || Array(found).include?(nil)
+          found
         end
 
         # Find all documents in the Document's bucket and return them.
