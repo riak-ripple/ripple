@@ -61,6 +61,7 @@ describe Ripple::Document::Finders do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => nil})
       box = Box.find("square")
       box.should be_kind_of(Box)
+      box.key.should == "square"
     end
       
   end
