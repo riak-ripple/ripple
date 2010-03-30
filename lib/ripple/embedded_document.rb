@@ -28,6 +28,7 @@ module Ripple
       include Ripple::Document::AttributeMethods
       include Ripple::Document::Timestamps
       include Ripple::Document::Validations
+      include Ripple::Document::Associations
     end
 
     module ClassMethods
