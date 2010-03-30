@@ -26,16 +26,26 @@ rescue LoadError
 end
 
 require 'spec/rake/spectask'
+
+desc "Run Unit Specs Only"
 Spec::Rake::SpecTask.new(:spec) do |spec|
   spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
+  spec.spec_files = FileList.new('spec/**/*_spec.rb') do |f|
+    f.exclude(/integration/)
+  end
+end
+
+desc "Run Integration Specs Only"
+Spec::Rake::SpecTask.new(:integration) do |spec|
+  spec.libs << 'lib' << 'spec'
+  spec.spec_files = FileList['spec/integration/**/*_spec.rb']
 end
 
 Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.libs << 'lib' << 'spec'
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
-  spec.rcov_opts = ['--exclude', 'lib\/spec,bin\/spec,config\/boot.rb,gems,spec_helper']
+  spec.rcov_opts = ['--exclude', 'lib\/spec,bin\/spec,config\/boot.rb,gems,spec_helper,spec']
 end
 
 task :rcovo => [:rcov] do
@@ -44,7 +54,10 @@ end
 
 task :spec => :check_dependencies
 
-task :default => :spec
+desc "Run Unit and Integration Specs"
+task :spec_all => [:spec, :integration]
+
+task :default => :spec_all
 
 require 'yard'
 YARD::Rake::YardocTask.new do |yard|
