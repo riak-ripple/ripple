@@ -38,6 +38,10 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.rcov_opts = ['--exclude', 'lib\/spec,bin\/spec,config\/boot.rb,gems,spec_helper']
 end
 
+task :rcovo => [:rcov] do
+  system "open coverage/index.html"
+end
+
 task :spec => :check_dependencies
 
 task :default => :spec
