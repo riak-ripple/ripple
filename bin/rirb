@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+$:.unshift(File.dirname(__FILE__) + '/../lib')
+
+begin
+  require 'ripple'
+  require 'irb'
+rescue LoadError
+  require 'rubygems'
+  retry
+end
+
+IRB.start
