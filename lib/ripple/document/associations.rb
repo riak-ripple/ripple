@@ -20,6 +20,8 @@ module Ripple
       extend ActiveSupport::Autoload
 
       autoload :Proxy
+      autoload :OneEmbeddedProxy
+      autoload :ManyEmbeddedProxy
 
       module ClassMethods
         # @private
