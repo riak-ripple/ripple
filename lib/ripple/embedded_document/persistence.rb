@@ -54,7 +54,7 @@ module Ripple
           def embedded_attributes_for_persistence
             embedded_associations.inject({}) do |attrs, association|
               if documents = instance_variable_get(association.ivar)
-                attrs[association.name] = Array(documents).map { |document| document.attributes_for_persistence }
+                attrs[association.name] = documents.is_a?(Array) ? documents.map(&:attributes_for_persistence) : documents.attributes_for_persistence
               end
               attrs
             end

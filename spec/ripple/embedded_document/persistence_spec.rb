@@ -15,7 +15,10 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument::Persistence do
   before :all do
-    Object.module_eval { class Address; include Ripple::EmbeddedDocument; end }
+    Object.module_eval do
+      class User;    include Ripple::Document; one :address; end
+      class Address; include Ripple::EmbeddedDocument; end
+    end
   end
 
   before :each do
@@ -47,6 +50,13 @@ describe Ripple::EmbeddedDocument::Persistence do
   
   it "should have a parent document" do
      @addr._parent_document.should == @root
+  end
+  
+  it "should properly create embedded attributes for persistence" do
+    @user = User.new
+    @addr = Address.new
+    @user.address = @addr
+    @user.attributes_for_persistence.should == {'_type' => 'User', 'address' => {'_type' => 'Address'}}
   end
 
   after :all do
