@@ -14,5 +14,62 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations::ManyEmbeddedProxy do
+  before :all do
+    Object.module_eval do
+      class User
+        include Ripple::Document
+        many :addresses
+      end
+      
+      class Address
+        include Ripple::EmbeddedDocument
+        property :street, String, :presence => true
+        many :notes
+      end
+      
+      class Note; include Ripple::EmbeddedDocument; end
+    end
+  end
   
+  before :each do
+    @user    = User.new
+    @address = Address.new
+    @note    = Note.new
+  end
+  
+  it "should not have children before any are set"
+  
+  it "should be able to set and get its children"
+  
+  it "should set the parent document on the children when assigning"
+  
+  it "should return the assignment when assigning"
+  
+  it "should set the parent document on the children when accessing"
+  
+  it "should be able to replace its children with different children"
+  
+  it "should be able to add to its children"
+  
+  it "should be able to count its children"
+  
+  it "should be able to find a child by its key"
+  
+  it "should be able to build a new child"
+  
+  it "should be able to create a new child"
+  
+  it "should be able to create! a new child"
+  
+  it "should assign a parent to the children created with instantiate_target"
+  
+  it "should validate the children when saving the parent"
+  
+  it "should allow embedding documents in embedded documents"
+  
+  after :all do
+    Object.send(:remove_const, :User)
+    Object.send(:remove_const, :Address)
+    Object.send(:remove_const, :Note)
+  end
 end

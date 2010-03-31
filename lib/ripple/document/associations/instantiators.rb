@@ -16,32 +16,23 @@ require 'ripple'
 module Ripple
   module Document
     module Associations
-      class ManyEmbeddedProxy < Proxy
-        include Many
-        include Embedded
+      module Instantiators
         
-        def <<(*docs)
-          load_target
-          assign_references(docs)
-          target += docs
-        end
-        alias_method :push, :<<
-        alias_method :concat, :<<
-        
-        def replace(docs)
-          @_docs = docs.map { |doc| doc.respond_to?(:attributes) ? doc.attributes : doc }
-          assign_references(docs)
-          reset
-          @_docs
+        def build(attrs={})
+          instantiate_target(:new, attrs)
         end
 
+        def create(attrs={})
+          instantiate_target(:create, attrs)
+        end
+
+        def create!(attrs={})
+          instantiate_target(:create!, attrs)
+        end
+        
         protected
-          def find_target
-            (@_docs || []).map do |attrs|
-              klass.instantiate(attrs).tap do |doc|
-                assign_references(doc)
-              end
-            end
+          def instantiate_target
+            raise NotImplementedError
           end
         
       end

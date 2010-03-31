@@ -17,21 +17,9 @@ module Ripple
   module Document
     module Associations
       module One
-        
-        def build(attrs={})
-          instantiate_target(:new, attrs)
-        end
-        
-        def create(attrs={})
-          instantiate_target(:create, attrs)
-        end
-        
-        def create!(attrs={})
-          instantiate_target(:create!, attrs)
-        end
+        include Instantiators
         
         protected
-        
           def instantiate_target(instantiator, attrs={})
             @target = klass.send(instantiator, attrs)
             loaded

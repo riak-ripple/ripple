@@ -28,15 +28,15 @@ module Ripple
         def replace(doc)
           @_doc = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc
           assign_references(doc)
-          @target = doc
           reset
+          @_doc
         end
         
         protected
           def find_target
             return nil unless @_doc
-            klass.instantiate(@_doc).tap do |child|
-              assign_references(child)
+            klass.instantiate(@_doc).tap do |doc|
+              assign_references(doc)
             end
           end
         

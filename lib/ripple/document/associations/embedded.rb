@@ -21,13 +21,16 @@ module Ripple
         protected
           
           def assign_references(*docs)
-            docs.each { |doc| doc._parent_document = owner }
+            docs.each do |doc|
+              next unless doc.respond_to?(:_parent_document=)
+              doc._parent_document = owner
+            end
           end
           
           def instantiate_target(*args)
-            super
-            assign_references(@target)
-            @target
+            doc = super
+            assign_references(doc)
+            doc
           end
         
       end

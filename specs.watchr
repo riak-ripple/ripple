@@ -22,7 +22,7 @@ def run(cmd)
   IO.popen(cmd, 'r+') do |com|
     com.each_char do |c|
       print c
-      output << c.gsub(/\\e\[\d+m/, '').gsub(/e\[0m/, '')
+      output << c
       $stdout.flush
     end
   end

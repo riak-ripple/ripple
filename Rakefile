@@ -41,6 +41,12 @@ Spec::Rake::SpecTask.new(:integration) do |spec|
   spec.spec_files = FileList['spec/integration/**/*_spec.rb']
 end
 
+desc "Run All Specs"
+Spec::Rake::SpecTask.new(:spec_all) do |spec|
+  spec.libs << 'lib' << 'spec'
+  spec.spec_files = FileList['spec/**/*_spec.rb']
+end
+
 Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.libs << 'lib' << 'spec'
   spec.pattern = 'spec/**/*_spec.rb'
@@ -53,9 +59,6 @@ task :rcovo => [:rcov] do
 end
 
 task :spec => :check_dependencies
-
-desc "Run Unit and Integration Specs"
-task :spec_all => [:spec, :integration]
 
 task :default => :spec_all
 

@@ -52,6 +52,11 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @child._parent_document.should == @parent
   end
   
+  it "should return the assignment when assigning" do
+    rtn = @parent.child = @child
+    rtn.should == @child
+  end
+  
   it "should set the parent document on the child when accessing" do
     @parent.child = @child
     @parent.child._parent_document.should == @parent
@@ -82,6 +87,7 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
   
   it "should assign a parent to the child created with instantiate_target" do
     Child.stub!(:new).and_return(@child)
+    @child._parent_document.should be_nil
     @parent.child.build._parent_document.should == @parent
   end
   

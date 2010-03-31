@@ -21,7 +21,9 @@ module Ripple
 
       autoload :Proxy
       autoload :One
+      autoload :Many
       autoload :Embedded
+      autoload :Instantiators
       autoload :OneEmbeddedProxy
       autoload :ManyEmbeddedProxy
 
