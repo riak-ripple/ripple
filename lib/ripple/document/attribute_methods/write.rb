@@ -22,6 +22,10 @@ module Ripple
         included do
           attribute_method_suffix "="
         end
+        
+        def []=(attr_name, value)
+          __send__(:attribute=, attr_name, value)
+        end
 
         private
         def attribute=(attr_name, value)

@@ -33,8 +33,8 @@ module Ripple
         delegate :collection, :to => :klass
 
         def initialize(owner, reflection)
-          @owner, @reflection, @loaded = owner, reflection, false
-          Array(reflection.options[:extend]).each { |ext| proxy_extend(ext) } if reflection.options[:extend]
+          @owner, @reflection = owner, reflection
+          Array(reflection.options[:extend]).each { |ext| proxy_extend(ext) }
           reset
         end
 

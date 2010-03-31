@@ -13,37 +13,27 @@
 #    limitations under the License.
 require File.expand_path("../../../spec_helper", __FILE__)
 
-describe Ripple::Document::Associations::OneEmbeddedProxy do
+describe Ripple::EmbeddedDocument::Finders do
   before :all do
-    Object.module_eval do
-      class Parent
-        include Ripple::Document
-        one :child
-      end
-      
-      class Child
-        include Ripple::EmbeddedDocument
-      end
-    end
+    Object.module_eval { class Address; include Ripple::EmbeddedDocument; end }
   end
-  
+
   before :each do
-    @parent = Parent.new
-    @child  = Child.new
-    @parent.stub!(:save).and_return(true)
+    @root = mock("root document")
+    @root.stub!(:new?).and_return(true)
+    @addr = Address.new
+    @addr._root_document = @root
   end
+
+  it "should instantiate a document"
   
-  it "should not have a child before one is set" do
-    @parent.child.should be_nil
-  end
+  it "should set the root document when instantiating"
   
-  it "should be able to set its child" do
-    @parent.child = @child
-    @parent.child.should == @child
-  end
+  it "should instantiate a class of _type if being called from Ripple::EmbeddedDocument"
   
+  it "should use self if being called from a class including Ripple::EmbeddedDocument"
+
   after :all do
-    Object.send(:remove_const, :Parent)
-    Object.send(:remove_const, :Child)
+    Object.send(:remove_const, :Address)
   end
 end

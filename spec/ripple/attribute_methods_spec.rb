@@ -60,6 +60,10 @@ describe Ripple::Document::AttributeMethods do
     it "should return the property default if defined and not set" do
       @widget.name.should == "widget"
     end
+    
+    it "should allow raw attribute access when accessing the document with []" do
+      @widget['name'].should == 'widget'
+    end
 
     it "should expose the property directly" do
       @widget.name.gsub!("w","f")
@@ -76,6 +80,11 @@ describe Ripple::Document::AttributeMethods do
     it "should assign the value of the attribute" do
       @widget.size = 10
       @widget.size.should == 10
+    end
+    
+    it "should allow assignment of undefined attributes when assigning to the document with []=" do
+      @widget['name'] = 'sprocket'
+      @widget.name.should == 'sprocket'
     end
 
     it "should type cast assigned values automatically" do
@@ -148,6 +157,18 @@ describe Ripple::Document::AttributeMethods do
   it "should have no changed attributes after initialization" do
     @widget = Widget.new(:name => "Riak")
     @widget.changes.should be_blank
+  end
+  
+  it "should allow adding to the @attributs hash for attributes that do no exist" do
+    @widget = Widget.new
+    @widget['foo'] = 'bar'
+    @widget.instance_eval { @attributes['foo'] }.should == 'bar'
+  end
+  
+  it "should allow reading from the @attributs hash for attributes that do no exist" do
+    @widget = Widget.new
+    @widget['foo'] = 'bar'
+    @widget['foo'].should == 'bar'
   end
 
   after :all do

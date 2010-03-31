@@ -18,6 +18,7 @@ module Ripple
     module Associations
       class ManyEmbeddedProxy < Proxy
         
+        
       end
     end
   end

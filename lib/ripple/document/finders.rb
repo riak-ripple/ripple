@@ -69,6 +69,18 @@ module Ripple
           raise DocumentNotFound.new(args, found) if !found || Array(found).include?(nil)
           found
         end
+        
+        # Find the first object using the first key in the
+        # bucket's keys using find.
+        def first
+          find(bucket.keys.first)
+        end
+        
+        # Find the first object using the first key in the
+        # bucket's keys using find!
+        def first!
+          find!(bucket.keys.first)
+        end
 
         # Find all documents in the Document's bucket and return them.
         # @overload all()

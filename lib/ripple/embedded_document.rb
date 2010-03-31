@@ -18,12 +18,14 @@ module Ripple
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
 
+    autoload :Finders
     autoload :Persistence
     include Translation
 
     included do
       extend ActiveModel::Naming
       extend Ripple::Document::Properties
+      include Finders
       include Persistence
       include Ripple::Document::AttributeMethods
       include Ripple::Document::Timestamps

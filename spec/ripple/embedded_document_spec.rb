@@ -27,25 +27,6 @@ describe Ripple::EmbeddedDocument do
     Address.should be_embeddable
   end
 
-  describe "persistence" do
-    before :each do
-      @root = mock("root document")
-      @root.stub!(:new?).and_return(true)
-      @addr = Address.new
-      @addr._root_document = @root
-    end
-
-    it "should delegate new? to the root document" do
-      @root.should_receive(:new?).and_return(true)
-      @addr.should be_new
-    end
-
-    it "should delegate save to the root document" do
-      @root.should_receive(:save).and_return(true)
-      @addr.save.should be_true
-    end
-  end
-
   after :all do
     Object.send(:remove_const, :Address)
   end

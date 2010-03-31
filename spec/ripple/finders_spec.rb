@@ -50,6 +50,8 @@ describe Ripple::Document::Finders do
       box.should_not be_new_record
     end
     
+    it "should find the first document using the first key with the bucket's keys"
+    
     it "should not raise an exception when finding an existing document with find!" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
       lambda { Box.find!("square") }.should_not raise_exception(Ripple::DocumentNotFound)

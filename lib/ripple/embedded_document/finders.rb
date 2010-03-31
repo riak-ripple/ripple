@@ -15,29 +15,15 @@ require 'ripple'
 
 module Ripple
   module EmbeddedDocument
-    module Persistence
+    module Finders
       extend ActiveSupport::Concern
 
-      included do
-        attr_accessor :_root_document
-        delegate_method_to_root :new?, :save, :save!
-      end
-      
       module ClassMethods
-        def embedded_in(parent)
-          define_method(parent) { @_root_document }
-        end
-        
-        def delegate_method_to_root(*methods)
-          Array(methods).each do |method|
-            define_method(method) { @_root_document ? @_root_document.send(method.to_sym) : super }
+        def instantiate(attrs, root_document=nil)
+          klass = ancestors.include?(Ripple::EmbeddedDocument) ? self : attrs['_type'].constantize
+          klass.new(attrs).tap do |doc|
+            doc._root_document = root_document
           end
-        end
-      end
-      
-      module InstanceMethods
-        def attributes_for_persistence
-          attributes.merge("_type" => self.class.name)
         end
       end
     end

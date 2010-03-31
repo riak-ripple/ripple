@@ -17,7 +17,31 @@ module Ripple
   module Document
     module Associations
       class OneEmbeddedProxy < Proxy
+        undef_method :object_id
         
+        def build(attrs={})
+          instantiate_target(:new, attrs)
+        end
+        
+        def replace(doc)
+          unless doc.nil?
+            owner.save if owner.new?
+            owner["_#{reflection.name}"] = doc.attributes_for_persistence
+            loaded
+            @target = doc
+          end
+        end
+        
+        protected
+          def find_target
+            owner["_#{reflection.name}"] ? klass.instantiate(owner["_#{reflection.name}"], owner) : nil
+          end
+        
+          def instantiate_target(instantiator, attrs={})
+            @target = klass.send(instantiator, attrs)
+            loaded
+            @target
+          end
       end
     end
   end

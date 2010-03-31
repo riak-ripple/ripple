@@ -22,6 +22,10 @@ module Ripple
         included do
           attribute_method_suffix ""
         end
+        
+        def [](attr_name)
+          attribute(attr_name)
+        end
 
         private
         def attribute(attr_name)

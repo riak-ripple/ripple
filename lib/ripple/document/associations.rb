@@ -80,6 +80,8 @@ module Ripple
 
     class Association
       attr_reader :type, :name, :options
+      
+      # association options :using, :class_name, :class, :extend
 
       def initialize(type, name, options={})
         @type, @name, @options = type, name, options.to_options
@@ -89,8 +91,10 @@ module Ripple
         @class_name ||= case
                         when @options[:class_name]
                           @options[:class_name]
+                        when @options[:class]
+                          @options[:class].to_s
                         when many?
-                          @name.to_s.singularize.camelize
+                          @name.to_s.classify
                         else
                           @name.to_s.camelize
                         end
@@ -107,9 +111,24 @@ module Ripple
       def one?
         @type == :one
       end
+      
+      def polymorphic?
+        false
+      end
 
       def ivar
         "@_#{name}"
+      end
+      
+      def proxy_class
+        return @proxy_class if defined?(@proxy_class)
+        proxy_class_name.constantize
+      end
+
+      def proxy_class_name
+        @using   ||= options[:using] || (klass.embeddable? ? :embedded : :link)
+        klass_name = (many? ? 'Many' : 'One') + @using.to_s.camelize + ('Polymorphic' if polymorphic?).to_s + 'Proxy'
+        "Ripple::Document::Associations::#{klass_name}"
       end
     end
   end
