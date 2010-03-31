@@ -11,32 +11,26 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
+#
+# Taken from ActiveRecord::Validations::AssociatedValidators
+#
+
 require 'ripple'
 
 module Ripple
   module Document
-    module Associations
-      module One
-        
-        def build(attrs={})
-          instantiate_target(:new, attrs)
+    module Validations
+      class AssociatedValidator < ActiveModel::EachValidator
+        def validate_each(record, attribute, value)
+          return if (value.is_a?(Array) ? value : [value]).collect{ |r| r.nil? || r.valid? }.all?
+          record.errors.add(attribute, :invalid, :default => options[:message], :value => value)
         end
-        
-        def create(attrs={})
-          instantiate_target(:create, attrs)
+      end
+
+      module ClassMethods
+        def validates_associated(*attr_names)
+          validates_with AssociatedValidator, _merge_attributes(attr_names)
         end
-        
-        def create!(attrs={})
-          instantiate_target(:create!, attrs)
-        end
-        
-        protected
-        
-          def instantiate_target(instantiator, attrs={})
-            @target = klass.send(instantiator, attrs)
-            loaded
-            @target
-          end
       end
     end
   end

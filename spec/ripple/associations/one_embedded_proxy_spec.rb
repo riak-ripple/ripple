@@ -23,7 +23,7 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
       
       class Child
         include Ripple::EmbeddedDocument
-        property :name, String
+        property :name, String, :presence => true
       end
     end
   end
@@ -59,6 +59,33 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @parent.child.name.should be_blank
     @parent.child = @son
     @parent.child.name.should == 'Son'
+  end
+  
+  it "should be able to build a new child" do
+    Child.stub!(:new).and_return(@child)
+    @parent.child.build.should == @child
+  end
+  
+  it "should be able to create a new child" do
+    Child.stub!(:create).and_return(@child)
+    @parent.child.create.should == @child
+  end
+  
+  it "should be able to create! a new child" do
+    Child.stub!(:create!).and_return(@child)
+    @parent.child.create!.should == @child
+  end
+  
+  it "should assign a parent to the child created with instantiate_target" do
+    Child.stub!(:new).and_return(@child)
+    @parent.child.build._parent_document.should == @parent
+  end
+  
+  it "should validate the child when saving the parent" do
+    @parent.valid?.should be_true
+    @child.name = ''
+    @parent.child = @child
+    @parent.valid?.should be_false
   end
   
   after :all do

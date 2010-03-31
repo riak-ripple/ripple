@@ -23,6 +23,12 @@ module Ripple
           def assign_references(*docs)
             docs.each { |doc| doc._parent_document = owner }
           end
+          
+          def instantiate_target(*args)
+            super
+            assign_references(@target)
+            @target
+          end
         
       end
     end

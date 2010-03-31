@@ -35,7 +35,10 @@ module Ripple
   module Document
     module Validations
       extend ActiveSupport::Concern
+      extend ActiveSupport::Autoload
       include ActiveModel::Validations
+      
+      autoload :AssociatedValidator
 
       module ClassMethods
         # @private

@@ -83,7 +83,8 @@ module Ripple
     class Association
       attr_reader :type, :name, :options
       
-      # association options :using, :class_name, :class, :extend
+      # association options :using, :class_name, :class, :extend, 
+      # options that may be added :validate
 
       def initialize(type, name, options={})
         @type, @name, @options = type, name, options.to_options

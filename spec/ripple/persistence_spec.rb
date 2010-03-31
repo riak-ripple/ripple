@@ -79,6 +79,12 @@ describe Ripple::Document::Persistence do
     @widget.should be_frozen
   end
 
+  it "should destroy all saved objects" do
+    @widget.should_receive(:destroy).and_return(true)
+    Widget.should_receive(:all).and_yield(@widget)
+    Widget.destroy_all.should be_true
+  end
+
   it "should freeze an unsaved object when destroying" do
     @http.should_not_receive(:delete)
     @widget.destroy.should be_true
