@@ -50,7 +50,23 @@ describe Ripple::Document::Finders do
       box.should_not be_new_record
     end
     
-    it "should find the first document using the first key with the bucket's keys"
+    it "should find the first document using the first key with the bucket's keys" do
+      box  = Box.new
+      keys = ['some_boxes_key']
+      Box.stub!(:find).and_return(box)
+      @bucket.stub!(:keys).and_return(keys)
+      @bucket.should_receive(:keys)
+      keys.should_receive(:first)
+      Box.first.should == box
+    end
+    
+    it "should use find! when using first!" do
+      box = Box.new
+      Box.stub!(:find!).and_return(box)
+      @bucket.stub!(:keys).and_return(['key'])
+      Box.should_receive(:find!)
+      Box.first!.should == box
+    end
     
     it "should not raise an exception when finding an existing document with find!" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})

@@ -71,7 +71,9 @@ module Ripple
         end
         
         # Find the first object using the first key in the
-        # bucket's keys using find.
+        # bucket's keys using find. You should not expect to 
+        # actually get the first object you added to the bucket.
+        # This is just a convenience method.
         def first
           find(bucket.keys.first)
         end
