@@ -19,13 +19,16 @@ module Ripple
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def instantiate(attrs, root_document=nil)
-          klass = ancestors.include?(Ripple::EmbeddedDocument) ? self : attrs['_type'].constantize
-          klass.new(attrs).tap do |doc|
-            doc._root_document = root_document
+        def instantiate(attrs)
+          begin
+            klass = attrs['_type'].present? ? attrs['_type'].constantize : self
+            klass.new(attrs)
+          rescue NameError
+            new(attrs)
           end
         end
       end
+      
     end
   end
 end

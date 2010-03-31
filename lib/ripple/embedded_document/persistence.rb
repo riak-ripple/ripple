@@ -19,17 +19,17 @@ module Ripple
       extend ActiveSupport::Concern
 
       included do
-        attr_accessor :_root_document
+        attr_reader :_parent_document
         delegate_method_to_root :new?, :save, :save!
       end
       
       module ClassMethods
         def embedded_in(parent)
-          define_method(parent) { @_root_document }
+          define_method(parent) { @_parent_document }
         end
         
         def delegate_method_to_root(*methods)
-          Array(methods).each do |method|
+          methods.each do |method|
             define_method(method) { @_root_document ? @_root_document.send(method.to_sym) : super }
           end
         end
@@ -45,6 +45,15 @@ module Ripple
             hash["_#{name}"] = @attributes["_#{name}"] if @attributes["_#{name}"]
             hash
           end
+        end
+        
+        def _root_document
+          self.class.embeddable? ? @_root_document : super
+        end
+        
+        def _parent_document=(value)
+          @_root_document   = value._root_document
+          @_parent_document = value
         end
       end
     end

@@ -21,8 +21,9 @@ describe Ripple::EmbeddedDocument::Persistence do
   before :each do
     @root = mock("root document")
     @root.stub!(:new?).and_return(true)
+    @root.stub!(:_root_document).and_return(@root)
     @addr = Address.new
-    @addr._root_document = @root
+    @addr._parent_document = @root
   end
 
   it "should delegate new? to the root document" do
@@ -39,8 +40,14 @@ describe Ripple::EmbeddedDocument::Persistence do
     @root.should_receive(:save!).and_return(true)
     @addr.save!.should be_true
   end
+
+  it "should have a root document" do
+    @addr._root_document.should == @root
+  end
   
-  it "should know the document its embedded in"
+  it "should have a parent document" do
+     @addr._parent_document.should == @root
+  end
 
   after :all do
     Object.send(:remove_const, :Address)

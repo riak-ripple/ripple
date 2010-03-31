@@ -16,25 +16,19 @@ require 'ripple'
 module Ripple
   module Document
     module Associations
-      class OneEmbeddedProxy < Proxy
-        include One
-        include Embedded
+      module One
         
-        def replace(doc)
-          @_doc = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc
-          assign_references(doc)
-          @target = doc
-          reset
+        def build(attrs={})
+          instantiate_target(:new, attrs)
         end
         
         protected
-          def find_target
-            return nil unless @_doc
-            klass.instantiate(@_doc).tap do |child|
-              assign_references(child)
-            end
-          end
         
+          def instantiate_target(instantiator, attrs={})
+            @target = klass.send(instantiator, attrs)
+            loaded
+            @target
+          end
       end
     end
   end

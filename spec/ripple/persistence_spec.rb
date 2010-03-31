@@ -67,7 +67,9 @@ describe Ripple::Document::Persistence do
     @widget.should be_frozen
   end
   
-  it "should "
+  it "should be a root document" do
+    @widget._root_document.should == @widget
+  end
 
   describe "when storing a class using single-bucket inheritance" do
     before :all do

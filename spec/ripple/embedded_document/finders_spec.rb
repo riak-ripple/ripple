@@ -15,23 +15,28 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument::Finders do
   before :all do
-    Object.module_eval { class Address; include Ripple::EmbeddedDocument; end }
+    Object.module_eval do 
+      class Address; include Ripple::EmbeddedDocument; end 
+      class Favorite; include Ripple::EmbeddedDocument; end 
+    end
   end
 
   before :each do
-    @root = mock("root document")
-    @root.stub!(:new?).and_return(true)
     @addr = Address.new
-    @addr._root_document = @root
   end
 
-  it "should instantiate a document"
+  it "should instantiate a document" do
+    Address.stub!(:new).and_return(@address)
+    Address.instantiate('_type' => 'Address').should == @address
+  end
   
-  it "should set the root document when instantiating"
+  it "should instantiate a class of _type if present in attrs" do
+    Favorite.instantiate('_type' => 'Address').class.should == Address
+  end
   
-  it "should instantiate a class of _type if being called from Ripple::EmbeddedDocument"
-  
-  it "should use self if being called from a class including Ripple::EmbeddedDocument"
+  it "should use self if being called from a class including Ripple::EmbeddedDocument and _type is not present" do
+    Address.instantiate({}).class.should == Address
+  end
 
   after :all do
     Object.send(:remove_const, :Address)

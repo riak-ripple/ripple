@@ -23,6 +23,7 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
       
       class Child
         include Ripple::EmbeddedDocument
+        property :name, String
       end
     end
   end
@@ -30,16 +31,34 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
   before :each do
     @parent = Parent.new
     @child  = Child.new
-    @parent.stub!(:save).and_return(true)
   end
   
   it "should not have a child before one is set" do
     @parent.child.should be_nil
   end
   
-  it "should be able to set its child" do
+  it "should be able to set and get its child" do
+    Child.stub!(:instantiate).and_return(@child)
     @parent.child = @child
     @parent.child.should == @child
+  end
+  
+  it "should set the parent document on the child when assigning" do
+    @parent.child = @child
+    @child._parent_document.should == @parent
+  end
+  
+  it "should set the parent document on the child when accessing" do
+    @parent.child = @child
+    @parent.child._parent_document.should == @parent
+  end
+  
+  it "should be able to replace its child with a different child" do
+    @son = Child.new(:name => 'Son')
+    @parent.child = @child
+    @parent.child.name.should be_blank
+    @parent.child = @son
+    @parent.child.name.should == 'Son'
   end
   
   after :all do

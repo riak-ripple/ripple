@@ -20,6 +20,8 @@ module Ripple
       extend ActiveSupport::Autoload
 
       autoload :Proxy
+      autoload :One
+      autoload :Embedded
       autoload :OneEmbeddedProxy
       autoload :ManyEmbeddedProxy
 
