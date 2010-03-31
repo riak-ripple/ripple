@@ -25,7 +25,6 @@ module Ripple
         
         def replace(doc)
           unless doc.nil?
-            owner.save if owner.new?
             owner["_#{reflection.name}"] = doc.attributes_for_persistence
             loaded
             @target = doc
