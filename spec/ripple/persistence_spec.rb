@@ -66,6 +66,8 @@ describe Ripple::Document::Persistence do
     @widget.destroy.should be_true
     @widget.should be_frozen
   end
+  
+  it "should "
 
   describe "when storing a class using single-bucket inheritance" do
     before :all do

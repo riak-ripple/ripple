@@ -112,6 +112,10 @@ module Ripple
         @type == :one
       end
       
+      def embeddable?
+        klass.embeddable?
+      end
+      
       def polymorphic?
         false
       end
@@ -126,7 +130,7 @@ module Ripple
       end
 
       def proxy_class_name
-        @using   ||= options[:using] || (klass.embeddable? ? :embedded : :link)
+        @using   ||= options[:using] || (embeddable? ? :embedded : :link)
         klass_name = (many? ? 'Many' : 'One') + @using.to_s.camelize + ('Polymorphic' if polymorphic?).to_s + 'Proxy'
         "Ripple::Document::Associations::#{klass_name}"
       end

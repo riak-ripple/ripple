@@ -37,7 +37,14 @@ module Ripple
       
       module InstanceMethods
         def attributes_for_persistence
-          attributes.merge("_type" => self.class.name)
+          attributes.merge("_type" => self.class.name).merge(embedded_attributes_for_persistence)
+        end
+        
+        def embedded_attributes_for_persistence
+          self.class.associations.keys.inject({}) do |hash, name|
+            hash["_#{name}"] = @attributes["_#{name}"] if @attributes["_#{name}"]
+            hash
+          end
         end
       end
     end
