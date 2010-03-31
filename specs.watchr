@@ -5,21 +5,24 @@ def growl(title, msg, img)
 end
 
 def form_growl_message(str)
-  results = str.split("\n").last
-  if results =~ /[1-9]\s(failure|error)s?/
-    growl "Test Results", "#{results}", "fail"
+  results = str.split("\n").last.gsub(/\e\[\d+m/, '')
+  if results =~ /[1-9]\s(pending)/
+    growl "Test Results", "#{results}", "pending"
+  elsif results =~ /[1-9]\s(failure|error)s?/
+    growl "Test Results", "#{results}", "failed"
   elsif results != ""
-    growl "Test Results", "#{results}", "pass"
+    growl "Test Results", "#{results}", "passed"
   end
 end
 
 def run(cmd)
   puts(cmd)
-  output = ""
-  IO.popen(cmd) do |com|
+  output = ''
+  ENV['RSPEC_COLOR'] = 'true'
+  IO.popen(cmd, 'r+') do |com|
     com.each_char do |c|
       print c
-      output << c
+      output << c.gsub(/\\e\[\d+m/, '').gsub(/e\[0m/, '')
       $stdout.flush
     end
   end
