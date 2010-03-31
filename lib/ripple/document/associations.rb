@@ -69,6 +69,16 @@ module Ripple
       end
 
       module InstanceMethods
+        def associations
+          self.class.associations
+        end
+        
+        def embedded_associations
+          associations.map do |name, association|
+            association if association.embeddable?
+          end.compact
+        end
+        
         # @private
         def get_proxy(association)
           unless proxy = instance_variable_get(association.ivar)

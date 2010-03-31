@@ -24,13 +24,17 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
       class Child
         include Ripple::EmbeddedDocument
         property :name, String, :presence => true
+        one :gchild, :class_name => 'Grandchild'
       end
+      
+      class Grandchild; include Ripple::EmbeddedDocument; end
     end
   end
   
   before :each do
     @parent = Parent.new
     @child  = Child.new
+    @gchild = Grandchild.new
   end
   
   it "should not have a child before one is set" do
@@ -88,8 +92,16 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @parent.valid?.should be_false
   end
   
+  it "should allow embedding documents in embedded documents" do
+    @parent.child = @child
+    @child.gchild = @gchild
+    @gchild._root_document.should   == @parent
+    @gchild._parent_document.should == @child
+  end
+  
   after :all do
     Object.send(:remove_const, :Parent)
     Object.send(:remove_const, :Child)
+    Object.send(:remove_const, :Grandchild)
   end
 end

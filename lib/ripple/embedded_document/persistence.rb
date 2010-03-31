@@ -39,14 +39,7 @@ module Ripple
         def attributes_for_persistence
           attributes.merge("_type" => self.class.name).merge(embedded_attributes_for_persistence)
         end
-        
-        def embedded_attributes_for_persistence
-          self.class.associations.keys.inject({}) do |hash, name|
-            hash["_#{name}"] = @attributes["_#{name}"] if @attributes["_#{name}"]
-            hash
-          end
-        end
-        
+                
         def _root_document
           self.class.embeddable? ? @_root_document : super
         end
@@ -55,6 +48,17 @@ module Ripple
           @_root_document   = value._root_document
           @_parent_document = value
         end
+        
+        protected
+        
+          def embedded_attributes_for_persistence
+            embedded_associations.inject({}) do |attrs, association|
+              if documents = instance_variable_get(association.ivar)
+                attrs[association.name] = Array(documents).map { |document| document.attributes_for_persistence }
+              end
+              attrs
+            end
+          end
       end
     end
   end

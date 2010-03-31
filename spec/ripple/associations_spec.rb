@@ -15,12 +15,25 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations do
   before :all do
-    class Invoice; include Ripple::Document; end
+    Object.module_eval do
+      class Invoice;  include Ripple::Document; one :customer; one :note; end
+      class Customer; include Ripple::Document; end
+      class Note;     include Ripple::EmbeddedDocument; end
+    end
   end
 
   it "should provide access to the associations hash" do
     Invoice.should respond_to(:associations)
     Invoice.associations.should be_kind_of(Hash)
+  end
+  
+  it "should add associations on the class instance" do 
+    Invoice.new.should respond_to(:associations)
+    Invoice.new.associations.should be_kind_of(Hash)
+  end
+  
+  it "should collect the embedded associations" do
+    Invoice.new.embedded_associations.should == Array(Invoice.associations[:note])
   end
 
   it "should copy associations to a subclass" do
@@ -49,6 +62,8 @@ describe Ripple::Document::Associations do
 
   after :all do
     Object.send(:remove_const, :Invoice)
+    Object.send(:remove_const, :Customer)
+    Object.send(:remove_const, :Note)
   end
 end
 
