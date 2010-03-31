@@ -24,6 +24,18 @@ module Ripple
       included do
         include Ripple::Document::Persistence::Callbacks
       end
+      
+      module ClassMethods
+        
+        # Instantiates a new record, applies attributes from a block, and saves it
+        def create(attrs={}, &block)
+          new(attrs).tap do |obj|
+            block.call(obj) if block_given?
+            obj.save
+          end
+        end
+        
+      end
 
       module InstanceMethods
         # @private

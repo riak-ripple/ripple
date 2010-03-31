@@ -41,6 +41,24 @@ describe Ripple::Document::Persistence do
     @widget.should_not be_new_record
     @widget.changes.should be_blank
   end
+  
+  it "should instantiate and save a new object to riak" do
+    json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
+    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @widget = Widget.create(:size => 10)
+    @widget.size.should == 10
+    @widget.should_not be_new_record
+  end
+  
+  it "should instantiate and save a new object to riak and allow its attributes to be set via a block" do
+    json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
+    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @widget = Widget.create do |widget|
+      widget.size = 10
+    end
+    @widget.size.should == 10
+    @widget.should_not be_new_record
+  end
 
   it "should reload a saved object" do
     json = @widget.attributes.merge("_type" => "Widget").to_json

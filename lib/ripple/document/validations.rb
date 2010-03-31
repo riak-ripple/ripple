@@ -43,6 +43,13 @@ module Ripple
           prop = super
           validates key, prop.validation_options unless prop.validation_options.blank?
         end
+        
+        # Instantiates a new record, applies attributes from a block, and saves it
+        # Raises Ripple::DocumentInvalid if the record did not save
+        def create!(attrs={}, &block)
+          obj = create(attrs, &block)
+          (raise Ripple::DocumentInvalid.new(obj) if obj.new?) || obj
+        end
       end
 
       module InstanceMethods
@@ -53,7 +60,7 @@ module Ripple
         end
         
         def save!
-          raise Ripple::DocumentInvalid.new(self) unless save
+          (raise Ripple::DocumentInvalid.new(self) unless save) || true
         end
         
         # @private
