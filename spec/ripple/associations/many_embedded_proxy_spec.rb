@@ -123,6 +123,11 @@ describe Ripple::Document::Associations::ManyEmbeddedProxy do
     @user.valid?.should be_false
   end
   
+  it "should not save the root document when a child is invalid" do
+    @user.addresses << @address
+    @user.save.should be_false
+  end
+  
   it "should allow embedding documents in embedded documents" do
     @user.addresses << @address
     @address.notes << @note

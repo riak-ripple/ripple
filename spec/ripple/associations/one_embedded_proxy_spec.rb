@@ -89,6 +89,11 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @parent.valid?.should be_false
   end
   
+  it "should not save the root document when a child is invalid" do
+    @parent.child = @child
+    @parent.save.should be_false
+  end
+  
   it "should allow embedding documents in embedded documents" do
     @parent.child = @child
     @child.gchild = @gchild
