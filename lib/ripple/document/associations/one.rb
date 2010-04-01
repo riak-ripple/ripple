@@ -18,7 +18,7 @@ module Ripple
     module Associations
       module One
         include Instantiators
-        
+                
         protected
           def instantiate_target(instantiator, attrs={})
             @target = klass.send(instantiator, attrs)

@@ -110,16 +110,6 @@ describe Ripple::Document::Associations::ManyEmbeddedProxy do
     @user.addresses.build.should == @address
   end
   
-  it "should be able to create a new child" do
-    Address.stub!(:create).and_return(@address)
-    @user.addresses.create.should == @address
-  end
-  
-  it "should be able to create! a new child" do
-    Address.stub!(:create!).and_return(@address)
-    @user.addresses.create!.should == @address
-  end
-  
   it "should assign a parent to the children created with instantiate_target" do
     Address.stub!(:new).and_return(@address)
     @address._parent_document.should be_nil

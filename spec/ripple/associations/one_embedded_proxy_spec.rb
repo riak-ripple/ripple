@@ -75,16 +75,6 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @parent.child.build.should == @child
   end
   
-  it "should be able to create a new child" do
-    Child.stub!(:create).and_return(@child)
-    @parent.child.create.should == @child
-  end
-  
-  it "should be able to create! a new child" do
-    Child.stub!(:create!).and_return(@child)
-    @parent.child.create!.should == @child
-  end
-  
   it "should assign a parent to the child created with instantiate_target" do
     Child.stub!(:new).and_return(@child)
     @child._parent_document.should be_nil
