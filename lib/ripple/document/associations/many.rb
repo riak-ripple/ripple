@@ -19,15 +19,6 @@ module Ripple
       module Many
         include Instantiators
         
-        def find(key)
-          load_target
-          target.detect { |item| item.key == key }
-        end
-        
-        def find!(key)
-          find(key) || (raise Ripple::DocumentNotFound.new(key, nil))
-        end
-
         def count
           load_target
           target.size

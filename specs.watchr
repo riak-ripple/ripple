@@ -1,5 +1,3 @@
-# from mongomapper
-
 def growl(title, msg, img)
   %x{growlnotify -m #{ msg.inspect} -t #{title.inspect} --image ~/.watchr/#{img}.png}
 end
@@ -19,7 +17,7 @@ def run(cmd)
   puts(cmd)
   output = ''
   ENV['RSPEC_COLOR'] = 'true'
-  IO.popen(cmd, 'r+') do |com|
+  IO.popen(cmd) do |com|
     com.each_char do |c|
       print c
       output << c
