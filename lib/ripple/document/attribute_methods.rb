@@ -66,6 +66,7 @@ module Ripple
         def attributes=(attrs)
           raise ArgumentError, t('attribute_hash') unless Hash === attrs
           attrs.each do |k,v|
+            next if k.to_sym == :key
             if respond_to?("#{k}=")
               __send__("#{k}=",v)
             else

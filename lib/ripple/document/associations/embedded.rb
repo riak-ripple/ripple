@@ -18,10 +18,15 @@ module Ripple
     module Associations
       module Embedded
         
+        def initialize(*args)
+          super
+          owner.class.validates reflection.name, :associated => true
+        end
+        
         protected
           
-          def assign_references(*docs)
-            docs.each do |doc|
+          def assign_references(docs)
+            Array(docs).each do |doc|
               next unless doc.respond_to?(:_parent_document=)
               doc._parent_document = owner
             end

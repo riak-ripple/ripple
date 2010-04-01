@@ -20,16 +20,16 @@ module Ripple
         include Many
         include Embedded
         
-        def <<(*docs)
+        def <<(docs)
           load_target
           assign_references(docs)
-          target += docs
+          @target += Array(docs)
         end
         alias_method :push, :<<
         alias_method :concat, :<<
         
         def replace(docs)
-          @_docs = docs.map { |doc| doc.respond_to?(:attributes) ? doc.attributes : doc }
+          @_docs = docs.map { |doc| attrs = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc }
           assign_references(docs)
           reset
           @_docs

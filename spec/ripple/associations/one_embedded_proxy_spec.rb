@@ -95,6 +95,7 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @parent.valid?.should be_true
     @child.name = ''
     @parent.child = @child
+    @child.valid?.should be_false
     @parent.valid?.should be_false
   end
   

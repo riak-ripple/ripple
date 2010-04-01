@@ -40,9 +40,17 @@ describe Ripple::Document::AttributeMethods do
       @widget.key.should == "cog"
     end
 
-    it "should accept the key in mass assignment" do
-      @widget.attributes = {:key => "cog"}
-      @widget.key.should == "cog"
+    # IMO it definitely should not
+    # *temporarily* removed
+    # it "should accept the key in mass assignment" do
+    #   @widget.attributes = {:key => "cog"}
+    #   @widget.key.should == "cog"
+    # end
+    
+    it "should not set the key from mass assignment" do
+      @widget.key = 'widget-key'
+      @widget.attributes = {'key' => 'new-key'}
+      @widget.key.should == 'widget-key'
     end
 
   end

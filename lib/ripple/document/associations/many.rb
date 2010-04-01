@@ -23,6 +23,10 @@ module Ripple
           load_target
           target.detect { |item| item.key == key }
         end
+        
+        def find!(key)
+          find(key) || (raise Ripple::DocumentNotFound.new(key, nil))
+        end
 
         def count
           load_target

@@ -20,11 +20,6 @@ module Ripple
         include One
         include Embedded
         
-        def initialize(*args)
-          super
-          owner.class.validates reflection.name, :associated => true
-        end
-        
         def replace(doc)
           @_doc = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc
           assign_references(doc)

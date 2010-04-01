@@ -34,38 +34,111 @@ describe Ripple::Document::Associations::ManyEmbeddedProxy do
   before :each do
     @user    = User.new
     @address = Address.new
+    @addr    = Address.new(:street => '123 Somewhere')
     @note    = Note.new
   end
   
-  it "should not have children before any are set"
+  it "should not have children before any are set" do
+    @user.addresses.should == []
+  end
   
-  it "should be able to set and get its children"
+  it "should be able to set and get its children" do
+    Address.stub!(:instantiate).and_return(@address)
+    @user.addresses = [@address]
+    @user.addresses.should == [@address]
+  end
   
-  it "should set the parent document on the children when assigning"
+  it "should set the parent document on the children when assigning" do
+    @user.addresses = [@address]
+    @address._parent_document.should == @user
+  end
   
-  it "should return the assignment when assigning"
+  it "should return the assignment when assigning" do
+    rtn = @user.addresses = [@address]
+    rtn.should == [@address]
+  end
   
-  it "should set the parent document on the children when accessing"
+  it "should set the parent document on the children when accessing" do
+    @user.addresses = [@address]
+    @user.addresses.first._parent_document.should == @user
+  end
   
-  it "should be able to replace its children with different children"
+  it "should be able to replace its children with different children" do
+    @user.addresses = [@address]
+    @user.addresses.first.street.should be_blank
+    @user.addresses = [@addr]
+    @user.addresses.first.street.should == '123 Somewhere'
+  end
   
-  it "should be able to add to its children"
+  it "should be able to add to its children" do
+    Address.stub!(:instantiate).and_return(@address)
+    @user.addresses = [@address]
+    @user.addresses << @address
+    @user.addresses.should == [@address, @address]
+  end
   
-  it "should be able to count its children"
+  it "should be able to chain calls to adding children" do
+    Address.stub!(:instantiate).and_return(@address)
+    @user.addresses = [@address]
+    @user.addresses << @address << @address << @address
+    @user.addresses.should == [@address, @address, @address, @address]
+  end
   
-  it "should be able to find a child by its key"
+  it "should set the parent document when adding to its children" do
+    @user.addresses << @address
+    @user.addresses.first._parent_document.should == @user
+  end
   
-  it "should be able to build a new child"
+  it "should be able to count its children" do
+    @user.addresses = [@address, @address]
+    @user.addresses.count.should == 2
+  end
   
-  it "should be able to create a new child"
+  it "should be able to find a child by its key" do
+    @address.stub!(:key).and_return('abcd')
+    Address.stub!(:instantiate).and_return(@address)
+    @user.addresses = [@address]
+    @user.addresses.find('abcd').should == @address
+  end
   
-  it "should be able to create! a new child"
+  it "should raise Ripple::DocumentNotFound if children.find! returns nil" do
+    lambda { @user.addresses.find!('not-here') }.should raise_error(Ripple::DocumentNotFound)
+  end
   
-  it "should assign a parent to the children created with instantiate_target"
+  it "should be able to build a new child" do
+    Address.stub!(:new).and_return(@address)
+    @user.addresses.build.should == @address
+  end
   
-  it "should validate the children when saving the parent"
+  it "should be able to create a new child" do
+    Address.stub!(:create).and_return(@address)
+    @user.addresses.create.should == @address
+  end
   
-  it "should allow embedding documents in embedded documents"
+  it "should be able to create! a new child" do
+    Address.stub!(:create!).and_return(@address)
+    @user.addresses.create!.should == @address
+  end
+  
+  it "should assign a parent to the children created with instantiate_target" do
+    Address.stub!(:new).and_return(@address)
+    @address._parent_document.should be_nil
+    @user.addresses.build._parent_document.should == @user
+  end
+  
+  it "should validate the children when saving the parent" do
+    @user.valid?.should be_true
+    @user.addresses << @address
+    @address.valid?.should be_false
+    @user.valid?.should be_false
+  end
+  
+  it "should allow embedding documents in embedded documents" do
+    @user.addresses << @address
+    @address.notes << @note
+    @note._root_document.should   == @user
+    @note._parent_document.should == @address
+  end
   
   after :all do
     Object.send(:remove_const, :User)
