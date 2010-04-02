@@ -32,8 +32,7 @@ describe "Ripple Persistence" do
   it "should save an object to the riak database" do
     @widget.save
     @found = Widget.find(@widget.key)
-    @found.should_not be_nil
-    @found.class.should == Widget
+    @found.should be_a(Widget)
   end
   
   it "should save attributes properly to riak" do

@@ -24,6 +24,7 @@ module Ripple
           load_target
           assign_references(docs)
           @target += Array(docs)
+          self
         end
         alias_method :push, :<<
         alias_method :concat, :<<
