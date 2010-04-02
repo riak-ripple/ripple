@@ -94,17 +94,6 @@ describe Ripple::Document::Associations::ManyEmbeddedProxy do
     @user.addresses.count.should == 2
   end
   
-  it "should be able to find a child by its key" do
-    @address.stub!(:key).and_return('abcd')
-    Address.stub!(:instantiate).and_return(@address)
-    @user.addresses = [@address]
-    @user.addresses.find('abcd').should == @address
-  end
-  
-  it "should raise Ripple::DocumentNotFound if children.find! returns nil" do
-    lambda { @user.addresses.find!('not-here') }.should raise_error(Ripple::DocumentNotFound)
-  end
-  
   it "should be able to build a new child" do
     Address.stub!(:new).and_return(@address)
     @user.addresses.build.should == @address

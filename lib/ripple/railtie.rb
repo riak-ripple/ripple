@@ -12,34 +12,12 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'ripple'
+require 'rails'
 
+# require in gemfile using
+# <tt>gem "ripple", :require_as => ["ripple", "ripple/railtie"]</tt>
 module Ripple
-  module Document
-    module Associations
-      module Many
-        include Instantiators
-
-        def count
-          load_target
-          target.size
-        end
-        
-        def reset
-          super
-          @target = []
-        end
-        
-        def <<
-          raise NotImplementedError
-        end
-        
-        protected        
-          def instantiate_target(instantiator, attrs={})
-            doc = klass.send(instantiator, attrs)
-            self << doc
-            doc
-          end
-      end
-    end
+  class Railtie < Rails::Railtie
+    railtie_name :ripple
   end
 end
