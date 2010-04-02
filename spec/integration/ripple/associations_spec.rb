@@ -14,5 +14,9 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe "Ripple Associations" do
-
+  before :each do
+    Ripple.test!
+  end
+  
+  
 end

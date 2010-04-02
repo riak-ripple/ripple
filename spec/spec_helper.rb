@@ -19,8 +19,11 @@ require 'ripple'
 require 'spec'
 require 'spec/autorun'
 require 'fakeweb'
+require 'pathname'
 
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
+
+SPEC_PATH = Pathname.new(File.dirname(__FILE__))
 
 $server = MockServer.new
 at_exit { $server.stop }

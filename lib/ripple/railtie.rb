@@ -19,5 +19,14 @@ require 'rails'
 module Ripple
   class Railtie < Rails::Railtie
     railtie_name :ripple
+    
+    initializer "ripple.configure_rails_initialization" do
+      Ripple.load_configuration
+    end
+  end
+  
+  def self.load_configuration
+    config_file = Rails.root.join('config', 'database.yml')
+    self.config = YAML.load_file(File.expand_path config_file).with_indifferent_access[:ripple][Rails.env]
   end
 end
