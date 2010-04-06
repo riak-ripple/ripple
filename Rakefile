@@ -60,7 +60,7 @@ end
 
 task :spec => :check_dependencies
 
-task :default => :spec_all
+task :default => :spec
 
 require 'yard'
 YARD::Rake::YardocTask.new do |yard|

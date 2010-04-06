@@ -11,25 +11,22 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-
-require 'rubygems' # Use the gems path only for the spec suite
 require 'ripple'
-require 'spec'
-require 'spec/autorun'
-require 'fakeweb'
-require 'pathname'
+require 'rails'
 
-Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
-
-SPEC_PATH = Pathname.new(File.dirname(__FILE__))
-
-$server = MockServer.new
-at_exit { $server.stop }
-
-Spec::Runner.configure do |config|
-  config.before(:each) do
-    FakeWeb.clean_registry
+# require in gemfile using
+# <tt>gem "ripple", :require_as => ["ripple", "ripple/railtie"]</tt>
+module Ripple
+  class Railtie < Rails::Railtie
+    railtie_name :ripple
+    
+    initializer "ripple.configure_rails_initialization" do
+      Ripple.load_configuration
+    end
+  end
+  
+  def self.load_configuration
+    config_file = Rails.root.join('config', 'database.yml')
+    self.config = YAML.load_file(File.expand_path config_file).with_indifferent_access[:ripple][Rails.env]
   end
 end

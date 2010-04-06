@@ -18,7 +18,7 @@ module Ripple
     module Associations
       module Many
         include Instantiators
-        
+
         def count
           load_target
           target.size

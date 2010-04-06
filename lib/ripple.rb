@@ -42,9 +42,13 @@ module Ripple
       Thread.current[:ripple_client] = value
     end
 
-    def config=(value)
+    def config=(hash)
       self.client = nil
       super
+    end
+    
+    def load_config(config_file)
+      self.config = YAML.load_file(File.expand_path config_file).with_indifferent_access[:ripple]
     end
   end
 end

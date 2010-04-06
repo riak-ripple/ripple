@@ -41,4 +41,14 @@ describe Ripple do
     Ripple.client.should_not == c
     Ripple.client.port.should == 9000
   end
+  
+  it "should raise No Such File or Directory when given a bad configuration file" do
+    lambda { Ripple.load_config('not-here') }.should raise_error(Errno::ENOENT)
+  end
+  
+  it "should apply the configuration under the ripple key" do
+    Ripple.load_config(File.join(File.dirname(__FILE__), '..', 'fixtures', 'config.yml'))
+    Ripple.client.port.should == 9000
+    Ripple.client.host.should == 'localhost'
+  end
 end
