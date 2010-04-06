@@ -1,4 +1,4 @@
 
 def switch_to_test_node
-  Ripple.load_config SPEC_PATH.join('integration', 'config.yml')
+  Ripple.client.port = 9000
 end

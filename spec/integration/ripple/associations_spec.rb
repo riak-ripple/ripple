@@ -64,6 +64,8 @@ describe "Ripple Associations" do
     @ship.street.should == '321 Anywhere Pl'
     @bill.user.should == @found
     @ship.user.should == @found
+    @bill.should be_a(Address)
+    @ship.should be_a(Address)
   end
   
   after :each do
