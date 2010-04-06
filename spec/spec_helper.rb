@@ -16,19 +16,18 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rubygems' # Use the gems path only for the spec suite
 require 'ripple'
-require 'spec'
-require 'spec/autorun'
+require 'rspec/autorun'
 require 'fakeweb'
 require 'pathname'
 
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
-SPEC_PATH = Pathname.new(File.dirname(__FILE__))
+SPEC_PATH = Pathname.new(File.dirname(__FILE__)) unless defined?(SPEC_PATH)
 
 $server = MockServer.new
 at_exit { $server.stop }
 
-Spec::Runner.configure do |config|
+Rspec.configure do |config|
   config.before(:each) do
     FakeWeb.clean_registry
   end

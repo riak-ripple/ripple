@@ -22,22 +22,19 @@ module Ripple
         def embedded_in(parent)
           define_method(parent) { @_parent_document }
         end
-        
-        def delegate_method_to_root(*methods)
-          methods.each do |method|
-            class_eval <<-CODE
-              def #{method}(*args)
-                @_root_document ? @_root_document.send(#{method.to_sym.inspect}, *args) : super
-              end
-            CODE
-          end
-        end
       end
       
       module InstanceMethods
         
         attr_reader :_parent_document
-        delegate_method_to_root :new?, :save, :save!
+        
+        %w[new? save save!].each do |method|
+          module_eval <<-CODE
+            def #{method}(*args)
+              @_root_document ? @_root_document.send(#{method.to_sym.inspect}, *args) : super
+            end
+          CODE
+        end
 
         def attributes_for_persistence
           attributes.merge("_type" => self.class.name).merge(embedded_attributes_for_persistence)
