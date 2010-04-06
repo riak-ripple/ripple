@@ -17,11 +17,6 @@ module Ripple
   module EmbeddedDocument
     module Persistence
       extend ActiveSupport::Concern
-
-      included do
-        attr_reader :_parent_document
-        delegate_method_to_root :new?, :save, :save!
-      end
       
       module ClassMethods
         def embedded_in(parent)
@@ -30,18 +25,26 @@ module Ripple
         
         def delegate_method_to_root(*methods)
           methods.each do |method|
-            define_method(method) { @_root_document ? @_root_document.send(method.to_sym) : super }
+            class_eval <<-CODE
+              def #{method}(*args)
+                @_root_document ? @_root_document.send(#{method.to_sym.inspect}, *args) : super
+              end
+            CODE
           end
         end
       end
       
       module InstanceMethods
+        
+        attr_reader :_parent_document
+        delegate_method_to_root :new?, :save, :save!
+
         def attributes_for_persistence
           attributes.merge("_type" => self.class.name).merge(embedded_attributes_for_persistence)
         end
                 
         def _root_document
-          self.class.embeddable? ? @_root_document : super
+          self.class.embeddable? ? @_root_document : self
         end
         
         def _parent_document=(value)

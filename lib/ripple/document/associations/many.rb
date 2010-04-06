@@ -18,6 +18,11 @@ module Ripple
     module Associations
       module Many
         include Instantiators
+        
+        def to_ary
+          load_target
+          Array === target ? target.to_ary : Array(target)
+        end
 
         def count
           load_target
@@ -32,6 +37,8 @@ module Ripple
         def <<
           raise NotImplementedError
         end
+        alias_method :push, :<<
+        alias_method :concat, :<<
         
         protected        
           def instantiate_target(instantiator, attrs={})

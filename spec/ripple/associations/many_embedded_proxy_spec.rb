@@ -124,6 +124,12 @@ describe Ripple::Document::Associations::ManyEmbeddedProxy do
     @note._parent_document.should == @address
   end
   
+  it "should return an array from to_ary" do
+    Address.stub!(:instantiate).and_return(@address)
+    @user.addresses << @address
+    @user.addresses.to_ary.should == [@address]
+  end
+  
   after :all do
     Object.send(:remove_const, :User)
     Object.send(:remove_const, :Address)

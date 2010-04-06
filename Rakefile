@@ -11,7 +11,7 @@ begin
     gem.email = "seancribbs@gmail.com"
     gem.homepage = "http://seancribbs.github.com/ripple"
     gem.authors = ["Sean Cribbs"]
-    gem.add_development_dependency "rspec", ">= 1.3"
+    gem.add_development_dependency "rspec", "~>2.0.0.beta.5"
     gem.add_development_dependency "fakeweb", ">=1.2"
     gem.add_development_dependency "rack", ">=1.0"
     gem.add_development_dependency "yard", ">=0.5.2"
@@ -25,30 +25,25 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-require 'spec/rake/spectask'
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
 desc "Run Unit Specs Only"
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList.new('spec/**/*_spec.rb') do |f|
-    f.exclude(/integration/)
-  end
+Rspec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = "spec/{ripple,riak}/**/*_spec.rb"
 end
 
 desc "Run Integration Specs Only"
-Spec::Rake::SpecTask.new(:integration) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/integration/**/*_spec.rb']
+Rspec::Core::RakeTask.new(:integration) do |spec|
+  spec.pattern = "spec/integration/**/*_spec.rb"
 end
 
 desc "Run All Specs"
-Spec::Rake::SpecTask.new(:spec_all) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
+Rspec::Core::RakeTask.new(:spec_all) do |spec|
+  spec.pattern = "spec/**/*_spec.rb"
 end
 
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
+Rspec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
   spec.rcov_opts = ['--exclude', 'lib\/spec,bin\/spec,config\/boot.rb,gems,spec_helper,spec']

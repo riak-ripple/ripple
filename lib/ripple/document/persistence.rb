@@ -92,11 +92,6 @@ module Ripple
           @attributes.freeze; super
         end
         
-        # Used by embedded documents when assigning parent_document, documents are always root documents
-        def _root_document
-          self
-        end
-
         protected
         attr_writer :robject
 

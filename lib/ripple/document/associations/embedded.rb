@@ -17,12 +17,6 @@ module Ripple
   module Document
     module Associations
       module Embedded
-        extend ActiveSupport::Concern
-        
-        included do
-          undef_method :create
-          undef_method :create!
-        end
         
         def initialize(*args)
           super

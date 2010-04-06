@@ -16,32 +16,15 @@ require 'ripple'
 module Ripple
   module Document
     module Associations
-      class ManyEmbeddedProxy < Proxy
-        include Many
-        include Embedded
-        
-        def <<(docs)
-          load_target
-          assign_references(docs)
-          @target += Array(docs)
-          self
+      module Linked
+
+        def create(attrs={})
+          instantiate_target(:create, attrs)
         end
-        
-        def replace(docs)
-          @_docs = docs.map { |doc| attrs = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc }
-          assign_references(docs)
-          reset
-          @_docs
+
+        def create!(attrs={})
+          instantiate_target(:create!, attrs)
         end
-      
-        protected
-          def find_target
-            (@_docs || []).map do |attrs|
-              klass.instantiate(attrs).tap do |doc|
-                assign_references(doc)
-              end
-            end
-          end
         
       end
     end
