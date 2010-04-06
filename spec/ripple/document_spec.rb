@@ -19,7 +19,7 @@ describe Ripple::Document do
   end
 
   it "should add bucket access methods to classes when included" do
-    Page.metaclass.included_modules.should include(Ripple::Document::BucketAccess)
+    Page.singleton_class.included_modules.should include(Ripple::Document::BucketAccess)
     Page.should respond_to(:bucket_name)
     Page.should respond_to(:bucket)
     Page.should respond_to(:bucket_name=)

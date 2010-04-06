@@ -31,7 +31,7 @@ module Ripple
       # Set the bucket name for this class and its subclasses.
       # @param [String] value the new bucket name
       def bucket_name=(value)
-        metaclass.send(:define_method, :bucket_name){ value }
+        singleton_class.send(:define_method, :bucket_name){ value }
       end
     end
   end
