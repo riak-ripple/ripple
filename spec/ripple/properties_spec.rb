@@ -14,9 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Properties do
-  before :all do
-    Object.module_eval { class Email; include Ripple::Document; end }
-  end
+  class Email; include Ripple::Document; end
 
   it "should make the model class have a property definition method" do
     Email.should respond_to(:property)
@@ -38,10 +36,6 @@ describe Ripple::Document::Properties do
     Forward.properties[:foo].should == "bar"
   end
 
-
-  after :all do
-    Object.send(:remove_const, :Email)
-  end
 end
 
 describe Ripple::Document::Property do

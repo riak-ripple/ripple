@@ -14,12 +14,8 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument::Finders do
-  before :all do
-    Object.module_eval do 
-      class Address; include Ripple::EmbeddedDocument; end 
-      class Favorite; include Ripple::EmbeddedDocument; end 
-    end
-  end
+  class Address; include Ripple::EmbeddedDocument; end 
+  class Favorite; include Ripple::EmbeddedDocument; end
 
   before :each do
     @addr = Address.new
@@ -38,7 +34,4 @@ describe Ripple::EmbeddedDocument::Finders do
     Address.instantiate({}).class.should == Address
   end
 
-  after :all do
-    Object.send(:remove_const, :Address)
-  end
 end

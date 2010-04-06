@@ -14,10 +14,8 @@
 require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Ripple::Document do
-  before :all do
-    Object.module_eval { class Page; include Ripple::Document; end }
-  end
-
+  class Page; include Ripple::Document; end 
+  
   it "should add bucket access methods to classes when included" do
     Page.singleton_class.included_modules.should include(Ripple::Document::BucketAccess)
     Page.should respond_to(:bucket_name)
@@ -29,7 +27,4 @@ describe Ripple::Document do
     Page.should_not be_embeddable
   end
 
-  after :all do
-    Object.module_eval { remove_const(:Page) }
-  end
 end

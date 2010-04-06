@@ -29,7 +29,7 @@ module Ripple
         attr_reader :_parent_document
         
         %w[new? save save!].each do |method|
-          module_eval <<-CODE
+          module_eval <<-CODE, __FILE__, __LINE__
             def #{method}(*args)
               @_root_document ? @_root_document.send(#{method.to_sym.inspect}, *args) : super
             end

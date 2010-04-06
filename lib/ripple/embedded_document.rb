@@ -35,8 +35,7 @@ module Ripple
 
     module ClassMethods
       def embeddable?
-        #!included_modules.include?(Document)
-        self < Document
+        true
       end
     end
   end

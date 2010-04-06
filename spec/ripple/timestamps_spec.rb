@@ -2,9 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Ripple::Document::Timestamps do
   
-  before :all do
-    Object.module_eval { class Box; include Ripple::Document; property :shape, String; timestamps! end }
-  end
+  class Box; include Ripple::Document; property :shape, String; timestamps! end 
   
   before :each do
     response = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
@@ -40,10 +38,6 @@ describe Ripple::Document::Timestamps do
     start = @box.updated_at
     @box.save
     @box.updated_at.should > start
-  end
-  
-  after :all do
-    Object.send(:remove_const, :Box)
   end
   
 end

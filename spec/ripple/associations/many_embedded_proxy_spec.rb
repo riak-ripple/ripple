@@ -14,22 +14,18 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations::ManyEmbeddedProxy do
-  before :all do
-    Object.module_eval do
-      class User
-        include Ripple::Document
-        many :addresses
-      end
-      
-      class Address
-        include Ripple::EmbeddedDocument
-        property :street, String, :presence => true
-        many :notes
-      end
-      
-      class Note; include Ripple::EmbeddedDocument; end
-    end
+  class User
+    include Ripple::Document
+    many :addresses
   end
+  
+  class Address
+    include Ripple::EmbeddedDocument
+    property :street, String, :presence => true
+    many :notes
+  end
+  
+  class Note; include Ripple::EmbeddedDocument; end
   
   before :each do
     @user    = User.new
@@ -128,11 +124,5 @@ describe Ripple::Document::Associations::ManyEmbeddedProxy do
     Address.stub!(:instantiate).and_return(@address)
     @user.addresses << @address
     @user.addresses.to_ary.should == [@address]
-  end
-  
-  after :all do
-    Object.send(:remove_const, :User)
-    Object.send(:remove_const, :Address)
-    Object.send(:remove_const, :Note)
   end
 end

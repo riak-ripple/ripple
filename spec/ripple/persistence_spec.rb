@@ -14,14 +14,10 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Persistence do
-  before :all do
-    Object.module_eval {
-      class Widget
-        include Ripple::Document
-        property :size, Integer
-        property :name, String, :default => "widget"
-      end
-    }
+  class Widget
+    include Ripple::Document
+    property :size, Integer
+    property :name, String, :default => "widget"
   end
 
   before :each do
@@ -96,10 +92,9 @@ describe Ripple::Document::Persistence do
   end
 
   describe "when storing a class using single-bucket inheritance" do
-    before :all do
-      Object.module_eval { class Cog < Widget; property :name, String, :default => "cog"; end }
-    end
-
+    
+    class Cog < Widget; property :name, String, :default => "cog"; end
+    
     before :each do
       @cog = Cog.new(:size => 1000)
     end
@@ -111,12 +106,5 @@ describe Ripple::Document::Persistence do
       @cog.should_not be_new_record
     end
 
-    after :all do
-      Object.send(:remove_const, :Cog)
-    end
-  end
-
-  after :all do
-    Object.send(:remove_const, :Widget)
   end
 end

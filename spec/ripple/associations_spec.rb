@@ -14,13 +14,10 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations do
-  before :all do
-    Object.module_eval do
-      class Invoice;  include Ripple::Document; one :customer; one :note; end
-      class Customer; include Ripple::Document; end
-      class Note;     include Ripple::EmbeddedDocument; end
-    end
-  end
+
+  class Invoice;  include Ripple::Document; one :customer; one :note; end
+  class Customer; include Ripple::Document; end
+  class Note;     include Ripple::EmbeddedDocument; end
 
   it "should provide access to the associations hash" do
     Invoice.should respond_to(:associations)
@@ -59,12 +56,6 @@ describe Ripple::Document::Associations do
       Invoice.instance_methods.should include("payee?")
     end
   end
-
-  after :all do
-    Object.send(:remove_const, :Invoice)
-    Object.send(:remove_const, :Customer)
-    Object.send(:remove_const, :Note)
-  end
 end
 
 describe Ripple::Document::Association do
@@ -90,9 +81,7 @@ describe Ripple::Document::Association do
   end
 
   describe "determining the target class" do
-    before :all do
-      class Leaf; end; class Branch; end; class Trunk; end
-    end
+    class Leaf; end; class Branch; end; class Trunk; end
 
     it "should default to the constantized class name" do
       @association = Ripple::Document::Association.new(:one, :t, :class_name => "Trunk")
@@ -107,12 +96,6 @@ describe Ripple::Document::Association do
     it "should use the :class option when given" do
       @association = Ripple::Document::Association.new(:many, :pages, :class => Leaf)
       @association.klass.should == Leaf
-    end
-
-    after :all do
-      Object.send(:remove_const, :Leaf)
-      Object.send(:remove_const, :Branch)
-      Object.send(:remove_const, :Trunk)
     end
   end
 

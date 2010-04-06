@@ -14,14 +14,10 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::AttributeMethods do
-  before :all do
-    Object.module_eval do
-      class Widget
-        include Ripple::Document
-        property :size, Integer
-        property :name, String, :default => "widget"
-      end
-    end
+  class Widget
+    include Ripple::Document
+    property :size, Integer
+    property :name, String, :default => "widget"
   end
 
   before :each do
@@ -40,13 +36,6 @@ describe Ripple::Document::AttributeMethods do
       @widget.key.should == "cog"
     end
 
-    # IMO it definitely should not
-    # *temporarily* removed
-    # it "should accept the key in mass assignment" do
-    #   @widget.attributes = {:key => "cog"}
-    #   @widget.key.should == "cog"
-    # end
-    
     it "should not set the key from mass assignment" do
       @widget.key = 'widget-key'
       @widget.attributes = {'key' => 'new-key'}
@@ -179,7 +168,4 @@ describe Ripple::Document::AttributeMethods do
     @widget['foo'].should == 'bar'
   end
 
-  after :all do
-    Object.send(:remove_const, :Widget)
-  end
 end

@@ -14,15 +14,14 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Finders do
-  before :all do
-    Object.module_eval do
-      class Box
-        include Ripple::Document
-        property :shape, String
-      end
-    end
-  end
 
+  class Box
+    include Ripple::Document
+    property :shape, String
+  end
+  
+  class CardboardBox < Box; end
+  
   before :each do
     @http = mock("HTTP Backend")
     @client = Ripple.client
@@ -34,9 +33,9 @@ describe Ripple::Document::Finders do
   it "should return an empty array if no keys are passed to find" do
     Box.find().should be_nil
   end
-  
+
   it "should raise Ripple::DocumentNotFound if an empty array is passed to find!" do
-    lambda { Box.find!() }.should raise_exception(Ripple::DocumentNotFound, "Couldn't find document without a key")
+    lambda { Box.find!() }.should raise_error(Ripple::DocumentNotFound, "Couldn't find document without a key")
   end
 
   describe "finding single documents" do
@@ -49,7 +48,7 @@ describe Ripple::Document::Finders do
       box.instance_variable_get(:@robject).should_not be_nil
       box.should_not be_new_record
     end
-    
+
     it "should find the first document using the first key with the bucket's keys" do
       box  = Box.new
       keys = ['some_boxes_key']
@@ -59,20 +58,19 @@ describe Ripple::Document::Finders do
       keys.should_receive(:first)
       Box.first.should == box
     end
-    
+
     it "should use find! when using first!" do
       box = Box.new
       Box.stub!(:find!).and_return(box)
       @bucket.stub!(:keys).and_return(['key'])
-      Box.should_receive(:find!)
       Box.first!.should == box
     end
-    
+
     it "should not raise an exception when finding an existing document with find!" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
-      lambda { Box.find!("square") }.should_not raise_exception(Ripple::DocumentNotFound)
+      lambda { Box.find!("square") }.should_not raise_error(Ripple::DocumentNotFound)
     end
-    
+
     it "should return the document when calling find!" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
       box = Box.find!("square")
@@ -84,24 +82,24 @@ describe Ripple::Document::Finders do
       box = Box.find("square")
       box.should be_nil
     end
-    
+
     it "should raise DocumentNotFound when using find! if no object exists at that key" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "404 not found"))
-      lambda { Box.find!("square") }.should raise_exception(Ripple::DocumentNotFound, "Couldn't find document with key: square")
+      lambda { Box.find!("square") }.should raise_error(Ripple::DocumentNotFound, "Couldn't find document with key: square")
     end
 
     it "should re-raise the failed request exception if not a 404" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, "500 internal server error"))
       lambda { Box.find("square") }.should raise_error(Riak::FailedRequest)
     end
-    
+
     it "should handle a key with a nil value" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => nil})
       box = Box.find("square")
       box.should be_kind_of(Box)
       box.key.should == "square"
     end
-      
+
   end
 
   describe "finding multiple documents" do
@@ -119,16 +117,16 @@ describe Ripple::Document::Finders do
         @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
         @http.should_receive(:get).with(200, "/riak/", "boxes", "rectangle", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, "404 not found"))
       end
-      
+
       it "should return nil for documents that no longer exist" do
         boxes = Box.find("square", "rectangle")
         boxes.should have(2).items
         boxes.first.shape.should == "square"
         boxes.last.should be_nil
       end
-    
+
       it "should raise Ripple::DocumentNotFound when calling find! if some of the documents do not exist" do
-        lambda { Box.find!("square", "rectangle") }.should raise_exception(Ripple::DocumentNotFound, "Couldn't find documents with keys: rectangle")
+        lambda { Box.find!("square", "rectangle") }.should raise_error(Ripple::DocumentNotFound, "Couldn't find documents with keys: rectangle")
       end
     end
   end
@@ -179,25 +177,13 @@ describe Ripple::Document::Finders do
   end
 
   describe "single-bucket inheritance" do
-    before :all do
-      Object.module_eval { class CardboardBox < Box; end }
-    end
-
     it "should instantiate as the proper type if defined in the document" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
       @http.should_receive(:get).with(200, "/riak/", "boxes", "rectangle", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"rectangle", "_type":"CardboardBox"}'})
       boxes = Box.find("square", "rectangle")
       boxes.should have(2).items
-      boxes.first.should_not be_kind_of(CardboardBox)
+      boxes.first.class.should == Box
       boxes.last.should be_kind_of(CardboardBox)
     end
-
-    after :all do
-      Object.send(:remove_const, :CardboardBox)
-    end
-  end
-
-  after :all do
-    Object.send(:remove_const, :Box)
   end
 end

@@ -14,22 +14,18 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations::OneEmbeddedProxy do
-  before :all do
-    Object.module_eval do
-      class Parent
-        include Ripple::Document
-        one :child
-      end
-      
-      class Child
-        include Ripple::EmbeddedDocument
-        property :name, String, :presence => true
-        one :gchild, :class_name => 'Grandchild'
-      end
-      
-      class Grandchild; include Ripple::EmbeddedDocument; end
-    end
+  class Parent
+    include Ripple::Document
+    one :child
   end
+  
+  class Child
+    include Ripple::EmbeddedDocument
+    property :name, String, :presence => true
+    one :gchild, :class_name => 'Grandchild'
+  end
+  
+  class Grandchild; include Ripple::EmbeddedDocument; end
   
   before :each do
     @parent = Parent.new
@@ -100,10 +96,5 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @gchild._root_document.should   == @parent
     @gchild._parent_document.should == @child
   end
-  
-  after :all do
-    Object.send(:remove_const, :Parent)
-    Object.send(:remove_const, :Child)
-    Object.send(:remove_const, :Grandchild)
-  end
+
 end

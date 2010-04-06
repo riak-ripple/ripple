@@ -14,9 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Persistence::Callbacks do
-  before :all do
-    Object.module_eval { class Box; include Ripple::Document; property :shape, String end }
-  end
+  class Box; include Ripple::Document; property :shape, String end
 
   it "should add create, update, save, and destroy callback declarations" do
     [:save, :create, :update, :destroy].each do |event|
@@ -78,9 +76,5 @@ describe Ripple::Document::Persistence::Callbacks do
         Box.reset_callbacks(type)
       end
     end
-  end
-
-  after :all do
-    Object.send(:remove_const, :Box)
   end
 end

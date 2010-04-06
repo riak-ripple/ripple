@@ -14,9 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Validations do
-  before :all do
-    Object.module_eval { class Box; include Ripple::Document; property :shape, String end }
-  end
+  class Box; include Ripple::Document; property :shape, String end 
 
   before :each do
     @box = Box.new
@@ -107,7 +105,4 @@ describe Ripple::Document::Validations do
     Box.reset_callbacks(:validate)
   end
   
-  after :all do
-    Object.send(:remove_const, :Box)
-  end
 end

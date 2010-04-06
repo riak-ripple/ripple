@@ -28,6 +28,11 @@ $server = MockServer.new
 at_exit { $server.stop }
 
 Rspec.configure do |config|
+  require 'rspec/expectations'
+  config.include Rspec::Matchers
+
+  config.mock_with :rspec
+  
   config.before(:each) do
     FakeWeb.clean_registry
   end

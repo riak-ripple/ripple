@@ -14,9 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument do
-  before :all do
-    Object.module_eval { class Address; include Ripple::EmbeddedDocument; end }
-  end
+  class Address; include Ripple::EmbeddedDocument; end
 
   it "should have a model name when included" do
     Address.should respond_to(:model_name)
@@ -25,9 +23,5 @@ describe Ripple::EmbeddedDocument do
 
   it "should be embeddable" do
     Address.should be_embeddable
-  end
-
-  after :all do
-    Object.send(:remove_const, :Address)
   end
 end

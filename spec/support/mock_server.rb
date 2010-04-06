@@ -21,9 +21,9 @@ class MockServer
     @block = nil
     @parent_thread = Thread.current
     @thread = Thread.new do
-      Rack::Handler::WEBrick.run(self, :Port => port, :AccessLog => [], :Logger => NullLogger.new)
+      Rack::Handler::WEBrick.run(self, :Port => port, :AccessLog => [], :Logger => NullLogger.new, :Host => '127.0.0.1')
     end
-    #sleep pause # give the server time to fire up… YUK!
+    sleep pause # give the server time to fire up… YUK!
   end
 
   def stop

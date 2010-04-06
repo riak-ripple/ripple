@@ -14,13 +14,9 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument::Persistence do
-  before :all do
-    Object.module_eval do
-      class User;    include Ripple::Document; one :address; end
-      class Address; include Ripple::EmbeddedDocument; end
-    end
-  end
-
+  class User;    include Ripple::Document; one :address; end
+  class Address; include Ripple::EmbeddedDocument; end
+  
   before :each do
     @root = mock("root document")
     @root.stub!(:new?).and_return(true)
@@ -57,9 +53,5 @@ describe Ripple::EmbeddedDocument::Persistence do
     @addr = Address.new
     @user.address = @addr
     @user.attributes_for_persistence.should == {'_type' => 'User', 'address' => {'_type' => 'Address'}}
-  end
-
-  after :all do
-    Object.send(:remove_const, :Address)
   end
 end
