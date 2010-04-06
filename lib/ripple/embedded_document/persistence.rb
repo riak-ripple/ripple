@@ -15,6 +15,13 @@ require 'ripple'
 
 module Ripple
   module EmbeddedDocument
+    class NoRootDocument < StandardError
+      include Translation
+      def initialize(doc, method)
+        super(t("no_root_document", :doc => doc.inspect, :method => method))
+      end
+    end
+    
     module Persistence
       extend ActiveSupport::Concern
       
@@ -28,21 +35,38 @@ module Ripple
         
         attr_reader :_parent_document
         
-        %w[new? save save!].each do |method|
-          module_eval <<-CODE, __FILE__, __LINE__
-            def #{method}(*args)
-              @_root_document ? @_root_document.send(#{method.to_sym.inspect}, *args) : super
-            end
-          CODE
+        # %w[new? save save!].each do |method|
+        #   module_eval <<-CODE, __FILE__, __LINE__
+        #     def #{method}(*args)
+        #       #$stderr.puts _root_document.inspect
+        #       _root_document ? _root_document.send(#{method.to_sym.inspect}, *args) : super
+        #     end
+        #   CODE
+        # end
+        
+        def new?
+          _root_document ? _root_document.new? : super
+        end
+        
+        def save
+          _root_document ? _root_document.save : raise(NoRootDocument.new(self, :save))
+        end
+        
+        def save!
+          _root_document ? _root_document.save! : raise(NoRootDocument.new(self, :save!))
+        end
+        
+        def _root_document
+          self.class.embeddable? ? @_root_document : self
         end
 
         def attributes_for_persistence
           attributes.merge("_type" => self.class.name).merge(embedded_attributes_for_persistence)
         end
-                
-        def _root_document
-          self.class.embeddable? ? @_root_document : self
-        end
+        #         
+        # def _root_document
+        #   self.class.embeddable? ? @_root_document : super
+        # end
         
         def _parent_document=(value)
           @_root_document   = value._root_document

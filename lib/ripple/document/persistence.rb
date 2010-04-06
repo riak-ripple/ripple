@@ -92,6 +92,10 @@ module Ripple
           @attributes.freeze; super
         end
         
+        def _root_document
+          self
+        end
+        
         protected
         attr_writer :robject
 

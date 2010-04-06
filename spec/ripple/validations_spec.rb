@@ -50,7 +50,7 @@ describe Ripple::Document::Validations do
     before(:each) { @box.stub!(:valid?).and_return(false) }
     
     it "should raise DocumentInvalid" do
-      lambda { @box.save! }.should raise_exception(Ripple::DocumentInvalid)
+      lambda { @box.save! }.should raise_error(Ripple::DocumentInvalid)
     end
   
     it "should raise an exception that has the invalid document" do
@@ -65,7 +65,7 @@ describe Ripple::Document::Validations do
   it "should not raise an error when save! is called and the document is valid" do
     @box.stub!(:save).and_return(true)
     @box.stub!(:valid?).and_return(true)
-    lambda { @box.save! }.should_not raise_exception(Ripple::DocumentInvalid)
+    lambda { @box.save! }.should_not raise_error(Ripple::DocumentInvalid)
   end
   
   it "should return true from save! when no exception is raised" do
@@ -77,14 +77,14 @@ describe Ripple::Document::Validations do
   it "should not raise an error when creating a box with create! succeeds" do
     @box.stub!(:new?).and_return(false)
     Box.stub(:create).and_return(@box)
-    lambda { @new_box = Box.create! }.should_not raise_exception(Ripple::DocumentInvalid)
+    lambda { @new_box = Box.create! }.should_not raise_error(Ripple::DocumentInvalid)
     @new_box.should == @box
   end
   
   it "should raise an error when creating a box with create! fails" do
     @box.stub!(:new?).and_return(true)
     Box.stub(:create).and_return(@box)
-    lambda { Box.create! }.should raise_exception(Ripple::DocumentInvalid)
+    lambda { Box.create! }.should raise_error(Ripple::DocumentInvalid)
   end
 
   it "should automatically add validations from property options" do

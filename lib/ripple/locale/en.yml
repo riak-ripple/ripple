@@ -20,3 +20,4 @@ en:
       no_key: "Couldn't find document without a key"
       one_key: "Couldn't find document with key: {{key}}"
       many_keys: "Couldn't find documents with keys: {{keys}}"
+    no_root_document: "You cannot call {{method}} on {{doc}} without a root document"

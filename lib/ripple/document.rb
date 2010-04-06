@@ -59,11 +59,6 @@ module Ripple
       include Ripple::EmbeddedDocument
       include Finders
     end
-    
-    module ClassMethods
-      def embeddable?
-        false
-      end
-    end
+
   end
 end

@@ -33,6 +33,16 @@ Rspec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = "spec/{ripple,riak}/**/*_spec.rb"
 end
 
+desc "Run Ripple Unit Specs Only"
+Rspec::Core::RakeTask.new(:spec_ripple) do |spec|
+  spec.pattern = "spec/ripple/**/*_spec.rb"
+end
+
+desc "Run Riak Unit Specs Only"
+Rspec::Core::RakeTask.new(:spec_riak) do |spec|
+  spec.pattern = "spec/riak/**/*_spec.rb"
+end
+
 desc "Run Integration Specs Only"
 Rspec::Core::RakeTask.new(:integration) do |spec|
   spec.pattern = "spec/integration/**/*_spec.rb"
