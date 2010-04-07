@@ -18,6 +18,9 @@ begin
 rescue LoadError
   warn "Skipping CurbBackend specs, curb library not found."
 else
+  $server = MockServer.new
+  at_exit { $server.stop }
+  
   describe Riak::Client::CurbBackend do
     def setup_http_mock(method, uri, options={})
       method = method.to_s.upcase
@@ -37,7 +40,7 @@ else
     end
 
     before :each do
-      @client = Riak::Client.new(:port => 4000) # Point to our mock
+      @client = Riak::Client.new(:port => $server.port) # Point to our mock
       @backend = Riak::Client::CurbBackend.new(@client)
     end
 

@@ -17,7 +17,10 @@
 require 'rack'
 
 class MockServer
-  def initialize(port = 4000, pause = 1)
+  attr_accessor :port
+  
+  def initialize(pause = 1)
+    self.port = 4000 + rand(61535)
     @block = nil
     @parent_thread = Thread.current
     @thread = Thread.new do
