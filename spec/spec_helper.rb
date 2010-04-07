@@ -22,11 +22,9 @@ require 'pathname'
 
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
-SPEC_PATH = Pathname.new(File.dirname(__FILE__)) unless defined?(SPEC_PATH)
-
 Rspec.configure do |config|
-  require 'rspec/expectations'
-  config.include Rspec::Matchers
+#   require 'rspec/expectations'
+#   config.include Rspec::Matchers
 
   config.mock_with :rspec
   
