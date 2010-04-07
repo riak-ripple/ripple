@@ -14,8 +14,8 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument::Finders do
-  class Address; include Ripple::EmbeddedDocument; end 
-  class Favorite; include Ripple::EmbeddedDocument; end
+  require 'support/models/address'
+  require 'support/models/favorite'
 
   before :each do
     @addr = Address.new

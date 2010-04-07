@@ -14,15 +14,25 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument::Persistence do
-  class User;    include Ripple::Document; one :address; end
-  class Address; include Ripple::EmbeddedDocument; end
+  require 'support/models/user'
+  require 'support/models/address'
   
   before :each do
-    @root = mock("root document")
-    @root.stub!(:new?).and_return(true)
-    @root.stub!(:_root_document).and_return(@root)
+    @root = User.new
     @addr = Address.new
     @addr._parent_document = @root
+  end
+  
+  it "should be embeddable if including Ripple::EmbeddedDocument" do
+    @addr.should be_embeddable
+  end
+  
+  it "should not be a root document if including Ripple::EmbeddedDocument" do
+    @addr.should_not be__root_document
+  end
+  
+  it "should be a root document if including Ripple::Document" do
+    @root.should be__root_document
   end
 
   it "should delegate new? to the root document" do
@@ -39,6 +49,16 @@ describe Ripple::EmbeddedDocument::Persistence do
     @root.should_receive(:save!).and_return(true)
     @addr.save!.should be_true
   end
+  
+  it "should raise NoRootDocument when calling save without a root document" do
+    @addr = Address.new
+    lambda { @addr.save }.should raise_error(Ripple::NoRootDocument)
+  end
+  
+  it "should raise NoRootDocument when calling save! without a root document" do
+    @addr = Address.new
+    lambda { @addr.save! }.should raise_error(Ripple::NoRootDocument)
+  end
 
   it "should have a root document" do
     @addr._root_document.should == @root
@@ -49,9 +69,8 @@ describe Ripple::EmbeddedDocument::Persistence do
   end
   
   it "should properly create embedded attributes for persistence" do
-    @user = User.new
     @addr = Address.new
-    @user.address = @addr
-    @user.attributes_for_persistence.should == {'_type' => 'User', 'address' => {'_type' => 'Address'}}
+    @root.addresses << @addr
+    @root.attributes_for_persistence.should == {'_type' => 'User', 'addresses' => [{'_type' => 'Address', 'street' => nil}]}
   end
 end

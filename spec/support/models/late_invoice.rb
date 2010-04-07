@@ -1,0 +1,3 @@
+
+class LateInvoice < Invoice
+end

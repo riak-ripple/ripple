@@ -14,10 +14,9 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations do
-
-  class Invoice;  include Ripple::Document; one :customer; one :note; end
-  class Customer; include Ripple::Document; end
-  class Note;     include Ripple::EmbeddedDocument; end
+  require 'support/models/invoice'
+  require 'support/models/customer'
+  require 'support/models/note'
 
   it "should provide access to the associations hash" do
     Invoice.should respond_to(:associations)
@@ -35,25 +34,24 @@ describe Ripple::Document::Associations do
 
   it "should copy associations to a subclass" do
     Invoice.associations[:foo] = "bar"
-    class PaidInvoice < Invoice; end
-    PaidInvoice.associations[:foo].should == "bar"
-    Object.send(:remove_const, :PaidInvoice)
+    class SubInvoice < Invoice; end
+    SubInvoice.associations[:foo].should == "bar"
   end
 
   describe "when adding a :many association" do
     it "should add accessor and mutator methods" do
       Invoice.many :items
-      Invoice.instance_methods.should include("items")
-      Invoice.instance_methods.should include("items=")
+      Invoice.instance_methods.map(&:to_sym).should include(:items)
+      Invoice.instance_methods.map(&:to_sym).should include(:items=)
     end
   end
 
   describe "when adding a :one association" do
     it "should add accessor, mutator, and query methods" do
       Invoice.one :payee
-      Invoice.instance_methods.should include("payee")
-      Invoice.instance_methods.should include("payee=")
-      Invoice.instance_methods.should include("payee?")
+      Invoice.instance_methods.map(&:to_sym).should include(:payee)
+      Invoice.instance_methods.map(&:to_sym).should include(:payee=)
+      Invoice.instance_methods.map(&:to_sym).should include(:payee?)
     end
   end
 end
@@ -81,7 +79,7 @@ describe Ripple::Document::Association do
   end
 
   describe "determining the target class" do
-    class Leaf; end; class Branch; end; class Trunk; end
+    require 'support/models/tree'
 
     it "should default to the constantized class name" do
       @association = Ripple::Document::Association.new(:one, :t, :class_name => "Trunk")

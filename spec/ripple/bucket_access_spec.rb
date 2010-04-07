@@ -14,9 +14,9 @@
 require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Ripple::Document::BucketAccess do
-  class Invoice; include Ripple::Document; end
-  class LateInvoice < Invoice; end
-  class PaidInvoice < Invoice; self.bucket_name = "paid"; end
+  require 'support/models/invoice'
+  require 'support/models/late_invoice'
+  require 'support/models/paid_invoice'
 
   it "should use the plural model name as the bucket name" do
     Invoice.bucket_name.should == "invoices"

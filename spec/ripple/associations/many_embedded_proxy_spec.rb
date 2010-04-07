@@ -14,19 +14,10 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations::ManyEmbeddedProxy do
-  class User
-    include Ripple::Document
-    many :addresses
-  end
-  
-  class Address
-    include Ripple::EmbeddedDocument
-    property :street, String, :presence => true
-    many :notes
-  end
-  
-  class Note; include Ripple::EmbeddedDocument; end
-  
+  require 'support/models/user'
+  require 'support/models/address'
+  require 'support/models/note'
+    
   before :each do
     @user    = User.new
     @address = Address.new

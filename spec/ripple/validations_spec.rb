@@ -14,7 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Validations do
-  class Box; include Ripple::Document; property :shape, String end 
+  require 'support/models/box'
 
   before :each do
     @box = Box.new

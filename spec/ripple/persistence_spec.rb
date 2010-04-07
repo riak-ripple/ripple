@@ -14,11 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Persistence do
-  class Widget
-    include Ripple::Document
-    property :size, Integer
-    property :name, String, :default => "widget"
-  end
+  require 'support/models/widget'
 
   before :each do
     @http = mock("HTTP Backend")

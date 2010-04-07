@@ -25,12 +25,12 @@ module Ripple
     included do
       extend ActiveModel::Naming
       extend Ripple::Document::Properties
-      include Finders
-      include Persistence
       include Ripple::Document::AttributeMethods
       include Ripple::Document::Timestamps
       include Ripple::Document::Validations
       include Ripple::Document::Associations
+      include Finders
+      include Persistence
     end
 
     module ClassMethods

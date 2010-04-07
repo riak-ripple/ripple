@@ -14,7 +14,7 @@
 require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Ripple::Document do
-  class Page; include Ripple::Document; end 
+  require 'support/models/page'
   
   it "should add bucket access methods to classes when included" do
     Page.singleton_class.included_modules.should include(Ripple::Document::BucketAccess)

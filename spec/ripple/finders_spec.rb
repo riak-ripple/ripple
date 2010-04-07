@@ -14,13 +14,8 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Finders do
-
-  class Box
-    include Ripple::Document
-    property :shape, String
-  end
-  
-  class CardboardBox < Box; end
+  require 'support/models/box'
+  require 'support/models/cardboard_box'
   
   before :each do
     @http = mock("HTTP Backend")

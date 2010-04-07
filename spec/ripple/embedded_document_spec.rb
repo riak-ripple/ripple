@@ -14,7 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::EmbeddedDocument do
-  class Address; include Ripple::EmbeddedDocument; end
+  require 'support/models/address'
 
   it "should have a model name when included" do
     Address.should respond_to(:model_name)

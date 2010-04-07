@@ -14,18 +14,7 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations::OneEmbeddedProxy do
-  class Parent
-    include Ripple::Document
-    one :child
-  end
-  
-  class Child
-    include Ripple::EmbeddedDocument
-    property :name, String, :presence => true
-    one :gchild, :class_name => 'Grandchild'
-  end
-  
-  class Grandchild; include Ripple::EmbeddedDocument; end
+  require 'support/models/family'
   
   before :each do
     @parent = Parent.new

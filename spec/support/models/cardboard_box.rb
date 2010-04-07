@@ -1,0 +1,3 @@
+
+class CardboardBox < Box
+end

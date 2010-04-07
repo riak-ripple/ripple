@@ -14,7 +14,7 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Document::Properties do
-  class Email; include Ripple::Document; end
+  require 'support/models/email'
 
   it "should make the model class have a property definition method" do
     Email.should respond_to(:property)

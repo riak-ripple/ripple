@@ -55,9 +55,9 @@ module Ripple
 
     included do
       extend BucketAccess
-      include Persistence
+      include Ripple::Document::Persistence
       include Ripple::EmbeddedDocument
-      include Finders
+      include Ripple::Document::Finders
     end
 
   end
