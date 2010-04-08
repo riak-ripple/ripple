@@ -15,29 +15,15 @@ require 'ripple'
 
 module Ripple
   module EmbeddedDocument
-    extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
+    module Conversion
+      extend ActiveSupport::Concern
 
-    autoload :Conversion
-    autoload :Finders
-    autoload :Persistence
-    include Translation
-
-    included do
-      extend ActiveModel::Naming
-      extend Ripple::Document::Properties
-      include Ripple::Document::AttributeMethods
-      include Ripple::Document::Timestamps
-      include Ripple::Document::Validations
-      include Ripple::Document::Associations
-      include Conversion
-      include Finders
-      include Persistence
-    end
-
-    module ClassMethods
-      def embeddable?
-        !included_modules.include?(Document)
+      module InstanceMethods
+        include ActiveModel::Conversion
+        
+        def to_key
+          new? ? nil : [key]
+        end
       end
     end
   end

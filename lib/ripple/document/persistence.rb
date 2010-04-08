@@ -51,7 +51,6 @@ module Ripple
         def new?
           @new || false
         end
-        alias :new_record? :new?
 
         # Saves the document in Riak.
         # @return [true,false] whether the document succeeded in saving
