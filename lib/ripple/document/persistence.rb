@@ -29,10 +29,7 @@ module Ripple
         
         # Instantiates a new record, applies attributes from a block, and saves it
         def create(attrs={}, &block)
-          new(attrs).tap do |obj|
-            block.call(obj) if block_given?
-            obj.save
-          end
+          new(attrs, &block).tap {|s| s.save}
         end
 
         # Destroys all records one at a time.

@@ -76,10 +76,11 @@ module Ripple
         end
 
         # @private
-        def initialize(attrs={})
+        def initialize(attrs={}, &block)
           super()
           @attributes = attributes_from_property_defaults
           self.attributes = attrs
+          tap { |obj| block.call(obj) } if block_given?
         end
 
         # @private
