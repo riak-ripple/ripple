@@ -28,7 +28,6 @@ module Ripple
       autoload :Dirty
 
       included do
-        attr_accessor :key
         include Read
         include Write
         include Query
@@ -50,6 +49,8 @@ module Ripple
       end
 
       module InstanceMethods
+        attr_accessor :key
+        
         # A copy of the values of all attributes in the Document. The result
         # is not memoized, so use sparingly.  This does not include associated objects,
         # nor embedded documents.
@@ -73,6 +74,10 @@ module Ripple
               __send__(:attribute=,k,v)
             end
           end
+        end
+        
+        def key=(value)
+          @key = value.to_s
         end
 
         # @private

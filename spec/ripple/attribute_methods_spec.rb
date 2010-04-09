@@ -37,6 +37,11 @@ describe Ripple::Document::AttributeMethods do
       @widget.attributes = {'key' => 'new-key'}
       @widget.key.should == 'widget-key'
     end
+    
+    it "should typecast the key to a string" do
+      @widget.key = 10
+      @widget.key.should == "10"
+    end
 
   end
 
