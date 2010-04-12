@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sean Cribbs"]
-  s.date = %q{2010-04-07}
+  s.date = %q{2010-04-12}
   s.default_executable = %q{rirb}
   s.description = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.  It includes all the basics of accessing and manipulating Riak buckets and objects, and an object mapper library for building a rich domain on top of Riak.}
   s.email = %q{seancribbs@gmail.com}
@@ -66,14 +66,15 @@ Gem::Specification.new do |s|
      "lib/ripple/document/attribute_methods/read.rb",
      "lib/ripple/document/attribute_methods/write.rb",
      "lib/ripple/document/bucket_access.rb",
+     "lib/ripple/document/callbacks.rb",
      "lib/ripple/document/finders.rb",
      "lib/ripple/document/persistence.rb",
-     "lib/ripple/document/persistence/callbacks.rb",
      "lib/ripple/document/properties.rb",
      "lib/ripple/document/timestamps.rb",
      "lib/ripple/document/validations.rb",
      "lib/ripple/document/validations/associated_validator.rb",
      "lib/ripple/embedded_document.rb",
+     "lib/ripple/embedded_document/conversion.rb",
      "lib/ripple/embedded_document/finders.rb",
      "lib/ripple/embedded_document/persistence.rb",
      "lib/ripple/i18n.rb",
@@ -109,6 +110,7 @@ Gem::Specification.new do |s|
      "spec/ripple/callbacks_spec.rb",
      "spec/ripple/core_ext_spec.rb",
      "spec/ripple/document_spec.rb",
+     "spec/ripple/embedded_document/conversion_spec.rb",
      "spec/ripple/embedded_document/finders_spec.rb",
      "spec/ripple/embedded_document/persistence_spec.rb",
      "spec/ripple/embedded_document_spec.rb",
@@ -172,6 +174,7 @@ Gem::Specification.new do |s|
      "spec/ripple/callbacks_spec.rb",
      "spec/ripple/core_ext_spec.rb",
      "spec/ripple/document_spec.rb",
+     "spec/ripple/embedded_document/conversion_spec.rb",
      "spec/ripple/embedded_document/finders_spec.rb",
      "spec/ripple/embedded_document/persistence_spec.rb",
      "spec/ripple/embedded_document_spec.rb",
