@@ -30,6 +30,7 @@ module Ripple
       include Ripple::Document::Timestamps
       include Ripple::Document::Validations
       include Ripple::Document::Associations
+      include Ripple::Document::Callbacks
       include Conversion
       include Finders
       include Persistence

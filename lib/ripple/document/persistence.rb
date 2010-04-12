@@ -18,12 +18,6 @@ module Ripple
     module Persistence
       extend ActiveSupport::Concern
       extend ActiveSupport::Autoload
-
-      autoload :Callbacks
-
-      included do
-        include Ripple::Document::Persistence::Callbacks
-      end
       
       module ClassMethods
         
