@@ -11,13 +11,13 @@ begin
     gem.email = "seancribbs@gmail.com"
     gem.homepage = "http://seancribbs.github.com/ripple"
     gem.authors = ["Sean Cribbs"]
-    gem.add_development_dependency "rspec", "~>2.0.0.beta.5"
+    gem.add_development_dependency "rspec", "~>2.0.0.beta.6"
     gem.add_development_dependency "fakeweb", ">=1.2"
     gem.add_development_dependency "rack", ">=1.0"
     gem.add_development_dependency "yard", ">=0.5.2"
     gem.add_development_dependency "curb", ">=0.6"
-    gem.add_dependency "activesupport", "3.0.0.beta2"
-    gem.add_dependency "activemodel", "3.0.0.beta2"
+    gem.add_dependency "activesupport", "3.0.0.beta3"
+    gem.add_dependency "activemodel", "3.0.0.beta3"
     gem.requirements << "`gem install curb` for better HTTP performance"
   end
   Jeweler::GemcutterTasks.new
