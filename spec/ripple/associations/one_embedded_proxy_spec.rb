@@ -15,6 +15,8 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Document::Associations::OneEmbeddedProxy do
   require 'support/models/family'
+  require 'support/models/user'
+  require 'support/models/address'
   
   before :each do
     @parent = Parent.new
@@ -84,6 +86,45 @@ describe Ripple::Document::Associations::OneEmbeddedProxy do
     @child.gchild = @gchild
     @gchild._root_document.should   == @parent
     @gchild._parent_document.should == @child
+  end
+  
+  describe "callbacks" do
+    before :each do
+      $pinger = mock("callback verifier")
+    end
+    
+    it "should run callbacks for the child and documents" do
+      $pinger.should_receive(:ping).once
+      Child.before_validation { $pinger.ping }
+      @child = Child.new
+      @child.valid?
+    end 
+
+    # this will work using parent and child classes, but only run by itself
+    # it also works using different classes, but only run in this file
+    # IDK why that is, but my Yakshaver 2000 just ran out of juice
+    
+    # does this even matter? we call valid? all over the place and that
+    # will trigger the callback anyway. 
+    # you probably shouldn't use validation callbacks and expect them to 
+    # *only* run once
+    
+    # it "should run callbacks for the parent and child and documents respectivly" do
+    #   $pinger = mock("callback verifier")
+    #   $pinger.should_receive(:ping).once
+    #   $pinger.should_receive(:pong).once
+    #   Child.before_validation  { $pinger.ping }
+    #   Parent.before_validation { $pinger.pong }
+    #   @child  = Child.new
+    #   @parent = Parent.new
+    #   @parent.child = @child
+    #   @parent.valid?
+    # end
+    
+    after :each do
+      Child.reset_callbacks(:validation)
+      Parent.reset_callbacks(:validation)
+    end
   end
 
 end

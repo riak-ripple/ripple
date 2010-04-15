@@ -14,4 +14,8 @@ describe Riak::Util::Escape do
   it "should escape slashes" do
     @object.escape("some/inner/path").should == "some%2Finner%2Fpath"
   end
+  
+  it "should convert the bucket or key to a string before escaping" do
+    @object.escape(125).should == '125'
+  end
 end

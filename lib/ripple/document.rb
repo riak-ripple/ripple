@@ -46,6 +46,7 @@ module Ripple
     autoload :Associations
     autoload :AttributeMethods
     autoload :BucketAccess
+    autoload :Callbacks
     autoload :Finders
     autoload :Persistence
     autoload :Properties

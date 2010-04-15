@@ -49,6 +49,12 @@ module Ripple
           end
         end
         
+        # because alias_method doesn't like super
+        def new_record?; new?; end
+        
+        # for ActiveModel::Conversion
+        def persisted?; !new?; end
+        
         def save(*args)
           if _root_document?
             super

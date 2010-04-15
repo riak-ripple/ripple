@@ -111,6 +111,11 @@ describe Ripple::Document::Associations::ManyEmbeddedProxy do
     @note._parent_document.should == @address
   end
   
+  it "should allow assiging child documents as an array of hashes" do
+    @user.attributes = {'addresses' => [{'street' => '123 Somewhere'}]}
+    @user.addresses.first.street.should == '123 Somewhere'
+  end
+  
   it "should return an array from to_ary" do
     Address.stub!(:instantiate).and_return(@address)
     @user.addresses << @address

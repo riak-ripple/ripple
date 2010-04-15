@@ -18,6 +18,7 @@ module Ripple
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
 
+    autoload :Conversion
     autoload :Finders
     autoload :Persistence
     include Translation
@@ -29,6 +30,8 @@ module Ripple
       include Ripple::Document::Timestamps
       include Ripple::Document::Validations
       include Ripple::Document::Associations
+      include Ripple::Document::Callbacks
+      include Conversion
       include Finders
       include Persistence
     end

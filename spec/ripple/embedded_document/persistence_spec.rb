@@ -68,6 +68,16 @@ describe Ripple::EmbeddedDocument::Persistence do
      @addr._parent_document.should == @root
   end
   
+  it "should respond to new_record?" do
+    @addr.should respond_to(:new_record?)
+    @addr.should be_a_new_record
+  end
+  
+  it "should respond to persisted" do
+    @addr.should respond_to(:persisted?)
+    @addr.should_not be_persisted
+  end
+  
   it "should properly create embedded attributes for persistence" do
     @addr = Address.new
     @root.addresses << @addr

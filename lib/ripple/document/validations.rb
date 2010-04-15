@@ -66,11 +66,6 @@ module Ripple
           (raise Ripple::DocumentInvalid.new(self) unless save) || true
         end
         
-        # @private
-        def valid?
-          @_on_validate = new? ? :create : :update
-          super
-        end
       end
     end
   end

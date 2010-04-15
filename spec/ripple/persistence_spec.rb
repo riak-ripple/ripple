@@ -30,7 +30,7 @@ describe Ripple::Document::Persistence do
     @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
     @widget.save
     @widget.key.should == "new_widget"
-    @widget.should_not be_new_record
+    @widget.should_not be_a_new_record
     @widget.changes.should be_blank
   end
   
@@ -39,7 +39,7 @@ describe Ripple::Document::Persistence do
     @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
     @widget = Widget.create(:size => 10)
     @widget.size.should == 10
-    @widget.should_not be_new_record
+    @widget.should_not be_a_new_record
   end
   
   it "should instantiate and save a new object to riak and allow its attributes to be set via a block" do
@@ -49,7 +49,7 @@ describe Ripple::Document::Persistence do
       widget.size = 10
     end
     @widget.size.should == 10
-    @widget.should_not be_new_record
+    @widget.should_not be_a_new_record
   end
 
   it "should reload a saved object" do

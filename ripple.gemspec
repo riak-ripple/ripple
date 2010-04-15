@@ -9,9 +9,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sean Cribbs"]
-  s.date = %q{2010-03-17}
+  s.date = %q{2010-04-14}
+  s.default_executable = %q{rirb}
   s.description = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.  It includes all the basics of accessing and manipulating Riak buckets and objects, and an object mapper library for building a rich domain on top of Riak.}
   s.email = %q{seancribbs@gmail.com}
+  s.executables = ["rirb"]
   s.extra_rdoc_files = [
     "LICENSE",
      "README.textile"
@@ -19,12 +21,14 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     ".rspec",
      "CONTRIBUTORS.textile",
      "LICENSE",
      "README.textile",
      "RELEASE_NOTES.textile",
      "Rakefile",
      "VERSION",
+     "bin/rirb",
      "lib/riak.rb",
      "lib/riak/bucket.rb",
      "lib/riak/client.rb",
@@ -48,28 +52,44 @@ Gem::Specification.new do |s|
      "lib/ripple.rb",
      "lib/ripple/core_ext/casting.rb",
      "lib/ripple/document.rb",
+     "lib/ripple/document/associations.rb",
+     "lib/ripple/document/associations/embedded.rb",
+     "lib/ripple/document/associations/instantiators.rb",
+     "lib/ripple/document/associations/linked.rb",
+     "lib/ripple/document/associations/many.rb",
+     "lib/ripple/document/associations/many_embedded_proxy.rb",
+     "lib/ripple/document/associations/one.rb",
+     "lib/ripple/document/associations/one_embedded_proxy.rb",
+     "lib/ripple/document/associations/proxy.rb",
      "lib/ripple/document/attribute_methods.rb",
      "lib/ripple/document/attribute_methods/dirty.rb",
      "lib/ripple/document/attribute_methods/query.rb",
      "lib/ripple/document/attribute_methods/read.rb",
      "lib/ripple/document/attribute_methods/write.rb",
      "lib/ripple/document/bucket_access.rb",
+     "lib/ripple/document/callbacks.rb",
      "lib/ripple/document/finders.rb",
      "lib/ripple/document/persistence.rb",
-     "lib/ripple/document/persistence/callbacks.rb",
      "lib/ripple/document/properties.rb",
      "lib/ripple/document/timestamps.rb",
      "lib/ripple/document/validations.rb",
+     "lib/ripple/document/validations/associated_validator.rb",
      "lib/ripple/embedded_document.rb",
+     "lib/ripple/embedded_document/conversion.rb",
+     "lib/ripple/embedded_document/finders.rb",
      "lib/ripple/embedded_document/persistence.rb",
      "lib/ripple/i18n.rb",
      "lib/ripple/locale/en.yml",
      "lib/ripple/property_type_mismatch.rb",
+     "lib/ripple/railtie.rb",
      "lib/ripple/translation.rb",
      "ripple.gemspec",
      "spec/fixtures/cat.jpg",
+     "spec/fixtures/config.yml",
      "spec/fixtures/multipart-blank.txt",
      "spec/fixtures/multipart-with-body.txt",
+     "spec/integration/ripple/associations_spec.rb",
+     "spec/integration/ripple/persistence_spec.rb",
      "spec/riak/bucket_spec.rb",
      "spec/riak/client_spec.rb",
      "spec/riak/curb_backend_spec.rb",
@@ -82,11 +102,18 @@ Gem::Specification.new do |s|
      "spec/riak/net_http_backend_spec.rb",
      "spec/riak/object_spec.rb",
      "spec/riak/walk_spec_spec.rb",
+     "spec/ripple/associations/many_embedded_proxy_spec.rb",
+     "spec/ripple/associations/one_embedded_proxy_spec.rb",
+     "spec/ripple/associations/proxy_spec.rb",
+     "spec/ripple/associations_spec.rb",
      "spec/ripple/attribute_methods_spec.rb",
      "spec/ripple/bucket_access_spec.rb",
      "spec/ripple/callbacks_spec.rb",
      "spec/ripple/core_ext_spec.rb",
      "spec/ripple/document_spec.rb",
+     "spec/ripple/embedded_document/conversion_spec.rb",
+     "spec/ripple/embedded_document/finders_spec.rb",
+     "spec/ripple/embedded_document/persistence_spec.rb",
      "spec/ripple/embedded_document_spec.rb",
      "spec/ripple/finders_spec.rb",
      "spec/ripple/persistence_spec.rb",
@@ -94,10 +121,28 @@ Gem::Specification.new do |s|
      "spec/ripple/ripple_spec.rb",
      "spec/ripple/timestamps_spec.rb",
      "spec/ripple/validations_spec.rb",
-     "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/support/http_backend_implementation_examples.rb",
-     "spec/support/mock_server.rb"
+     "spec/support/integration.rb",
+     "spec/support/mock_server.rb",
+     "spec/support/mocks.rb",
+     "spec/support/models/address.rb",
+     "spec/support/models/box.rb",
+     "spec/support/models/cardboard_box.rb",
+     "spec/support/models/clock.rb",
+     "spec/support/models/customer.rb",
+     "spec/support/models/email.rb",
+     "spec/support/models/family.rb",
+     "spec/support/models/favorite.rb",
+     "spec/support/models/invoice.rb",
+     "spec/support/models/late_invoice.rb",
+     "spec/support/models/note.rb",
+     "spec/support/models/page.rb",
+     "spec/support/models/paid_invoice.rb",
+     "spec/support/models/tree.rb",
+     "spec/support/models/user.rb",
+     "spec/support/models/widget.rb",
+     "specs.watchr"
   ]
   s.homepage = %q{http://seancribbs.github.com/ripple}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -106,7 +151,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.}
   s.test_files = [
-    "spec/riak/bucket_spec.rb",
+    "spec/integration/ripple/associations_spec.rb",
+     "spec/integration/ripple/persistence_spec.rb",
+     "spec/riak/bucket_spec.rb",
      "spec/riak/client_spec.rb",
      "spec/riak/curb_backend_spec.rb",
      "spec/riak/escape_spec.rb",
@@ -118,11 +165,18 @@ Gem::Specification.new do |s|
      "spec/riak/net_http_backend_spec.rb",
      "spec/riak/object_spec.rb",
      "spec/riak/walk_spec_spec.rb",
+     "spec/ripple/associations/many_embedded_proxy_spec.rb",
+     "spec/ripple/associations/one_embedded_proxy_spec.rb",
+     "spec/ripple/associations/proxy_spec.rb",
+     "spec/ripple/associations_spec.rb",
      "spec/ripple/attribute_methods_spec.rb",
      "spec/ripple/bucket_access_spec.rb",
      "spec/ripple/callbacks_spec.rb",
      "spec/ripple/core_ext_spec.rb",
      "spec/ripple/document_spec.rb",
+     "spec/ripple/embedded_document/conversion_spec.rb",
+     "spec/ripple/embedded_document/finders_spec.rb",
+     "spec/ripple/embedded_document/persistence_spec.rb",
      "spec/ripple/embedded_document_spec.rb",
      "spec/ripple/finders_spec.rb",
      "spec/ripple/persistence_spec.rb",
@@ -132,7 +186,25 @@ Gem::Specification.new do |s|
      "spec/ripple/validations_spec.rb",
      "spec/spec_helper.rb",
      "spec/support/http_backend_implementation_examples.rb",
-     "spec/support/mock_server.rb"
+     "spec/support/integration.rb",
+     "spec/support/mock_server.rb",
+     "spec/support/mocks.rb",
+     "spec/support/models/address.rb",
+     "spec/support/models/box.rb",
+     "spec/support/models/cardboard_box.rb",
+     "spec/support/models/clock.rb",
+     "spec/support/models/customer.rb",
+     "spec/support/models/email.rb",
+     "spec/support/models/family.rb",
+     "spec/support/models/favorite.rb",
+     "spec/support/models/invoice.rb",
+     "spec/support/models/late_invoice.rb",
+     "spec/support/models/note.rb",
+     "spec/support/models/page.rb",
+     "spec/support/models/paid_invoice.rb",
+     "spec/support/models/tree.rb",
+     "spec/support/models/user.rb",
+     "spec/support/models/widget.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -140,30 +212,30 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 1.3"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.0.0.beta.6"])
       s.add_development_dependency(%q<fakeweb>, [">= 1.2"])
       s.add_development_dependency(%q<rack>, [">= 1.0"])
       s.add_development_dependency(%q<yard>, [">= 0.5.2"])
       s.add_development_dependency(%q<curb>, [">= 0.6"])
-      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0.0.beta"])
-      s.add_runtime_dependency(%q<activemodel>, ["~> 3.0.0.beta"])
+      s.add_runtime_dependency(%q<activesupport>, ["= 3.0.0.beta3"])
+      s.add_runtime_dependency(%q<activemodel>, ["= 3.0.0.beta3"])
     else
-      s.add_dependency(%q<rspec>, [">= 1.3"])
+      s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.6"])
       s.add_dependency(%q<fakeweb>, [">= 1.2"])
       s.add_dependency(%q<rack>, [">= 1.0"])
       s.add_dependency(%q<yard>, [">= 0.5.2"])
       s.add_dependency(%q<curb>, [">= 0.6"])
-      s.add_dependency(%q<activesupport>, ["~> 3.0.0.beta"])
-      s.add_dependency(%q<activemodel>, ["~> 3.0.0.beta"])
+      s.add_dependency(%q<activesupport>, ["= 3.0.0.beta3"])
+      s.add_dependency(%q<activemodel>, ["= 3.0.0.beta3"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 1.3"])
+    s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.6"])
     s.add_dependency(%q<fakeweb>, [">= 1.2"])
     s.add_dependency(%q<rack>, [">= 1.0"])
     s.add_dependency(%q<yard>, [">= 0.5.2"])
     s.add_dependency(%q<curb>, [">= 0.6"])
-    s.add_dependency(%q<activesupport>, ["~> 3.0.0.beta"])
-    s.add_dependency(%q<activemodel>, ["~> 3.0.0.beta"])
+    s.add_dependency(%q<activesupport>, ["= 3.0.0.beta3"])
+    s.add_dependency(%q<activemodel>, ["= 3.0.0.beta3"])
   end
 end
 

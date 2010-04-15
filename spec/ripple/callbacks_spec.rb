@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Document::Persistence::Callbacks do
+describe Ripple::Document::Callbacks do
   require 'support/models/box'
 
   it "should add create, update, save, and destroy callback declarations" do
@@ -23,6 +23,12 @@ describe Ripple::Document::Persistence::Callbacks do
         Box.should respond_to("#{time}_#{event}")
       end
     end
+  end
+
+  it "should validate callback declarations" do
+    Box.private_instance_methods.map(&:to_s).should include("_run_validation_callbacks")
+    Box.should respond_to("before_validation")
+    Box.should respond_to("after_validation")
   end
 
   describe "invoking callbacks" do
@@ -70,9 +76,53 @@ describe Ripple::Document::Persistence::Callbacks do
       @box = Box.new
       @box.destroy
     end
+    
+    describe "validation callbacks" do
+      it "should call validation callbacks" do
+        Box.before_validation { $pinger.ping }
+        Box.after_validation  { $pinger.ping }
+        $pinger.should_receive(:ping).twice
+        @box = Box.new
+        @box.valid?
+      end
+      
+      it "should call validation callbacks only if the document is new" do
+        Box.before_validation(:on => :create) { $pinger.ping }
+        Box.after_validation(:on => :create) { $pinger.ping }
+        $pinger.should_receive(:ping).twice
+        @box = Box.new
+        @box.valid?
+      end
+
+      it "should not call validation callbacks only if the document is new" do
+        Box.before_validation(:on => :update) { $pinger.ping }
+        Box.after_validation(:on => :update) { $pinger.ping }
+        $pinger.should_not_receive(:ping)
+        @box = Box.new
+        @box.valid?
+      end
+      
+      it "should call validation callbacks only if the document is not new" do
+        Box.before_validation(:on => :update) { $pinger.ping }
+        Box.after_validation(:on => :update) { $pinger.ping }
+        $pinger.should_receive(:ping).twice
+        @box = Box.new
+        @box.stub(:new?).and_return(false)
+        @box.valid?
+      end
+
+      it "should not call validation callbacks only if the document is not new" do
+        Box.before_validation(:on => :create) { $pinger.ping }
+        Box.after_validation(:on => :create) { $pinger.ping }
+        $pinger.should_not_receive(:ping)
+        @box = Box.new
+        @box.stub!(:new?).and_return(false)
+        @box.valid?
+      end
+    end
 
     after :each do
-      [:save, :create, :update, :destroy].each do |type|
+      [:save, :create, :update, :destroy, :validation].each do |type|
         Box.reset_callbacks(type)
       end
     end

@@ -37,6 +37,11 @@ describe Ripple::Document::AttributeMethods do
       @widget.attributes = {'key' => 'new-key'}
       @widget.key.should == 'widget-key'
     end
+    
+    it "should typecast the key to a string" do
+      @widget.key = 10
+      @widget.key.should == "10"
+    end
 
   end
 
@@ -152,16 +157,21 @@ describe Ripple::Document::AttributeMethods do
     @widget.changes.should be_blank
   end
   
-  it "should allow adding to the @attributs hash for attributes that do no exist" do
+  it "should allow adding to the @attributes hash for attributes that do no exist" do
     @widget = Widget.new
     @widget['foo'] = 'bar'
     @widget.instance_eval { @attributes['foo'] }.should == 'bar'
   end
   
-  it "should allow reading from the @attributs hash for attributes that do no exist" do
+  it "should allow reading from the @attributes hash for attributes that do no exist" do
     @widget = Widget.new
     @widget['foo'] = 'bar'
     @widget['foo'].should == 'bar'
+  end
+  
+  it "should allow a block upon initialization to set attributes protected from mass assignment" do
+    @widget = Widget.new { |w| w.key = 'some-key' }
+    @widget.key.should == 'some-key'
   end
 
 end

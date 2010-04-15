@@ -14,33 +14,15 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module Persistence
-      module Callbacks
-        extend ActiveSupport::Concern
+  module EmbeddedDocument
+    module Conversion
+      extend ActiveSupport::Concern
 
-        included do
-          extend ActiveModel::Callbacks
-          define_model_callbacks :create, :update, :save, :destroy
-        end
-
-        module InstanceMethods
-          # @private
-          def save
-            state = new? ? :create : :update
-            run_callbacks(:save) do
-              run_callbacks(state) do
-                super
-              end
-            end
-          end
-
-          # @private
-          def destroy
-            run_callbacks(:destroy) do
-              super
-            end
-          end
+      module InstanceMethods
+        include ActiveModel::Conversion
+        
+        def to_key
+          new? ? nil : [key]
         end
       end
     end
