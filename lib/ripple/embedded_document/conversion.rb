@@ -24,6 +24,10 @@ module Ripple
         def to_key
           new? ? nil : [key]
         end
+
+        def to_param
+          key
+        end
       end
     end
   end

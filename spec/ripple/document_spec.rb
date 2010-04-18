@@ -15,9 +15,9 @@ require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Ripple::Document do
   require 'support/models/page'
-  
+
   it "should add bucket access methods to classes when included" do
-    Page.singleton_class.included_modules.should include(Ripple::Document::BucketAccess)
+    (class << Page; self; end).included_modules.should include(Ripple::Document::BucketAccess)
     Page.should respond_to(:bucket_name)
     Page.should respond_to(:bucket)
     Page.should respond_to(:bucket_name=)
@@ -27,4 +27,25 @@ describe Ripple::Document do
     Page.should_not be_embeddable
   end
 
+  describe "ActiveModel compatibility" do
+    include ActiveModel::Lint::Tests
+
+    before :each do
+      @model = Page.new
+    end
+
+    def assert(value, message="")
+      value.should be
+    end
+
+    def assert_kind_of(klass, value)
+      value.should be_kind_of(klass)
+    end
+
+    ActiveModel::Lint::Tests.instance_methods.grep(/^test/).each do |m|
+      it "#{m}" do
+        send(m)
+      end
+    end
+  end
 end
