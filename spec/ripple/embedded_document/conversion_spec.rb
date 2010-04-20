@@ -32,5 +32,4 @@ describe Ripple::EmbeddedDocument::Conversion do
   it "should be able to be converted to a model" do
     @addr.to_model.should == @addr
   end
-
 end

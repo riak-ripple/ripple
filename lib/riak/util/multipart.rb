@@ -22,8 +22,8 @@ module Riak
       # @param [String] data the multipart body data
       # @param [String] boundary the boundary string given in the Content-Type header
       def parse(data, boundary)
-        contents = data.match(/\n--#{Regexp.escape(boundary)}--\n/).pre_match rescue ""
-        contents.split(/\n--#{Regexp.escape(boundary)}\n/).reject(&:blank?).map do |part|
+        contents = data.match(/\r?\n--#{Regexp.escape(boundary)}--\r?\n/).pre_match rescue ""
+        contents.split(/\r?\n--#{Regexp.escape(boundary)}\r?\n/).reject(&:blank?).map do |part|
           headers = Headers.new
           if md = part.match(/\r?\n\r?\n/)
             body = md.post_match
