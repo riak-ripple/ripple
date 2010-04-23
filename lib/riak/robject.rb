@@ -143,7 +143,7 @@ module Riak
     # exists in the Riak database.
     def delete
       return if key.blank?
-      @bucket.client.http.delete([204,404], @bucket.client.prefix, escape(@bucket.name), escape(@key))
+      @bucket.delete(key)
       freeze
     end
 

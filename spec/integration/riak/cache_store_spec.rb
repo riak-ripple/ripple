@@ -22,7 +22,7 @@ describe Riak::CacheStore do
 
   after do
     @cache.bucket.keys.each do |k|
-      Riak::RObject.new(@cache.bucket, k).delete
+      @cache.bucket.delete(k)
     end if @cleanup
   end
 
@@ -101,5 +101,13 @@ describe Riak::CacheStore do
   it "should detect if a value exists in the cache" do
     @cache.write('foo', 'bar')
     @cache.exist?('foo').should be_true
+  end
+
+  it "should delete matching keys from the cache" do
+    @cache.write('foo', 'bar')
+    @cache.write('green', 'thumb')
+    @cache.delete_matched(/foo/)
+    @cache.read('foo').should be_nil
+    @cache.read('green').should == 'thumb'
   end
 end

@@ -14,7 +14,6 @@
 require 'riak'
 module Riak
   class CacheStore < ActiveSupport::Cache::Store
-
     attr_accessor :client
     attr_accessor :bucket
 
@@ -47,6 +46,16 @@ module Riak
     def exist?(key)
       super do
         bucket.exists?(key)
+      end
+    end
+
+    def delete_matched(matcher, options={})
+      super do
+        bucket.keys do |keys|
+          keys.grep(matcher).each do |k|
+            bucket.delete(k)
+          end
+        end
       end
     end
   end
