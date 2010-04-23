@@ -131,13 +131,14 @@ module Riak
       result = client.http.head([200,404], client.prefix, escape(name), escape(key))
       result[:code] == 200
     end
-    
+    alias :exist? :exists?
+
     # Deletes a key from the bucket
     # @param [String] key the key to delete
     def delete(key)
       client.http.delete([204,404], client.prefix, escape(name), escape(key))
     end
-    
+
     # @return [true, false] whether the bucket allows divergent siblings
     def allow_mult
       props['allow_mult']

@@ -110,4 +110,11 @@ describe Riak::CacheStore do
     @cache.read('foo').should be_nil
     @cache.read('green').should == 'thumb'
   end
+
+  it "should delete a single key from the cache" do
+    @cache.write('foo', 'bar')
+    @cache.read('foo').should == 'bar'
+    @cache.delete('foo')
+    @cache.read('foo').should be_nil
+  end
 end

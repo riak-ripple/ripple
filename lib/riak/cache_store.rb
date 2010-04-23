@@ -58,6 +58,12 @@ module Riak
         end
       end
     end
+
+    def delete(key, options={})
+      super do
+        bucket.delete(key)
+      end
+    end
   end
 end
 
