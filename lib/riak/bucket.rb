@@ -124,6 +124,14 @@ module Riak
       end
     end
 
+    # Checks whether an object exists in Riak.
+    # @param [String] key the key to check
+    # @return [true, false] whether the key exists in this bucket
+    def exists?(key)
+      result = client.http.head([200,404], client.prefix, escape(name), escape(key))
+      result[:code] == 200
+    end
+
     # @return [true, false] whether the bucket allows divergent siblings
     def allow_mult
       props['allow_mult']

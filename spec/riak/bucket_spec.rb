@@ -227,4 +227,16 @@ describe Riak::Bucket do
       @bucket.n_value = 1
     end
   end
+
+  describe "checking whether a key exists" do
+    it "should return true if the object does exist" do
+      @client.http.should_receive(:head).and_return(:code => 200)
+      @bucket.exists?("foo").should be_true
+    end
+
+    it "should return false if the object doesn't exist" do
+      @client.http.should_receive(:head).and_return(:code => 404)
+      @bucket.exists?("foo").should be_false
+    end
+  end
 end

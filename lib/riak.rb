@@ -32,11 +32,14 @@ module Riak
   autoload :RObject,         "riak/robject"
   autoload :MapReduce,       "riak/map_reduce"
 
+  # Cache store
+  autoload :CacheStore,      "riak/cache_store"
+
   # Exceptions
   autoload :FailedRequest,   "riak/failed_request"
   autoload :InvalidResponse, "riak/invalid_response"
   autoload :MapReduceError,  "riak/map_reduce_error"
-  
+
   module Util
     autoload :Escape,        "riak/util/escape"
     autoload :Headers,       "riak/util/headers"
