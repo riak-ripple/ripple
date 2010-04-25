@@ -127,16 +127,16 @@ module Riak
     # Checks whether an object exists in Riak.
     # @param [String] key the key to check
     # @return [true, false] whether the key exists in this bucket
-    def exists?(key)
-      result = client.http.head([200,404], client.prefix, escape(name), escape(key))
+    def exists?(key, options={})
+      result = client.http.head([200,404], client.prefix, escape(name), escape(key), options, {})
       result[:code] == 200
     end
     alias :exist? :exists?
 
     # Deletes a key from the bucket
     # @param [String] key the key to delete
-    def delete(key)
-      client.http.delete([204,404], client.prefix, escape(name), escape(key))
+    def delete(key, options={})
+      client.http.delete([204,404], client.prefix, escape(name), escape(key), options, {})
     end
 
     # @return [true, false] whether the bucket allows divergent siblings
@@ -147,7 +147,7 @@ module Riak
     # Set the allow_mult property.  *NOTE* This will result in a PUT request to Riak.
     # @param [true, false] value whether the bucket should allow siblings
     def allow_mult=(value)
-      self.props = props.merge('allow_mult' => value)
+      self.props = {'allow_mult' => value}
       value
     end
 
@@ -160,7 +160,7 @@ module Riak
     # Setting this value after the bucket has objects stored in it may have unpredictable results.
     # @param [Fixnum] value the number of replicas the bucket should keep of each object
     def n_value=(value)
-      self.props = props.merge('n_val' => value)
+      self.props = {'n_val' => value}
       value
     end
 
