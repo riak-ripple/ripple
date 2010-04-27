@@ -15,27 +15,39 @@ require 'riak'
 module Riak
   class CacheStore < ActiveSupport::Cache::Store
     attr_accessor :client
-    attr_accessor :bucket
 
     def initialize(options = {})
-      bucket_name = options.delete(:bucket) || '_cache'
+      @bucket_name = options.delete(:bucket) || '_cache'
+      @n_value = options.delete(:n_value) || 2
+      @r = [options.delete(:r) || 1, @n_value].min
+      @w = [options.delete(:w) || 1, @n_value].min
+      @dw = [options.delete(:dw) || 0, @n_value].min
+      @rw = [options.delete(:rw) || 1, @n_value].min
       @client = Riak::Client.new(options)
-      @bucket = Riak::Bucket.new(@client, bucket_name)
     end
 
+    def bucket
+      @bucket ||= @client.bucket(@bucket_name, :keys => false).tap do |b|
+        begin
+          b.n_value = @n_value unless b.n_value == @n_value
+        rescue
+        end
+      end
+    end
+    
     def write(key, value, options={})
       super do
-        object = bucket.get_or_new(key)
+        object = bucket.get_or_new(key, :r => @r)
         object.content_type = 'application/yaml'
         object.data = value
-        object.store
+        object.store(:r => @r, :w => @w, :dw => @dw)
       end
     end
 
     def read(key, options={})
       super do
         begin
-          bucket[key].data
+          bucket.get(key, :r => @r).data
         rescue Riak::FailedRequest => fr
           raise fr unless fr.code == 404
           nil
@@ -45,7 +57,7 @@ module Riak
 
     def exist?(key)
       super do
-        bucket.exists?(key)
+        bucket.exists?(key, :r => @r)
       end
     end
 
@@ -53,7 +65,7 @@ module Riak
       super do
         bucket.keys do |keys|
           keys.grep(matcher).each do |k|
-            bucket.delete(k)
+            bucket.delete(k, :r => @r, :w => @w, :dw => @dw, :rw => @rw)
           end
         end
       end
@@ -61,7 +73,7 @@ module Riak
 
     def delete(key, options={})
       super do
-        bucket.delete(key)
+        bucket.delete(key, :r => @r, :w => @w, :dw => @dw, :rw => @rw)
       end
     end
   end

@@ -14,15 +14,14 @@
 require File.expand_path("../../spec_helper", File.dirname(__FILE__))
 
 describe Riak::CacheStore do
-
   before do
     @cache = ActiveSupport::Cache.lookup_store(:riak_store)
     @cleanup = true
   end
 
   after do
-    @cache.bucket.keys.each do |k|
-      @cache.bucket.delete(k)
+    @cache.bucket.keys(:force => true).each do |k|
+      @cache.bucket.delete(k, :r => 1, :w => 1, :dw => 0, :rw => 1) unless k.blank?
     end if @cleanup
   end
 
@@ -49,7 +48,17 @@ describe Riak::CacheStore do
       @cache = ActiveSupport::Cache.lookup_store(:riak_store, :bucket => "foobar")
       @cache.bucket.name.should == "foobar"
     end
+
+    it "should set the N value to 2 by default" do
+      @cache.bucket.n_value.should == 2
+    end
+
+    it "should set the N value to the specified value" do
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :n_value => 1)
+      @cache.bucket.n_value.should == 1
+    end
   end
+
 
   it "should read and write strings" do
     @cache.write('foo', 'bar')
