@@ -126,6 +126,8 @@ module Riak
 
     # Checks whether an object exists in Riak.
     # @param [String] key the key to check
+    # @param [Hash] options quorum options
+    # @option options [Fixnum] :r - the read quorum value for the request (R)
     # @return [true, false] whether the key exists in this bucket
     def exists?(key, options={})
       result = client.http.head([200,404], client.prefix, escape(name), escape(key), options, {})
@@ -135,6 +137,8 @@ module Riak
 
     # Deletes a key from the bucket
     # @param [String] key the key to delete
+    # @param [Hash] options quorum options
+    # @option options [Fixnum] :rw - the read/write quorum for the delete
     def delete(key, options={})
       client.http.delete([204,404], client.prefix, escape(name), escape(key), options, {})
     end
