@@ -21,7 +21,7 @@ describe Riak::CacheStore do
 
   after do
     @cache.bucket.keys(:force => true).each do |k|
-      @cache.bucket.delete(k, :r => 1, :w => 1, :dw => 0, :rw => 1) unless k.blank?
+      @cache.bucket.delete(k, :rw => 1) unless k.blank?
     end if @cleanup
   end
 

@@ -65,7 +65,7 @@ module Riak
       super do
         bucket.keys do |keys|
           keys.grep(matcher).each do |k|
-            bucket.delete(k, :r => @r, :w => @w, :dw => @dw, :rw => @rw)
+            bucket.delete(k, :rw => @rw)
           end
         end
       end
@@ -73,7 +73,7 @@ module Riak
 
     def delete(key, options={})
       super do
-        bucket.delete(key, :r => @r, :w => @w, :dw => @dw, :rw => @rw)
+        bucket.delete(key, :rw => @rw)
       end
     end
   end
