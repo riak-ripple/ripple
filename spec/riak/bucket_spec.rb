@@ -241,7 +241,7 @@ describe Riak::Bucket do
   end
 
   it "should delete a key from within the bucket" do
-    @client.http.should_receive(:delete).with([204,404], @client.prefix, @bucket.name, 'bar').and_return(:code => 204)
+    @client.http.should_receive(:delete).with([204,404], @client.prefix, @bucket.name, 'bar',{},{}).and_return(:code => 204)
     @bucket.delete('bar')
   end
 end

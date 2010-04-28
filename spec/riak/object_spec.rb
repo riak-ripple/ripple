@@ -490,7 +490,7 @@ describe Riak::RObject do
     end
 
     it "should make a DELETE request to the Riak server and freeze the object" do
-      @http.should_receive(:delete).with([204,404], "/riak/", "foo", "bar").and_return({:code => 204, :headers => {}})
+      @http.should_receive(:delete).with([204,404], "/riak/", "foo", "bar", {},{}).and_return({:code => 204, :headers => {}})
       @object.delete
       @object.should be_frozen
     end
@@ -509,7 +509,7 @@ describe Riak::RObject do
     it "should escape the bucket and key names" do
       @object.key = "deep/path"
       @bucket.should_receive(:name).and_return("bucket spaces")
-      @http.should_receive(:delete).with([204,404], "/riak/", "bucket%20spaces", "deep%2Fpath").and_return({:code => 204, :headers => {}})
+      @http.should_receive(:delete).with([204,404], "/riak/", "bucket%20spaces", "deep%2Fpath",{},{}).and_return({:code => 204, :headers => {}})
       @object.delete
     end
   end
