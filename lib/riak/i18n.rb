@@ -11,5 +11,10 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'active_support/i18n'
+begin
+  require 'active_support/i18n'
+rescue LoadError
+  require 'i18n' # support ActiveSupport < 3
+end
+
 I18n.load_path << File.expand_path("../locale/en.yml", __FILE__)
