@@ -216,7 +216,7 @@ module Riak
 
     # @return [String] A representation suitable for IRB and debugging output
     def inspect
-      "#<#{self.class.name} #{@bucket.client.http.path(@bucket.client.prefix, escape(@bucket.name), escape(@key)).to_s} [#{@content_type}]:#{@data.inspect}>"
+      "#<#{self.class.name} #{url} [#{@content_type}]:#{@data.inspect}>"
     end
 
     # Walks links from this object to other objects in Riak.
@@ -235,6 +235,15 @@ module Riak
     # Converts the object to a link suitable for linking other objects to it
     def to_link(tag=nil)
       Link.new(@bucket.client.http.path(@bucket.client.prefix, escape(@bucket.name), escape(@key)).path, tag)
+    end
+
+    # Generates a URL representing the object according to the client, bucket and key.
+    # If the key is blank, the bucket URL will be returned (where the object will be
+    # submitted to when stored).
+    def url
+      segments = [ @bucket.client.prefix, escape(@bucket.name)]
+      segments << escape(@key) if @key
+      @bucket.client.http.path(*segments).to_s
     end
 
     private

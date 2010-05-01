@@ -529,4 +529,10 @@ describe Riak::RObject do
     @bucket.should_receive(:name).and_return("bucket spaces")
     @object.to_link("bar").url.should == "/riak/bucket%20spaces/deep%2Fpath"
   end
+
+  it "should provide a useful inspect output even when the key is nil" do
+    @object = Riak::RObject.new(@bucket)
+    lambda { @object.inspect }.should_not raise_error
+    @object.inspect.should be_kind_of(String)
+  end
 end
