@@ -1,0 +1,43 @@
+require 'rubygems'
+
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name = "ripple"
+    gem.summary = %Q{ripple is an object-mapper library for Riak, the distributed database by Basho.}
+    gem.description = %Q{ripple is an object-mapper library for Riak, the distributed database by Basho.  It uses ActiveModel to provide an experience that integrates well with Rails 3 applications.}
+    gem.email = "seancribbs@gmail.com"
+    gem.homepage = "http://seancribbs.github.com/ripple"
+    gem.authors = ["Sean Cribbs"]
+    gem.add_development_dependency "rspec", "~>2.0.0.beta.6"
+    gem.add_dependency "activesupport", "3.0.0.beta3"
+    gem.add_dependency "activemodel", "3.0.0.beta3"
+  end
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+end
+
+require 'rspec/core'
+require 'rspec/core/rake_task'
+
+desc "Run Unit Specs Only"
+Rspec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = "spec/ripple/**/*_spec.rb"
+end
+
+namespace :spec do
+  desc "Run Integration Specs Only"
+  Rspec::Core::RakeTask.new(:integration) do |spec|
+    spec.pattern = "spec/integration/**/*_spec.rb"
+  end
+
+  desc "Run All Specs"
+  Rspec::Core::RakeTask.new(:all) do |spec|
+    spec.pattern = "spec/**/*_spec.rb"
+  end
+end
+
+task :spec => :check_dependencies
+
+task :default => :spec
