@@ -64,7 +64,7 @@ module Riak
     # @return [Array<String>] Keys in this bucket
     def keys(options={})
       if block_given?
-        @client.http.get(200, @client.prefix, escape(name), {:props => false}, {}) do |chunk|
+        @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => 'stream'}, {}) do |chunk|
           obj = ActiveSupport::JSON.decode(chunk) rescue {}
           yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
         end

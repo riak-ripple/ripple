@@ -92,7 +92,7 @@ describe Riak::Bucket do
 
     it "should allow streaming keys through block" do
       # pending "Needs support in the raw_http_resource"
-      @http.should_receive(:get).with(200, "/riak/","foo", {:props => false}, {}).and_yield("{}").and_yield('{"keys":[]}').and_yield('{"keys":["bar"]}').and_yield('{"keys":["baz"]}')
+      @http.should_receive(:get).with(200, "/riak/","foo", {:props => false, :keys => "stream"}, {}).and_yield("{}").and_yield('{"keys":[]}').and_yield('{"keys":["bar"]}').and_yield('{"keys":["baz"]}')
       all_keys = []
       @bucket.keys do |list|
         all_keys.concat(list)
