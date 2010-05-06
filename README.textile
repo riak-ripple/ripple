@@ -1,18 +1,20 @@
 h1. ripple
 
-ripple is a rich Ruby client for Riak, Basho's distributed database. It includes two namespaces:
+ripple is a rich Ruby client for Riak, Basho's distributed
+database. It consists of two gems:
 
-* @Riak@ contains a basic wrapper around typical operations, including bucket manipulation, object CRUD, link-walking, and map-reduce.
-* @Ripple@ contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.
+* @riak-client@ (@Riak@ namespace) contains a basic wrapper around typical operations, including bucket manipulation, object CRUD, link-walking, and map-reduce.
+* @ripple@ (@Ripple@ namespace) contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.
 
 h2. Dependencies
 
-ripple requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).  Please see the Rails 3 beta release notes for installing those gems.  I highly recommend the "curb":http://curb.rubyforge.org/ gem for better HTTP client performance.
+riak-client requires ActiveSupport 2.3.5 or later, but the version 3 is recommended. I highly recommend the "curb":http://curb.rubyforge.org/ gem for better HTTP client performance.
+
+ripple requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).  Please see the Rails 3 beta release notes for installing those gems.
 
 In development, you will also need these gems:
 
-* jeweler
-* rspec >= 1.3
+* rspec = 2.0.0.beta6
 * fakeweb >= 1.2
 * curb >= 0.6
 * rack >= 1.0

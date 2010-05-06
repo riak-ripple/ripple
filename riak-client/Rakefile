@@ -1,20 +1,20 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 
-version = File.read('../VERSION').strip
-
 gemspec = Gem::Specification.new do |gem|
-  gem.name = "ripple"
-  gem.summary = %Q{ripple is an object-mapper library for Riak, the distributed database by Basho.}
-  gem.description = %Q{ripple is an object-mapper library for Riak, the distributed database by Basho.  It uses ActiveModel to provide an experience that integrates well with Rails 3 applications.}
-  gem.version = version
+  gem.name = "riak-client"
+  gem.summary = %Q{riak-client is a rich client for Riak, the distributed database by Basho.}
+  gem.description = %Q{riak-client is a rich client for Riak, the distributed database by Basho. It supports the full HTTP interface including storage operations, bucket configuration, link-walking and map-reduce.}
+  gem.version = File.read('../VERSION').strip
   gem.email = "seancribbs@gmail.com"
   gem.homepage = "http://seancribbs.github.com/ripple"
   gem.authors = ["Sean Cribbs"]
   gem.add_development_dependency "rspec", "~>2.0.0.beta.6"
-  gem.add_dependency "riak-client", version
-  gem.add_dependency "activesupport", "3.0.0.beta3"
-  gem.add_dependency "activemodel", "3.0.0.beta3"
+  gem.add_development_dependency "fakeweb", ">=1.2"
+  gem.add_development_dependency "rack", ">=1.0"
+  gem.add_development_dependency "curb", ">=0.6"
+  gem.add_dependency "activesupport", ">= 2.3.5"
+  gem.requirements << "`gem install curb` for better HTTP performance"
 
   files = FileList["**/*"]
   files.exclude /\.DS_Store/
@@ -25,7 +25,7 @@ gemspec = Gem::Specification.new do |gem|
   files.exclude '**/*.orig'
   files.exclude '**/*.rej'
   files.exclude /^pkg/
-  files.exclude 'ripple.gemspec'
+  files.exclude 'riak-client.gemspec'
 
   gem.files = files.to_a
 
@@ -56,7 +56,7 @@ require 'rspec/core/rake_task'
 
 desc "Run Unit Specs Only"
 Rspec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = "spec/ripple/**/*_spec.rb"
+  spec.pattern = "spec/riak/**/*_spec.rb"
 end
 
 namespace :spec do

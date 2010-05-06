@@ -1,4 +1,22 @@
-h1. Ripple Release Notes
+h1. Riak-Client/Ripple Release Notes
+
+h2. 0.7.0 Feature Release - 2010-05-06
+
+This release includes a number of new features.  The largest change is that the library is now split into two gems, 'riak-client' and 'ripple'.  'riak-client' supports ActiveSupport 2.3.5, 'ripple' only supports 3.0.0.beta3. 
+
+A big kudos goes to Adam Hunter who contributed the majority of the new associations code.
+
+In addition, these changes were made:
+
+* Keys should stream properly now from Bucket#keys (the "stream" option was left off).
+* Deletes can be issued directly from a Bucket without instantiating an RObject.
+* Added a ActiveSupport 3.0-compatible Cache Store. [Shay Frendt]
+* Added Bucket#exists?
+* A provisionally complete implementation of embedded document associations. [Adam Hunter]
+* Ripple::Document passes ActiveModel::Lint tests.
+* Updated Rails 3 dependencies to beta3 and RSpec to 2.0.0.beta6
+* Ripple::Document handles nil keys better. [John Lynch]
+
 
 h2. 0.6.1 Patch Release - 2010-03-17
 

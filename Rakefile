@@ -4,7 +4,7 @@ require 'rake/clean'
 
 require 'yard'
 YARD::Rake::YardocTask.new do |yard|
-  docfiles = FileList['{riak,ripple}/lib/**/*.rb', 'README*','LICENSE', 'RELEASE_NOTES.textile']
+  docfiles = FileList['{riak-client,ripple}/lib/**/*.rb', 'README*','LICENSE', 'RELEASE_NOTES.textile']
   yard.files = docfiles
   yard.options = ["--no-private"]
 end
@@ -18,25 +18,33 @@ task :doc => :yard do
 end
 
 namespace :spec do
-  %w{riak ripple}.each do |dir|
+  %w{riak-client ripple}.each do |dir|
     task dir do
       Dir.chdir(dir) do
         system 'rake spec'
       end
     end
   end
-  
+
   task :integration do
-    %w{riak ripple}.each do |dir|
+    %w{riak-client ripple}.each do |dir|
       Dir.chdir(dir) do
         system 'rake spec:integration'
       end
     end
   end
 end
-  
 
-task :spec => ["spec:riak", "spec:ripple"]
+task :release do
+  %w{riak-client ripple}.each do |dir|
+    Dir.chdir(dir) do
+      system "rake release"
+    end
+  end
+end
+
+
+task :spec => ["spec:riak-client", "spec:ripple"]
 
 task :default => :spec
 
