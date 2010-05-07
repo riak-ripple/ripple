@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::Properties</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,8 +56,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/properties.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/document/properties.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -78,11 +79,12 @@ handle type-casting between your Ruby type and JSON-compatible types.
 </div>
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#properties-instance_method" title="#properties (instance method)">- (Hash) <strong>properties</strong> </a>
@@ -97,15 +99,15 @@ handle type-casting between your Ruby type and JSON-compatible types.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The properties defined on the document.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#property-instance_method" title="#property (instance method)">- (Object) <strong>property</strong>(key, type, options = {}) </a>
@@ -120,12 +122,14 @@ The properties defined on the document.
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -160,10 +164,10 @@ The properties defined on the document
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the properties defined on the document
-
-
+</p>
+</div>
       
     </li>
   
@@ -180,7 +184,7 @@ the properties defined on the document
 32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/properties.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id properties'>properties</span>
   <span class='ivar'>@properties</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span>
@@ -209,7 +213,7 @@ the properties defined on the document
 37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/properties.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/properties.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id property'>property</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id type'>type</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id prop'>prop</span> <span class='op'>=</span> <span class='const'>Property</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id type'>type</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -225,9 +229,9 @@ the properties defined on the document
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:41 2010 by 
+  Generated on Thu May  6 19:07:13 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

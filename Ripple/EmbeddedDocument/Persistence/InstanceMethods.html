@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::EmbeddedDocument::Persistence::InstanceMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,20 +56,133 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/embedded_document/persistence.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/embedded_document/persistence.rb</dd>
   
 </dl>
 <div class="clear"></div>
 
 
 
-
-  <h2>Instance Method Summary</h2>
-
+  <h2>Instance Attribute Summary</h2>
   <ul class="summary">
     
       <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_parent_document-instance_method" title="#_parent_document (instance method)">- (Object) <strong>_parent_document</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns the value of attribute _parent_document.
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+    <h2>Instance Method Summary</h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_root_document-instance_method" title="#_root_document (instance method)">- (Object) <strong>_root_document</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_root_document%3F-instance_method" title="#_root_document? (instance method)">- (Boolean) <strong>_root_document?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#attributes_for_persistence-instance_method" title="#attributes_for_persistence (instance method)">- (Object) <strong>attributes_for_persistence</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#embeddable%3F-instance_method" title="#embeddable? (instance method)">- (Boolean) <strong>embeddable?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#new%3F-instance_method" title="#new? (instance method)">- (Boolean) <strong>new?</strong> </a>
@@ -84,18 +197,15 @@
   
 
   
-    <span class="summary_desc">
-Delegates to the root document.
-
-</span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
-      <a href="#save-instance_method" title="#save (instance method)">- (Object) <strong>save</strong> </a>
+      <a href="#new_record%3F-instance_method" title="#new_record? (instance method)">- (Boolean) <strong>new_record?</strong> </a>
     
 
     
@@ -107,15 +217,127 @@ Delegates to the root document.
   
 
   
-    <span class="summary_desc">
-Delegates to the root document.
-
-</span>
+    <span class="summary_desc"><div class='inline'><p>
+because alias_method doesn&#8217;t like super.
+</p>
+</div></span>
   
 </li>
 
+      
+        <li class="public ">
+  <span class="summary_signature">
     
-  </ul>
+      <a href="#persisted%3F-instance_method" title="#persisted? (instance method)">- (Boolean) <strong>persisted?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+for ActiveModel::Conversion.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save-instance_method" title="#save (instance method)">- (Object) <strong>save</strong>(*args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#save%21-instance_method" title="#save! (instance method)">- (Object) <strong>save!</strong>(*args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="_parent_document=-instance_method"></span>
+      <span id="_parent_document-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="_parent_document-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>_parent_document</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns the value of attribute _parent_document
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 36</span>
+
+<span class='kw'>def</span> <span class='id _parent_document'>_parent_document</span>
+  <span class='ivar'>@_parent_document</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -123,7 +345,161 @@ Delegates to the root document.
     
     
       <div class="method_details first">
-  <p class="signature first" id="new?-instance_method">
+  <p class="signature first" id="_root_document-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>_root_document</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+78
+79
+80</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 78</span>
+
+<span class='kw'>def</span> <span class='id _root_document'>_root_document</span>
+  <span class='id embeddable?'>embeddable?</span> <span class='op'>?</span> <span class='ivar'>@_root_document</span> <span class='op'>:</span> <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="_root_document?-instance_method">
+  
+    - (<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>_root_document?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+82
+83
+84</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 82</span>
+
+<span class='kw'>def</span> <span class='id _root_document?'>_root_document?</span>
+  <span class='id _root_document'>_root_document</span> <span class='op'>===</span> <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="attributes_for_persistence-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>attributes_for_persistence</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+86
+87
+88</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 86</span>
+
+<span class='kw'>def</span> <span class='id attributes_for_persistence'>attributes_for_persistence</span>
+  <span class='id attributes'>attributes</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id embedded_attributes_for_persistence'>embedded_attributes_for_persistence</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="embeddable?-instance_method">
+  
+    - (<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>embeddable?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 38</span>
+
+<span class='kw'>def</span> <span class='id embeddable?'>embeddable?</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id embeddable?'>embeddable?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="new?-instance_method">
   
     - (<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>new?</strong> 
   
@@ -131,8 +507,69 @@ Delegates to the root document.
   
 </p><div class="docstring">
   <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44
+45
+46
+47
+48
+49
+50</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 42</span>
+
+<span class='kw'>def</span> <span class='id new?'>new?</span>
+  <span class='kw'>if</span> <span class='id _root_document?'>_root_document?</span>
+    <span class='kw'>super</span>
+  <span class='kw'>elsif</span> <span class='ivar'>@_root_document</span>
+    <span class='id _root_document'>_root_document</span><span class='period'>.</span><span class='id new?'>new?</span>
+  <span class='kw'>else</span>
+    <span class='kw'>true</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="new_record?-instance_method">
+  
+    - (<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>new_record?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
     <p>
-Delegates to the root document
+because alias_method doesn&#8217;t like super
 </p>
 
 
@@ -159,24 +596,60 @@ Delegates to the root document
       <pre class="lines">
 
 
-27
-28
-29
-30
-31
-32
-33</pre>
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/embedded_document/persistence.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 53</span>
 
-<span class='kw'>def</span> <span class='id new?'>new?</span>
-  <span class='kw'>if</span> <span class='ivar'>@_root_document</span>
-    <span class='ivar'>@_root_document</span><span class='period'>.</span><span class='id new?'>new?</span>
-  <span class='kw'>else</span>
-    <span class='kw'>super</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
+<span class='kw'>def</span> <span class='id new_record?'>new_record?</span><span class='semicolon'>;</span> <span class='id new?'>new?</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="persisted?-instance_method">
+  
+    - (<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>persisted?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+for ActiveModel::Conversion
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='id persisted?'>persisted?</span><span class='semicolon'>;</span> <span class='op'>!</span><span class='id new?'>new?</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -185,43 +658,76 @@ Delegates to the root document
       <div class="method_details ">
   <p class="signature " id="save-instance_method">
   
-    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>save</strong> 
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>save</strong>(*args) 
   
 
   
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Delegates to the root document
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-</div><table class="source_code">
+</p><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-36
-37
-38
-39
-40
-41
-42</pre>
+58
+59
+60
+61
+62
+63
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/embedded_document/persistence.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 58</span>
 
-<span class='kw'>def</span> <span class='id save'>save</span>
-  <span class='kw'>if</span> <span class='ivar'>@_root_document</span>
-    <span class='ivar'>@_root_document</span><span class='period'>.</span><span class='id save'>save</span>
-  <span class='kw'>else</span>
+<span class='kw'>def</span> <span class='id save'>save</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id _root_document?'>_root_document?</span>
     <span class='kw'>super</span>
+  <span class='kw'>elsif</span> <span class='ivar'>@_root_document</span>
+    <span class='id _root_document'>_root_document</span><span class='period'>.</span><span class='id save'>save</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='id raise'>raise</span> <span class='const'>NoRootDocument</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='symbol'>:save</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="save!-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>save!</strong>(*args) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71
+72
+73
+74
+75
+76</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 68</span>
+
+<span class='kw'>def</span> <span class='id save!'>save!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id _root_document?'>_root_document?</span>
+    <span class='kw'>super</span>
+  <span class='kw'>elsif</span> <span class='ivar'>@_root_document</span>
+    <span class='id _root_document'>_root_document</span><span class='period'>.</span><span class='id save!'>save!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='id raise'>raise</span> <span class='const'>NoRootDocument</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='symbol'>:save!</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -234,9 +740,9 @@ Delegates to the root document
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:42 2010 by 
+  Generated on Thu May  6 19:07:15 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

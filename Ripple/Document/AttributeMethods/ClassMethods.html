@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::AttributeMethods::ClassMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,8 +56,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/attribute_methods.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/document/attribute_methods.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -65,11 +66,12 @@
 
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#define_attribute_methods-instance_method" title="#define_attribute_methods (instance method)">- (Object) <strong>define_attribute_methods</strong> </a>
@@ -84,16 +86,18 @@
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Generates all the attribute-related methods for properties defined on the
 document, including accessors, mutators and query methods.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -125,12 +129,12 @@ document, including accessors, mutators and query methods.
       <pre class="lines">
 
 
+46
 47
-48
-49</pre>
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/attribute_methods.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/attribute_methods.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id define_attribute_methods'>define_attribute_methods</span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id properties'>properties</span><span class='period'>.</span><span class='id keys'>keys</span><span class='rparen'>)</span>
@@ -145,9 +149,9 @@ document, including accessors, mutators and query methods.
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:41 2010 by 
+  Generated on Thu May  6 19:07:14 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

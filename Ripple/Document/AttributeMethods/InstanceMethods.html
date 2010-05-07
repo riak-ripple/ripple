@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::AttributeMethods::InstanceMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,20 +56,53 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/attribute_methods.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/document/attribute_methods.rb</dd>
   
 </dl>
 <div class="clear"></div>
 
 
 
-
-  <h2>Instance Method Summary</h2>
-
+  <h2>Instance Attribute Summary</h2>
   <ul class="summary">
     
       <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#key-instance_method" title="#key (instance method)">- (Object) <strong>key</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns the value of attribute key.
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+    <h2>Instance Method Summary</h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#attributes-instance_method" title="#attributes (instance method)">- (Hash) <strong>attributes</strong> </a>
@@ -84,15 +117,15 @@
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 A copy of the values of all attributes in the Document.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#attributes%3D-instance_method" title="#attributes= (instance method)">- (Object) <strong>attributes</strong>(attrs) </a>
@@ -107,15 +140,17 @@ A copy of the values of all attributes in the Document.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Mass assign the document&#8217;s attributes.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 <div id="method_missing_details" class="method_details_list">
   <h2>Dynamic Method Handling</h2>
   <p class="notice this">
@@ -144,13 +179,13 @@ Mass assign the document&#8217;s attributes.
       <pre class="lines">
 
 
-85
-86
-87
-88</pre>
+92
+93
+94
+95</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/attribute_methods.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/attribute_methods.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id method_missing'>method_missing</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id define_attribute_methods'>define_attribute_methods</span>
@@ -162,6 +197,53 @@ Mass assign the document&#8217;s attributes.
 </div>
   
 </div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="key=-instance_method"></span>
+      <span id="key-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="key-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>key</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns the value of attribute key
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/attribute_methods.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='id key'>key</span>
+  <span class='ivar'>@key</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -179,7 +261,7 @@ Mass assign the document&#8217;s attributes.
   <div class="discussion">
     <p>
 A copy of the values of all attributes in the Document. The result is not
-memoized, so use sparingly. This does not include associated objects, nor
+memoized, so use sparingly.  This does not include associated objects, nor
 embedded documents.
 </p>
 
@@ -198,10 +280,10 @@ embedded documents.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 all document attributes, by key
-
-
+</p>
+</div>
       
     </li>
   
@@ -213,15 +295,15 @@ all document attributes, by key
       <pre class="lines">
 
 
-57
 58
 59
 60
 61
-62</pre>
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/attribute_methods.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/attribute_methods.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id attributes'>attributes</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id properties'>properties</span><span class='period'>.</span><span class='id values'>values</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id hash'>hash</span><span class='comma'>,</span> <span class='id prop'>prop</span><span class='op'>|</span>
@@ -264,10 +346,10 @@ Mass assign the document&#8217;s attributes.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the attributes to assign
-
-
+</p>
+</div>
       
     </li>
   
@@ -292,7 +374,6 @@ the attributes to assign
       <pre class="lines">
 
 
-66
 67
 68
 69
@@ -301,14 +382,17 @@ the attributes to assign
 72
 73
 74
-75</pre>
+75
+76
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/attribute_methods.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/attribute_methods.rb', line 67</span>
 
 <span class='kw'>def</span> <span class='id attributes='>attributes=</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>attribute_hash</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id attrs'>attrs</span>
   <span class='id attrs'>attrs</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span>
+    <span class='kw'>next</span> <span class='kw'>if</span> <span class='id k'>k</span><span class='period'>.</span><span class='id to_sym'>to_sym</span> <span class='op'>==</span> <span class='symbol'>:key</span>
     <span class='kw'>if</span> <span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id k'>k</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
       <span class='id __send__'>__send__</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id k'>k</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='id v'>v</span><span class='rparen'>)</span>
     <span class='kw'>else</span>
@@ -326,9 +410,9 @@ the attributes to assign
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:41 2010 by 
+  Generated on Thu May  6 19:07:14 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

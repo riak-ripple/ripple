@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::BucketAccess</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,8 +56,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/bucket_access.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/document/bucket_access.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -77,11 +78,12 @@ we provide a sane default bucket in which to store your documents.
 </div>
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#bucket-instance_method" title="#bucket (instance method)">- (Riak::Bucket) <strong>bucket</strong> </a>
@@ -96,15 +98,15 @@ we provide a sane default bucket in which to store your documents.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The bucket assigned to this class.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#bucket_name-instance_method" title="#bucket_name (instance method)">- (String) <strong>bucket_name</strong> </a>
@@ -119,15 +121,15 @@ The bucket assigned to this class.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The bucket name assigned to the document class.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#bucket_name%3D-instance_method" title="#bucket_name= (instance method)">- (Object) <strong>bucket_name</strong>(value) </a>
@@ -142,15 +144,17 @@ The bucket name assigned to the document class.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Set the bucket name for this class and its subclasses.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -185,10 +189,10 @@ The bucket assigned to this class.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 The bucket assigned to this class.
-
-
+</p>
+</div>
       
     </li>
   
@@ -205,7 +209,7 @@ The bucket assigned to this class.
 29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/bucket_access.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
   <span class='const'>Ripple</span><span class='period'>.</span><span class='id client'>client</span><span class='lbracket'>[</span><span class='id bucket_name'>bucket_name</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='rbracket'>]</span>
@@ -225,7 +229,7 @@ The bucket assigned to this class.
 </p><div class="docstring">
   <div class="discussion">
     <p>
-The bucket name assigned to the document class. Subclasses will inherit
+The bucket name assigned to the document class.  Subclasses will inherit
 their bucket name from their parent class unless they redefine it.
 </p>
 
@@ -244,11 +248,11 @@ their bucket name from their parent class unless they redefine it.
       
       
         &mdash;
-        
-The bucket name assigned to the document class. Subclasses will inherit
+        <div class='inline'><p>
+The bucket name assigned to the document class.  Subclasses will inherit
 their bucket name from their parent class unless they redefine it.
-
-
+</p>
+</div>
       
     </li>
   
@@ -265,7 +269,7 @@ their bucket name from their parent class unless they redefine it.
 24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/bucket_access.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id bucket_name'>bucket_name</span>
   <span class='id superclass'>superclass</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:bucket_name</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id superclass'>superclass</span><span class='period'>.</span><span class='id bucket_name'>bucket_name</span> <span class='op'>:</span> <span class='id model_name'>model_name</span><span class='period'>.</span><span class='id plural'>plural</span>
@@ -305,10 +309,10 @@ Set the bucket name for this class and its subclasses.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the new bucket name
-
-
+</p>
+</div>
       
     </li>
   
@@ -325,10 +329,10 @@ the new bucket name
 35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/bucket_access.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id bucket_name='>bucket_name=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
-  <span class='id metaclass'>metaclass</span><span class='period'>.</span><span class='id send'>send</span><span class='lparen'>(</span><span class='symbol'>:define_method</span><span class='comma'>,</span> <span class='symbol'>:bucket_name</span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='id value'>value</span> <span class='rbrace'>}</span>
+  <span class='lparen'>(</span><span class='kw'>class</span> <span class='op'>&lt;&lt;</span> <span class='kw'>self</span><span class='semicolon'>;</span> <span class='kw'>self</span><span class='semicolon'>;</span> <span class='kw'>end</span><span class='rparen'>)</span><span class='period'>.</span><span class='id send'>send</span><span class='lparen'>(</span><span class='symbol'>:define_method</span><span class='comma'>,</span> <span class='symbol'>:bucket_name</span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='id value'>value</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -340,9 +344,9 @@ the new bucket name
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:41 2010 by 
+  Generated on Thu May  6 19:07:14 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

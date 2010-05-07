@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Exception: Riak::InvalidResponse</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -73,8 +73,9 @@
     
   
   
+  
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/riak/invalid_response.rb</dd>
+    <dd class="r2 last">riak-client/lib/riak/invalid_response.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -94,11 +95,12 @@ Raised when Riak returns a response that is in an unexpected format
 
   
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (InvalidResponse) <strong>initialize</strong>(expected, received, extra = &quot;&quot;) </a>
@@ -115,15 +117,17 @@ Raised when Riak returns a response that is in an unexpected format
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 A new instance of InvalidResponse.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -159,7 +163,7 @@ A new instance of InvalidResponse
 23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/invalid_response.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/invalid_response.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id expected'>expected</span><span class='comma'>,</span> <span class='id received'>received</span><span class='comma'>,</span> <span class='id extra'>extra</span><span class='op'>=</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='id expected'>expected</span> <span class='op'>=</span> <span class='id expected'>expected</span><span class='period'>.</span><span class='id inspect'>inspect</span> <span class='kw'>if</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id expected'>expected</span>
@@ -177,9 +181,9 @@ A new instance of InvalidResponse
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:40 2010 by 
+  Generated on Thu May  6 19:07:13 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

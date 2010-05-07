@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::Finders::ClassMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,8 +56,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/finders.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/document/finders.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -65,11 +66,12 @@
 
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#all-instance_method" title="#all (instance method)">- (Object) <strong>all</strong> </a>
@@ -84,15 +86,15 @@
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Find all documents in the Document&#8217;s bucket and return them.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#find-instance_method" title="#find (instance method)">- (Object) <strong>find</strong>(*args) </a>
@@ -107,15 +109,89 @@ Find all documents in the Document&#8217;s bucket and return them.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Retrieve single or multiple documents from Riak.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
+      
+        <li class="public ">
+  <span class="summary_signature">
     
-  </ul>
+      <a href="#find%21-instance_method" title="#find! (instance method)">- (Object) <strong>find!</strong>(*args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Retrieve single or multiple documents from Riak but raise
+Ripple::DocumentNotFound if a key can not be found in the bucket.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#first-instance_method" title="#first (instance method)">- (Object) <strong>first</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Find the first object using the first key in the bucket&#8217;s keys using
+find.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#first%21-instance_method" title="#first! (instance method)">- (Object) <strong>first!</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Find the first object using the first key in the bucket&#8217;s keys using
+find!.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -171,10 +247,10 @@ Get all documents and return them in an array.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 all found documents in the bucket
-
-
+</p>
+</div>
       
     </li>
   
@@ -207,10 +283,10 @@ Stream all documents in the bucket through the block.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 doc a found document
-
-
+</p>
+</div>
       
     </li>
   
@@ -227,25 +303,25 @@ doc a found document
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65</pre>
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/finders.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/finders.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id all'>all</span>
   <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
@@ -321,10 +397,10 @@ Find a single document.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key of a document to find
-
-
+</p>
+</div>
       
     </li>
   
@@ -340,10 +416,10 @@ the key of a document to find
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the found document, or nil
-
-
+</p>
+</div>
       
     </li>
   
@@ -378,10 +454,10 @@ Find a list of documents.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key of a document to find
-
-
+</p>
+</div>
       
     </li>
   
@@ -395,10 +471,10 @@ the key of a document to find
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key of a document to find
-
-
+</p>
+</div>
       
     </li>
   
@@ -414,10 +490,10 @@ the key of a document to find
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a list of found documents, including nil for missing documents
-
-
+</p>
+</div>
       
     </li>
   
@@ -452,10 +528,10 @@ Find a list of documents.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 an array of keys to find
-
-
+</p>
+</div>
       
     </li>
   
@@ -471,10 +547,10 @@ an array of keys to find
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a list of found documents, including nil for missing documents
-
-
+</p>
+</div>
       
     </li>
   
@@ -491,21 +567,159 @@ a list of found documents, including nil for missing documents
       <pre class="lines">
 
 
-36
-37
-38
-39
-40
-41</pre>
+57
+58
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/finders.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/finders.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id find'>find</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id args'>args</span><span class='period'>.</span><span class='id flatten!'>flatten!</span>
-  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id args'>args</span><span class='period'>.</span><span class='id length'>length</span> <span class='op'>==</span> <span class='int'>0</span>
-  <span class='kw'>return</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id args'>args</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id args'>args</span><span class='period'>.</span><span class='id length'>length</span> <span class='op'>==</span> <span class='int'>1</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id args'>args</span><span class='period'>.</span><span class='id empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id args'>args</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id args'>args</span><span class='period'>.</span><span class='id one?'>one?</span>
   <span class='id args'>args</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id key'>key</span><span class='op'>|</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="find!-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>find!</strong>(*args) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Retrieve single or multiple documents from Riak but raise
+Ripple::DocumentNotFound if a key can not be found in the bucket.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../../DocumentNotFound.html" title="Ripple::DocumentNotFound (class)">DocumentNotFound</a></tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+67
+68
+69
+70
+71</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/finders.rb', line 67</span>
+
+<span class='kw'>def</span> <span class='id find!'>find!</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id found'>found</span> <span class='op'>=</span> <span class='id find'>find</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id raise'>raise</span> <span class='const'>DocumentNotFound</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id args'>args</span><span class='comma'>,</span> <span class='id found'>found</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='op'>!</span><span class='id found'>found</span> <span class='op'>||</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id found'>found</span><span class='rparen'>)</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id found'>found</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="first-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>first</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Find the first object using the first key in the bucket&#8217;s keys using
+find. You should not expect to  actually get the first object you added to
+the bucket. This is just a convenience method.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+77
+78
+79</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/finders.rb', line 77</span>
+
+<span class='kw'>def</span> <span class='id first'>first</span>
+  <span class='id find'>find</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="first!-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>first!</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Find the first object using the first key in the bucket&#8217;s keys using
+find!
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+83
+84
+85</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/finders.rb', line 83</span>
+
+<span class='kw'>def</span> <span class='id first!'>first!</span>
+  <span class='id find!'>find!</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -517,9 +731,9 @@ a list of found documents, including nil for missing documents
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:40 2010 by 
+  Generated on Thu May  6 19:07:13 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

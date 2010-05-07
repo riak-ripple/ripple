@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::MapReduce</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -75,8 +75,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak/map_reduce.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/map_reduce.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -92,7 +93,17 @@ Class for invoking map-reduce jobs using the HTTP interface.
 </div>
 <div class="tags">
   
-</div>
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+   
+    
+      <strong class="classes">Classes:</strong> <a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a>
+    
+  
+</p>
+
 
   
   
@@ -119,10 +130,10 @@ Class for invoking map-reduce jobs using the HTTP interface.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The bucket/keys for input to the job, or the bucket (all keys).
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -145,10 +156,10 @@ The bucket/keys for input to the job, or the bucket (all keys).
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The map and reduce phases that will be executed.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -156,11 +167,12 @@ The map and reduce phases that will be executed.
   </ul>
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#add-instance_method" title="#add (instance method)">- (MapReduce) <strong>add</strong>(*params) </a>
@@ -177,15 +189,15 @@ The map and reduce phases that will be executed.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Add or replace inputs for the job.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (MapReduce) <strong>initialize</strong>(client) {|self| ... }</a>
@@ -202,15 +214,15 @@ Add or replace inputs for the job.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Creates a new map-reduce job.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#link-instance_method" title="#link (instance method)">- (MapReduce) <strong>link</strong>(*params) </a>
@@ -225,15 +237,15 @@ Creates a new map-reduce job.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Add a link phase to the job.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#map-instance_method" title="#map (instance method)">- (MapReduce) <strong>map</strong>(*params) </a>
@@ -248,15 +260,15 @@ Add a link phase to the job.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Add a map phase to the job.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#reduce-instance_method" title="#reduce (instance method)">- (MapReduce) <strong>reduce</strong>(*params) </a>
@@ -271,15 +283,15 @@ Add a map phase to the job.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Add a reduce phase to the job.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#run-instance_method" title="#run (instance method)">- (Array&lt;Array&gt;) <strong>run</strong> </a>
@@ -294,15 +306,15 @@ Add a reduce phase to the job.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Executes this map-reduce job.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#timeout-instance_method" title="#timeout (instance method)">- (Object) <strong>timeout</strong>(value) </a>
@@ -317,15 +329,15 @@ Executes this map-reduce job.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Sets the timeout for the map-reduce job.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#to_json-instance_method" title="#to_json (instance method)">- (String) <strong>to_json</strong>(options = {}) </a>
@@ -340,16 +352,20 @@ Sets the timeout for the map-reduce job.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Convert the job to JSON for submission over the HTTP interface.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
 
+
+  
+  
   
   
   
@@ -390,10 +406,10 @@ Creates a new map-reduce job.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the Riak::Client interface
-
-
+</p>
+</div>
       
     </li>
   
@@ -409,10 +425,10 @@ the Riak::Client interface
       
       
         &mdash;
-        
+        <div class='inline'><p>
 helpful for initializing the job
-
-
+</p>
+</div>
       
     </li>
   
@@ -430,7 +446,7 @@ helpful for initializing the job
 36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span>
   <span class='ivar'>@client</span><span class='comma'>,</span> <span class='ivar'>@inputs</span><span class='comma'>,</span> <span class='ivar'>@query</span> <span class='op'>=</span> <span class='id client'>client</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -477,10 +493,10 @@ The bucket/keys for input to the job, or the bucket (all keys).
       
       
         &mdash;
-        
+        <div class='inline'><p>
 The bucket/keys for input to the job, or the bucket (all keys).
-
-
+</p>
+</div>
       
     </li>
   
@@ -504,7 +520,7 @@ The bucket/keys for input to the job, or the bucket (all keys).
 24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id inputs'>inputs</span>
   <span class='ivar'>@inputs</span>
@@ -545,10 +561,10 @@ The map and reduce phases that will be executed
       
       
         &mdash;
-        
+        <div class='inline'><p>
 The map and reduce phases that will be executed
-
-
+</p>
+</div>
       
     </li>
   
@@ -576,7 +592,7 @@ The map and reduce phases that will be executed
 30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id query'>query</span>
   <span class='ivar'>@query</span>
@@ -632,7 +648,7 @@ Add or replace inputs for the job.
         <div class="docstring">
   <div class="discussion">
     <p>
-Run the job across all keys in the bucket. This will replace any other
+Run the job across all keys in the bucket.  This will replace any other
 inputs previously added.
 </p>
 
@@ -653,10 +669,10 @@ inputs previously added.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the bucket to run the job on
-
-
+</p>
+</div>
       
     </li>
   
@@ -691,10 +707,10 @@ Add a bucket/key pair to the job.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the bucket of the object
-
-
+</p>
+</div>
       
     </li>
   
@@ -708,10 +724,10 @@ the bucket of the object
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key of the object
-
-
+</p>
+</div>
       
     </li>
   
@@ -746,10 +762,10 @@ Add an object to the job (by its bucket/key)
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the object to add to the inputs
-
-
+</p>
+</div>
       
     </li>
   
@@ -781,10 +797,10 @@ the object to add to the inputs
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the bucket of the object
-
-
+</p>
+</div>
       
     </li>
   
@@ -798,10 +814,10 @@ the bucket of the object
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key of the object
-
-
+</p>
+</div>
       
     </li>
   
@@ -815,10 +831,10 @@ the key of the object
       
       
         &mdash;
-        
+        <div class='inline'><p>
 extra data to pass along with the object to the job
-
-
+</p>
+</div>
       
     </li>
   
@@ -839,10 +855,10 @@ extra data to pass along with the object to the job
       
       
         &mdash;
-        
+        <div class='inline'><p>
 self
-
-
+</p>
+</div>
       
     </li>
   
@@ -876,7 +892,7 @@ self
 73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id add'>add</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id params'>params</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id flatten'>flatten</span>
@@ -954,10 +970,10 @@ automatically (a special case of map).
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a WalkSpec that represents the types of links to follow
-
-
+</p>
+</div>
       
     </li>
   
@@ -971,10 +987,10 @@ a WalkSpec that represents the types of links to follow
       
       
         &mdash;
-        
+        <div class='inline'><p>
 extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
-
-
+</p>
+</div>
       
     </li>
   
@@ -1006,10 +1022,10 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the bucket to limit links to
-
-
+</p>
+</div>
       
     </li>
   
@@ -1023,10 +1039,10 @@ the bucket to limit links to
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the tag to limit links to
-
-
+</p>
+</div>
       
     </li>
   
@@ -1040,10 +1056,10 @@ the tag to limit links to
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether to keep results of this phase (overrides the phase options)
-
-
+</p>
+</div>
       
     </li>
   
@@ -1057,10 +1073,10 @@ whether to keep results of this phase (overrides the phase options)
       
       
         &mdash;
-        
+        <div class='inline'><p>
 extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
-
-
+</p>
+</div>
       
     </li>
   
@@ -1092,10 +1108,10 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
       
       
         &mdash;
-        
+        <div class='inline'><p>
 options for both the walk spec and link phase
-
-
+</p>
+</div>
       
     </li>
   
@@ -1123,10 +1139,10 @@ options for both the walk spec and link phase
       
       
         &mdash;
-        
+        <div class='inline'><p>
 self
-
-
+</p>
+</div>
       
     </li>
   
@@ -1154,7 +1170,7 @@ self
 125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 119</span>
 
 <span class='kw'>def</span> <span class='id link'>link</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1216,11 +1232,11 @@ Add a map phase to the job.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a Javascript function that represents the phase, or an Erlang
 [module,function] pair
-
-
+</p>
+</div>
       
     </li>
   
@@ -1252,11 +1268,11 @@ a Javascript function that represents the phase, or an Erlang
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a Javascript function that represents the phase, or an Erlang [module,
 function] pair
-
-
+</p>
+</div>
       
     </li>
   
@@ -1270,10 +1286,10 @@ function] pair
       
       
         &mdash;
-        
+        <div class='inline'><p>
 extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
-
-
+</p>
+</div>
       
     </li>
   
@@ -1294,10 +1310,10 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
       
       
         &mdash;
-        
+        <div class='inline'><p>
 self
-
-
+</p>
+</div>
       
     </li>
   
@@ -1323,7 +1339,7 @@ self
 89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id map'>map</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1383,11 +1399,11 @@ Add a reduce phase to the job.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a Javascript function that represents the phase, or an Erlang
 [module,function] pair
-
-
+</p>
+</div>
       
     </li>
   
@@ -1419,11 +1435,11 @@ a Javascript function that represents the phase, or an Erlang
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a Javascript function that represents the phase, or an Erlang [module,
 function] pair
-
-
+</p>
+</div>
       
     </li>
   
@@ -1437,10 +1453,10 @@ function] pair
       
       
         &mdash;
-        
+        <div class='inline'><p>
 extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
-
-
+</p>
+</div>
       
     </li>
   
@@ -1461,10 +1477,10 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
       
       
         &mdash;
-        
+        <div class='inline'><p>
 self
-
-
+</p>
+</div>
       
     </li>
   
@@ -1490,7 +1506,7 @@ self
 103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='id reduce'>reduce</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1530,12 +1546,12 @@ Executes this map-reduce job.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 similar to link-walking, each element is an array of results from a phase
 where &#8220;keep&#8221; is true. If there is only one &#8220;keep&#8221;
 phase, only the results from that phase will be returned.
-
-
+</p>
+</div>
       
     </li>
   
@@ -1563,7 +1579,7 @@ phase, only the results from that phase will be returned.
 156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 143</span>
 
 <span class='kw'>def</span> <span class='id run'>run</span>
   <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id mapred'>mapred</span><span class='comma'>,</span> <span class='id to_json'>to_json</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -1614,10 +1630,10 @@ Sets the timeout for the map-reduce job.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the job timeout, in milliseconds
-
-
+</p>
+</div>
       
     </li>
   
@@ -1634,7 +1650,7 @@ the job timeout, in milliseconds
 131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id timeout'>timeout</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@timeout</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -1672,10 +1688,10 @@ Convert the job to JSON for submission over the HTTP interface.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the JSON representation
-
-
+</p>
+</div>
       
     </li>
   
@@ -1694,7 +1710,7 @@ the JSON representation
 139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/map_reduce.rb', line 135</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id hash'>hash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>inputs</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id inputs'>inputs</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>query</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id query'>query</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:as_json</span><span class='rparen'>)</span><span class='rbrace'>}</span>
@@ -1711,9 +1727,9 @@ the JSON representation
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:40 2010 by 
+  Generated on Thu May  6 19:07:12 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

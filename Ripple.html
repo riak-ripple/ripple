@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -64,9 +64,10 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple.rb<span class="defines">,<br />
-  lib/ripple/document.rb,<br /> lib/ripple/translation.rb,<br /> lib/ripple/document/finders.rb,<br /> lib/ripple/embedded_document.rb,<br /> lib/ripple/document/timestamps.rb,<br /> lib/ripple/document/properties.rb,<br /> lib/ripple/document/validations.rb,<br /> lib/ripple/document/persistence.rb,<br /> lib/ripple/document/bucket_access.rb,<br /> lib/ripple/property_type_mismatch.rb,<br /> lib/ripple/document/attribute_methods.rb,<br /> lib/ripple/embedded_document/persistence.rb,<br /> lib/ripple/document/persistence/callbacks.rb,<br /> lib/ripple/document/attribute_methods/read.rb,<br /> lib/ripple/document/attribute_methods/query.rb,<br /> lib/ripple/document/attribute_methods/dirty.rb,<br /> lib/ripple/document/attribute_methods/write.rb</span>
+    <dd class="r1 last">ripple/lib/ripple.rb<span class="defines">,<br />
+  ripple/lib/ripple/railtie.rb,<br /> ripple/lib/ripple/document.rb,<br /> ripple/lib/ripple/translation.rb,<br /> ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/embedded_document.rb,<br /> ripple/lib/ripple/document/callbacks.rb,<br /> ripple/lib/ripple/document/timestamps.rb,<br /> ripple/lib/ripple/document/properties.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> ripple/lib/ripple/document/validations.rb,<br /> ripple/lib/ripple/document/associations.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/property_type_mismatch.rb,<br /> ripple/lib/ripple/embedded_document/finders.rb,<br /> ripple/lib/ripple/document/associations/one.rb,<br /> ripple/lib/ripple/document/associations/many.rb,<br /> ripple/lib/ripple/document/attribute_methods.rb,<br /> ripple/lib/ripple/document/associations/proxy.rb,<br /> ripple/lib/ripple/embedded_document/conversion.rb,<br /> ripple/lib/ripple/document/associations/linked.rb,<br /> ripple/lib/ripple/embedded_document/persistence.rb,<br /> ripple/lib/ripple/document/associations/embedded.rb,<br /> ripple/lib/ripple/document/attribute_methods/read.rb,<br /> ripple/lib/ripple/document/attribute_methods/write.rb,<br /> ripple/lib/ripple/document/attribute_methods/query.rb,<br /> ripple/lib/ripple/document/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/document/associations/instantiators.rb,<br /> ripple/lib/ripple/document/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/document/associations/many_embedded_proxy.rb,<br /> ripple/lib/ripple/document/validations/associated_validator.rb</span>
 </dd>
   
 </dl>
@@ -75,8 +76,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Contains the classes and modules related to the ODM built on top of the
-basic Riak client.
+require in gemfile using <tt>gem &quot;ripple&quot;, :require_as =&gt;
+[&quot;ripple&quot;, &quot;ripple/railtie&quot;]</tt>
 </p>
 
 
@@ -92,7 +93,7 @@ basic Riak client.
     
    
     
-      <strong class="classes">Classes:</strong> <a href="Ripple/PropertyTypeMismatch.html" title="Ripple::PropertyTypeMismatch (class)">PropertyTypeMismatch</a>
+      <strong class="classes">Classes:</strong> <a href="Ripple/DocumentInvalid.html" title="Ripple::DocumentInvalid (class)">DocumentInvalid</a>, <a href="Ripple/DocumentNotFound.html" title="Ripple::DocumentNotFound (class)">DocumentNotFound</a>, <a href="Ripple/NoRootDocument.html" title="Ripple::NoRootDocument (class)">NoRootDocument</a>, <a href="Ripple/PropertyTypeMismatch.html" title="Ripple::PropertyTypeMismatch (class)">PropertyTypeMismatch</a>, <a href="Ripple/Railtie.html" title="Ripple::Railtie (class)">Railtie</a>
     
   
 </p>
@@ -102,7 +103,7 @@ basic Riak client.
     <dl class="constants">
       
         <dt id="DEFAULT_CONFIG-constant" class="">DEFAULT_CONFIG =
-            <span class="summary_desc"></span>
+          
         </dt>
         <dd><pre class="code"><span class='lbrace'>{</span><span class='rbrace'>}</span></pre></dd>
       
@@ -111,12 +112,14 @@ basic Riak client.
 
 
   
+  
 
-  <h2>Class Method Summary</h2>
+  
+    <h2>Class Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#client-class_method" title="client (class method)">+ (Riak::Client) <strong>client</strong> </a>
@@ -131,15 +134,15 @@ basic Riak client.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The client for the current thread.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#client%3D-class_method" title="client= (class method)">+ (Object) <strong>client</strong>(value) </a>
@@ -154,18 +157,18 @@ The client for the current thread.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Sets the client for the current thread.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
-      <a href="#config%3D-class_method" title="config= (class method)">+ (Object) <strong>config</strong>(value) </a>
+      <a href="#config%3D-class_method" title="config= (class method)">+ (Object) <strong>config</strong>(hash) </a>
     
 
     
@@ -177,13 +180,56 @@ Sets the client for the current thread.
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
+      
+        <li class="public ">
+  <span class="summary_signature">
     
-  </ul>
+      <a href="#load_config-class_method" title="load_config (class method)">+ (Object) <strong>load_config</strong>(config_file) </a>
+    
 
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#load_configuration-class_method" title="load_configuration (class method)">+ (Object) <strong>load_configuration</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
   
 
   <div id="class_method_details" class="method_details_list">
@@ -218,10 +264,10 @@ The client for the current thread.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 The client for the current thread.
-
-
+</p>
+</div>
       
     </li>
   
@@ -238,7 +284,7 @@ The client for the current thread.
 37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id config'>config</span><span class='rparen'>)</span>
@@ -278,10 +324,10 @@ Sets the client for the current thread.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the client
-
-
+</p>
+</div>
       
     </li>
   
@@ -298,7 +344,7 @@ the client
 43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id client='>client=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -311,7 +357,7 @@ the client
       <div class="method_details ">
   <p class="signature " id="config=-class_method">
   
-    + (<tt><a href="Object.html" title="Object (class)">Object</a></tt>) <strong>config=</strong>(value) 
+    + (<tt><a href="Object.html" title="Object (class)">Object</a></tt>) <strong>config=</strong>(hash) 
   
 
   
@@ -327,11 +373,69 @@ the client
 48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 45</span>
 
-<span class='kw'>def</span> <span class='id config='>config=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id config='>config=</span><span class='lparen'>(</span><span class='id hash'>hash</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id client'>client</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='kw'>super</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="load_config-class_method">
+  
+    + (<tt><a href="Object.html" title="Object (class)">Object</a></tt>) <strong>load_config</strong>(config_file) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+50
+51
+52</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 50</span>
+
+<span class='kw'>def</span> <span class='id load_config'>load_config</span><span class='lparen'>(</span><span class='id config_file'>config_file</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id config'>config</span> <span class='op'>=</span> <span class='const'>YAML</span><span class='period'>.</span><span class='id load_file'>load_file</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id expand_path'>expand_path</span> <span class='id config_file'>config_file</span><span class='rparen'>)</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span><span class='lbracket'>[</span><span class='symbol'>:ripple</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="load_configuration-class_method">
+  
+    + (<tt><a href="Object.html" title="Object (class)">Object</a></tt>) <strong>load_configuration</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+28
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/railtie.rb', line 28</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id load_configuration'>load_configuration</span>
+  <span class='id config_file'>config_file</span> <span class='op'>=</span> <span class='const'>Rails</span><span class='period'>.</span><span class='id root'>root</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>config</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>database.yml</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id config'>config</span> <span class='op'>=</span> <span class='const'>YAML</span><span class='period'>.</span><span class='id load_file'>load_file</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id expand_path'>expand_path</span> <span class='id config_file'>config_file</span><span class='rparen'>)</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span><span class='lbracket'>[</span><span class='symbol'>:ripple</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='const'>Rails</span><span class='period'>.</span><span class='id env'>env</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -343,9 +447,9 @@ the client
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:38 2010 by 
+  Generated on Thu May  6 19:07:12 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::Bucket</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -70,13 +70,14 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
+      <dd class="r2"><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a>, <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
       
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak/bucket.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/bucket.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -84,8 +85,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Represents and encapsulates operations on a Riak bucket. You may retrieve a
-bucket using <tt><a href="Client.html#bucket-instance_method" title="Riak::Client#bucket (method)">Client#bucket</a></tt>, or create it manually and retrieve its
+Represents and encapsulates operations on a Riak bucket.  You may retrieve
+a bucket using <tt><a href="Client.html#bucket-instance_method" title="Riak::Client#bucket (method)">Client#bucket</a></tt>, or create it manually and retrieve its
 meta-information later.
 </p>
 
@@ -96,6 +97,10 @@ meta-information later.
   
 </div>
 
+  
+  
+  
+  
   
   
   
@@ -121,10 +126,10 @@ meta-information later.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The associated client.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -147,10 +152,10 @@ The associated client.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The bucket name.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -173,10 +178,10 @@ The bucket name.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Internal Riak bucket properties.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -184,11 +189,12 @@ Internal Riak bucket properties.
   </ul>
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#allow_mult-instance_method" title="#allow_mult (instance method)">- (true, false) <strong>allow_mult</strong> </a>
@@ -203,15 +209,15 @@ Internal Riak bucket properties.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Whether the bucket allows divergent siblings.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#allow_mult%3D-instance_method" title="#allow_mult= (instance method)">- (Object) <strong>allow_mult</strong>(value) </a>
@@ -226,15 +232,63 @@ Whether the bucket allows divergent siblings.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Set the allow_mult property.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
+      
+        <li class="public ">
+  <span class="summary_signature">
     
-      <li class="public ">
+      <a href="#delete-instance_method" title="#delete (instance method)">- (Object) <strong>delete</strong>(key, options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Deletes a key from the bucket.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#exists%3F-instance_method" title="#exists? (instance method)">- (true, false) <strong>exists?</strong>(key, options = {}) </a>
+    
+
+    
+      (also: #exist?)
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Checks whether an object exists in Riak.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#get-instance_method" title="#get (instance method)">- (Riak::RObject) <strong>get</strong>(key, options = {}) </a>
@@ -251,15 +305,15 @@ Set the allow_mult property.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Retrieve an object from within the bucket.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#get_or_new-instance_method" title="#get_or_new (instance method)">- (RObject) <strong>get_or_new</strong>(key, options = {}) </a>
@@ -274,16 +328,16 @@ Retrieve an object from within the bucket.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Fetches an object if it exists, otherwise creates a new one with the given
 key.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (Bucket) <strong>initialize</strong>(client, name) </a>
@@ -300,15 +354,15 @@ key.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Create a Riak bucket manually.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#inspect-instance_method" title="#inspect (instance method)">- (String) <strong>inspect</strong> </a>
@@ -323,15 +377,15 @@ Create a Riak bucket manually.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 A representation suitable for IRB and debugging output.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#keys-instance_method" title="#keys (instance method)">- (Array&lt;String&gt;) <strong>keys</strong>(options = {}) {|Array&lt;String&gt;| ... }</a>
@@ -346,15 +400,15 @@ A representation suitable for IRB and debugging output.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Accesses or retrieves a list of keys in this bucket.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#load-instance_method" title="#load (instance method)">- (Bucket) <strong>load</strong>(response = {}) </a>
@@ -369,16 +423,16 @@ Accesses or retrieves a list of keys in this bucket.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Load information for the bucket from a response given by the
 <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#n_value-instance_method" title="#n_value (instance method)">- (Fixnum) <strong>n_value</strong> </a>
@@ -393,15 +447,15 @@ Load information for the bucket from a response given by the
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The N value, or number of replicas for this bucket.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#n_value%3D-instance_method" title="#n_value= (instance method)">- (Object) <strong>n_value</strong>(value) </a>
@@ -416,15 +470,15 @@ The N value, or number of replicas for this bucket.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Set the N value (number of replicas).
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#new-instance_method" title="#new (instance method)">- (RObject) <strong>new</strong>(key = nil) </a>
@@ -439,16 +493,20 @@ Set the N value (number of replicas).
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Create a new blank object.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
 
+
+  
+  
   
   
   
@@ -456,6 +514,16 @@ Create a new blank object.
   
   <h3 class="inherited">Methods included from <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></h3>
   <p class="inherited"><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></h3>
+  <p class="inherited"><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -489,10 +557,10 @@ Create a Riak bucket manually.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the <tt><a href="Client.html" title="Riak::Client (class)">Riak::Client</a></tt> for this bucket
-
-
+</p>
+</div>
       
     </li>
   
@@ -506,10 +574,10 @@ the <tt><a href="Client.html" title="Riak::Client (class)">Riak::Client</a></tt>
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the name of the bucket
-
-
+</p>
+</div>
       
     </li>
   
@@ -534,14 +602,14 @@ the name of the bucket
       <pre class="lines">
 
 
-34
-35
 36
 37
-38</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_type</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:client</span> <span class='op'>=&gt;</span> <span class='id client'>client</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Client</span> <span class='op'>===</span> <span class='id client'>client</span>
@@ -589,10 +657,10 @@ The associated client
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the associated client
-
-
+</p>
+</div>
       
     </li>
   
@@ -604,12 +672,12 @@ the associated client
       <pre class="lines">
 
 
-22
-23
-24</pre>
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='ivar'>@client</span>
@@ -650,10 +718,10 @@ The bucket name
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the bucket name
-
-
+</p>
+</div>
       
     </li>
   
@@ -665,12 +733,12 @@ the bucket name
       <pre class="lines">
 
 
-25
-26
-27</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id name'>name</span>
   <span class='ivar'>@name</span>
@@ -711,10 +779,10 @@ Internal Riak bucket properties.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 Internal Riak bucket properties.
-
-
+</p>
+</div>
       
     </li>
   
@@ -726,12 +794,12 @@ Internal Riak bucket properties.
       <pre class="lines">
 
 
-28
-29
-30</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id props'>props</span>
   <span class='ivar'>@props</span>
@@ -776,10 +844,10 @@ Whether the bucket allows divergent siblings
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether the bucket allows divergent siblings
-
-
+</p>
+</div>
       
     </li>
   
@@ -791,12 +859,12 @@ whether the bucket allows divergent siblings
       <pre class="lines">
 
 
-126
-127
-128</pre>
+147
+148
+149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 147</span>
 
 <span class='kw'>def</span> <span class='id allow_mult'>allow_mult</span>
   <span class='id props'>props</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>allow_mult</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
@@ -816,7 +884,7 @@ whether the bucket allows divergent siblings
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Set the allow_mult property. <b>NOTE</b> This will result in a PUT request
+Set the allow_mult property.  <b>NOTE</b> This will result in a PUT request
 to Riak.
 </p>
 
@@ -837,10 +905,249 @@ to Riak.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether the bucket should allow siblings
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
 
 
+153
+154
+155
+156</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 153</span>
+
+<span class='kw'>def</span> <span class='id allow_mult='>allow_mult=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id props'>props</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>allow_mult</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id value'>value</span><span class='rbrace'>}</span>
+  <span class='id value'>value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="delete-instance_method">
+  
+    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>delete</strong>(key, options = {}) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Deletes a key from the bucket
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+      
+      
+        <span class='name'>key</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key to delete
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>
+quorum options
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    
+    
+    <h3>Options Hash (<tt>options</tt>):</h3>
+    <ul class="option">
+      
+        <li>
+          <span class="type">(<tt>Fixnum</tt>)</span>
+          <span class="name">:rw</span>
+          <span class="default">
+            
+              <span class="na">N/A</span>
+            
+          </span>
+          &mdash;<div class='inline'><ul>
+<li><p>
+the read/write quorum for the delete
+</p>
+</li>
+</ul>
+</div>
+        </tr>
+      
+    </ul>
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+142
+143
+144</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 142</span>
+
+<span class='kw'>def</span> <span class='id delete'>delete</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id client'>client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id client'>client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="exists?-instance_method">
+  
+    - (<tt>true</tt>, <tt>false</tt>) <strong>exists?</strong>(key, options = {}) 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='exist?-instance_method'>exist?</span></span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Checks whether an object exists in Riak.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+      
+      
+        <span class='name'>key</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key to check
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>
+quorum options
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    
+    
+    <h3>Options Hash (<tt>options</tt>):</h3>
+    <ul class="option">
+      
+        <li>
+          <span class="type">(<tt>Fixnum</tt>)</span>
+          <span class="name">:r</span>
+          <span class="default">
+            
+              <span class="na">N/A</span>
+            
+          </span>
+          &mdash;<div class='inline'><ul>
+<li><p>
+the read quorum value for the request (R)
+</p>
+</li>
+</ul>
+</div>
+        </tr>
+      
+    </ul>
+  
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+whether the key exists in this bucket
+</p>
+</div>
       
     </li>
   
@@ -858,11 +1165,11 @@ whether the bucket should allow siblings
 135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 132</span>
 
-<span class='kw'>def</span> <span class='id allow_mult='>allow_mult=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id props'>props</span> <span class='op'>=</span> <span class='id props'>props</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>allow_mult</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id value'>value</span><span class='rparen'>)</span>
-  <span class='id value'>value</span>
+<span class='kw'>def</span> <span class='id exists?'>exists?</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id result'>result</span> <span class='op'>=</span> <span class='id client'>client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id head'>head</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id client'>client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id result'>result</span><span class='lbracket'>[</span><span class='symbol'>:code</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='int'>200</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -903,10 +1210,10 @@ Retrieve an object from within the bucket.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key of the object to retrieve
-
-
+</p>
+</div>
       
     </li>
   
@@ -922,10 +1229,10 @@ the key of the object to retrieve
       
       
         &mdash;
-        
+        <div class='inline'><p>
 query parameters for the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -947,12 +1254,13 @@ query parameters for the request
               <span class="na">N/A</span>
             
           </span>
-          &mdash;<ul>
-<li>the read quorum for the request - how many nodes should concur on the read
-
+          &mdash;<div class='inline'><ul>
+<li><p>
+the read quorum for the request - how many nodes should concur on the read
+</p>
 </li>
 </ul>
-
+</div>
         </tr>
       
     </ul>
@@ -968,10 +1276,10 @@ query parameters for the request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the object
-
-
+</p>
+</div>
       
     </li>
   
@@ -987,10 +1295,10 @@ the object
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the object is not found or some other error occurs
-
-
+</p>
+</div>
       
     </li>
   
@@ -1002,18 +1310,18 @@ if the object is not found or some other error occurs
       <pre class="lines">
 
 
-94
-95
 96
 97
-98</pre>
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id code'>code</span> <span class='op'>=</span> <span class='id allow_mult'>allow_mult</span> <span class='op'>?</span> <span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>300</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='int'>200</span>
-  <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='id code'>code</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='id code'>code</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='const'>RObject</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id key'>key</span><span class='rparen'>)</span><span class='period'>.</span><span class='id load'>load</span><span class='lparen'>(</span><span class='id response'>response</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1052,10 +1360,10 @@ key
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key to fetch or create
-
-
+</p>
+</div>
       
     </li>
   
@@ -1071,10 +1379,10 @@ the key to fetch or create
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the new or existing object
-
-
+</p>
+</div>
       
     </li>
   
@@ -1086,8 +1394,6 @@ the new or existing object
       <pre class="lines">
 
 
-113
-114
 115
 116
 117
@@ -1096,10 +1402,12 @@ the new or existing object
 120
 121
 122
-123</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id get_or_new'>get_or_new</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -1145,10 +1453,10 @@ A representation suitable for IRB and debugging output
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a representation suitable for IRB and debugging output
-
-
+</p>
+</div>
       
     </li>
   
@@ -1160,15 +1468,15 @@ a representation suitable for IRB and debugging output
       <pre class="lines">
 
 
-151
-152
-153</pre>
+172
+173
+174</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 151</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 172</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;Riak::Bucket </span><span class='embexpr_beg'>#{</span><span class='id client'>client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id path'>path</span><span class='lparen'>(</span><span class='id client'>client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='rbrace'>}</span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> keys=[</span><span class='embexpr_beg'>#{</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>,</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='ivar'>@keys</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;Riak::Bucket </span><span class='embexpr_beg'>#{</span><span class='id client'>client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id path'>path</span><span class='lparen'>(</span><span class='id client'>client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='rbrace'>}</span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> keys=[</span><span class='embexpr_beg'>#{</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>,</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='ivar'>@keys</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1210,10 +1518,10 @@ Bucket object.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 extra options
-
-
+</p>
+</div>
       
     </li>
   
@@ -1234,10 +1542,10 @@ extra options
               <tt>false</tt>
             
           </span>
-          &mdash;
+          &mdash;<div class='inline'><p>
 If present, will force reloading of the bucket&#8217;s keys from Riak
-
-
+</p>
+</div>
         </tr>
       
     </ul>
@@ -1253,10 +1561,10 @@ If present, will force reloading of the bucket&#8217;s keys from Riak
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a list of keys from the current chunk
-
-
+</p>
+</div>
       
     </li>
   
@@ -1272,10 +1580,10 @@ a list of keys from the current chunk
       
       
         &mdash;
-        
+        <div class='inline'><p>
 Keys in this bucket
-
-
+</p>
+</div>
       
     </li>
   
@@ -1287,8 +1595,6 @@ Keys in this bucket
       <pre class="lines">
 
 
-63
-64
 65
 66
 67
@@ -1298,19 +1604,21 @@ Keys in this bucket
 71
 72
 73
-74</pre>
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id keys'>keys</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
-    <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:props</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id chunk'>chunk</span><span class='op'>|</span>
+    <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:props</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>stream</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id chunk'>chunk</span><span class='op'>|</span>
       <span class='id obj'>obj</span> <span class='op'>=</span> <span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>JSON</span><span class='period'>.</span><span class='id decode'>decode</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
       <span class='kw'>yield</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>keys</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id k'>k</span><span class='op'>|</span> <span class='const'>URI</span><span class='period'>.</span><span class='id unescape'>unescape</span><span class='lparen'>(</span><span class='id k'>k</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>keys</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
     <span class='kw'>end</span>
   <span class='kw'>elsif</span> <span class='ivar'>@keys</span><span class='period'>.</span><span class='id nil?'>nil?</span> <span class='op'>||</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:reload</span><span class='rbracket'>]</span>
-    <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:props</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:props</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
     <span class='id load'>load</span><span class='lparen'>(</span><span class='id response'>response</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   <span class='ivar'>@keys</span>
@@ -1354,10 +1662,10 @@ Load information for the bucket from a response given by the
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a></tt>
-
-
+</p>
+</div>
       
     </li>
   
@@ -1373,10 +1681,10 @@ a response from <tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPB
       
       
         &mdash;
-        
+        <div class='inline'><p>
 self
-
-
+</p>
+</div>
       
     </li>
   
@@ -1395,18 +1703,18 @@ self
       <pre class="lines">
 
 
-45
-46
 47
 48
 49
 50
 51
 52
-53</pre>
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id load'>load</span><span class='lparen'>(</span><span class='id response'>response</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id response'>response</span><span class='period'>.</span><span class='id try'>try</span><span class='lparen'>(</span><span class='symbol'>:[]</span><span class='comma'>,</span> <span class='symbol'>:headers</span><span class='rparen'>)</span><span class='period'>.</span><span class='id try'>try</span><span class='lparen'>(</span><span class='symbol'>:[]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>content-type</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id try'>try</span><span class='lparen'>(</span><span class='symbol'>:first</span><span class='rparen'>)</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>json$</span><span class='regexp_end'>/</span></span>
@@ -1450,10 +1758,10 @@ The N value, or number of replicas for this bucket
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the N value, or number of replicas for this bucket
-
-
+</p>
+</div>
       
     </li>
   
@@ -1465,12 +1773,12 @@ the N value, or number of replicas for this bucket
       <pre class="lines">
 
 
-138
-139
-140</pre>
+159
+160
+161</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 159</span>
 
 <span class='kw'>def</span> <span class='id n_value'>n_value</span>
   <span class='id props'>props</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>n_val</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
@@ -1512,10 +1820,10 @@ it may have unpredictable results.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the number of replicas the bucket should keep of each object
-
-
+</p>
+</div>
       
     </li>
   
@@ -1527,16 +1835,16 @@ the number of replicas the bucket should keep of each object
       <pre class="lines">
 
 
-145
-146
-147
-148</pre>
+166
+167
+168
+169</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 145</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 166</span>
 
 <span class='kw'>def</span> <span class='id n_value='>n_value=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id props'>props</span> <span class='op'>=</span> <span class='id props'>props</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>n_val</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id props'>props</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>n_val</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id value'>value</span><span class='rbrace'>}</span>
   <span class='id value'>value</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1576,10 +1884,10 @@ Create a new blank object
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the key of the new object
-
-
+</p>
+</div>
       
     </li>
   
@@ -1595,10 +1903,10 @@ the key of the new object
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the new, unsaved object
-
-
+</p>
+</div>
       
     </li>
   
@@ -1610,14 +1918,14 @@ the new, unsaved object
       <pre class="lines">
 
 
-104
-105
 106
 107
-108</pre>
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/bucket.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='id new'>new</span><span class='lparen'>(</span><span class='id key'>key</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='const'>RObject</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id key'>key</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id obj'>obj</span><span class='op'>|</span>
@@ -1634,9 +1942,9 @@ the new, unsaved object
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:39 2010 by 
+  Generated on Thu May  6 19:07:12 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

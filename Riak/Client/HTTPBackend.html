@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::Client::HTTPBackend</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -75,8 +75,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak/client/http_backend.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/client/http_backend.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -112,10 +113,10 @@
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The Riak::Client that uses this backend.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -123,11 +124,12 @@ The Riak::Client that uses this backend.
   </ul>
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#default_headers-instance_method" title="#default_headers (instance method)">- (Hash) <strong>default_headers</strong> </a>
@@ -142,16 +144,16 @@ The Riak::Client that uses this backend.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Default header hash sent with every request, based on settings in the
 client.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#delete-instance_method" title="#delete (instance method)">- (Hash) <strong>delete</strong>(expect, *resource, &amp;block) </a>
@@ -166,15 +168,15 @@ client.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Performs a DELETE request to the specified resource on the Riak server.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#get-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(expect, *resource, &amp;block) </a>
@@ -189,15 +191,15 @@ Performs a DELETE request to the specified resource on the Riak server.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Performs a GET request to the specified resource on the Riak server.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#head-instance_method" title="#head (instance method)">- (Hash) <strong>head</strong>(expect, *resource) </a>
@@ -212,15 +214,15 @@ Performs a GET request to the specified resource on the Riak server.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Performs a HEAD request to the specified resource on the Riak server.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (HTTPBackend) <strong>initialize</strong>(client) </a>
@@ -237,15 +239,15 @@ Performs a HEAD request to the specified resource on the Riak server.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Create an HTTPBackend for the Riak::Client.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#path-instance_method" title="#path (instance method)">- (URI) <strong>path</strong>(*segments) </a>
@@ -260,15 +262,15 @@ Create an HTTPBackend for the Riak::Client.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Calculates an absolute URI from a relative path specification.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#perform-instance_method" title="#perform (instance method)">- (Hash) <strong>perform</strong>(method, uri, headers, expect, body = nil) {|chunk| ... }</a>
@@ -283,16 +285,16 @@ Calculates an absolute URI from a relative path specification.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Executes requests according to the underlying HTTP client library
 semantics.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#post-instance_method" title="#post (instance method)">- (Hash) <strong>post</strong>(expect, *resource, &amp;block) </a>
@@ -307,15 +309,15 @@ semantics.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Performs a POST request to the specified resource on the Riak server.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#put-instance_method" title="#put (instance method)">- (Hash) <strong>put</strong>(expect, *resource, &amp;block) </a>
@@ -330,15 +332,15 @@ Performs a POST request to the specified resource on the Riak server.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Performs a PUT request to the specified resource on the Riak server.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#return_body%3F-instance_method" title="#return_body? (instance method)">- (Boolean) <strong>return_body?</strong>(method, code, has_block) </a>
@@ -353,16 +355,16 @@ Performs a PUT request to the specified resource on the Riak server.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Checks whether a combination of the HTTP method, response code, and block
 should result in returning the :body in the response hash.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#root_uri-instance_method" title="#root_uri (instance method)">- (URI) <strong>root_uri</strong> </a>
@@ -377,15 +379,15 @@ should result in returning the :body in the response hash.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The calculated root URI for the Riak HTTP endpoint.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#valid_response%3F-instance_method" title="#valid_response? (instance method)">- (Boolean) <strong>valid_response?</strong>(expected, actual) </a>
@@ -400,15 +402,15 @@ The calculated root URI for the Riak HTTP endpoint.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Checks the expected response codes against the actual response code.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#verify_path%21-instance_method" title="#verify_path! (instance method)">- (Object) <strong>verify_path!</strong>(resource) </a>
@@ -423,15 +425,15 @@ Checks the expected response codes against the actual response code.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Verifies that the specified resource is valid.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#verify_path_and_body%21-instance_method" title="#verify_path_and_body! (instance method)">- (Object) <strong>verify_path_and_body!</strong>(args) </a>
@@ -446,16 +448,20 @@ Verifies that the specified resource is valid.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Verifies that both a resource path and body are present in the arguments.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
 
+
+  
+  
   
   
   
@@ -496,10 +502,10 @@ Create an HTTPBackend for the Riak::Client.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the client
-
-
+</p>
+</div>
       
     </li>
   
@@ -530,7 +536,7 @@ the client
 28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_type</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:client</span> <span class='op'>=&gt;</span> <span class='id client'>client</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Client</span> <span class='op'>===</span> <span class='id client'>client</span>
@@ -578,7 +584,7 @@ The Riak::Client that uses this backend
 23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='ivar'>@client</span>
@@ -624,10 +630,10 @@ client
       
       
         &mdash;
-        
+        <div class='inline'><p>
 headers that will be merged with user-specified headers on every request
-
-
+</p>
+</div>
       
     </li>
   
@@ -647,7 +653,7 @@ headers that will be merged with user-specified headers on every request
 37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id default_headers'>default_headers</span>
   <span class='lbrace'>{</span>
@@ -714,10 +720,10 @@ Send the request with custom headers
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -752,10 +758,10 @@ Stream the response body through the supplied block
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -771,10 +777,10 @@ custom headers to send with the request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 yields successive chunks of the response body as strings
-
-
+</p>
+</div>
       
     </li>
   
@@ -790,10 +796,10 @@ yields successive chunks of the response body as strings
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing only the :headers and :code keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -816,10 +822,10 @@ response data, containing only the :headers and :code keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the expected HTTP response code(s) from Riak
-
-
+</p>
+</div>
       
     </li>
   
@@ -833,11 +839,11 @@ the expected HTTP response code(s) from Riak
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a relative path or array of path segments and optional query params Hash
 that will be joined to the root URI
-
-
+</p>
+</div>
       
     </li>
   
@@ -853,10 +859,10 @@ that will be joined to the root URI
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing :headers, :code and :body keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -872,10 +878,10 @@ response data, containing :headers, :code and :body keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the response code doesn&#8217;t match the expected response
-
-
+</p>
+</div>
       
     </li>
   
@@ -894,7 +900,7 @@ if the response code doesn&#8217;t match the expected response
 134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 130</span>
 
 <span class='kw'>def</span> <span class='id delete'>delete</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
@@ -960,10 +966,10 @@ Send the request with custom headers
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -998,10 +1004,10 @@ Stream the response body through the supplied block
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1017,10 +1023,10 @@ custom headers to send with the request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 yields successive chunks of the response body as strings
-
-
+</p>
+</div>
       
     </li>
   
@@ -1036,10 +1042,10 @@ yields successive chunks of the response body as strings
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing only the :headers and :code keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -1062,10 +1068,10 @@ response data, containing only the :headers and :code keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the expected HTTP response code(s) from Riak
-
-
+</p>
+</div>
       
     </li>
   
@@ -1079,11 +1085,11 @@ the expected HTTP response code(s) from Riak
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a relative path or array of path segments and optional query params Hash
 that will be joined to the root URI
-
-
+</p>
+</div>
       
     </li>
   
@@ -1099,10 +1105,10 @@ that will be joined to the root URI
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing :headers, :body, and :code keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -1118,10 +1124,10 @@ response data, containing :headers, :body, and :code keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the response code doesn&#8217;t match the expected response
-
-
+</p>
+</div>
       
     </li>
   
@@ -1140,7 +1146,7 @@ if the response code doesn&#8217;t match the expected response
 72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
@@ -1204,10 +1210,10 @@ Send the request with custom headers
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1230,10 +1236,10 @@ custom headers to send with the request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the expected HTTP response code(s) from Riak
-
-
+</p>
+</div>
       
     </li>
   
@@ -1247,11 +1253,11 @@ the expected HTTP response code(s) from Riak
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a relative path or array of path segments and optional query params Hash
 that will be joined to the root URI
-
-
+</p>
+</div>
       
     </li>
   
@@ -1267,10 +1273,10 @@ that will be joined to the root URI
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing only the :headers and :code keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -1286,10 +1292,10 @@ response data, containing only the :headers and :code keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the response code doesn&#8217;t match the expected response
-
-
+</p>
+</div>
       
     </li>
   
@@ -1308,7 +1314,7 @@ if the response code doesn&#8217;t match the expected response
 52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id head'>head</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span>
   <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
@@ -1350,11 +1356,11 @@ Calculates an absolute URI from a relative path specification
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a relative path or sequence of path segments and optional query params Hash
 that will be joined to the root URI
-
-
+</p>
+</div>
       
     </li>
   
@@ -1370,10 +1376,10 @@ that will be joined to the root URI
       
       
         &mdash;
-        
+        <div class='inline'><p>
 an absolute URI for the resource
-
-
+</p>
+</div>
       
     </li>
   
@@ -1393,11 +1399,11 @@ an absolute URI for the resource
 149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 144</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id segments'>segments</span><span class='rparen'>)</span>
   <span class='id query'>query</span> <span class='op'>=</span> <span class='id segments'>segments</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='period'>.</span><span class='id to_param'>to_param</span>
-  <span class='id root_uri'>root_uri</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='const'>URI</span><span class='period'>.</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id segments'>segments</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\/+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\/</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id uri'>uri</span><span class='op'>|</span>
+  <span class='id root_uri'>root_uri</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id segments'>segments</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\/+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\/</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id uri'>uri</span><span class='op'>|</span>
     <span class='id uri'>uri</span><span class='period'>.</span><span class='id query'>query</span> <span class='op'>=</span> <span class='id query'>query</span> <span class='kw'>if</span> <span class='id query'>query</span><span class='period'>.</span><span class='id present?'>present?</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
@@ -1417,11 +1423,11 @@ an absolute URI for the resource
   <div class="discussion">
     <p class="note abstract">
   <strong>This method is abstract.</strong> 
-  
+  <div class='inline'><p>
 Subclasses must implement this internal method to perform HTTP requests
 according to the API of their HTTP libraries.
-
-
+</p>
+</div>
 </p>
 <p>
 Executes requests according to the underlying HTTP client library
@@ -1445,10 +1451,10 @@ semantics.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 one of :head, :get, :post, :put, :delete
-
-
+</p>
+</div>
       
     </li>
   
@@ -1462,10 +1468,10 @@ one of :head, :get, :post, :put, :delete
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the HTTP URI to request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1479,10 +1485,10 @@ the HTTP URI to request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 headers to send along with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1496,10 +1502,10 @@ headers to send along with the request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the expected response code(s)
-
-
+</p>
+</div>
       
     </li>
   
@@ -1515,10 +1521,10 @@ the expected response code(s)
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the PUT or POST request body
-
-
+</p>
+</div>
       
     </li>
   
@@ -1534,11 +1540,11 @@ the PUT or POST request body
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the method is not :head, successive chunks of the response body will be
 yielded as strings
-
-
+</p>
+</div>
       
     </li>
   
@@ -1554,11 +1560,11 @@ yielded as strings
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing :headers, :code and :body keys. Only :headers and
 :code should be present when the body is streamed or the method is :head.
-
-
+</p>
+</div>
       
     </li>
   
@@ -1574,10 +1580,10 @@ response data, containing :headers, :code and :body keys. Only :headers and
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if a subclass does not implement this method
-
-
+</p>
+</div>
       
     </li>
   
@@ -1594,7 +1600,7 @@ if a subclass does not implement this method
 206</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 204</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 204</span>
 
 <span class='kw'>def</span> <span class='id perform'>perform</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id uri'>uri</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='id body'>body</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>NotImplementedError</span>
@@ -1658,10 +1664,10 @@ Send the request with custom headers
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1696,10 +1702,10 @@ Stream the response body through the supplied block
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1715,10 +1721,10 @@ custom headers to send with the request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 yields successive chunks of the response body as strings
-
-
+</p>
+</div>
       
     </li>
   
@@ -1734,10 +1740,10 @@ yields successive chunks of the response body as strings
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing only the :headers and :code keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -1760,10 +1766,10 @@ response data, containing only the :headers and :code keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the expected HTTP response code(s) from Riak
-
-
+</p>
+</div>
       
     </li>
   
@@ -1777,11 +1783,11 @@ the expected HTTP response code(s) from Riak
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a relative path or array of path segments that will be joined to the root
 URI
-
-
+</p>
+</div>
       
     </li>
   
@@ -1795,10 +1801,10 @@ URI
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the request body to send to the server
-
-
+</p>
+</div>
       
     </li>
   
@@ -1814,10 +1820,10 @@ the request body to send to the server
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing :headers, :code and :body keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -1833,10 +1839,10 @@ response data, containing :headers, :code and :body keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the response code doesn&#8217;t match the expected response
-
-
+</p>
+</div>
       
     </li>
   
@@ -1855,7 +1861,7 @@ if the response code doesn&#8217;t match the expected response
 114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id post'>post</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
@@ -1921,10 +1927,10 @@ Send the request with custom headers
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1959,10 +1965,10 @@ Stream the response body through the supplied block
       
       
         &mdash;
-        
+        <div class='inline'><p>
 custom headers to send with the request
-
-
+</p>
+</div>
       
     </li>
   
@@ -1978,10 +1984,10 @@ custom headers to send with the request
       
       
         &mdash;
-        
+        <div class='inline'><p>
 yields successive chunks of the response body as strings
-
-
+</p>
+</div>
       
     </li>
   
@@ -1997,10 +2003,10 @@ yields successive chunks of the response body as strings
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing only the :headers and :code keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -2023,10 +2029,10 @@ response data, containing only the :headers and :code keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the expected HTTP response code(s) from Riak
-
-
+</p>
+</div>
       
     </li>
   
@@ -2040,11 +2046,11 @@ the expected HTTP response code(s) from Riak
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a relative path or array of path segments and optional query params Hash
 that will be joined to the root URI
-
-
+</p>
+</div>
       
     </li>
   
@@ -2058,10 +2064,10 @@ that will be joined to the root URI
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the request body to send to the server
-
-
+</p>
+</div>
       
     </li>
   
@@ -2077,10 +2083,10 @@ the request body to send to the server
       
       
         &mdash;
-        
+        <div class='inline'><p>
 response data, containing :headers, :code, and :body keys
-
-
+</p>
+</div>
       
     </li>
   
@@ -2096,10 +2102,10 @@ response data, containing :headers, :code, and :body keys
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the response code doesn&#8217;t match the expected response
-
-
+</p>
+</div>
       
     </li>
   
@@ -2118,7 +2124,7 @@ if the response code doesn&#8217;t match the expected response
 93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 89</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id put'>put</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
@@ -2162,10 +2168,10 @@ when implementing <tt><a href="#perform-instance_method" title="Riak::Client::HT
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the HTTP method
-
-
+</p>
+</div>
       
     </li>
   
@@ -2179,10 +2185,10 @@ the HTTP method
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the received response code
-
-
+</p>
+</div>
       
     </li>
   
@@ -2196,11 +2202,11 @@ the received response code
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether a streaming block was passed to <tt><a href="#perform-instance_method" title="Riak::Client::HTTPBackend#perform (method)">#perform</a></tt>. Pass block_given? to
 this parameter.
-
-
+</p>
+</div>
       
     </li>
   
@@ -2216,10 +2222,10 @@ this parameter.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether to return the body in the response hash
-
-
+</p>
+</div>
       
     </li>
   
@@ -2236,7 +2242,7 @@ whether to return the body in the response hash
 191</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 189</span>
 
 <span class='kw'>def</span> <span class='id return_body?'>return_body?</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id code'>code</span><span class='comma'>,</span> <span class='id has_block'>has_block</span><span class='rparen'>)</span>
   <span class='id method'>method</span> <span class='op'>!=</span> <span class='symbol'>:head</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id valid_response?'>valid_response?</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>205</span><span class='comma'>,</span><span class='int'>304</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id code'>code</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id has_block'>has_block</span>
@@ -2274,10 +2280,10 @@ The calculated root URI for the Riak HTTP endpoint
       
       
         &mdash;
-        
+        <div class='inline'><p>
 The calculated root URI for the Riak HTTP endpoint
-
-
+</p>
+</div>
       
     </li>
   
@@ -2294,7 +2300,7 @@ The calculated root URI for the Riak HTTP endpoint
 139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='id root_uri'>root_uri</span>
   <span class='const'>URI</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://</span><span class='embexpr_beg'>#{</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id host'>host</span><span class='rbrace'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id port'>port</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -2335,10 +2341,10 @@ internally when implementing <tt><a href="#perform-instance_method" title="Riak:
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the expected response code(s)
-
-
+</p>
+</div>
       
     </li>
   
@@ -2352,10 +2358,10 @@ the expected response code(s)
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the received response code
-
-
+</p>
+</div>
       
     </li>
   
@@ -2371,10 +2377,10 @@ the received response code
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether the actual response code is acceptable given the expectations
-
-
+</p>
+</div>
       
     </li>
   
@@ -2391,7 +2397,7 @@ whether the actual response code is acceptable given the expectations
 181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 179</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 179</span>
 
 <span class='kw'>def</span> <span class='id valid_response?'>valid_response?</span><span class='lparen'>(</span><span class='id expected'>expected</span><span class='comma'>,</span> <span class='id actual'>actual</span><span class='rparen'>)</span>
   <span class='const'>Array</span><span class='lparen'>(</span><span class='id expected'>expected</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='id actual'>actual</span><span class='period'>.</span><span class='id to_i'>to_i</span><span class='rparen'>)</span>
@@ -2431,10 +2437,10 @@ Verifies that the specified resource is valid
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the resource specification
-
-
+</p>
+</div>
       
     </li>
   
@@ -2450,10 +2456,10 @@ the resource specification
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the resource path is too short
-
-
+</p>
+</div>
       
     </li>
   
@@ -2471,7 +2477,7 @@ if the resource path is too short
 172</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 169</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 169</span>
 
 <span class='kw'>def</span> <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
   <span class='id resource'>resource</span> <span class='op'>=</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='period'>.</span><span class='id flatten'>flatten</span>
@@ -2512,10 +2518,10 @@ Verifies that both a resource path and body are present in the arguments
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the arguments to verify
-
-
+</p>
+</div>
       
     </li>
   
@@ -2531,10 +2537,10 @@ the arguments to verify
       
       
         &mdash;
-        
+        <div class='inline'><p>
 if the body or resource is missing, or if the body is not a String
-
-
+</p>
+</div>
       
     </li>
   
@@ -2559,7 +2565,7 @@ if the body or resource is missing, or if the body is not a String
 164</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/client/http_backend.rb', line 154</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 154</span>
 
 <span class='kw'>def</span> <span class='id verify_path_and_body!'>verify_path_and_body!</span><span class='lparen'>(</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id body'>body</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id pop'>pop</span>
@@ -2582,9 +2588,9 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:41 2010 by 
+  Generated on Thu May  6 19:07:14 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

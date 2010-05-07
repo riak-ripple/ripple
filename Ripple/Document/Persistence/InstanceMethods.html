@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::Persistence::InstanceMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,8 +56,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/persistence.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/document/persistence.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -65,11 +66,12 @@
 
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#destroy-instance_method" title="#destroy (instance method)">- (Object) <strong>destroy</strong> </a>
@@ -84,15 +86,15 @@
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Deletes the document from Riak and freezes this instance.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#freeze-instance_method" title="#freeze (instance method)">- (Object) <strong>freeze</strong> </a>
@@ -107,22 +109,20 @@ Deletes the document from Riak and freezes this instance.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Freezes the document, preventing further modification.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#new%3F-instance_method" title="#new? (instance method)">- (Boolean) <strong>new?</strong> </a>
     
 
-    
-      (also: #new_record?)
     
   </span>
   
@@ -132,15 +132,15 @@ Freezes the document, preventing further modification.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Determines whether this is a new document.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#reload-instance_method" title="#reload (instance method)">- (Object) <strong>reload</strong> </a>
@@ -155,15 +155,15 @@ Determines whether this is a new document.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Reloads the document from Riak.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#save-instance_method" title="#save (instance method)">- (true, false) <strong>save</strong> </a>
@@ -178,15 +178,17 @@ Reloads the document from Riak.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Saves the document in Riak.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -217,16 +219,16 @@ Deletes the document from Riak and freezes this instance
       <pre class="lines">
 
 
-64
-65
-66
-67
-68
-69
-70</pre>
+72
+73
+74
+75
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id destroy'>destroy</span>
   <span class='id robject'>robject</span><span class='period'>.</span><span class='id delete'>delete</span> <span class='kw'>unless</span> <span class='id new?'>new?</span>
@@ -264,12 +266,12 @@ Freezes the document, preventing further modification.
       <pre class="lines">
 
 
-73
-74
-75</pre>
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id freeze'>freeze</span>
   <span class='ivar'>@attributes</span><span class='period'>.</span><span class='id freeze'>freeze</span><span class='semicolon'>;</span> <span class='kw'>super</span>
@@ -285,10 +287,6 @@ Freezes the document, preventing further modification.
     - (<tt><a href="../../../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>new?</strong> 
   
 
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='new_record?-instance_method'>new_record?</span></span>
-    </span>
   
 </p><div class="docstring">
   <div class="discussion">
@@ -320,12 +318,12 @@ Determines whether this is a new document.
       <pre class="lines">
 
 
-36
-37
-38</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id new?'>new?</span>
   <span class='ivar'>@new</span> <span class='op'>||</span> <span class='kw'>false</span>
@@ -363,10 +361,10 @@ Reloads the document from Riak
       
       
         
-        
+        <div class='inline'><p>
 self
-
-
+</p>
+</div>
       
     </li>
   
@@ -378,15 +376,15 @@ self
       <pre class="lines">
 
 
-56
-57
-58
-59
-60
-61</pre>
+64
+65
+66
+67
+68
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id reload'>reload</span>
   <span class='kw'>return</span> <span class='kw'>self</span> <span class='kw'>if</span> <span class='id new?'>new?</span>
@@ -427,10 +425,10 @@ Saves the document in Riak.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether the document succeeded in saving
-
-
+</p>
+</div>
       
     </li>
   
@@ -442,19 +440,19 @@ whether the document succeeded in saving
       <pre class="lines">
 
 
-43
-44
-45
-46
-47
-48
-49
-50
 51
-52</pre>
+52
+53
+54
+55
+56
+57
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/ripple/document/persistence.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id save'>save</span>
   <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>=</span> <span class='id key'>key</span> <span class='kw'>if</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>!=</span> <span class='id key'>key</span>
@@ -476,9 +474,9 @@ whether the document succeeded in saving
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:41 2010 by 
+  Generated on Thu May  6 19:07:13 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

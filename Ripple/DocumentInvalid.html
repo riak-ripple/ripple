@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Exception: Ripple::DocumentInvalid</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (D)</a> &raquo; 
+    <span class='title'><a href="../Ripple.html" title="Ripple (module)">Ripple</a></span>
+     &raquo; 
+    <span class="title">DocumentInvalid</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Exception: Ripple::DocumentInvalid 
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">StandardError</span>
+      
+        <ul class="fullTree">
+          <li><a href="../Object.html" title="Object (class)">Object</a></li>
+          
+            <li class="next">StandardError</li>
+          
+            <li class="next">Ripple::DocumentInvalid</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><a href="Translation.html" title="Ripple::Translation (module)">Translation</a></dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">ripple/lib/ripple/document/validations.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Raised by <tt>save!</tt> when the document is invalid.  Use the
+<tt>document</tt> method to retrieve the document which did not validate.
+</p>
+<pre class="code">
+  <span class='kw'>begin</span>
+    <span class='id invalid_document'>invalid_document</span><span class='period'>.</span><span class='id save!'>save!</span>
+  <span class='kw'>rescue</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>DocumentInvalid</span> <span class='op'>=&gt;</span> <span class='id invalid'>invalid</span>
+    <span class='id puts'>puts</span> <span class='id invalid'>invalid</span><span class='period'>.</span><span class='id document'>document</span><span class='period'>.</span><span class='id errors'>errors</span>
+  <span class='kw'>end</span></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h2>Instance Attribute Summary</h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#document-instance_method" title="#document (instance method)">- (Object) <strong>document</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns the value of attribute document.
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+    <h2>Instance Method Summary</h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (DocumentInvalid) <strong>initialize</strong>(document) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+A new instance of DocumentInvalid.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Translation.html" title="Ripple::Translation (module)">Translation</a></h3>
+  <p class="inherited"><a href="Translation.html#i18n_scope-instance_method" title="Ripple::Translation#i18n_scope (method)">#i18n_scope</a></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="../Riak/Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></h3>
+  <p class="inherited"><a href="../Riak/Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="../Riak/Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><a href="" title="Ripple::DocumentInvalid (class)">DocumentInvalid</a></tt>) <strong>initialize</strong>(document) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A new instance of DocumentInvalid
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+28
+29
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/validations.rb', line 28</span>
+
+<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id document'>document</span><span class='rparen'>)</span>
+  <span class='ivar'>@document</span> <span class='op'>=</span> <span class='id document'>document</span>
+  <span class='id errors'>errors</span> <span class='op'>=</span> <span class='ivar'>@document</span><span class='period'>.</span><span class='id errors'>errors</span><span class='period'>.</span><span class='id full_messages'>full_messages</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>document_invalid</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:errors</span> <span class='op'>=&gt;</span> <span class='id errors'>errors</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <span id="document-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="document-instance_method">
+  
+    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>document</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns the value of attribute document
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/validations.rb', line 27</span>
+
+<span class='kw'>def</span> <span class='id document'>document</span>
+  <span class='ivar'>@document</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+</div>
+    
+    <div id="footer">
+  Generated on Thu May  6 19:07:14 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.4 (ruby-1.9.1).
+</div>
+
+  </body>
+</html>

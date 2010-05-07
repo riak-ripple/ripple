@@ -16,6 +16,8 @@ h2 {
   margin: 1.8em 0 0.5em;
 }
 .clear { clear: both; }
+.inline { display: inline; }
+.inline p:first-child { display: inline; }
 .docstring h1, .docstring h2, .docstring h3, .docstring h4 { padding: 0; border: 0; border-bottom: 1px dotted #bbb; }
 .docstring h1 { font-size: 1.2em; }
 .docstring h2 { font-size: 1.1em; }
@@ -95,7 +97,9 @@ dl.constants dd { width: 75%; white-space: pre; font-family: monospace; margin-b
 
 .summary_desc { margin-left: 32px; display: block; font-family: sans-serif; }
 .summary_desc tt { font-size: 0.9em; }
-dl.constants .summary_desc { font-size: 0.9em; font-weight: normal; }
+dl.constants .docstring { margin-left: 32px; font-size: 0.9em; font-weight: normal; }
+dl.constants .discussion *:first-child { margin-top: 0; }
+dl.constants .discussion *:last-child { margin-bottom: 0; }
 
 .method_details { border-top: 1px dotted #aaa; margin-top: 15px; padding-top: 0; }
 .method_details.first { border: 0; }
@@ -194,6 +198,7 @@ ul.fullTree li.next:before { font-size: 1.2em; content: '\2B06'; color: #bbb; di
 
 #menu { font-size: 1.3em; color: #bbb; top: -5px; position: relative; }
 #menu .title, #menu a { font-size: 0.7em; }
+#menu .title a { font-size: 1em; }
 #menu .title { color: #555; }
 #menu a:link, #menu a:visited { color: #333; text-decoration: none; border-bottom: 1px dotted #bbd; }
 #menu a:hover { color: #05a; }

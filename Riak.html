@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Riak</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,9 +56,10 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak.rb<span class="defines">,<br />
-  lib/riak/link.rb,<br /> lib/riak/bucket.rb,<br /> lib/riak/client.rb,<br /> lib/riak/robject.rb,<br /> lib/riak/walk_spec.rb,<br /> lib/riak/map_reduce.rb,<br /> lib/riak/util/headers.rb,<br /> lib/riak/util/multipart.rb,<br /> lib/riak/failed_request.rb,<br /> lib/riak/invalid_response.rb,<br /> lib/riak/util/translation.rb,<br /> lib/riak/map_reduce_error.rb,<br /> lib/riak/client/http_backend.rb,<br /> lib/riak/client/curb_backend.rb,<br /> lib/riak/client/net_http_backend.rb</span>
+    <dd class="r1 last">riak-client/lib/riak.rb<span class="defines">,<br />
+  riak-client/lib/riak/link.rb,<br /> riak-client/lib/riak/client.rb,<br /> riak-client/lib/riak/bucket.rb,<br /> riak-client/lib/riak/robject.rb,<br /> riak-client/lib/riak/walk_spec.rb,<br /> riak-client/lib/riak/map_reduce.rb,<br /> riak-client/lib/riak/util/escape.rb,<br /> riak-client/lib/riak/cache_store.rb,<br /> riak-client/lib/riak/util/headers.rb,<br /> riak-client/lib/riak/failed_request.rb,<br /> riak-client/lib/riak/util/multipart.rb,<br /> riak-client/lib/riak/map_reduce_error.rb,<br /> riak-client/lib/riak/util/translation.rb,<br /> riak-client/lib/riak/invalid_response.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb</span>
 </dd>
   
 </dl>
@@ -83,7 +84,7 @@ The Riak module contains all aspects of the HTTP client interface to Riak.
     
    
     
-      <strong class="classes">Classes:</strong> <a href="Riak/Bucket.html" title="Riak::Bucket (class)">Bucket</a>, <a href="Riak/Client.html" title="Riak::Client (class)">Client</a>, <a href="Riak/FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a>, <a href="Riak/InvalidResponse.html" title="Riak::InvalidResponse (class)">InvalidResponse</a>, <a href="Riak/Link.html" title="Riak::Link (class)">Link</a>, <a href="Riak/MapReduce.html" title="Riak::MapReduce (class)">MapReduce</a>, <a href="Riak/MapReduceError.html" title="Riak::MapReduceError (class)">MapReduceError</a>, <a href="Riak/RObject.html" title="Riak::RObject (class)">RObject</a>, <a href="Riak/WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a>
+      <strong class="classes">Classes:</strong> <a href="Riak/Bucket.html" title="Riak::Bucket (class)">Bucket</a>, <a href="Riak/CacheStore.html" title="Riak::CacheStore (class)">CacheStore</a>, <a href="Riak/Client.html" title="Riak::Client (class)">Client</a>, <a href="Riak/FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a>, <a href="Riak/InvalidResponse.html" title="Riak::InvalidResponse (class)">InvalidResponse</a>, <a href="Riak/Link.html" title="Riak::Link (class)">Link</a>, <a href="Riak/MapReduce.html" title="Riak::MapReduce (class)">MapReduce</a>, <a href="Riak/MapReduceError.html" title="Riak::MapReduceError (class)">MapReduceError</a>, <a href="Riak/RObject.html" title="Riak::RObject (class)">RObject</a>, <a href="Riak/WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a>
     
   
 </p>
@@ -91,12 +92,13 @@ The Riak module contains all aspects of the HTTP client interface to Riak.
 
 
 
+
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:38 2010 by 
+  Generated on Thu May  6 19:07:12 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

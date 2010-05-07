@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::Util::Headers</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -75,8 +75,9 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak/util/headers.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/util/headers.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -96,11 +97,12 @@ Represents headers from an HTTP response
 
   
 
-  <h2>Class Method Summary</h2>
+  
+    <h2>Class Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#parse-class_method" title="parse (class method)">+ (Object) <strong>parse</strong>(chunk) </a>
@@ -115,21 +117,21 @@ Represents headers from an HTTP response
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Parse a single header line into its key and value.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+    <h2>Instance Method Summary</h2>
 
-  <h2>Instance Method Summary</h2>
-
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (Headers) <strong>initialize</strong> </a>
@@ -146,15 +148,15 @@ Parse a single header line into its key and value.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 A new instance of Headers.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#parse-instance_method" title="#parse (instance method)">- (Object) <strong>parse</strong>(chunk) </a>
@@ -169,15 +171,17 @@ A new instance of Headers.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Parses a header line and adds it to the header collection.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -211,7 +215,7 @@ A new instance of Headers
 24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/util/headers.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/headers.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span>
   <span class='id initialize_http_header'>initialize_http_header</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -258,10 +262,10 @@ Parse a single header line into its key and value
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a single header line
-
-
+</p>
+</div>
       
     </li>
   
@@ -282,7 +286,7 @@ a single header line
 34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/util/headers.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/headers.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span>
   <span class='id line'>line</span> <span class='op'>=</span> <span class='id chunk'>chunk</span><span class='period'>.</span><span class='id strip'>strip</span>
@@ -332,10 +336,10 @@ Parses a header line and adds it to the header collection
       
       
         &mdash;
-        
+        <div class='inline'><p>
 a single header line
-
-
+</p>
+</div>
       
     </li>
   
@@ -353,7 +357,7 @@ a single header line
 41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/util/headers.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/headers.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id parse'>parse</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span>
   <span class='id key'>key</span><span class='comma'>,</span> <span class='id value'>value</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span>
@@ -369,9 +373,9 @@ a single header line
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:40 2010 by 
+  Generated on Thu May  6 19:07:13 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

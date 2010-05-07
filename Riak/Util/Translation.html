@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Riak::Util::Translation</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,8 +56,13 @@
     
   
   
-    <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak/util/translation.rb</dd>
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><a href="../Bucket.html" title="Riak::Bucket (class)">Riak::Bucket</a>, <a href="../Client.html" title="Riak::Client (class)">Riak::Client</a>, <a href="../Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">Riak::Client::HTTPBackend</a>, <a href="../FailedRequest.html" title="Riak::FailedRequest (class)">Riak::FailedRequest</a>, <a href="../Link.html" title="Riak::Link (class)">Riak::Link</a>, <a href="../MapReduce.html" title="Riak::MapReduce (class)">Riak::MapReduce</a>, <a href="../MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Riak::MapReduce::Phase</a>, <a href="../RObject.html" title="Riak::RObject (class)">Riak::RObject</a>, <a href="../WalkSpec.html" title="Riak::WalkSpec (class)">Riak::WalkSpec</a>, <a href="../../Ripple/Translation.html" title="Ripple::Translation (module)">Ripple::Translation</a></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">riak-client/lib/riak/util/translation.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -65,11 +70,12 @@
 
 
 
-  <h2>Instance Method Summary</h2>
+  
+    <h2>Instance Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#i18n_scope-instance_method" title="#i18n_scope (instance method)">- (Object) <strong>i18n_scope</strong> </a>
@@ -84,12 +90,12 @@
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#t-instance_method" title="#t (instance method)">- (Object) <strong>t</strong>(message, options = {}) </a>
@@ -104,12 +110,14 @@
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -134,7 +142,7 @@
 21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/util/translation.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/translation.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id i18n_scope'>i18n_scope</span>
   <span class='symbol'>:riak</span>
@@ -162,7 +170,7 @@
 25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/util/translation.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/translation.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='id message'>message</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='const'>I18n</span><span class='period'>.</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id i18n_scope'>i18n_scope</span><span class='rbrace'>}</span><span class='tstring_content'>.</span><span class='embexpr_beg'>#{</span><span class='id message'>message</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -177,9 +185,9 @@
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:40 2010 by 
+  Generated on Thu May  6 19:07:13 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

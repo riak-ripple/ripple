@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -60,9 +60,10 @@
     
   
   
+  
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/ripple/document.rb<span class="defines">,<br />
-  lib/ripple/document/finders.rb,<br /> lib/ripple/document/timestamps.rb,<br /> lib/ripple/document/properties.rb,<br /> lib/ripple/document/validations.rb,<br /> lib/ripple/document/persistence.rb,<br /> lib/ripple/document/bucket_access.rb,<br /> lib/ripple/document/attribute_methods.rb,<br /> lib/ripple/document/persistence/callbacks.rb,<br /> lib/ripple/document/attribute_methods/read.rb,<br /> lib/ripple/document/attribute_methods/query.rb,<br /> lib/ripple/document/attribute_methods/dirty.rb,<br /> lib/ripple/document/attribute_methods/write.rb</span>
+    <dd class="r2 last">ripple/lib/ripple/document.rb<span class="defines">,<br />
+  ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/document/callbacks.rb,<br /> ripple/lib/ripple/document/timestamps.rb,<br /> ripple/lib/ripple/document/properties.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> ripple/lib/ripple/document/validations.rb,<br /> ripple/lib/ripple/document/associations.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/document/associations/one.rb,<br /> ripple/lib/ripple/document/associations/many.rb,<br /> ripple/lib/ripple/document/attribute_methods.rb,<br /> ripple/lib/ripple/document/associations/proxy.rb,<br /> ripple/lib/ripple/document/associations/linked.rb,<br /> ripple/lib/ripple/document/associations/embedded.rb,<br /> ripple/lib/ripple/document/attribute_methods/read.rb,<br /> ripple/lib/ripple/document/attribute_methods/write.rb,<br /> ripple/lib/ripple/document/attribute_methods/query.rb,<br /> ripple/lib/ripple/document/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/document/associations/instantiators.rb,<br /> ripple/lib/ripple/document/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/document/associations/many_embedded_proxy.rb,<br /> ripple/lib/ripple/document/validations/associated_validator.rb</span>
 </dd>
   
 </dl>
@@ -96,8 +97,7 @@ Example:
   <span class='id reply'>reply</span><span class='period'>.</span><span class='id from'>from</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>justin@bashoooo.com</span><span class='tstring_end'>&quot;</span></span>
   <span class='id reply'>reply</span><span class='period'>.</span><span class='id to'>to</span>   <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sean@geeemail.com</span><span class='tstring_end'>&quot;</span></span>
   <span class='id reply'>reply</span><span class='period'>.</span><span class='id body'>body</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Riak is a good fit for scalable Ruby apps.</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id reply'>reply</span><span class='period'>.</span><span class='id save'>save</span>                               <span class='comment'># POST /riak/emails (Riak-assigned key)
-</span></pre>
+  <span class='id reply'>reply</span><span class='period'>.</span><span class='id save'>save</span>                               <span class='comment'># POST /riak/emails (Riak-assigned key)</span></pre>
 
 
   </div>
@@ -108,24 +108,29 @@ Example:
 <p class="children">
    
     
-      <strong class="modules">Modules:</strong> <a href="Document/AttributeMethods.html" title="Ripple::Document::AttributeMethods (module)">AttributeMethods</a>, <a href="Document/BucketAccess.html" title="Ripple::Document::BucketAccess (module)">BucketAccess</a>, <a href="Document/Finders.html" title="Ripple::Document::Finders (module)">Finders</a>, <a href="Document/Persistence.html" title="Ripple::Document::Persistence (module)">Persistence</a>, <a href="Document/Properties.html" title="Ripple::Document::Properties (module)">Properties</a>, <a href="Document/Timestamps.html" title="Ripple::Document::Timestamps (module)">Timestamps</a>, <a href="Document/Validations.html" title="Ripple::Document::Validations (module)">Validations</a>
+      <strong class="modules">Modules:</strong> <a href="Document/Associations.html" title="Ripple::Document::Associations (module)">Associations</a>, <a href="Document/AttributeMethods.html" title="Ripple::Document::AttributeMethods (module)">AttributeMethods</a>, <a href="Document/BucketAccess.html" title="Ripple::Document::BucketAccess (module)">BucketAccess</a>, <a href="Document/Callbacks.html" title="Ripple::Document::Callbacks (module)">Callbacks</a>, <a href="Document/Finders.html" title="Ripple::Document::Finders (module)">Finders</a>, <a href="Document/Persistence.html" title="Ripple::Document::Persistence (module)">Persistence</a>, <a href="Document/Properties.html" title="Ripple::Document::Properties (module)">Properties</a>, <a href="Document/Timestamps.html" title="Ripple::Document::Timestamps (module)">Timestamps</a>, <a href="Document/Validations.html" title="Ripple::Document::Validations (module)">Validations</a>
     
    
     
-      <strong class="classes">Classes:</strong> <a href="Document/Property.html" title="Ripple::Document::Property (class)">Property</a>
+      <strong class="classes">Classes:</strong> <a href="Document/Association.html" title="Ripple::Document::Association (class)">Association</a>, <a href="Document/Property.html" title="Ripple::Document::Property (class)">Property</a>
     
   
 </p>
 
 
+  
+  
 
+
+  
+  
 
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:40 2010 by 
+  Generated on Thu May  6 19:07:12 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

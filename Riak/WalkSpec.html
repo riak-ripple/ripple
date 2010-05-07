@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::WalkSpec</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -70,13 +70,14 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
+      <dd class="r2"><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a>, <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
       
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/riak/walk_spec.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/walk_spec.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -95,8 +96,7 @@ This operation would have two WalkSpecs:
 </p>
 <pre class="code">
   <span class='const'>Riak</span><span class='op'>::</span><span class='const'>WalkSpec</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:bucket</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>albums</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='const'>Riak</span><span class='op'>::</span><span class='const'>WalkSpec</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:bucket</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>tracks</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:result</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-</pre>
+  <span class='const'>Riak</span><span class='op'>::</span><span class='const'>WalkSpec</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:bucket</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>tracks</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:result</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rbrace'>}</span><span class='rparen'>)</span></pre>
 
 
   </div>
@@ -105,6 +105,10 @@ This operation would have two WalkSpecs:
   
 </div>
 
+  
+  
+  
+  
   
   
   
@@ -130,10 +134,10 @@ This operation would have two WalkSpecs:
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The bucket followed links should be restricted to.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -156,10 +160,10 @@ The bucket followed links should be restricted to.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Whether objects should be returned from this phase of link walking.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -182,11 +186,11 @@ Whether objects should be returned from this phase of link walking.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 The &#8220;riaktag&#8221; or &#8220;rel&#8221; that followed links should
 be restricted to.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
@@ -194,11 +198,12 @@ be restricted to.
   </ul>
 
 
-  <h2>Class Method Summary</h2>
+  
+    <h2>Class Method Summary</h2>
 
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#normalize-class_method" title="normalize (class method)">+ (Object) <strong>normalize</strong>(*params) </a>
@@ -213,24 +218,24 @@ be restricted to.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Normalize a list of walk specs into WalkSpec objects.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
+    <h2>Instance Method Summary</h2>
 
-  <h2>Instance Method Summary</h2>
-
-  <ul class="summary">
-    
-      <li class="public ">
+    <ul class="summary">
+      
+        <li class="public ">
   <span class="summary_signature">
     
-      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>=</strong>(other) </a>
+      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(other) </a>
     
 
     
@@ -242,15 +247,15 @@ Normalize a list of walk specs into WalkSpec objects.
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
-      <a href="#%3D%3D%3D-instance_method" title="#=== (instance method)">- (Object) <strong>==</strong>(other) </a>
+      <a href="#%3D%3D%3D-instance_method" title="#=== (instance method)">- (Object) <strong>===</strong>(other) </a>
     
 
     
@@ -262,12 +267,12 @@ Normalize a list of walk specs into WalkSpec objects.
   
 
   
-    <span class="summary_desc"></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (WalkSpec) <strong>initialize</strong>(*args) </a>
@@ -284,15 +289,15 @@ Normalize a list of walk specs into WalkSpec objects.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Creates a walk-spec for use in finding other objects in Riak.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-      <li class="public ">
+      
+        <li class="public ">
   <span class="summary_signature">
     
       <a href="#to_s-instance_method" title="#to_s (instance method)">- (Object) <strong>to_s</strong> </a>
@@ -307,17 +312,21 @@ Creates a walk-spec for use in finding other objects in Riak.
   
 
   
-    <span class="summary_desc">
+    <span class="summary_desc"><div class='inline'><p>
 Converts the walk-spec into the form required by the link-walker resource
 URL.
-
-</span>
+</p>
+</div></span>
   
 </li>
 
-    
-  </ul>
+      
+    </ul>
+  
 
+
+  
+  
   
   
   
@@ -325,6 +334,16 @@ URL.
   
   <h3 class="inherited">Methods included from <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></h3>
   <p class="inherited"><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></h3>
+  <p class="inherited"><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -379,10 +398,10 @@ Creates a walk-spec from a hash.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 options for the walk-spec
-
-
+</p>
+</div>
       
     </li>
   
@@ -403,10 +422,10 @@ options for the walk-spec
               <tt>&quot;_&quot;</tt>
             
           </span>
-          &mdash;
+          &mdash;<div class='inline'><p>
 the bucket the links should point to (default &#8216;_&#8217; is all)
-
-
+</p>
+</div>
         </tr>
       
         <li>
@@ -418,10 +437,10 @@ the bucket the links should point to (default &#8216;_&#8217; is all)
               <tt>&quot;_&quot;</tt>
             
           </span>
-          &mdash;
+          &mdash;<div class='inline'><p>
 the tag to filter links by (default &#8216;_&#8217; is all)
-
-
+</p>
+</div>
         </tr>
       
         <li>
@@ -433,10 +452,10 @@ the tag to filter links by (default &#8216;_&#8217; is all)
               <tt>false</tt>
             
           </span>
-          &mdash;
+          &mdash;<div class='inline'><p>
 whether to return results from following this link specification
-
-
+</p>
+</div>
         </tr>
       
     </ul>
@@ -471,10 +490,10 @@ Creates a walk-spec from a bucket-tag-result triple.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the bucket the links should point to (default &#8216;_&#8217; is all)
-
-
+</p>
+</div>
       
     </li>
   
@@ -488,10 +507,10 @@ the bucket the links should point to (default &#8216;_&#8217; is all)
       
       
         &mdash;
-        
+        <div class='inline'><p>
 the tag to filter links by (default &#8216;_&#8217; is all)
-
-
+</p>
+</div>
       
     </li>
   
@@ -505,10 +524,10 @@ the tag to filter links by (default &#8216;_&#8217; is all)
       
       
         &mdash;
-        
+        <div class='inline'><p>
 whether to return results from following this link specification
-
-
+</p>
+</div>
       
     </li>
   
@@ -532,8 +551,6 @@ whether to return results from following this link specification
       <pre class="lines">
 
 
-71
-72
 73
 74
 75
@@ -544,10 +561,12 @@ whether to return results from following this link specification
 80
 81
 82
-83</pre>
+83
+84
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 73</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id args'>args</span><span class='period'>.</span><span class='id flatten!'>flatten!</span>
@@ -604,11 +623,11 @@ represents all buckets.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 The bucket followed links should be restricted to. &#8220;_&#8221;
 represents all buckets.
-
-
+</p>
+</div>
       
     </li>
   
@@ -620,12 +639,12 @@ represents all buckets.
       <pre class="lines">
 
 
-28
-29
-30</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
   <span class='ivar'>@bucket</span>
@@ -667,11 +686,11 @@ is false.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 Whether objects should be returned from this phase of link walking. Default
 is false.
-
-
+</p>
+</div>
       
     </li>
   
@@ -683,12 +702,12 @@ is false.
       <pre class="lines">
 
 
-34
-35
-36</pre>
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id keep'>keep</span>
   <span class='ivar'>@keep</span>
@@ -730,11 +749,11 @@ be restricted to. &#8220;_&#8221; represents all tags.
       
       
         &mdash;
-        
+        <div class='inline'><p>
 The &#8220;riaktag&#8221; or &#8220;rel&#8221; that followed links should
 be restricted to. &#8220;_&#8221; represents all tags.
-
-
+</p>
+</div>
       
     </li>
   
@@ -746,12 +765,12 @@ be restricted to. &#8220;_&#8221; represents all tags.
       <pre class="lines">
 
 
-31
-32
-33</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id tag'>tag</span>
   <span class='ivar'>@tag</span>
@@ -792,8 +811,6 @@ Normalize a list of walk specs into WalkSpec objects.
       <pre class="lines">
 
 
-37
-38
 39
 40
 41
@@ -811,10 +828,12 @@ Normalize a list of walk specs into WalkSpec objects.
 53
 54
 55
-56</pre>
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 39</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id normalize'>normalize</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id params'>params</span><span class='period'>.</span><span class='id flatten!'>flatten!</span>
@@ -860,12 +879,12 @@ Normalize a list of walk specs into WalkSpec objects.
       <pre class="lines">
 
 
-90
-91
-92</pre>
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='id other'>other</span><span class='period'>.</span><span class='id is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>WalkSpec</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id bucket'>bucket</span> <span class='op'>==</span> <span class='id bucket'>bucket</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tag'>tag</span> <span class='op'>==</span> <span class='id tag'>tag</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id keep'>keep</span> <span class='op'>==</span> <span class='id keep'>keep</span>
@@ -888,20 +907,20 @@ Normalize a list of walk specs into WalkSpec objects.
       <pre class="lines">
 
 
-94
-95
-96
-97
 98
 99
 100
 101
 102
 103
-104</pre>
+104
+105
+106
+107
+108</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='op'>===</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='kw'>self</span> <span class='op'>==</span> <span class='id other'>other</span> <span class='op'>||</span> <span class='kw'>case</span> <span class='id other'>other</span>
@@ -944,15 +963,19 @@ URL
       <pre class="lines">
 
 
-86
-87
-88</pre>
+88
+89
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/riak/walk_spec.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='id to_s'>to_s</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@bucket</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_content'>,</span><span class='embexpr_beg'>#{</span><span class='ivar'>@tag</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_content'>,</span><span class='embexpr_beg'>#{</span><span class='ivar'>@keep</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>1</span><span class='tstring_end'>'</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id b'>b</span> <span class='op'>=</span> <span class='ivar'>@bucket</span> <span class='op'>&amp;&amp;</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@bucket</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span>
+  <span class='id t'>t</span> <span class='op'>=</span> <span class='ivar'>@tag</span> <span class='op'>&amp;&amp;</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@tag</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id b'>b</span><span class='rbrace'>}</span><span class='tstring_content'>,</span><span class='embexpr_beg'>#{</span><span class='id t'>t</span><span class='rbrace'>}</span><span class='tstring_content'>,</span><span class='embexpr_beg'>#{</span><span class='ivar'>@keep</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>1</span><span class='tstring_end'>'</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -964,9 +987,9 @@ URL
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:39 2010 by 
+  Generated on Thu May  6 19:07:12 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

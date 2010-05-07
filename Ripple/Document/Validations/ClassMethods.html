@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::Validations::ClassMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -56,8 +56,11 @@
     
   
   
+  
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/ripple/document/validations.rb</dd>
+    <dd class="r1 last">ripple/lib/ripple/document/validations.rb<span class="defines">,<br />
+  ripple/lib/ripple/document/validations/associated_validator.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
@@ -65,13 +68,142 @@
 
 
 
+  
+    <h2>Instance Method Summary</h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#create%21-instance_method" title="#create! (instance method)">- (Object) <strong>create!</strong>(attrs = {}, &amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Instantiates a new record, applies attributes from a block, and saves it
+Raises Ripple::DocumentInvalid if the record did not save.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#validates_associated-instance_method" title="#validates_associated (instance method)">- (Object) <strong>validates_associated</strong>(*attr_names) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="create!-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>create!</strong>(attrs = {}, &amp;block) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Instantiates a new record, applies attributes from a block, and saves it
+Raises Ripple::DocumentInvalid if the record did not save
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/validations.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='id create!'>create!</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='id obj'>obj</span> <span class='op'>=</span> <span class='id create'>create</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='lparen'>(</span><span class='id raise'>raise</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>DocumentInvalid</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id obj'>obj</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id obj'>obj</span><span class='period'>.</span><span class='id new?'>new?</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id obj'>obj</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="validates_associated-instance_method">
+  
+    - (<tt><a href="../../../Object.html" title="Object (class)">Object</a></tt>) <strong>validates_associated</strong>(*attr_names) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/validations/associated_validator.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id validates_associated'>validates_associated</span><span class='lparen'>(</span><span class='op'>*</span><span class='id attr_names'>attr_names</span><span class='rparen'>)</span>
+  <span class='id validates_with'>validates_with</span> <span class='const'>AssociatedValidator</span><span class='comma'>,</span> <span class='id _merge_attributes'>_merge_attributes</span><span class='lparen'>(</span><span class='id attr_names'>attr_names</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
 
 </div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:41 2010 by 
+  Generated on Thu May  6 19:07:14 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>

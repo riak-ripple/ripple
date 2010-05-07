@@ -2,8 +2,8 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=UTF-8" />
-<title>Documentation by YARD 0.5.3</title>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Documentation by YARD 0.5.4</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -42,17 +42,18 @@
     <iframe id="search_frame"></iframe>
     
     <div id="content"><div id='filecontents'><h1>ripple</h1>
-<p>ripple is a rich Ruby client for Riak, Basho&#8217;s distributed database. It includes two namespaces:</p>
+<p>ripple is a rich Ruby client for Riak, Basho&#8217;s distributed
+database. It consists of two gems:</p>
 <ul>
-	<li><code>Riak</code> contains a basic wrapper around typical operations, including bucket manipulation, object <span class="caps">CRUD</span>, link-walking, and map-reduce.</li>
-	<li><code>Ripple</code> contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.</li>
+	<li><code>riak-client</code> (<code>Riak</code> namespace) contains a basic wrapper around typical operations, including bucket manipulation, object <span class="caps">CRUD</span>, link-walking, and map-reduce.</li>
+	<li><code>ripple</code> (<code>Ripple</code> namespace) contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.</li>
 </ul>
 <h2>Dependencies</h2>
-<p>ripple requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).  Please see the Rails 3 beta release notes for installing those gems.  I highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
+<p>riak-client requires ActiveSupport 2.3.5 or later, but the version 3 is recommended. I highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
+<p>ripple requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).  Please see the Rails 3 beta release notes for installing those gems.</p>
 <p>In development, you will also need these gems:</p>
 <ul>
-	<li>jeweler</li>
-	<li>rspec &gt;= 1.3</li>
+	<li>rspec = 2.0.0.beta6</li>
 	<li>fakeweb &gt;= 1.2</li>
 	<li>curb &gt;= 0.6</li>
 	<li>rack &gt;= 1.0</li>
@@ -154,9 +155,9 @@ licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creat
 <p>The &#8220;Poor Man&#8217;s Fibers&#8221; implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.</p></div></div>
     
     <div id="footer">
-  Generated on Fri Mar  5 13:45:38 2010 by 
+  Generated on Thu May  6 19:07:12 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.3 (ruby-1.9.1).
+  0.5.4 (ruby-1.9.1).
 </div>
 
   </body>
