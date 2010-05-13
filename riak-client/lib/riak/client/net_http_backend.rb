@@ -30,17 +30,19 @@ module Riak
           when IO
             request.body_stream = data
           end
-          response = http.request(request)
 
-          if valid_response?(expect, response.code)
-            result = {:headers => response.to_hash, :code => response.code.to_i}
-            response.read_body {|chunk| yield chunk } if block_given?
-            if return_body?(method, response.code, block_given?)
-              result[:body] = response.body
+          {}.tap do |result|
+            http.request(request) do |response|
+              if valid_response?(expect, response.code)
+                result.merge!({:headers => response.to_hash, :code => response.code.to_i})
+                response.read_body {|chunk| yield chunk } if block_given?
+                if return_body?(method, response.code, block_given?)
+                  result[:body] = response.body
+                end
+              else
+                raise FailedRequest.new(method, expect, response.code, response.to_hash, response.body)
+              end
             end
-            result
-          else
-            raise FailedRequest.new(method, expect, response.code, response.to_hash, response.body)
           end
         end
       end
