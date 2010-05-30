@@ -178,6 +178,10 @@ describe Riak::MapReduce do
       @mr.timeout(50000)
       @mr.to_json.should include('"timeout":50000')
     end
+
+    it "should return self from setting the timeout" do
+      @mr.timeout(5000).should == @mr
+    end
   end
 
   describe "executing the map reduce job" do

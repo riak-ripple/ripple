@@ -128,8 +128,10 @@ module Riak
     # @param [Fixnum] value the job timeout, in milliseconds
     def timeout(value)
       @timeout = value
+      return self
     end
-
+    alias :timeout= :timeout
+    
     # Convert the job to JSON for submission over the HTTP interface.
     # @return [String] the JSON representation
     def to_json(options={})
