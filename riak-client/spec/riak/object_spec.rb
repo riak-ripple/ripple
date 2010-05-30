@@ -277,11 +277,6 @@ describe Riak::RObject do
       @object.store_headers.should_not have_key("Link")
     end
 
-    it "should chunk large numbers of links (>8KB) into multiple headers" do
-      10000.times {|i| @object.links << Riak::Link.new("/riak/test/#{i}", "big") }
-      @object.store_headers["Link"].should be_kind_of(Array)
-    end
-
     describe "when meta fields are present" do
       before :each do
         @object.meta = {"some-kind-of-robot" => true, "powers" => "for awesome", "cold-ones" => 10}
