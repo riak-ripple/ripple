@@ -88,7 +88,7 @@ module Riak
         hash["Content-Type"] = @content_type
         hash["X-Riak-Vclock"] = @vclock if @vclock
         unless @links.blank?
-          hash["Link"] = @links.reject {|l| l.rel == "up" }.map(&:to_s).join(", ")
+          hash["Link"] = chunk_links(@links.reject {|l| l.key.nil? })
         end
         unless @meta.blank?
           @meta.each do |k,v|
@@ -262,6 +262,21 @@ module Riak
           RObject.new(@bucket.client.bucket(bucket, :keys => false), key).load(obj)
         end
       end
+    end
+
+    def chunk_links(link_set)
+      ary = []
+      link_set.each do |link|
+        buffer = ary.last
+        link_str = link.to_s
+        # Respect mochiweb header-length limit
+        if buffer.blank? || (buffer.size + link_str.size + 2 > 8192)
+          ary << link_str
+        else
+          buffer << ", #{link_str}"
+        end
+      end
+      ary.size == 1 ? ary.first : ary
     end
   end
 end
