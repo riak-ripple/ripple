@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Ripple::Document::Timestamps do
+describe Ripple::Timestamps do
   require 'support/models/clock'
   
   before :each do

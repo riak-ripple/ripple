@@ -14,38 +14,25 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module Associations
-      module Many
-        include Instantiators
-        
-        def to_ary
-          load_target
-          Array === target ? target.to_ary : Array(target)
-        end
+  module AttributeMethods
+    module Read
+      extend ActiveSupport::Concern
 
-        def count
-          load_target
-          target.size
+      included do
+        attribute_method_suffix ""
+      end
+
+      def [](attr_name)
+        attribute(attr_name)
+      end
+
+      private
+      def attribute(attr_name)
+        if @attributes.include?(attr_name)
+          @attributes[attr_name]
+        else
+          nil
         end
-        
-        def reset
-          super
-          @target = []
-        end
-        
-        def <<
-          raise NotImplementedError
-        end
-        alias_method :push, :<<
-        alias_method :concat, :<<
-        
-        protected        
-          def instantiate_target(instantiator, attrs={})
-            doc = klass.send(instantiator, attrs)
-            self << doc
-            doc
-          end
       end
     end
   end

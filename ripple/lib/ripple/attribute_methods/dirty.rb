@@ -14,18 +14,36 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module Associations
-      module Linked
+  module AttributeMethods
+    module Dirty
+      extend ActiveSupport::Concern
+      include ActiveModel::Dirty
 
-        def create(attrs={})
-          instantiate_target(:create, attrs)
+      # @private
+      def save
+        if result = super
+          changed_attributes.clear
         end
+        result
+      end
 
-        def create!(attrs={})
-          instantiate_target(:create!, attrs)
+      # @private
+      def reload
+        returning super do
+          changed_attributes.clear
         end
-        
+      end
+
+      # @private
+      def initialize(attrs={})
+        super(attrs)
+        changed_attributes.clear
+      end
+
+      private
+      def attribute=(attr_name, value)
+        attribute_will_change!(attr_name)
+        super
       end
     end
   end

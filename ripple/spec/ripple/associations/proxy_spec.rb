@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../../spec_helper", __FILE__)
 
-describe Ripple::Document::Associations::Proxy do
+describe Ripple::Associations::Proxy do
   require 'support/associations/proxies'
 
   before :each do

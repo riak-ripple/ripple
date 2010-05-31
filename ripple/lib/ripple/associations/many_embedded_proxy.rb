@@ -14,28 +14,34 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module Associations
-      class OneEmbeddedProxy < Proxy
-        include One
-        include Embedded
-        
-        def replace(doc)
-          @_doc = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc
-          assign_references(doc)
-          reset
-          @_doc
-        end
-        
-        protected
-          def find_target
-            return nil unless @_doc
-            klass.instantiate(@_doc).tap do |doc|
-              assign_references(doc)
-            end
-          end
-        
+  module Associations
+    class ManyEmbeddedProxy < Proxy
+      include Many
+      include Embedded
+
+      def <<(docs)
+        load_target
+        assign_references(docs)
+        @target += Array(docs)
+        self
       end
+
+      def replace(docs)
+        @_docs = docs.map { |doc| attrs = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc }
+        assign_references(docs)
+        reset
+        @_docs
+      end
+
+      protected
+      def find_target
+        (@_docs || []).map do |attrs|
+          klass.instantiate(attrs).tap do |doc|
+            assign_references(doc)
+          end
+        end
+      end
+
     end
   end
 end

@@ -14,31 +14,20 @@
 require 'ripple'
 
 module Ripple
-  module EmbeddedDocument
+  module Timestamps
     extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
-
-    autoload :Conversion
-    autoload :Finders
-    autoload :Persistence
-    include Translation
-
-    included do
-      extend ActiveModel::Naming
-      extend Ripple::Properties
-      include Ripple::AttributeMethods
-      include Ripple::Timestamps
-      include Ripple::Validations
-      include Ripple::Associations
-      include Ripple::Callbacks
-      include Conversion
-      include Finders
-      include Persistence
-    end
 
     module ClassMethods
-      def embeddable?
-        true
+      def timestamps!
+        property :created_at, Time, :default => proc { Time.now.utc }
+        property :updated_at, Time
+        before_save :touch
+      end
+    end
+
+    module InstanceMethods
+      def touch
+        self.updated_at = Time.now.utc
       end
     end
   end

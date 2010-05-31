@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Document::Properties do
+describe Ripple::Properties do
   require 'support/models/email'
 
   it "should make the model class have a property definition method" do
@@ -35,51 +35,50 @@ describe Ripple::Document::Properties do
     class Forward < Email; end
     Forward.properties[:foo].should == "bar"
   end
-
 end
 
-describe Ripple::Document::Property do
+describe Ripple::Property do
   it "should have a key symbol" do
-    prop = Ripple::Document::Property.new('foo', String)
+    prop = Ripple::Property.new('foo', String)
     prop.should respond_to(:key)
     prop.key.should == :foo
   end
 
   it "should have a type" do
-    prop = Ripple::Document::Property.new('foo', String)
+    prop = Ripple::Property.new('foo', String)
     prop.should respond_to(:type)
     prop.type.should == String
   end
 
   it "should capture extra options" do
-    prop = Ripple::Document::Property.new('foo', String, 'default' => "bar")
+    prop = Ripple::Property.new('foo', String, 'default' => "bar")
     prop.should respond_to(:options)
     prop.options.should == {:default => "bar"}
   end
 
   it "should expose validation options" do
-    prop = Ripple::Document::Property.new('foo', String, 'default' => "bar", :presence => true)
+    prop = Ripple::Property.new('foo', String, 'default' => "bar", :presence => true)
     prop.validation_options.should == {:presence => true}
   end
 
   describe "default value" do
     it "should be nil when not specified" do
-      prop = Ripple::Document::Property.new('foo', String)
+      prop = Ripple::Property.new('foo', String)
       prop.default.should be_nil
     end
 
     it "should allow literal values" do
-      prop = Ripple::Document::Property.new('foo', String, :default => "bar")
+      prop = Ripple::Property.new('foo', String, :default => "bar")
       prop.default.should == "bar"
     end
 
     it "should cast to the proper type" do
-      prop = Ripple::Document::Property.new('foo', String, :default => :bar)
+      prop = Ripple::Property.new('foo', String, :default => :bar)
       prop.default.should == "bar"
     end
 
     it "should allow lambdas for deferred evaluation" do
-      prop = Ripple::Document::Property.new('foo', String, :default => lambda { "bar" })
+      prop = Ripple::Property.new('foo', String, :default => lambda { "bar" })
       prop.default.should == "bar"
     end
   end
@@ -87,7 +86,7 @@ describe Ripple::Document::Property do
   describe "casting a value" do
     describe "when type is Boolean" do
       before :each do
-        @prop = Ripple::Document::Property.new('foo', Boolean)
+        @prop = Ripple::Property.new('foo', Boolean)
       end
 
       [0, 0.0, "", [], false, "f", "FALSE"].each do |v|
@@ -109,7 +108,7 @@ describe Ripple::Document::Property do
 
     describe "when type is String" do
       before :each do
-        @prop = Ripple::Document::Property.new('foo', String)
+        @prop = Ripple::Property.new('foo', String)
       end
 
       it "should cast anything to a string using to_s" do
@@ -126,7 +125,7 @@ describe Ripple::Document::Property do
 
     describe "when type is an Integer type" do
       before :each do
-        @prop = Ripple::Document::Property.new(:foo, Integer)
+        @prop = Ripple::Property.new(:foo, Integer)
       end
 
       [5.0, "5", "     5", "05", Rational(10,2)].each do |v|
@@ -150,7 +149,7 @@ describe Ripple::Document::Property do
 
     describe "when type is a Float type" do
       before :each do
-        @prop = Ripple::Document::Property.new(:foo, Float)
+        @prop = Ripple::Property.new(:foo, Float)
       end
 
       [0, "0", "0.0", "    0.0", ""].each do |v|
@@ -174,7 +173,7 @@ describe Ripple::Document::Property do
 
     describe "when type is a Numeric type" do
       before :each do
-        @prop = Ripple::Document::Property.new(:foo, Numeric)
+        @prop = Ripple::Property.new(:foo, Numeric)
       end
 
       [5.0, "5", "      5.0", "05"].each do |v|
@@ -192,7 +191,7 @@ describe Ripple::Document::Property do
 
     describe "when type is a Time type" do
       before :each do
-        @prop = Ripple::Document::Property.new(:foo, Time)
+        @prop = Ripple::Property.new(:foo, Time)
       end
 
       ["Tue, 16 Mar 2010 12:00:00 -0000","2010/03/16 12:00:00 GMT", Time.utc(2010,03,16,12)].each do |v|
@@ -204,7 +203,7 @@ describe Ripple::Document::Property do
 
     describe "when type is a Date type" do
       before :each do
-        @prop = Ripple::Document::Property.new(:foo, Date)
+        @prop = Ripple::Property.new(:foo, Date)
       end
 
       ["Tue, 16 Mar 2010 00:00:00 -0000", "2010/03/16 12:00:00 GMT", Time.utc(2010,03,16,12), "2010/03/16"].each do |v|

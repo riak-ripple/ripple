@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Document::AttributeMethods do
+describe Ripple::AttributeMethods do
   require 'support/models/widget'
   
   before :each do
@@ -42,7 +42,6 @@ describe Ripple::Document::AttributeMethods do
       @widget.key = 10
       @widget.key.should == "10"
     end
-
   end
 
   describe "accessors" do
@@ -130,7 +129,6 @@ describe Ripple::Document::AttributeMethods do
     @widget.changes.should == {"name" => ["widget", "foobar"]}
   end
 
-
   it "should refresh the attribute methods when adding a new property" do
     Widget.should_receive(:undefine_attribute_methods)
     Widget.property :start_date, Date
@@ -157,13 +155,13 @@ describe Ripple::Document::AttributeMethods do
     @widget.changes.should be_blank
   end
   
-  it "should allow adding to the @attributes hash for attributes that do no exist" do
+  it "should allow adding to the @attributes hash for attributes that do not exist" do
     @widget = Widget.new
     @widget['foo'] = 'bar'
     @widget.instance_eval { @attributes['foo'] }.should == 'bar'
   end
   
-  it "should allow reading from the @attributes hash for attributes that do no exist" do
+  it "should allow reading from the @attributes hash for attributes that do not exist" do
     @widget = Widget.new
     @widget['foo'] = 'bar'
     @widget['foo'].should == 'bar'
@@ -173,5 +171,4 @@ describe Ripple::Document::AttributeMethods do
     @widget = Widget.new { |w| w.key = 'some-key' }
     @widget.key.should == 'some-key'
   end
-
 end

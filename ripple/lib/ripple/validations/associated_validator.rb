@@ -11,29 +11,25 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
+#
+# Taken from ActiveRecord::Validations::AssociatedValidators
+#
+
 require 'ripple'
 
 module Ripple
-  module Document
-    module AttributeMethods
-      module Write
-        extend ActiveSupport::Concern
+  module Validations
+    class AssociatedValidator < ActiveModel::EachValidator
+      def validate_each(record, attribute, value)
+        unless Array(value).all? {|r| r.nil? || r.valid? }
+          record.errors.add(attribute, :invalid, :default => options[:message], :value => value)
+        end
+      end
+    end
 
-        included do
-          attribute_method_suffix "="
-        end
-        
-        def []=(attr_name, value)
-          __send__(:attribute=, attr_name, value)
-        end
-
-        private
-        def attribute=(attr_name, value)
-          if prop = self.class.properties[attr_name]
-            value = prop.type_cast(value)
-          end
-          @attributes[attr_name] = value
-        end
+    module ClassMethods
+      def validates_associated(*attr_names)
+        validates_with AssociatedValidator, _merge_attributes(attr_names)
       end
     end
   end

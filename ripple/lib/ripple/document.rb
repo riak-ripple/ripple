@@ -42,24 +42,30 @@ module Ripple
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
 
-    autoload :Association, "ripple/document/associations"
-    autoload :Associations
-    autoload :AttributeMethods
     autoload :BucketAccess
-    autoload :Callbacks
     autoload :Finders
     autoload :Persistence
-    autoload :Properties
-    autoload :Property, "ripple/document/properties"
-    autoload :Timestamps
-    autoload :Validations
 
     included do
+      extend ActiveModel::Naming
       extend BucketAccess
       include Ripple::Document::Persistence
-      include Ripple::EmbeddedDocument
+      extend Ripple::Properties
+      include Ripple::AttributeMethods
+      include Ripple::Timestamps
+      include Ripple::Validations
+      include Ripple::Associations
+      include Ripple::Callbacks
+      include Ripple::EmbeddedDocument::Conversion
+      include Ripple::EmbeddedDocument::Finders
+      include Ripple::EmbeddedDocument::Persistence
       include Ripple::Document::Finders
     end
 
+    module ClassMethods
+      def embeddable?
+        false
+      end
+    end
   end
 end

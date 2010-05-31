@@ -14,32 +14,17 @@
 require 'ripple'
 
 module Ripple
-  module EmbeddedDocument
-    extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
+  module Associations
+    module Linked
 
-    autoload :Conversion
-    autoload :Finders
-    autoload :Persistence
-    include Translation
-
-    included do
-      extend ActiveModel::Naming
-      extend Ripple::Properties
-      include Ripple::AttributeMethods
-      include Ripple::Timestamps
-      include Ripple::Validations
-      include Ripple::Associations
-      include Ripple::Callbacks
-      include Conversion
-      include Finders
-      include Persistence
-    end
-
-    module ClassMethods
-      def embeddable?
-        true
+      def create(attrs={})
+        instantiate_target(:create, attrs)
       end
+
+      def create!(attrs={})
+        instantiate_target(:create!, attrs)
+      end
+
     end
   end
 end

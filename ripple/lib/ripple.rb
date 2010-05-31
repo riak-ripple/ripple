@@ -23,9 +23,24 @@ module Ripple
   extend ActiveSupport::Autoload
   include ActiveSupport::Configurable
 
+  # Primary models
   autoload :EmbeddedDocument
   autoload :Document
+
+  # Model mixins and support classes
+  autoload :Association, "ripple/associations"
+  autoload :Associations
+  autoload :AttributeMethods
+  autoload :Callbacks
+  autoload :Properties
+  autoload :Property, "ripple/properties"
+  autoload :Timestamps
+  autoload :Validations
+  
+  # Exceptions
   autoload :PropertyTypeMismatch
+
+  # Utilities
   autoload :Translation
 
   DEFAULT_CONFIG = {}

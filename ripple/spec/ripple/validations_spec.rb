@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Document::Validations do
+describe Ripple::Validations do
   require 'support/models/box'
 
   before :each do

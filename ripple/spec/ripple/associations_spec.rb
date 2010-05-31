@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Document::Associations do
+describe Ripple::Associations do
   require 'support/models/invoice'
   require 'support/models/customer'
   require 'support/models/note'
@@ -56,24 +56,24 @@ describe Ripple::Document::Associations do
   end
 end
 
-describe Ripple::Document::Association do
+describe Ripple::Association do
   it "should initialize with a type and name" do
-    lambda { Ripple::Document::Association.new(:many, :pages) }.should_not raise_error
+    lambda { Ripple::Association.new(:many, :pages) }.should_not raise_error
   end
 
   describe "determining the class name" do
     it "should default to the camelized class name on :one relationships" do
-      @association = Ripple::Document::Association.new(:one, :page)
+      @association = Ripple::Association.new(:one, :page)
       @association.class_name.should == "Page"
     end
 
     it "should default to the singularized camelized class name on :many relationships" do
-      @association = Ripple::Document::Association.new(:many, :pages)
+      @association = Ripple::Association.new(:many, :pages)
       @association.class_name.should == "Page"
     end
 
     it "should use the :class_name option when given" do
-      @association = Ripple::Document::Association.new(:many, :pages, :class_name => "Note")
+      @association = Ripple::Association.new(:many, :pages, :class_name => "Note")
       @association.class_name.should == "Note"
     end
   end
@@ -82,30 +82,30 @@ describe Ripple::Document::Association do
     require 'support/models/tree'
 
     it "should default to the constantized class name" do
-      @association = Ripple::Document::Association.new(:one, :t, :class_name => "Trunk")
+      @association = Ripple::Association.new(:one, :t, :class_name => "Trunk")
       @association.klass.should == Trunk
     end
 
     it "should be determined by the derived class name" do
-      @association = Ripple::Document::Association.new(:many, :branches)
+      @association = Ripple::Association.new(:many, :branches)
       @association.klass.should == Branch
     end
 
     it "should use the :class option when given" do
-      @association = Ripple::Document::Association.new(:many, :pages, :class => Leaf)
+      @association = Ripple::Association.new(:many, :pages, :class => Leaf)
       @association.klass.should == Leaf
     end
   end
 
   it "should be many when type is :many" do
-    Ripple::Document::Association.new(:many, :pages).should be_many
+    Ripple::Association.new(:many, :pages).should be_many
   end
 
   it "should be one when type is :one" do
-    Ripple::Document::Association.new(:one, :pages).should be_one
+    Ripple::Association.new(:one, :pages).should be_one
   end
 
   it "should determine an instance variable based on the name" do
-    Ripple::Document::Association.new(:many, :pages).ivar.should == "@_pages"
+    Ripple::Association.new(:many, :pages).ivar.should == "@_pages"
   end
 end

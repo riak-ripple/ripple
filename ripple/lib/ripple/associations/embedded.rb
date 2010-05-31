@@ -14,18 +14,29 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module Associations
-      module One
-        include Instantiators
-                
-        protected
-          def instantiate_target(instantiator, attrs={})
-            @target = klass.send(instantiator, attrs)
-            loaded
-            @target
-          end
+  module Associations
+    module Embedded
+
+      def initialize(*args)
+        super
+        owner.class.validates reflection.name, :associated => true
       end
+
+      protected
+
+      def assign_references(docs)
+        Array(docs).each do |doc|
+          next unless doc.respond_to?(:_parent_document=)
+          doc._parent_document = owner
+        end
+      end
+
+      def instantiate_target(*args)
+        doc = super
+        assign_references(doc)
+        doc
+      end
+
     end
   end
 end

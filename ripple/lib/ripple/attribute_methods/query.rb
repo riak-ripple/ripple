@@ -14,35 +14,34 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module Associations
-      class ManyEmbeddedProxy < Proxy
-        include Many
-        include Embedded
-        
-        def <<(docs)
-          load_target
-          assign_references(docs)
-          @target += Array(docs)
-          self
-        end
-        
-        def replace(docs)
-          @_docs = docs.map { |doc| attrs = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc }
-          assign_references(docs)
-          reset
-          @_docs
-        end
-      
-        protected
-          def find_target
-            (@_docs || []).map do |attrs|
-              klass.instantiate(attrs).tap do |doc|
-                assign_references(doc)
-              end
+
+  module AttributeMethods
+    module Query
+      extend ActiveSupport::Concern
+
+      included do
+        attribute_method_suffix "?"
+      end
+
+      private
+      # Based on code from ActiveRecord
+      def attribute?(attr_name)
+        unless value = attribute(attr_name)
+          false
+        else
+          prop = self.class.properties[attr_name]
+          if prop.nil?
+            if Numeric === value || value !~ /[^0-9]/
+              !value.to_i.zero?
+            else
+              Boolean.ripple_cast(value) || value.present?
             end
+          elsif prop.type <= Numeric
+            !value.zero?
+          else
+            value.present?
           end
-        
+        end
       end
     end
   end

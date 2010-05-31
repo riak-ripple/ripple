@@ -14,28 +14,26 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module Associations
-      module Instantiators
-        
-        def build(attrs={})
-          instantiate_target(:new, attrs)
-        end
+  module Associations
+    class OneEmbeddedProxy < Proxy
+      include One
+      include Embedded
 
-        def create(attrs={})
-          instantiate_target(:create, attrs)
-        end
-
-        def create!(attrs={})
-          instantiate_target(:create!, attrs)
-        end
-        
-        protected
-          def instantiate_target
-            raise NotImplementedError
-          end
-        
+      def replace(doc)
+        @_doc = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc
+        assign_references(doc)
+        reset
+        @_doc
       end
+
+      protected
+      def find_target
+        return nil unless @_doc
+        klass.instantiate(@_doc).tap do |doc|
+          assign_references(doc)
+        end
+      end
+
     end
   end
 end

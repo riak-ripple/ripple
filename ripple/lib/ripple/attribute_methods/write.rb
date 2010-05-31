@@ -14,27 +14,24 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module AttributeMethods
-      module Read
-        extend ActiveSupport::Concern
+  module AttributeMethods
+    module Write
+      extend ActiveSupport::Concern
 
-        included do
-          attribute_method_suffix ""
-        end
-        
-        def [](attr_name)
-          attribute(attr_name)
-        end
+      included do
+        attribute_method_suffix "="
+      end
 
-        private
-        def attribute(attr_name)
-          if @attributes.include?(attr_name)
-            @attributes[attr_name]
-          else
-            nil
-          end
+      def []=(attr_name, value)
+        __send__(:attribute=, attr_name, value)
+      end
+
+      private
+      def attribute=(attr_name, value)
+        if prop = self.class.properties[attr_name]
+          value = prop.type_cast(value)
         end
+        @attributes[attr_name] = value
       end
     end
   end

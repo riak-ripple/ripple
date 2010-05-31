@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../../spec_helper", __FILE__)
 
-describe Ripple::Document::Associations::OneEmbeddedProxy do
+describe Ripple::Associations::OneEmbeddedProxy do
   require 'support/models/family'
   require 'support/models/user'
   require 'support/models/address'

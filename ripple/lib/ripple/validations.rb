@@ -14,7 +14,7 @@
 require 'ripple'
 
 module Ripple
-  
+
   # Raised by <tt>save!</tt> when the document is invalid.  Use the
   # +document+ method to retrieve the document which did not validate.
   #   begin
@@ -31,42 +31,40 @@ module Ripple
       super(t("document_invalid", :errors => errors))
     end
   end
-  
-  module Document
-    module Validations
-      extend ActiveSupport::Concern
-      extend ActiveSupport::Autoload
-      include ActiveModel::Validations
-      
-      autoload :AssociatedValidator
 
-      module ClassMethods
-        # @private
-        def property(key, type, options={})
-          prop = super
-          validates key, prop.validation_options unless prop.validation_options.blank?
-        end
-        
-        # Instantiates a new record, applies attributes from a block, and saves it
-        # Raises Ripple::DocumentInvalid if the record did not save
-        def create!(attrs={}, &block)
-          obj = create(attrs, &block)
-          (raise Ripple::DocumentInvalid.new(obj) if obj.new?) || obj
-        end
+  module Validations
+    extend ActiveSupport::Concern
+    extend ActiveSupport::Autoload
+    include ActiveModel::Validations
+
+    autoload :AssociatedValidator
+
+    module ClassMethods
+      # @private
+      def property(key, type, options={})
+        prop = super
+        validates key, prop.validation_options unless prop.validation_options.blank?
       end
 
-      module InstanceMethods
-        # @private
-        def save(options={:validate => true})
-          return false if options[:validate] && !valid?
-          super()
-        end
-        
-        def save!
-          (raise Ripple::DocumentInvalid.new(self) unless save) || true
-        end
-        
+      # Instantiates a new document, applies attributes from a block, and saves it
+      # Raises Ripple::DocumentInvalid if the record did not save
+      def create!(attrs={}, &block)
+        obj = create(attrs, &block)
+        (raise Ripple::DocumentInvalid.new(obj) if obj.new?) || obj
+      end
+    end
+
+    module InstanceMethods
+      # @private
+      def save(options={:validate => true})
+        return false if options[:validate] && !valid?
+        super()
+      end
+      
+      def save!
+        (raise Ripple::DocumentInvalid.new(self) unless save) || true
       end
     end
   end
 end
+

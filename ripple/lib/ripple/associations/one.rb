@@ -14,38 +14,15 @@
 require 'ripple'
 
 module Ripple
-  module Document
-    module AttributeMethods
-      module Dirty
-        extend ActiveSupport::Concern
-        include ActiveModel::Dirty
+  module Associations
+    module One
+      include Instantiators
 
-        # @private
-        def save
-          if result = super
-            changed_attributes.clear
-          end
-          result
-        end
-
-        # @private
-        def reload
-          returning super do
-            changed_attributes.clear
-          end
-        end
-
-        # @private
-        def initialize(attrs={})
-          super(attrs)
-          changed_attributes.clear
-        end
-
-        private
-        def attribute=(attr_name, value)
-          attribute_will_change!(attr_name)
-          super
-        end
+      protected
+      def instantiate_target(instantiator, attrs={})
+        @target = klass.send(instantiator, attrs)
+        loaded
+        @target
       end
     end
   end

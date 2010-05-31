@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Document::Callbacks do
+describe Ripple::Callbacks do
   require 'support/models/box'
 
   it "should add create, update, save, and destroy callback declarations" do
