@@ -15,7 +15,6 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe "Ripple Associations" do
   before :all do
-    switch_to_test_node
     Object.module_eval do      
       class User
         include Ripple::Document

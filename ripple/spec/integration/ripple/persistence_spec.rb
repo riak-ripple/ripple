@@ -14,8 +14,7 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe "Ripple Persistence" do
-  before :all do
-    switch_to_test_node
+  before :all do    
     Object.module_eval do
       class Widget
         include Ripple::Document
