@@ -56,15 +56,19 @@ module Ripple
       include Ripple::Validations
       include Ripple::Associations
       include Ripple::Callbacks
-      include Ripple::EmbeddedDocument::Conversion
-      include Ripple::EmbeddedDocument::Finders
-      include Ripple::EmbeddedDocument::Persistence
+      include Ripple::Conversion
       include Ripple::Document::Finders
     end
 
     module ClassMethods
       def embeddable?
         false
+      end
+    end
+
+    module InstanceMethods
+      def _root_document
+        self
       end
     end
   end

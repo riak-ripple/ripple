@@ -38,6 +38,11 @@ module Ripple
         @associations ||= {}.with_indifferent_access
       end
 
+      # Associations of embedded documents
+      def embedded_associations
+        associations.values.select(&:embeddable?)
+      end
+
       # Creates a singular association
       def one(name, options={})
         create_association(:one, name, options)
@@ -70,16 +75,6 @@ module Ripple
     end
 
     module InstanceMethods
-      def associations
-        self.class.associations
-      end
-      
-      def embedded_associations
-        associations.map do |name, association|
-          association if association.embeddable?
-        end.compact
-      end
-      
       # @private
       def get_proxy(association)
         unless proxy = instance_variable_get(association.ivar)
@@ -88,13 +83,24 @@ module Ripple
         end
         proxy
       end
+
+      # Adds embedded documents to the attributes
+      # @private
+      def attributes_for_persistence
+        self.class.embedded_associations.inject(super) do |attrs, association|
+          if documents = instance_variable_get(association.ivar)
+            attrs[association.name] = documents.is_a?(Array) ? documents.map(&:attributes_for_persistence) : documents.attributes_for_persistence
+          end
+          attrs
+        end
+      end
     end
   end
 
   class Association
     attr_reader :type, :name, :options
-    
-    # association options :using, :class_name, :class, :extend, 
+
+    # association options :using, :class_name, :class, :extend,
     # options that may be added :validate
 
     def initialize(type, name, options={})
@@ -125,11 +131,11 @@ module Ripple
     def one?
       @type == :one
     end
-    
+
     def embeddable?
       klass.embeddable?
     end
-    
+
     def polymorphic?
       false
     end
@@ -137,7 +143,7 @@ module Ripple
     def ivar
       "@_#{name}"
     end
-    
+
     def proxy_class
       @proxy_class ||= proxy_class_name.constantize
     end

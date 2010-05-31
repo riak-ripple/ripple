@@ -22,14 +22,9 @@ describe Ripple::Associations do
     Invoice.should respond_to(:associations)
     Invoice.associations.should be_kind_of(Hash)
   end
-  
-  it "should add associations on the class instance" do 
-    Invoice.new.should respond_to(:associations)
-    Invoice.new.associations.should be_kind_of(Hash)
-  end
-  
+
   it "should collect the embedded associations" do
-    Invoice.new.embedded_associations.should == Array(Invoice.associations[:note])
+    Invoice.embedded_associations.should == Array(Invoice.associations[:note])
   end
 
   it "should copy associations to a subclass" do

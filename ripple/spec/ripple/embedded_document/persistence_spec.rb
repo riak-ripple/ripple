@@ -19,20 +19,8 @@ describe Ripple::EmbeddedDocument::Persistence do
   
   before :each do
     @root = User.new
-    @addr = Address.new
+    @addr = Address.new(:street => "196 Broadway")
     @addr._parent_document = @root
-  end
-  
-  it "should be embeddable if including Ripple::EmbeddedDocument" do
-    @addr.should be_embeddable
-  end
-  
-  it "should not be a root document if including Ripple::EmbeddedDocument" do
-    @addr.should_not be__root_document
-  end
-  
-  it "should be a root document if including Ripple::Document" do
-    @root.should be__root_document
   end
 
   it "should delegate new? to the root document" do
@@ -46,17 +34,17 @@ describe Ripple::EmbeddedDocument::Persistence do
   end
   
   it "should delegate save! to the root document" do
-    @root.should_receive(:save!).and_return(true)
+    @root.should_receive(:save).and_return(true)
     @addr.save!.should be_true
   end
   
   it "should raise NoRootDocument when calling save without a root document" do
-    @addr = Address.new
+    @addr._parent_document = nil
     lambda { @addr.save }.should raise_error(Ripple::NoRootDocument)
   end
   
   it "should raise NoRootDocument when calling save! without a root document" do
-    @addr = Address.new
+    @addr._parent_document = nil
     lambda { @addr.save! }.should raise_error(Ripple::NoRootDocument)
   end
 

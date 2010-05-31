@@ -11,25 +11,26 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require File.expand_path("../../../spec_helper", __FILE__)
+require 'ripple'
 
-describe Ripple::EmbeddedDocument::Conversion do
-  require 'support/models/address'
+module Ripple
+  module Conversion
+    include ActiveModel::Conversion
 
-  before :each do
-    @addr = Address.new { |a| a.key = 'some-key' }
-    @addr.stub!(:new?).and_return(false)
-  end
+    def new_record?
+      new?
+    end
 
-  it "should return the key as an array for to_key" do
-    @addr.to_key.should == ['some-key']
-  end
-  
-  it "should be able to be converted to a param" do
-    @addr.to_param.should == 'some-key'
-  end
-  
-  it "should be able to be converted to a model" do
-    @addr.to_model.should == @addr
+    def persisted?
+      !new?
+    end
+
+    def to_key
+      new? ? nil : [key]
+    end
+
+    def to_param
+      key
+    end
   end
 end

@@ -32,11 +32,12 @@ module Ripple
   autoload :Associations
   autoload :AttributeMethods
   autoload :Callbacks
+  autoload :Conversion
   autoload :Properties
   autoload :Property, "ripple/properties"
   autoload :Timestamps
   autoload :Validations
-  
+
   # Exceptions
   autoload :PropertyTypeMismatch
 
@@ -61,7 +62,7 @@ module Ripple
       self.client = nil
       super
     end
-    
+
     def load_config(config_file)
       self.config = YAML.load_file(File.expand_path config_file).with_indifferent_access[:ripple]
     end
