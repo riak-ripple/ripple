@@ -67,7 +67,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">ripple/lib/ripple.rb<span class="defines">,<br />
-  ripple/lib/ripple/railtie.rb,<br /> ripple/lib/ripple/document.rb,<br /> ripple/lib/ripple/translation.rb,<br /> ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/embedded_document.rb,<br /> ripple/lib/ripple/document/callbacks.rb,<br /> ripple/lib/ripple/document/timestamps.rb,<br /> ripple/lib/ripple/document/properties.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> ripple/lib/ripple/document/validations.rb,<br /> ripple/lib/ripple/document/associations.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/property_type_mismatch.rb,<br /> ripple/lib/ripple/embedded_document/finders.rb,<br /> ripple/lib/ripple/document/associations/one.rb,<br /> ripple/lib/ripple/document/associations/many.rb,<br /> ripple/lib/ripple/document/attribute_methods.rb,<br /> ripple/lib/ripple/document/associations/proxy.rb,<br /> ripple/lib/ripple/embedded_document/conversion.rb,<br /> ripple/lib/ripple/document/associations/linked.rb,<br /> ripple/lib/ripple/embedded_document/persistence.rb,<br /> ripple/lib/ripple/document/associations/embedded.rb,<br /> ripple/lib/ripple/document/attribute_methods/read.rb,<br /> ripple/lib/ripple/document/attribute_methods/write.rb,<br /> ripple/lib/ripple/document/attribute_methods/query.rb,<br /> ripple/lib/ripple/document/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/document/associations/instantiators.rb,<br /> ripple/lib/ripple/document/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/document/associations/many_embedded_proxy.rb,<br /> ripple/lib/ripple/document/validations/associated_validator.rb</span>
+  ripple/lib/ripple/railtie.rb,<br /> ripple/lib/ripple/document.rb,<br /> ripple/lib/ripple/callbacks.rb,<br /> ripple/lib/ripple/conversion.rb,<br /> ripple/lib/ripple/timestamps.rb,<br /> ripple/lib/ripple/properties.rb,<br /> ripple/lib/ripple/translation.rb,<br /> ripple/lib/ripple/validations.rb,<br /> ripple/lib/ripple/associations.rb,<br /> ripple/lib/ripple/associations/one.rb,<br /> ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/associations/many.rb,<br /> ripple/lib/ripple/embedded_document.rb,<br /> ripple/lib/ripple/attribute_methods.rb,<br /> ripple/lib/ripple/associations/proxy.rb,<br /> ripple/lib/ripple/associations/linked.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> ripple/lib/ripple/associations/embedded.rb,<br /> ripple/lib/ripple/attribute_methods/read.rb,<br /> ripple/lib/ripple/property_type_mismatch.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/attribute_methods/write.rb,<br /> ripple/lib/ripple/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/attribute_methods/query.rb,<br /> ripple/lib/ripple/embedded_document/finders.rb,<br /> ripple/lib/ripple/associations/instantiators.rb,<br /> ripple/lib/ripple/embedded_document/persistence.rb,<br /> ripple/lib/ripple/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/validations/associated_validator.rb,<br /> ripple/lib/ripple/associations/many_embedded_proxy.rb</span>
 </dd>
   
 </dl>
@@ -89,11 +89,11 @@ require in gemfile using <tt>gem &quot;ripple&quot;, :require_as =&gt;
 <p class="children">
    
     
-      <strong class="modules">Modules:</strong> <a href="Ripple/Document.html" title="Ripple::Document (module)">Document</a>, <a href="Ripple/EmbeddedDocument.html" title="Ripple::EmbeddedDocument (module)">EmbeddedDocument</a>, <a href="Ripple/Translation.html" title="Ripple::Translation (module)">Translation</a>
+      <strong class="modules">Modules:</strong> <a href="Ripple/Associations.html" title="Ripple::Associations (module)">Associations</a>, <a href="Ripple/AttributeMethods.html" title="Ripple::AttributeMethods (module)">AttributeMethods</a>, <a href="Ripple/Callbacks.html" title="Ripple::Callbacks (module)">Callbacks</a>, <a href="Ripple/Conversion.html" title="Ripple::Conversion (module)">Conversion</a>, <a href="Ripple/Document.html" title="Ripple::Document (module)">Document</a>, <a href="Ripple/EmbeddedDocument.html" title="Ripple::EmbeddedDocument (module)">EmbeddedDocument</a>, <a href="Ripple/Properties.html" title="Ripple::Properties (module)">Properties</a>, <a href="Ripple/Timestamps.html" title="Ripple::Timestamps (module)">Timestamps</a>, <a href="Ripple/Translation.html" title="Ripple::Translation (module)">Translation</a>, <a href="Ripple/Validations.html" title="Ripple::Validations (module)">Validations</a>
     
    
     
-      <strong class="classes">Classes:</strong> <a href="Ripple/DocumentInvalid.html" title="Ripple::DocumentInvalid (class)">DocumentInvalid</a>, <a href="Ripple/DocumentNotFound.html" title="Ripple::DocumentNotFound (class)">DocumentNotFound</a>, <a href="Ripple/NoRootDocument.html" title="Ripple::NoRootDocument (class)">NoRootDocument</a>, <a href="Ripple/PropertyTypeMismatch.html" title="Ripple::PropertyTypeMismatch (class)">PropertyTypeMismatch</a>, <a href="Ripple/Railtie.html" title="Ripple::Railtie (class)">Railtie</a>
+      <strong class="classes">Classes:</strong> <a href="Ripple/Association.html" title="Ripple::Association (class)">Association</a>, <a href="Ripple/DocumentInvalid.html" title="Ripple::DocumentInvalid (class)">DocumentInvalid</a>, <a href="Ripple/DocumentNotFound.html" title="Ripple::DocumentNotFound (class)">DocumentNotFound</a>, <a href="Ripple/NoRootDocument.html" title="Ripple::NoRootDocument (class)">NoRootDocument</a>, <a href="Ripple/Property.html" title="Ripple::Property (class)">Property</a>, <a href="Ripple/PropertyTypeMismatch.html" title="Ripple::PropertyTypeMismatch (class)">PropertyTypeMismatch</a>, <a href="Ripple/Railtie.html" title="Ripple::Railtie (class)">Railtie</a>
     
   
 </p>
@@ -279,12 +279,12 @@ The client for the current thread.
       <pre class="lines">
 
 
-35
-36
-37</pre>
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id config'>config</span><span class='rparen'>)</span>
@@ -339,12 +339,12 @@ the client
       <pre class="lines">
 
 
-41
-42
-43</pre>
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id client='>client=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -367,13 +367,13 @@ the client
       <pre class="lines">
 
 
-45
-46
-47
-48</pre>
+61
+62
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id config='>config=</span><span class='lparen'>(</span><span class='id hash'>hash</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id client'>client</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -397,12 +397,12 @@ the client
       <pre class="lines">
 
 
-50
-51
-52</pre>
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id load_config'>load_config</span><span class='lparen'>(</span><span class='id config_file'>config_file</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id config'>config</span> <span class='op'>=</span> <span class='const'>YAML</span><span class='period'>.</span><span class='id load_file'>load_file</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id expand_path'>expand_path</span> <span class='id config_file'>config_file</span><span class='rparen'>)</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span><span class='lbracket'>[</span><span class='symbol'>:ripple</span><span class='rbracket'>]</span>
@@ -447,7 +447,7 @@ the client
 </div>
     
     <div id="footer">
-  Generated on Thu May  6 19:07:12 2010 by 
+  Generated on Tue Jun  8 17:21:08 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.4 (ruby-1.9.1).
 </div>

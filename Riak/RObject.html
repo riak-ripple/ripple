@@ -641,7 +641,7 @@ HTTP header hash that will be sent along when storing the object.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_link-instance_method" title="#to_link (instance method)">- (Object) <strong>to_link</strong>(tag = nil) </a>
+      <a href="#to_link-instance_method" title="#to_link (instance method)">- (Object) <strong>to_link</strong>(tag) </a>
     
 
     
@@ -2435,7 +2435,7 @@ hash of HTTP Headers
       <div class="method_details ">
   <p class="signature " id="to_link-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>to_link</strong>(tag = nil) 
+    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>to_link</strong>(tag) 
   
 
   
@@ -2463,7 +2463,7 @@ Converts the object to a link suitable for linking other objects to it
     <td>
       <pre class="code"><span class="info file"># File 'riak-client/lib/riak/robject.rb', line 236</span>
 
-<span class='kw'>def</span> <span class='id to_link'>to_link</span><span class='lparen'>(</span><span class='id tag'>tag</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id to_link'>to_link</span><span class='lparen'>(</span><span class='id tag'>tag</span><span class='rparen'>)</span>
   <span class='const'>Link</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='ivar'>@bucket</span><span class='period'>.</span><span class='id client'>client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id path'>path</span><span class='lparen'>(</span><span class='ivar'>@bucket</span><span class='period'>.</span><span class='id client'>client</span><span class='period'>.</span><span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@key</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id path'>path</span><span class='comma'>,</span> <span class='id tag'>tag</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -2576,7 +2576,7 @@ Walks links from this object to other objects in Riak.
 </div>
     
     <div id="footer">
-  Generated on Thu May  6 19:07:12 2010 by 
+  Generated on Tue Jun  8 17:21:09 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
   0.5.4 (ruby-1.9.1).
 </div>
