@@ -514,9 +514,9 @@ describe Riak::RObject do
     end
   end
 
-  it "should convert to a link having the same url and an empty tag" do
+  it "should not convert to link without a tag" do
     @object = Riak::RObject.new(@bucket, "bar")
-    @object.to_link.should == Riak::Link.new("/riak/foo/bar", nil)
+    lambda { @object.to_link }.should raise_error
   end
 
   it "should convert to a link having the same url and a supplied tag" do

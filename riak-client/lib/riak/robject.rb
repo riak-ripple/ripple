@@ -233,7 +233,7 @@ module Riak
     end
 
     # Converts the object to a link suitable for linking other objects to it
-    def to_link(tag=nil)
+    def to_link(tag)
       Link.new(@bucket.client.http.path(@bucket.client.prefix, escape(@bucket.name), escape(@key)).path, tag)
     end
 
