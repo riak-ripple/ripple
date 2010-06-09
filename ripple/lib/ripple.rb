@@ -65,8 +65,22 @@ module Ripple
       Thread.current[:config] ||= {}
     end
 
-    def load_config(config_file)
-      self.config = YAML.load_file(File.expand_path config_file).with_indifferent_access[:ripple]
+    def load_config(config_file, config_keys = [:ripple])
+      config_file = File.expand_path(config_file)
+      config_hash = YAML.load_file(config_file).with_indifferent_access
+      config_keys.each {|k| config_hash = config_hash[k]}
+      self.config = config_hash || {}
+    rescue Errno::ENOENT
+      raise Ripple::MissingConfiguration.new(config_file)
+    end
+  end
+  
+  class MissingConfiguration < StandardError
+    include Translation
+    def initialize(file_path)
+      super(t("missing_configuration", :file => file_path))
     end
   end
 end
+
+require 'ripple/railtie' if defined? Rails::Railtie

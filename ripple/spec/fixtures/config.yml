@@ -1,3 +1,8 @@
 ripple:
   port: 9000
   host: localhost
+  
+ripple_rails:
+  development:
+    port: 9001
+    host: 127.0.0.1
