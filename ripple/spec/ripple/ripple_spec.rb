@@ -43,7 +43,18 @@ describe Ripple do
   end
   
   it "should raise No Such File or Directory when given a bad configuration file" do
-    lambda { Ripple.load_config('not-here') }.should raise_error(Errno::ENOENT)
+    lambda { Ripple.load_config('not-here') }.should raise_error(Ripple::MissingConfiguration)
+  end
+  
+  it "should pass an empty hash into configure if the configuration file is missing the key" do
+    Ripple.should_receive(:config=).with({})
+    Ripple.load_config(File.join(File.dirname(__FILE__), '..', 'fixtures', 'config.yml'), [:ripple, 'not-here'])
+  end
+  
+  it "should select the configuration hash from the config keys provided" do
+    Ripple.load_config(File.join(File.dirname(__FILE__), '..', 'fixtures', 'config.yml'), ['ripple_rails', 'development'])
+    Ripple.client.port.should == 9001
+    Ripple.client.host.should == '127.0.0.1'
   end
   
   it "should apply the configuration under the ripple key" do
