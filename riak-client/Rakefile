@@ -9,7 +9,7 @@ gemspec = Gem::Specification.new do |gem|
   gem.email = "seancribbs@gmail.com"
   gem.homepage = "http://seancribbs.github.com/ripple"
   gem.authors = ["Sean Cribbs"]
-  gem.add_development_dependency "rspec", "~>2.0.0.beta.6"
+  gem.add_development_dependency "rspec", "~>2.0.0.beta.11"
   gem.add_development_dependency "fakeweb", ">=1.2"
   gem.add_development_dependency "rack", ">=1.0"
   gem.add_development_dependency "curb", ">=0.6"

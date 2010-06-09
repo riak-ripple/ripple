@@ -21,7 +21,6 @@ require 'ripple/i18n'
 # the basic Riak client.
 module Ripple
   extend ActiveSupport::Autoload
-  include ActiveSupport::Configurable
 
   # Primary models
   autoload :EmbeddedDocument
@@ -44,8 +43,6 @@ module Ripple
   # Utilities
   autoload :Translation
 
-  DEFAULT_CONFIG = {}
-
   class << self
     # @return [Riak::Client] The client for the current thread.
     def client
@@ -60,7 +57,11 @@ module Ripple
 
     def config=(hash)
       self.client = nil
-      super
+      Thread.current[:config] = hash.symbolize_keys
+    end
+    
+    def config
+      Thread.current[:config] ||= {}
     end
 
     def load_config(config_file)
