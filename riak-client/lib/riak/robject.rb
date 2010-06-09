@@ -141,7 +141,7 @@ module Riak
 
     # Delete the object from Riak and freeze this instance.  Will work whether or not the object actually
     # exists in the Riak database.
-    def delete(options)
+    def delete(options={})
       return if key.blank?
       @bucket.delete(key, options)
       freeze
