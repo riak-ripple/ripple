@@ -110,7 +110,7 @@ module Ripple
 
         private
         def find_one(key)
-          instantiate(bucket.get(key))
+          instantiate(bucket.get(key, quorums.slice(:r)))
         rescue Riak::FailedRequest => fr
           return nil if fr.code.to_i == 404
           raise fr

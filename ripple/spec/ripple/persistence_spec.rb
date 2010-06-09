@@ -33,7 +33,7 @@ describe Ripple::Document::Persistence do
     @widget.should_not be_a_new_record
     @widget.changes.should be_blank
   end
-  
+
   it "should instantiate and save a new object to riak" do
     json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
     @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
@@ -41,7 +41,7 @@ describe Ripple::Document::Persistence do
     @widget.size.should == 10
     @widget.should_not be_a_new_record
   end
-  
+
   it "should instantiate and save a new object to riak and allow its attributes to be set via a block" do
     json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
     @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
@@ -82,15 +82,12 @@ describe Ripple::Document::Persistence do
     @widget.destroy.should be_true
     @widget.should be_frozen
   end
-  
+
   it "should be a root document" do
     @widget._root_document.should == @widget
   end
 
   describe "when storing a class using single-bucket inheritance" do
-    
-    class Cog < Widget; property :name, String, :default => "cog"; end
-    
     before :each do
       @cog = Cog.new(:size => 1000)
     end
@@ -102,5 +99,35 @@ describe Ripple::Document::Persistence do
       @cog.should_not be_new_record
     end
 
+  end
+
+  describe "modifying the default quorum values" do
+    before :each do
+      Widget.set_quorums :r => 1, :w => 1, :dw => 0, :rw => 1
+      @bucket = mock("bucket", :name => "widgets")
+      @robject = mock("object", :data => {"name" => "bar"}, :key => "gear")
+      Widget.stub(:bucket).and_return(@bucket)
+    end
+
+    it "should use the supplied R value when reading" do
+      @bucket.should_receive(:get).with("gear", :r => 1).and_return(@robject)
+      Widget.find("gear")
+    end
+
+    it "should use the supplied W and DW values when storing" do
+      Widget.new do |widget|
+        widget.key = "gear"
+        widget.send(:robject).should_receive(:store).with({:w => 1, :dw => 0})
+        widget.save
+      end
+    end
+
+    it "should use the supplied RW when deleting" do
+      widget = Widget.new
+      widget.key = "gear"
+      widget.instance_variable_set(:@new, false)
+      widget.send(:robject).should_receive(:delete).with({:rw => 1})
+      widget.destroy
+    end
   end
 end
