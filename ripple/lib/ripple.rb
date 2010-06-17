@@ -64,7 +64,7 @@ module Ripple
       Thread.current[:config] ||= {}
     end
 
-    def load_config(config_file, config_keys = [:ripple])
+    def load_configuration(config_file, config_keys = [:ripple])
       config_file = File.expand_path(config_file)
       config_hash = YAML.load_file(config_file).with_indifferent_access
       config_keys.each {|k| config_hash = config_hash[k]}
@@ -72,6 +72,7 @@ module Ripple
     rescue Errno::ENOENT
       raise Ripple::MissingConfiguration.new(config_file)
     end
+    alias_method :load_config, :load_configuration
   end
   
   class MissingConfiguration < StandardError
