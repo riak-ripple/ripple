@@ -57,6 +57,7 @@ end
 # @private
 class String
   def self.ripple_cast(value)
+    return nil if value.nil?
     value.respond_to?(:to_s) && value.to_s or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end

@@ -115,12 +115,18 @@ describe Ripple::Property do
         @prop.type_cast("s").should == "s"
         @prop.type_cast(1).should == "1"
         @prop.type_cast(true).should == "true"
+        @prop.type_cast(false).should == "false"
         if RUBY_VERSION < "1.9"
           @prop.type_cast([]).should == ""
         else
           @prop.type_cast([]).should == "[]"
         end
       end
+      
+      it "should not cast nil" do
+        @prop.type_cast(nil).should be_nil
+      end
+    
     end
 
     describe "when type is an Integer type" do
