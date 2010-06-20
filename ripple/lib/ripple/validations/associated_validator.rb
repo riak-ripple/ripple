@@ -20,7 +20,7 @@ module Ripple
   module Validations
     class AssociatedValidator < ActiveModel::EachValidator
       def validate_each(record, attribute, value)
-        unless Array(value).all? {|r| r.nil? || r.valid? }
+        unless Array(value).map {|r| r.nil? || r.valid? }.all?
           record.errors.add(attribute, :invalid, :default => options[:message], :value => value)
         end
       end
