@@ -1,4 +1,4 @@
-# Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
+60# Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -157,13 +157,13 @@ describe Riak::Client do
     end
 
     it "should send a GET request to the bucket name and return a Riak::Bucket" do
-      @http.should_receive(:get).with(200, "/riak/", "foo", {}, {}).and_return(@payload)
+      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => false}, {}).and_return(@payload)
       @client.bucket("foo").should be_kind_of(Riak::Bucket)
     end
 
-    it "should allow requesting bucket properties without the keys" do
-      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => false}, {}).and_return(@payload)
-      @client.bucket("foo", :keys => false)
+    it "should allow requesting bucket properties with the keys" do
+      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => true}, {}).and_return(@payload)
+      @client.bucket("foo", :keys => true)
     end
 
     it "should escape bucket names with invalid characters" do
