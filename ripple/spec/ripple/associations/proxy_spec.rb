@@ -58,7 +58,6 @@ describe Ripple::Associations::Proxy do
     end
 
     it "should send resulting in a method missing if neither the proxy nor the target respond to the method" do
-      # lambda { @proxy.send(:gsub) }.should raise_error(NoMethodError)
       lambda { @proxy.send(:explode) }.should raise_error(NoMethodError)
     end
   end

@@ -14,15 +14,15 @@
 #
 # Taken from ActiveRecord::Validations::AssociatedValidators
 #
-
 require 'ripple'
 
 module Ripple
   module Validations
     class AssociatedValidator < ActiveModel::EachValidator
       def validate_each(record, attribute, value)
-        return if (value.is_a?(Array) ? value : [value]).collect{ |r| r.nil? || r.valid? }.all?
-        record.errors.add(attribute, :invalid, :default => options[:message], :value => value)
+        unless Array(value).all? {|r| r.nil? || r.valid? }
+          record.errors.add(attribute, :invalid, :default => options[:message], :value => value)
+        end
       end
     end
 
