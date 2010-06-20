@@ -42,6 +42,16 @@ module Ripple
           end
         end
 
+        def update_attributes(attrs)
+          self.attributes = attrs
+          save
+        end
+
+        def update_attribute(attribute, value)
+          send("#{attribute}=", value)
+          save(:validate => false)
+        end
+
         def save(*args)
           if _root_document
             _root_document.save(*args)
@@ -57,7 +67,7 @@ module Ripple
         def _root_document
           @_parent_document.try(:_root_document)
         end
-        
+
         def _parent_document=(value)
           @_parent_document = value
         end

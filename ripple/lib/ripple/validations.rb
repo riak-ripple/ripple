@@ -64,6 +64,11 @@ module Ripple
       def save!
         (raise Ripple::DocumentInvalid.new(self) unless save) || true
       end
+
+      def update_attributes!(attrs)
+        self.attributes = attrs
+        save!
+      end
     end
   end
 end

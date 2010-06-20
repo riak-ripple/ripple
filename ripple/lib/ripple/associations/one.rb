@@ -18,6 +18,10 @@ module Ripple
     module One
       include Instantiators
 
+      def to_a
+        [self]
+      end
+      
       protected
       def instantiate_target(instantiator, attrs={})
         @target = klass.send(instantiator, attrs)

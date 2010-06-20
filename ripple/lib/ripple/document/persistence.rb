@@ -52,9 +52,24 @@ module Ripple
           @new || false
         end
 
+        # Updates a single attribute and then saves the document
+        # NOTE: THIS SKIPS VALIDATIONS! Use with caution.
+        # @return [true,false] whether the document succeeded in saving
+        def update_attribute(attribute, value)
+          send("#{attribute}=", value)
+          save(:validate => false)
+        end
+
+        # Writes new attributes and then saves the document
+        # @return [true,false] whether the document succeeded in saving
+        def update_attributes(attrs)
+          self.attributes = attrs
+          save
+        end
+
         # Saves the document in Riak.
         # @return [true,false] whether the document succeeded in saving
-        def save
+        def save(*args)
           robject.key = key if robject.key != key
           robject.data = attributes_for_persistence
           robject.store(self.class.quorums.slice(:w,:dw))

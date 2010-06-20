@@ -34,6 +34,25 @@ describe Ripple::Document::Persistence do
     @widget.changes.should be_blank
   end
 
+  it "should modify attributes and save a new object" do
+    json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
+    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @widget.update_attributes(:size => 5)
+    @widget.key.should == "new_widget"
+    @widget.should_not be_a_new_record
+    @widget.changes.should be_blank
+  end
+
+  it "should modify a single attribute and save a new object" do
+    json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
+    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @widget.update_attribute(:size, 5)
+    @widget.key.should == "new_widget"
+    @widget.should_not be_a_new_record
+    @widget.changes.should be_blank
+    @widget.size.should == 5
+  end
+
   it "should instantiate and save a new object to riak" do
     json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
     @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
