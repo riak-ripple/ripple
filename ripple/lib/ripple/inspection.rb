@@ -11,36 +11,16 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
+
 require 'ripple'
 
 module Ripple
-  module EmbeddedDocument
-    extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
-
-    autoload :Conversion
-    autoload :Finders
-    autoload :Persistence
-    include Translation
-
-    included do
-      extend ActiveModel::Naming
-      include Persistence
-      extend Ripple::Properties
-      include Ripple::AttributeMethods
-      include Ripple::Timestamps
-      include Ripple::Validations
-      include Ripple::Associations
-      include Ripple::Callbacks
-      include Ripple::Conversion
-      include Finders
-      include Ripple::Inspection
-    end
-
-    module ClassMethods
-      def embeddable?
-        true
-      end
+  # Makes IRB and other inspect output a bit friendlier
+  module Inspection
+    def inspect
+      attribute_list = attributes_for_persistence.except("_type").map {|k,v| "#{k}=#{v.inspect}" }.join(' ')
+      identifier = self.class.embeddable? ? "" : ":#{key || '[new]'}"
+      "<#{self.class.name}#{identifier} #{attribute_list}>"
     end
   end
 end

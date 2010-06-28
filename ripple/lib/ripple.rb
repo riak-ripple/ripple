@@ -41,6 +41,7 @@ module Ripple
   autoload :PropertyTypeMismatch
 
   # Utilities
+  autoload :Inspection
   autoload :Translation
 
   class << self
