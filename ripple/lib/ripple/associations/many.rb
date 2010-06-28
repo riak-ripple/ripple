@@ -33,13 +33,14 @@ module Ripple
         @target = []
       end
 
-      def <<
-          raise NotImplementedError
+      def <<(value)
+        raise NotImplementedError
       end
-      alias_method :push, :<<
-        alias_method :concat, :<<
 
-        protected
+      alias_method :push, :<<
+      alias_method :concat, :<<
+
+      protected
       def instantiate_target(instantiator, attrs={})
         doc = klass.send(instantiator, attrs)
         self << doc

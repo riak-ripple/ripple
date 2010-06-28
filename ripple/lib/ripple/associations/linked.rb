@@ -16,15 +16,26 @@ require 'ripple'
 module Ripple
   module Associations
     module Linked
-
-      def create(attrs={})
-        instantiate_target(:create, attrs)
+      # TODO: decide whether to save owner automatically
+      def replace(value)
+        @owner.robject.links -= links
+        Array(value).compact.each do |doc|
+          @owner.robject.links << doc.robject.to_link(@reflection.name)
+        end
+        loaded
+        @target = value
       end
 
-      def create!(attrs={})
-        instantiate_target(:create!, attrs)
+      protected
+      def links
+        @owner.robject.links.select {|l| l.tag == @reflection.name.to_s }
       end
 
+      def robjects
+        @owner.robject.walk(:tag => @reflection.name).first
+      rescue
+        []
+      end
     end
   end
 end

@@ -15,23 +15,21 @@ require 'ripple'
 
 module Ripple
   module Associations
-    class OneEmbeddedProxy < Proxy
-      include One
-      include Embedded
+    class ManyLinkedProxy < Proxy
+      include Many
+      include Linked
 
-      def replace(doc)
-        @_doc = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc
-        assign_references(doc)
-        reset
-        @_doc
+      def <<(value)
+        # TODO: verify inputs!
+        load_target
+        new_target = @target.concat(Array(value))
+        replace new_target
+        self
       end
 
       protected
       def find_target
-        return nil unless @_doc
-        klass.instantiate(@_doc).tap do |doc|
-          assign_references(doc)
-        end
+        robjects.map {|robj| klass.send(:instantiate, robj) }
       end
     end
   end

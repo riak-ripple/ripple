@@ -103,7 +103,6 @@ module Ripple
           @attributes.freeze; super
         end
 
-        protected
         attr_writer :robject
 
         def robject

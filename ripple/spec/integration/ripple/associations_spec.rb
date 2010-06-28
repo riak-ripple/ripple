@@ -21,6 +21,8 @@ describe "Ripple Associations" do
         one  :profile
         many :addresses
         property :email, String, :presence => true
+        many :friends, :class_name => "User"
+        one :emergency_contact, :class_name => "User"
       end
       class Profile
         include Ripple::EmbeddedDocument
@@ -41,6 +43,8 @@ describe "Ripple Associations" do
     @profile  = Profile.new(:name => 'Ripple')
     @billing  = Address.new(:street => '123 Somewhere Dr', :kind => 'billing')
     @shipping = Address.new(:street => '321 Anywhere Pl', :kind => 'shipping')
+    @friend1 = User.create(:email => "friend@ripple.com")
+    @friend2 = User.create(:email => "friend2@ripple.com")
   end
   
   it "should save one embedded associations" do
@@ -65,6 +69,23 @@ describe "Ripple Associations" do
     @ship.user.should == @found
     @bill.should be_a(Address)
     @ship.should be_a(Address)
+  end
+
+  it "should save a many linked association" do    
+    @user.friends << @friend1 << @friend2
+    @user.save
+    @user.should_not be_new_record
+    @found = User.find(@user.key)
+    @found.friends.map(&:key).should include(@friend1.key)
+    @found.friends.map(&:key).should include(@friend2.key)
+  end
+
+  it "should save a one linked association" do
+    @user.emergency_contact = @friend1
+    @user.save
+    @user.should_not be_new_record
+    @found = User.find(@user.key)
+    @found.emergency_contact.key.should == @friend1.key
   end
   
   after :each do

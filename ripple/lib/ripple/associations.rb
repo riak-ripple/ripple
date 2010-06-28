@@ -22,9 +22,12 @@ module Ripple
     autoload :One
     autoload :Many
     autoload :Embedded
+    autoload :Linked
     autoload :Instantiators
     autoload :OneEmbeddedProxy
     autoload :ManyEmbeddedProxy
+    autoload :OneLinkedProxy
+    autoload :ManyLinkedProxy
 
     module ClassMethods
       # @private
@@ -149,7 +152,7 @@ module Ripple
     end
 
     def proxy_class_name
-      @using   ||= options[:using] || (embeddable? ? :embedded : :link)
+      @using   ||= options[:using] || (embeddable? ? :embedded : :linked)
       klass_name = (many? ? 'Many' : 'One') + @using.to_s.camelize + ('Polymorphic' if polymorphic?).to_s + 'Proxy'
       "Ripple::Associations::#{klass_name}"
     end
