@@ -69,7 +69,7 @@ module Riak
           yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
-        response = @client.http.get(200, @client.prefix, escape(name), {:props => false}, {})
+        response = @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => true}, {})
         load(response)
       end
       @keys
