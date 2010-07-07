@@ -20,7 +20,7 @@ module Ripple
       def replace(value)
         @owner.robject.links -= links
         Array(value).compact.each do |doc|
-          @owner.robject.links << doc.robject.to_link(@reflection.name)
+          @owner.robject.links << doc.robject.to_link(@reflection.name.to_s)
         end
         loaded
         @target = value
@@ -32,7 +32,7 @@ module Ripple
       end
 
       def robjects
-        @owner.robject.walk(:tag => @reflection.name).first
+        @owner.robject.walk(:tag => @reflection.name.to_s).first
       rescue
         []
       end

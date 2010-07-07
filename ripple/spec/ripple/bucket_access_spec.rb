@@ -31,9 +31,8 @@ describe Ripple::Document::BucketAccess do
   end
 
   it "should allow access to the bucket" do
-    bucket = Riak::Bucket.new(Ripple.client, "invoices")
-    Ripple.client.should_receive(:[]).with("invoices", {:keys => false}).and_return(bucket)
-    Invoice.bucket.should == bucket
+    Invoice.bucket.should be_kind_of(Riak::Bucket)
+    Invoice.bucket.client.should == Ripple.client
+    Invoice.bucket.name.should == "invoices"
   end
-
 end

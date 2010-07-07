@@ -22,7 +22,7 @@ describe Ripple::Document::Finders do
     @client = Ripple.client
     @client.stub!(:http).and_return(@http)
     @bucket = Riak::Bucket.new(@client, "boxes")
-    @client.stub!(:[]).and_return(@bucket)
+    Box.stub!(:bucket).and_return(@bucket)
   end
 
   it "should return an empty array if no keys are passed to find" do
