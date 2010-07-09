@@ -16,6 +16,7 @@ require 'riak'
 require 'active_support/all'
 require 'active_model'
 require 'ripple/i18n'
+require 'ripple/core_ext'
 
 # Contains the classes and modules related to the ODM built on top of
 # the basic Riak client.
