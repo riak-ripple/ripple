@@ -45,7 +45,7 @@ describe Ripple::Associations::ManyLinkedProxy do
   
   it "should link-walk to the associated documents when accessing" do
     @person.robject.links << @task.robject.to_link("tasks")
-    @person.robject.should_receive(:walk).and_return([])
+    @person.robject.should_receive(:walk).with(Riak::WalkSpec.new(:bucket => "tasks", :tag => "tasks")).and_return([])
     @person.tasks.should == []
   end
 
