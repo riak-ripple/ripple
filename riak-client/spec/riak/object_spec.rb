@@ -285,6 +285,11 @@ describe Riak::RObject do
       @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN"
     end
 
+    it "should not set conflict" do
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
+      @object.conflict?.should be_false
+    end
+
     it "should add siblings when there are multiple values" do
       response = @sample_response
       response[0]['values'] << {

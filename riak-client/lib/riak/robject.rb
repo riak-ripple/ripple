@@ -78,7 +78,7 @@ module Riak
       robj.vclock = vclock
       robj.load_from_map_reduce(response[0]['values'][0])
 
-      if response[0]['values'].length >= 1
+      if response[0]['values'].length > 1
         robj.conflict = true
         robj.siblings = response[0]['values'][1..-1].map do |values|
           sibling = new(client.bucket(response[0]['bucket']), response[0]['key'])
