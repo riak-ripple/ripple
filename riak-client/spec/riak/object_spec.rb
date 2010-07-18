@@ -233,12 +233,12 @@ describe Riak::RObject do
     end
 
     it "should load the content type" do
-      @object = Riak::RObject.generate_from_map_reduce(@client,@sample_response).first
+      @object = Riak::RObject.generate_from_map_reduce(@client,@sample_response)
       @object.content_type.should == "application/json"
     end
 
     it "should load the body data" do
-      @object = Riak::RObject.generate_from_map_reduce(@client, @sample_response).first
+      @object = Riak::RObject.generate_from_map_reduce(@client, @sample_response)
       @object.data.should be_present
     end
 
@@ -249,43 +249,43 @@ describe Riak::RObject do
         and_return({"email" => "mail@test.com", "_type" => "User"})
       Riak::RObject.stub!( :new ).and_return( new_robj )
 
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.data.should == {"email" => "mail@test.com", "_type" => "User"}
     end
 
     it "should set the vclock" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA"
     end
 
     it "should load and parse links" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.links.should have(1).item
       @object.links.first.url.should == "/riak/addresses/A2cbUQ2KEMbeyWGtdz97LoTi1DN"
       @object.links.first.rel.should == "home_address"
     end
 
     it "should set the ETag" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.etag.should == "5bnavU3rrubcxLI8EvFXhB"
     end
 
     it "should set modified date" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.last_modified.to_i.should == Time.httpdate("Mon, 12 Jul 2010 21:37:43 GMT").to_i
     end
 
     it "should load meta information" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.meta["King-Of-Robots"].should == ["I"]
     end
 
     it "should set the key" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN"
     end
 
-    it "should return multiple objects when there are multiple values" do
+    it "should add siblings when there are multiple values" do
       response = @sample_response
       response[0]['values'] << {
         "metadata"=> {
@@ -297,13 +297,12 @@ describe Riak::RObject do
         },
         "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
       }
-      @objects = Riak::RObject.generate_from_map_reduce( @client, response )
-      @objects.length.should == 2
-      @objects[0].etag.should == "5bnavU3rrubcxLI8EvFXhB"
-      @objects[1].etag.should == "7jDZLdu0fIj2iRsjGD8qq8"
+      @object = Riak::RObject.generate_from_map_reduce( @client, response )
+      @object.siblings.length.should == 1
+      @object.siblings[0].etag.should == "7jDZLdu0fIj2iRsjGD8qq8"
     end
 
-    it "should return conflicted objects when there are multiple values" do
+    it "should return a conflicted object when there are multiple values" do
       response = @sample_response
       response[0]['values'] << {
         "metadata"=> {
@@ -315,9 +314,8 @@ describe Riak::RObject do
         },
         "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
       }
-      @objects = Riak::RObject.generate_from_map_reduce( @client, response )
-      @objects[0].should be_conflict
-      @objects[1].should be_conflict
+      @object = Riak::RObject.generate_from_map_reduce( @client, response )
+      @object.should be_conflict
     end
 
   end

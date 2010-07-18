@@ -38,7 +38,7 @@ module Riak
     # @return [Object] the data stored in Riak at this object's key. Varies in format by content-type, defaulting to String from the response body.
     attr_accessor :data
 
-    # @return [Set<Link>] an Set of {Riak::Link} objects for relationships between this object and other resources
+    # @return [Set<Link>] a Set of {Riak::Link} objects for relationships between this object and other resources
     attr_accessor :links
 
     # @return [String] the ETag header from the most recent HTTP response, useful for caching and reloading
@@ -49,6 +49,12 @@ module Riak
 
     # @return [Hash] a hash of any X-Riak-Meta-* headers that were in the HTTP response, keyed on the trailing portion
     attr_accessor :meta
+
+    # @return [Boolean] a flag indicating whether this object has conflicting sibling objects
+    attr_accessor :conflict
+
+    # @param [Array] siblings a list of RObjects that are a sibling to this one
+    attr_writer :siblings
 
     # Create a new object from the response we get from map/reduce.
     # @param [Client] client an active client object to contact the server with
@@ -68,18 +74,20 @@ module Riak
     def self.generate_from_map_reduce(client,response)
       vclock = response[0]['vclock'] if response[0]['vclock'].present?
 
-      if response[0]['values'].length == 1
-        robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
-        robj.vclock = vclock
-        robj.load_from_map_reduce(response[0]['values'][0])
-        [ robj ]
-      else
-        response[0]['values'].map do |values|
-          robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
-          robj.vclock = vclock
-          robj.load_from_map_reduce(values,true)
+      robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
+      robj.vclock = vclock
+      robj.load_from_map_reduce(response[0]['values'][0])
+
+      if response[0]['values'].length >= 1
+        robj.conflict = true
+        robj.siblings = response[0]['values'][1..-1].map do |values|
+          sibling = new(client.bucket(response[0]['bucket']), response[0]['key'])
+          sibling.vclock = vclock
+          sibling.load_from_map_reduce(values)
         end
       end
+
+      robj
     end
 
     # Create a new object manually
@@ -130,7 +138,7 @@ module Riak
     #    "X-Riak-Meta"=>{"X-Riak-Meta-King-Of-Robots"=>"I"}},
     #  "data"=>
     #   "{\"email\":\"misaka@pobox.com\",\"confirmed\":true,\"_type\":\"User\"}"}
-    def load_from_map_reduce(response, conflict=nil)
+    def load_from_map_reduce(response)
       metadata = response['metadata']
       extract_if_present(metadata, 'X-Riak-VTag', :etag)
       extract_if_present(metadata, 'content-type', :content_type)
@@ -146,7 +154,6 @@ module Riak
         ]
       end
       extract_if_present(response, 'data', :data) { |v| deserialize(v) }
-      @conflict = conflict
       self
     end
 
