@@ -60,6 +60,44 @@ module Riak
       yield self if block_given?
     end
 
+    # Create a new object from the response we get from a map function.
+    # @param [Client] client an active client object to contact the server with
+    # @param [Array] map_response the response given us from a map operation
+    # @return [RObject] the created RObject
+    #
+    # :nodoc:
+    #
+    # An example of said response:
+    #
+    # [{"bucket"=>"users",
+    #   "key"=>"A2cbUQ2KEMbeyWGtdz97LoTi1DN",
+    #   "vclock"=>
+    #    "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA",
+    #   "values"=>
+    #    [{"metadata"=>
+    #       {"Links"=>[],
+    #        "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
+    #        "content-type"=>"application/json",
+    #        "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
+    #        "X-Riak-Meta"=>[]},
+    #      "data"=>
+    #       "{\"email\":\"misaka@pobox.com\",\"confirmed\":true,\"_type\":\"User\"}"}]}]
+    def self.new_from_map_response(client,map_response)
+      robj     = new(client.bucket(map_response[0]['bucket']), map_response[0]['key'])
+      value    = map_response[0]["values"][0]
+      metadata = value['metadata']
+
+      robj.send(:extract_if_present, map_response[0], 'vclock')
+      robj.send(:extract_if_present, metadata, 'Links')
+      robj.send(:extract_if_present, metadata, 'X-Riak-Last-Modified', :last_modified) { |v| Time.httpdate( v ) }
+      robj.send(:extract_if_present, metadata, 'X-Riak-VTag', :etag)
+      robj.send(:extract_if_present, metadata, 'content-type', :content_type)
+      robj.send(:extract_if_present, value, 'X-Riak-Meta', :meta)
+      robj.send(:extract_if_present, value, 'data', :data) { |v| robj.deserialize(v) }
+
+      robj
+    end
+
     # Load object data from an HTTP response
     # @param [Hash] response a response from {Riak::Client::HTTPBackend}
     def load(response)
@@ -247,11 +285,17 @@ module Riak
     end
 
     private
-    def extract_header(response, name, attribute=nil)
-      if response[:headers][name].present?
-        value = response[:headers][name].try(:first)
-        value = yield value if block_given?
-        send("#{attribute}=", value) if attribute
+    def extract_if_present(hash, key, attribute=nil)
+      if hash[key].present?
+        attribute ||= key
+        value = block_given? ? yield(hash[key]) : hash[key]
+        send( "#{attribute}=", value )
+      end
+    end
+    
+    def extract_header(response, name, attribute=nil, &block)
+      extract_if_present(response[:headers], name, attribute) do |value|
+        block ? block.call( value[0] ) : value[0]
       end
     end
 

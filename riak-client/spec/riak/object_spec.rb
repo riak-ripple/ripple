@@ -209,6 +209,89 @@ describe Riak::RObject do
     end
   end
 
+  describe "instantiating new object from the map response" do
+    before :each do
+      @client.stub!(:bucket).and_return(@bucket)
+
+      @sample_response = [
+        {"bucket"=>"users",
+          "key"=>"A2IbUQ2KEMbe4WGtdL97LoTi1DN",
+          "vclock"=> "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA",
+          "values"=> [
+            {"metadata"=>
+              {"Links"=>[],
+                "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
+                "content-type"=>"application/json",
+                "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
+                "X-Riak-Meta"=>[]},
+              "data"=>
+              "{\"email\":\"mail@test.com\",\"_type\":\"User\"}"
+            }
+          ]
+        }
+      ]
+    end
+
+    it "should load the content type" do
+      @object = Riak::RObject.new_from_map_response(@client,@sample_response)
+      @object.content_type.should == "application/json"
+    end
+
+    it "should load the body data" do
+      @object = Riak::RObject.new_from_map_response(@client, @sample_response)
+      @object.data.should be_present
+    end
+
+    it "should deserialize the body data" do
+      new_robj = Riak::RObject.new(@bucket, 'bar')
+      new_robj.should_receive( :deserialize ).
+        with("{\"email\":\"mail@test.com\",\"_type\":\"User\"}").
+        and_return({"email" => "mail@test.com", "_type" => "User"})
+      Riak::RObject.stub!( :new ).and_return( new_robj )
+
+      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+      @object.data.should == {"email" => "mail@test.com", "_type" => "User"}
+    end
+
+    it "should load the vclock from the headers" do
+      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+      @object.vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA"
+    end
+
+    pending "should load links from the headers" do
+      @object.load({:headers => {"content-type" => ["application/json"], "link" => ['</riak/bar>; rel="up"']}, :body => "{}"})
+      @object.links.should have(1).item
+      @object.links.first.url.should == "/riak/bar"
+      @object.links.first.rel.should == "up"
+    end
+
+    it "should load the ETag from the headers" do
+      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+      @object.etag.should == "5bnavU3rrubcxLI8EvFXhB"
+    end
+
+    it "should load the modified date from the headers" do
+      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+      @object.last_modified.to_i.should == Time.httpdate("Mon, 12 Jul 2010 21:37:43 GMT").to_i
+    end
+
+    pending "should load meta information from the headers" do
+      @object.load({:headers => {"content-type" => ["application/json"], "x-riak-meta-some-kind-of-robot" => ["for AWESOME"]}, :body => "{}"})
+      @object.meta["some-kind-of-robot"].should == ["for AWESOME"]
+    end
+
+    it "should load the key" do
+      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+      @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN"
+    end
+
+    pending "should be in conflict when the response code is 300 and the content-type is multipart/mixed" do
+      @object.load({:headers => {"content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300 })
+      @object.should be_conflict
+    end
+
+  end
+
   describe "extracting siblings" do
     before :each do
       @object = Riak::RObject.new(@bucket, "bar").load({:headers => {"x-riak-vclock" => ["merged"], "content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300, :body => "\n--foo\nContent-Type: text/plain\n\nbar\n--foo\nContent-Type: text/plain\n\nbaz\n--foo--\n"})
