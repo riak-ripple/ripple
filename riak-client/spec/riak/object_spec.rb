@@ -209,7 +209,7 @@ describe Riak::RObject do
     end
   end
 
-  describe "instantiating new object from the map response" do
+  describe "instantiating new object from a map reduce operation" do
     before :each do
       @client.stub!(:bucket).and_return(@bucket)
 

@@ -50,16 +50,6 @@ module Riak
     # @return [Hash] a hash of any X-Riak-Meta-* headers that were in the HTTP response, keyed on the trailing portion
     attr_accessor :meta
 
-    # Create a new object manually
-    # @param [Bucket] bucket the bucket in which the object exists
-    # @param [String] key the key at which the object resides. If nil, a key will be assigned when the object is saved.
-    # @see Bucket#get
-    def initialize(bucket, key=nil)
-      @bucket, @key = bucket, key
-      @links, @meta = Set.new, {}
-      yield self if block_given?
-    end
-
     # Create a new object from the response we get from map/reduce.
     # @param [Client] client an active client object to contact the server with
     # @param [Array] map_response the response given us from a map operation
@@ -78,19 +68,49 @@ module Riak
     def self.generate_from_map_reduce(client,response)
       vclock = response[0]['vclock'] if response[0]['vclock'].present?
 
-      if response[0]['values'].count == 1
+      if response[0]['values'].length == 1
         robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
         robj.vclock = vclock
-        robj.load_from_map_reduce(response[0]["values"][0])
+        robj.load_from_map_reduce(response[0]['values'][0])
         [ robj ]
       else
         response[0]['values'].map do |values|
           robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
           robj.vclock = vclock
           robj.load_from_map_reduce(values,true)
-          robj
         end
       end
+    end
+
+    # Create a new object manually
+    # @param [Bucket] bucket the bucket in which the object exists
+    # @param [String] key the key at which the object resides. If nil, a key will be assigned when the object is saved.
+    # @see Bucket#get
+    def initialize(bucket, key=nil)
+      @bucket, @key = bucket, key
+      @links, @meta = Set.new, {}
+      yield self if block_given?
+    end
+
+    # Load object data from an HTTP response
+    # @param [Hash] response a response from {Riak::Client::HTTPBackend}
+    def load(response)
+      extract_header(response, "location", :key) {|v| URI.unescape(v.split("/").last) }
+      extract_header(response, "content-type", :content_type)
+      extract_header(response, "x-riak-vclock", :vclock)
+      extract_header(response, "link", :links) {|v| Set.new(Link.parse(v)) }
+      extract_header(response, "etag", :etag)
+      extract_header(response, "last-modified", :last_modified) {|v| Time.httpdate(v) }
+      @meta = response[:headers].inject({}) do |h,(k,v)|
+        if k =~ /x-riak-meta-(.*)/
+          h[$1] = v
+        end
+        h
+      end
+      @conflict = response[:code].try(:to_i) == 300 && content_type =~ /multipart\/mixed/
+      @siblings = nil
+      @data = deserialize(response[:body]) if response[:body].present?
+      self
     end
 
     # Load object data from a map/reduce response values.
@@ -127,26 +147,6 @@ module Riak
       end
       extract_if_present(response, 'data', :data) { |v| deserialize(v) }
       @conflict = conflict
-    end
-
-    # Load object data from an HTTP response
-    # @param [Hash] response a response from {Riak::Client::HTTPBackend}
-    def load(response)
-      extract_header(response, "location", :key) {|v| URI.unescape(v.split("/").last) }
-      extract_header(response, "content-type", :content_type)
-      extract_header(response, "x-riak-vclock", :vclock)
-      extract_header(response, "link", :links) {|v| Set.new(Link.parse(v)) }
-      extract_header(response, "etag", :etag)
-      extract_header(response, "last-modified", :last_modified) {|v| Time.httpdate(v) }
-      @meta = response[:headers].inject({}) do |h,(k,v)|
-        if k =~ /x-riak-meta-(.*)/
-          h[$1] = v
-        end
-        h
-      end
-      @conflict = response[:code].try(:to_i) == 300 && content_type =~ /multipart\/mixed/
-      @siblings = nil
-      @data = deserialize(response[:body]) if response[:body].present?
       self
     end
 
@@ -320,13 +320,13 @@ module Riak
       if hash[key].present?
         attribute ||= key
         value = block_given? ? yield(hash[key]) : hash[key]
-        send( "#{attribute}=", value )
+        send("#{attribute}=", value)
       end
     end
     
     def extract_header(response, name, attribute=nil, &block)
       extract_if_present(response[:headers], name, attribute) do |value|
-        block ? block.call( value[0] ) : value[0]
+        block ? block.call(value[0]) : value[0]
       end
     end
 
