@@ -219,11 +219,11 @@ describe Riak::RObject do
           "vclock"=> "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA",
           "values"=> [
             {"metadata"=>
-              {"Links"=>[],
+              {"Links"=>[["addresses", "A2cbUQ2KEMbeyWGtdz97LoTi1DN", "home_address"]],
                 "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
                 "content-type"=>"application/json",
                 "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
-                "X-Riak-Meta"=>[]},
+                "X-Riak-Meta"=>{"X-Riak-Meta-King-Of-Robots"=>"I"}},
               "data"=>
               "{\"email\":\"mail@test.com\",\"_type\":\"User\"}"
             }
@@ -233,12 +233,12 @@ describe Riak::RObject do
     end
 
     it "should load the content type" do
-      @object = Riak::RObject.new_from_map_response(@client,@sample_response)
+      @object = Riak::RObject.generate_from_map_reduce(@client,@sample_response).first
       @object.content_type.should == "application/json"
     end
 
     it "should load the body data" do
-      @object = Riak::RObject.new_from_map_response(@client, @sample_response)
+      @object = Riak::RObject.generate_from_map_reduce(@client, @sample_response).first
       @object.data.should be_present
     end
 
@@ -249,45 +249,75 @@ describe Riak::RObject do
         and_return({"email" => "mail@test.com", "_type" => "User"})
       Riak::RObject.stub!( :new ).and_return( new_robj )
 
-      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
       @object.data.should == {"email" => "mail@test.com", "_type" => "User"}
     end
 
-    it "should load the vclock from the headers" do
-      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+    it "should set the vclock" do
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
       @object.vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA"
     end
 
-    pending "should load links from the headers" do
-      @object.load({:headers => {"content-type" => ["application/json"], "link" => ['</riak/bar>; rel="up"']}, :body => "{}"})
+    it "should load and parse links" do
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
       @object.links.should have(1).item
-      @object.links.first.url.should == "/riak/bar"
-      @object.links.first.rel.should == "up"
+      @object.links.first.url.should == "/riak/addresses/A2cbUQ2KEMbeyWGtdz97LoTi1DN"
+      @object.links.first.rel.should == "home_address"
     end
 
-    it "should load the ETag from the headers" do
-      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+    it "should set the ETag" do
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
       @object.etag.should == "5bnavU3rrubcxLI8EvFXhB"
     end
 
-    it "should load the modified date from the headers" do
-      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+    it "should set modified date" do
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
       @object.last_modified.to_i.should == Time.httpdate("Mon, 12 Jul 2010 21:37:43 GMT").to_i
     end
 
-    pending "should load meta information from the headers" do
-      @object.load({:headers => {"content-type" => ["application/json"], "x-riak-meta-some-kind-of-robot" => ["for AWESOME"]}, :body => "{}"})
-      @object.meta["some-kind-of-robot"].should == ["for AWESOME"]
+    it "should load meta information" do
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
+      @object.meta["King-Of-Robots"].should == ["I"]
     end
 
-    it "should load the key" do
-      @object = Riak::RObject.new_from_map_response( @client, @sample_response )
+    it "should set the key" do
+      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response ).first
       @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN"
     end
 
-    pending "should be in conflict when the response code is 300 and the content-type is multipart/mixed" do
-      @object.load({:headers => {"content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300 })
-      @object.should be_conflict
+    it "should return multiple objects when there are multiple values" do
+      response = @sample_response
+      response[0]['values'] << {
+        "metadata"=> {
+          "Links"=>[],
+          "X-Riak-VTag"=>"7jDZLdu0fIj2iRsjGD8qq8",
+          "content-type"=>"application/json",
+          "X-Riak-Last-Modified"=>"Mon, 14 Jul 2010 19:28:27 GMT",
+          "X-Riak-Meta"=>[]
+        },
+        "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
+      }
+      @objects = Riak::RObject.generate_from_map_reduce( @client, response )
+      @objects.length.should == 2
+      @objects[0].etag.should == "5bnavU3rrubcxLI8EvFXhB"
+      @objects[1].etag.should == "7jDZLdu0fIj2iRsjGD8qq8"
+    end
+
+    it "should return conflicted objects when there are multiple values" do
+      response = @sample_response
+      response[0]['values'] << {
+        "metadata"=> {
+          "Links"=>[],
+          "X-Riak-VTag"=>'7jDZLdu0fIj2iRsjGD8qq8',
+          "content-type"=>"application/json",
+          "X-Riak-Last-Modified"=>"Mon, 14 Jul 2010 19:28:27 GMT",
+          "X-Riak-Meta"=>[]
+        },
+        "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
+      }
+      @objects = Riak::RObject.generate_from_map_reduce( @client, response )
+      @objects[0].should be_conflict
+      @objects[1].should be_conflict
     end
 
   end

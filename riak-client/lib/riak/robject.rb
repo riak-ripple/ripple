@@ -60,42 +60,73 @@ module Riak
       yield self if block_given?
     end
 
-    # Create a new object from the response we get from a map function.
+    # Create a new object from the response we get from map/reduce.
     # @param [Client] client an active client object to contact the server with
     # @param [Array] map_response the response given us from a map operation
     # @return [RObject] the created RObject
     #
     # :nodoc:
     #
-    # An example of said response:
+    # An example of a response:
     #
     # [{"bucket"=>"users",
     #   "key"=>"A2cbUQ2KEMbeyWGtdz97LoTi1DN",
     #   "vclock"=>
     #    "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA",
     #   "values"=>
-    #    [{"metadata"=>
-    #       {"Links"=>[],
-    #        "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
-    #        "content-type"=>"application/json",
-    #        "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
-    #        "X-Riak-Meta"=>[]},
-    #      "data"=>
-    #       "{\"email\":\"misaka@pobox.com\",\"confirmed\":true,\"_type\":\"User\"}"}]}]
-    def self.new_from_map_response(client,map_response)
-      robj     = new(client.bucket(map_response[0]['bucket']), map_response[0]['key'])
-      value    = map_response[0]["values"][0]
-      metadata = value['metadata']
+    #    [...]}]
+    def self.generate_from_map_reduce(client,response)
+      vclock = response[0]['vclock'] if response[0]['vclock'].present?
 
-      robj.send(:extract_if_present, map_response[0], 'vclock')
-      robj.send(:extract_if_present, metadata, 'Links')
-      robj.send(:extract_if_present, metadata, 'X-Riak-Last-Modified', :last_modified) { |v| Time.httpdate( v ) }
-      robj.send(:extract_if_present, metadata, 'X-Riak-VTag', :etag)
-      robj.send(:extract_if_present, metadata, 'content-type', :content_type)
-      robj.send(:extract_if_present, value, 'X-Riak-Meta', :meta)
-      robj.send(:extract_if_present, value, 'data', :data) { |v| robj.deserialize(v) }
+      if response[0]['values'].count == 1
+        robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
+        robj.vclock = vclock
+        robj.load_from_map_reduce(response[0]["values"][0])
+        [ robj ]
+      else
+        response[0]['values'].map do |values|
+          robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
+          robj.vclock = vclock
+          robj.load_from_map_reduce(values,true)
+          robj
+        end
+      end
+    end
 
-      robj
+    # Load object data from a map/reduce response values.
+    # @param [Hash] response a response from {Riak::MapReduce}
+    # This method is used by generate_from_map_reduce to instantiate the necessary
+    # objects.
+    #
+    # :nodoc:
+    #
+    # An example of values:
+    #
+    # {"metadata"=>
+    #   {"Links"=>[["users", "A2cbUQ2KEMbeyWGtdz97LoTi1DN", "user"]],
+    #    "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
+    #    "content-type"=>"application/json",
+    #    "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
+    #    "X-Riak-Meta"=>{"X-Riak-Meta-King-Of-Robots"=>"I"}},
+    #  "data"=>
+    #   "{\"email\":\"misaka@pobox.com\",\"confirmed\":true,\"_type\":\"User\"}"}
+    def load_from_map_reduce(response, conflict=nil)
+      metadata = response['metadata']
+      extract_if_present(metadata, 'X-Riak-VTag', :etag)
+      extract_if_present(metadata, 'content-type', :content_type)
+      extract_if_present(metadata, 'X-Riak-Last-Modified', :last_modified) { |v| Time.httpdate( v ) }
+      extract_if_present(metadata, 'Links', :links) do |links|
+        Set.new( links.map { |l| Link.new("#{@bucket.client.prefix}#{l[0]}/#{l[1]}", l[2]) } )
+      end
+      extract_if_present(metadata, 'X-Riak-Meta', :meta) do |meta|
+        Hash[
+          meta.map do |k,v|
+            [k.sub(%r{^x-riak-meta-}i, ''), [v]]
+          end
+        ]
+      end
+      extract_if_present(response, 'data', :data) { |v| deserialize(v) }
+      @conflict = conflict
     end
 
     # Load object data from an HTTP response
