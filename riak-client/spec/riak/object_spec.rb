@@ -216,7 +216,7 @@ describe Riak::RObject do
       @sample_response = [
         {"bucket"=>"users",
           "key"=>"A2IbUQ2KEMbe4WGtdL97LoTi1DN",
-          "vclock"=> "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA",
+          "vclock"=> "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA",
           "values"=> [
             {"metadata"=>
               {"Links"=>[["addresses", "A2cbUQ2KEMbeyWGtdz97LoTi1DN", "home_address"]],
@@ -255,7 +255,7 @@ describe Riak::RObject do
 
     it "should set the vclock" do
       @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
-      @object.vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSmTMY2WQYN9wlA8q/HvGVn+osCKScFV3/hKosDpIOAsA"
+      @object.vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA"
     end
 
     it "should load and parse links" do
@@ -285,7 +285,7 @@ describe Riak::RObject do
       @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN"
     end
 
-    it "should not set conflict" do
+    it "should not set conflict when there is none" do
       @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.conflict?.should be_false
     end
@@ -303,8 +303,9 @@ describe Riak::RObject do
         "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
       }
       @object = Riak::RObject.generate_from_map_reduce( @client, response )
-      @object.siblings.length.should == 1
-      @object.siblings[0].etag.should == "7jDZLdu0fIj2iRsjGD8qq8"
+      @object.siblings.length.should == 2
+      @object.siblings[0].etag.should == "5bnavU3rrubcxLI8EvFXhB"
+      @object.siblings[1].etag.should == "7jDZLdu0fIj2iRsjGD8qq8"
     end
 
     it "should return a conflicted object when there are multiple values" do
@@ -320,7 +321,26 @@ describe Riak::RObject do
         "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
       }
       @object = Riak::RObject.generate_from_map_reduce( @client, response )
+      @object.data.should_not be_present
       @object.should be_conflict
+    end
+
+    it "should assign the same vclock to all the siblings" do
+      response = @sample_response
+      response[0]['values'] << {
+        "metadata"=> {
+          "Links"=>[],
+          "X-Riak-VTag"=>'7jDZLdu0fIj2iRsjGD8qq8',
+          "content-type"=>"application/json",
+          "X-Riak-Last-Modified"=>"Mon, 14 Jul 2010 19:28:27 GMT",
+          "X-Riak-Meta"=>[]
+        },
+        "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
+      }
+
+      @object = Riak::RObject.generate_from_map_reduce( @client, response )
+      @object.siblings[0].vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA"
+      @object.siblings[1].vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA"
     end
 
   end

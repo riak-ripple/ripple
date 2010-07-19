@@ -72,17 +72,16 @@ module Riak
     #   "values"=>
     #    [...]}]
     def self.generate_from_map_reduce(client,response)
-      vclock = response[0]['vclock'] if response[0]['vclock'].present?
-
       robj = new(client.bucket(response[0]['bucket']), response[0]['key'])
-      robj.vclock = vclock
-      robj.load_from_map_reduce(response[0]['values'][0])
+      robj.vclock = response[0]['vclock'] if response[0]['vclock'].present?
 
-      if response[0]['values'].length > 1
+      if response[0]['values'].length == 1
+        robj.load_from_map_reduce(response[0]['values'][0])
+      else
         robj.conflict = true
-        robj.siblings = response[0]['values'][1..-1].map do |values|
+        robj.siblings = response[0]['values'].map do |values|
           sibling = new(client.bucket(response[0]['bucket']), response[0]['key'])
-          sibling.vclock = vclock
+          sibling.vclock = robj.vclock
           sibling.load_from_map_reduce(values)
         end
       end
