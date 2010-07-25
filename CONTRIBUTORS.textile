@@ -4,3 +4,4 @@ These developers have contributed code to Ripple:
 * John Lynch - john@rigelgroupllc.com
 * Adam Hunter - adamhunter@me.com
 * Shay Frendt - shay.frendt@gmail.com
+* Misha Gorodnitzky - misaka@pobox.com
