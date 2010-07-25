@@ -211,138 +211,102 @@ describe Riak::RObject do
 
   describe "instantiating new object from a map reduce operation" do
     before :each do
-      @client.stub!(:bucket).and_return(@bucket)
+      @client.stub!(:[]).and_return(@bucket)
 
       @sample_response = [
-        {"bucket"=>"users",
-          "key"=>"A2IbUQ2KEMbe4WGtdL97LoTi1DN",
-          "vclock"=> "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA",
-          "values"=> [
-            {"metadata"=>
-              {"Links"=>[["addresses", "A2cbUQ2KEMbeyWGtdz97LoTi1DN", "home_address"]],
-                "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
-                "content-type"=>"application/json",
-                "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
-                "X-Riak-Meta"=>{"X-Riak-Meta-King-Of-Robots"=>"I"}},
-              "data"=>
-              "{\"email\":\"mail@test.com\",\"_type\":\"User\"}"
-            }
-          ]
-        }
-      ]
+                          {"bucket"=>"users",
+                            "key"=>"A2IbUQ2KEMbe4WGtdL97LoTi1DN",
+                            "vclock"=> "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA",
+                            "values"=> [
+                                        {"metadata"=>
+                                          {"Links"=>[["addresses", "A2cbUQ2KEMbeyWGtdz97LoTi1DN", "home_address"]],
+                                            "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
+                                            "content-type"=>"application/json",
+                                            "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
+                                            "X-Riak-Meta"=>{"X-Riak-Meta-King-Of-Robots"=>"I"}},
+                                          "data"=>
+                                          "{\"email\":\"mail@test.com\",\"_type\":\"User\"}"
+                                        }
+                                       ]
+                          }
+                         ]
+      @object = Riak::RObject.load_from_mapreduce(@client,@sample_response).first
+      @object.should be_kind_of(Riak::RObject)
     end
 
     it "should load the content type" do
-      @object = Riak::RObject.generate_from_map_reduce(@client,@sample_response)
       @object.content_type.should == "application/json"
     end
 
     it "should load the body data" do
-      @object = Riak::RObject.generate_from_map_reduce(@client, @sample_response)
       @object.data.should be_present
     end
 
     it "should deserialize the body data" do
-      new_robj = Riak::RObject.new(@bucket, 'bar')
-      new_robj.should_receive( :deserialize ).
-        with("{\"email\":\"mail@test.com\",\"_type\":\"User\"}").
-        and_return({"email" => "mail@test.com", "_type" => "User"})
-      Riak::RObject.stub!( :new ).and_return( new_robj )
-
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.data.should == {"email" => "mail@test.com", "_type" => "User"}
     end
 
     it "should set the vclock" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA"
     end
 
     it "should load and parse links" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.links.should have(1).item
       @object.links.first.url.should == "/riak/addresses/A2cbUQ2KEMbeyWGtdz97LoTi1DN"
       @object.links.first.rel.should == "home_address"
     end
 
     it "should set the ETag" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.etag.should == "5bnavU3rrubcxLI8EvFXhB"
     end
 
     it "should set modified date" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.last_modified.to_i.should == Time.httpdate("Mon, 12 Jul 2010 21:37:43 GMT").to_i
     end
 
     it "should load meta information" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.meta["King-Of-Robots"].should == ["I"]
     end
 
     it "should set the key" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN"
     end
 
     it "should not set conflict when there is none" do
-      @object = Riak::RObject.generate_from_map_reduce( @client, @sample_response )
       @object.conflict?.should be_false
     end
 
-    it "should add siblings when there are multiple values" do
-      response = @sample_response
-      response[0]['values'] << {
-        "metadata"=> {
-          "Links"=>[],
-          "X-Riak-VTag"=>"7jDZLdu0fIj2iRsjGD8qq8",
-          "content-type"=>"application/json",
-          "X-Riak-Last-Modified"=>"Mon, 14 Jul 2010 19:28:27 GMT",
-          "X-Riak-Meta"=>[]
-        },
-        "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
-      }
-      @object = Riak::RObject.generate_from_map_reduce( @client, response )
-      @object.siblings.length.should == 2
-      @object.siblings[0].etag.should == "5bnavU3rrubcxLI8EvFXhB"
-      @object.siblings[1].etag.should == "7jDZLdu0fIj2iRsjGD8qq8"
+    describe "when there are multiple values in an object" do
+      before :each do
+        response = @sample_response.dup
+        response[0]['values'] << {
+          "metadata"=> {
+            "Links"=>[],
+            "X-Riak-VTag"=>"7jDZLdu0fIj2iRsjGD8qq8",
+            "content-type"=>"application/json",
+            "X-Riak-Last-Modified"=>"Mon, 14 Jul 2010 19:28:27 GMT",
+            "X-Riak-Meta"=>[]
+          },
+          "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
+        }
+        @object = Riak::RObject.load_from_mapreduce( @client, response ).first
+      end
+
+      it "should expose siblings" do
+        @object.should have(2).siblings
+        @object.siblings[0].etag.should == "5bnavU3rrubcxLI8EvFXhB"
+        @object.siblings[1].etag.should == "7jDZLdu0fIj2iRsjGD8qq8"
+      end
+
+      it "should be in conflict" do
+        @object.data.should_not be_present
+        @object.should be_conflict
+      end
+
+      it "should assign the same vclock to all the siblings" do
+        @object.siblings.should be_all {|s| s.vclock == @object.vclock }
+      end
     end
-
-    it "should return a conflicted object when there are multiple values" do
-      response = @sample_response
-      response[0]['values'] << {
-        "metadata"=> {
-          "Links"=>[],
-          "X-Riak-VTag"=>'7jDZLdu0fIj2iRsjGD8qq8',
-          "content-type"=>"application/json",
-          "X-Riak-Last-Modified"=>"Mon, 14 Jul 2010 19:28:27 GMT",
-          "X-Riak-Meta"=>[]
-        },
-        "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
-      }
-      @object = Riak::RObject.generate_from_map_reduce( @client, response )
-      @object.data.should_not be_present
-      @object.should be_conflict
-    end
-
-    it "should assign the same vclock to all the siblings" do
-      response = @sample_response
-      response[0]['values'] << {
-        "metadata"=> {
-          "Links"=>[],
-          "X-Riak-VTag"=>'7jDZLdu0fIj2iRsjGD8qq8',
-          "content-type"=>"application/json",
-          "X-Riak-Last-Modified"=>"Mon, 14 Jul 2010 19:28:27 GMT",
-          "X-Riak-Meta"=>[]
-        },
-        "data"=> "{\"email\":\"mail@domain.com\",\"_type\":\"User\"}"
-      }
-
-      @object = Riak::RObject.generate_from_map_reduce( @client, response )
-      @object.siblings[0].vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA"
-      @object.siblings[1].vclock.should == "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA"
-    end
-
   end
 
   describe "extracting siblings" do
