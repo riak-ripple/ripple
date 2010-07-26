@@ -9,6 +9,7 @@ describe Riak::Util::Escape do
   it "should escape standard non-safe characters" do
     @object.escape("some string").should == "some%20string"
     @object.escape("another^one").should == "another%5Eone"
+    @object.escape("bracket[one").should == "bracket%5Bone"
   end
 
   it "should escape slashes" do

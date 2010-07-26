@@ -49,7 +49,7 @@ module Riak
         raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], t("loading_bucket", :name => name))
       end
       payload = ActiveSupport::JSON.decode(response[:body])
-      @keys = payload['keys'].map {|k| URI.unescape(k) }  if payload['keys']
+      @keys = payload['keys'].map {|k| CGI.unescape(k) }  if payload['keys']
       @props = payload['props'] if payload['props']
       self
     end
@@ -66,7 +66,7 @@ module Riak
       if block_given?
         @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => 'stream'}, {}) do |chunk|
           obj = ActiveSupport::JSON.decode(chunk) rescue {}
-          yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
+          yield obj['keys'].map {|k| CGI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
         response = @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => true}, {})
