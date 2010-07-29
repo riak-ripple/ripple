@@ -29,7 +29,7 @@ module Ripple
 
       # @private
       def reload
-        returning super do
+        super.tap do
           changed_attributes.clear
         end
       end
