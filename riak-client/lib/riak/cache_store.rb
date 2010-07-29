@@ -34,35 +34,9 @@ module Riak
         end
       end
     end
-    
-    def write(key, value, options={})
-      super do
-        object = bucket.get_or_new(key, :r => @r)
-        object.content_type = 'application/yaml'
-        object.data = value
-        object.store(:r => @r, :w => @w, :dw => @dw)
-      end
-    end
-
-    def read(key, options={})
-      super do
-        begin
-          bucket.get(key, :r => @r).data
-        rescue Riak::FailedRequest => fr
-          raise fr unless fr.code == 404
-          nil
-        end
-      end
-    end
-
-    def exist?(key)
-      super do
-        bucket.exists?(key, :r => @r)
-      end
-    end
 
     def delete_matched(matcher, options={})
-      super do
+      instrument(:delete_matched, matcher) do
         bucket.keys do |keys|
           keys.grep(matcher).each do |k|
             bucket.delete(k, :rw => @rw)
@@ -70,11 +44,26 @@ module Riak
         end
       end
     end
+    
+    protected
+    def write_entry(key, value, options={})
+      object = bucket.get_or_new(key, :r => @r)
+      object.content_type = 'application/yaml'
+      object.data = value
+      object.store(:r => @r, :w => @w, :dw => @dw)
+    end
 
-    def delete(key, options={})
-      super do
-        bucket.delete(key, :rw => @rw)
+    def read_entry(key, options={})
+      begin
+        bucket.get(key, :r => @r).data
+      rescue Riak::FailedRequest => fr
+        raise fr unless fr.code == 404
+        nil
       end
+    end
+
+    def delete_entry(key, options={})
+      bucket.delete(key, :rw => @rw)
     end
   end
 end

@@ -15,6 +15,7 @@ $KCODE = "UTF8" if RUBY_VERSION < "1.9"
 
 require 'active_support/all'
 require 'active_support/json'
+require 'active_support/version'
 require 'base64'
 require 'uri'
 require 'cgi'
@@ -33,8 +34,10 @@ module Riak
   autoload :RObject,         "riak/robject"
   autoload :MapReduce,       "riak/map_reduce"
 
-  # Cache store
-  autoload :CacheStore,      "riak/cache_store"
+  # Cache store - only supports Rails 3 style
+  if ActiveSupport::VERSION::STRING >= "3.0.0"
+    autoload :CacheStore,      "riak/cache_store"
+  end
 
   # Exceptions
   autoload :FailedRequest,   "riak/failed_request"

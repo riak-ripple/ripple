@@ -93,20 +93,6 @@ describe Riak::CacheStore do
     @cache.fetch('foo', :force => true){'bar'}.should == 'bar'
   end
 
-  it "should increment an integer value in the cache" do
-    @cache.write('foo', 1, :raw => true)
-    @cache.read('foo', :raw => true).to_i.should == 1
-    @cache.increment('foo')
-    @cache.read('foo', :raw => true).to_i.should == 2
-  end
-
-  it "should decrement an integer value in the cache" do
-    @cache.write('foo', 1, :raw => true)
-    @cache.read('foo', :raw => true).to_i.should == 1
-    @cache.decrement('foo')
-    @cache.read('foo', :raw => true).to_i.should == 0
-  end
-
   it "should detect if a value exists in the cache" do
     @cache.write('foo', 'bar')
     @cache.exist?('foo').should be_true
