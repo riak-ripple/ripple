@@ -168,9 +168,22 @@ module Riak
       value
     end
 
-    # @return [String] a representation suitable for IRB and debugging output
-    def inspect
-      "#<Riak::Bucket #{client.http.path(client.prefix, escape(name)).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
+    [:r,:w,:dw,:rw].each do |q|
+      class_eval <<-CODE
+        def #{q}
+          props["#{q}"]
+        end
+
+        def #{q}=(value)
+          self.props = {"#{q}" => value}
+          value
+        end
+        CODE
+      end
+
+      # @return [String] a representation suitable for IRB and debugging output
+      def inspect
+        "#<Riak::Bucket #{client.http.path(client.prefix, escape(name)).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
+      end
     end
   end
-end
