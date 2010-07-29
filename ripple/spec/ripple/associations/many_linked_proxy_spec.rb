@@ -15,7 +15,7 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Associations::ManyLinkedProxy do
   require 'support/models/tasks'
-  
+
   before :each do
     @person = Person.new {|p| p.key = "riak-user" }
     @task = Task.new {|t| t.key = "one" }
@@ -42,14 +42,20 @@ describe Ripple::Associations::ManyLinkedProxy do
     t = (@person.tasks = [@task])
     t.should == [@task]
   end
-  
+
+  it "should save unsaved documents when assigning" do
+    @task.should_receive(:new?).and_return(true)
+    @task.should_receive(:save).and_return(true)
+    @person.tasks = [@task]
+  end
+
   it "should link-walk to the associated documents when accessing" do
     @person.robject.links << @task.robject.to_link("tasks")
     @person.robject.should_receive(:walk).with(Riak::WalkSpec.new(:bucket => "tasks", :tag => "tasks")).and_return([])
     @person.tasks.should == []
   end
 
-  it "should replace associated documents with a new set" do    
+  it "should replace associated documents with a new set" do
     @person.tasks = [@task]
     @person.tasks = [@other_task]
     @person.tasks.should == [@other_task]
@@ -60,7 +66,7 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.tasks << @other_task
     @person.should have(2).tasks
   end
-  
+
   it "should be able to chain calls to adding documents" do
     @person.tasks << @task << @other_task
     @person.should have(2).tasks
@@ -72,7 +78,7 @@ describe Ripple::Associations::ManyLinkedProxy do
       @person.robject.links.should include(t.robject.to_link("tasks"))
     end
   end
-  
+
   it "should be able to count the associated documents" do
     @person.tasks << @task
     @person.tasks.count.should == 1
@@ -83,7 +89,7 @@ describe Ripple::Associations::ManyLinkedProxy do
   it "should be able to build a new associated document" do
     pending "Need unsaved document support"
   end
-    
+
   it "should return an array from to_ary" do
     @person.tasks << @task
     @person.tasks.to_ary.should == [@task]
