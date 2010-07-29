@@ -89,8 +89,19 @@ reply.body = "Riak is a good fit for scalable Ruby apps."
 reply.save                               # POST /riak/emails (Riak-assigned key)
 </pre></notextile>
 
+h2. Database.yml Example
+
+When using Ripple, config/database.yml should contain your Riak connection information:
+
+<notextile><pre>
+ripple:
+  development:
+    port: 8098
+    host: localhost
+</pre></notextile>
+
 h2. How to Contribute
- 
+
 * Fork the project on "Github":http://github.com/seancribbs/ripple.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
   <notextile><pre>$ git checkout master
 $ git pull --rebase seancribbs master</pre></notextile>
