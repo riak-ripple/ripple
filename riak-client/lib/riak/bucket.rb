@@ -26,10 +26,6 @@ module Riak
     # @return [String] the bucket name
     attr_reader :name
 
-    # @return [Hash] Internal Riak bucket properties.
-    attr_reader :props
-    alias_attribute :properties, :props
-
     # Create a Riak bucket manually.
     # @param [Client] client the {Riak::Client} for this bucket
     # @param [String] name the name of the bucket
@@ -75,17 +71,39 @@ module Riak
       @keys
     end
 
+
     # Sets internal properties on the bucket
     # Note: this results in a request to the Riak server!
     # @param [Hash] properties new properties for the bucket
-    # @return [Hash] the properties that were accepted
-    # @raise [FailedRequest] if the new properties were not accepted by the Riak server
+    # @option properties [Fixnum] :n_val (3) The N value (replication factor)
+    # @option properties [true,false] :allow_mult (false) Whether to permit object siblings
+    # @option properties [true,false] :last_write_wins (false) Whether to ignore vclocks
+    # @option properties [Array<Hash>] :precommit ([]) precommit hooks
+    # @option properties [Array<Hash>] :postcommit ([])postcommit hooks
+    # @option properties [Fixnum,String] :r ("quorum") read quorum (numeric or
+    # symbolic)
+    # @option properties [Fixnum,String] :w ("quorum") write quorum (numeric or
+    # symbolic)
+    # @option properties [Fixnum,String] :dw ("quorum") durable write quorum
+    # (numeric or symbolic)
+    # @option properties [Fixnum,String] :rw ("quorum") delete quorum (numeric or
+    # symbolic)
+    # @return [Hash] the merged bucket properties
+    # @raise [FailedRequest] if the new properties were not accepted by the Riakserver
+    # @see #n_value, #allow_mult, #r, #w, #dw, #rw
     def props=(properties)
       raise ArgumentError, t("hash_type", :hash => properties.inspect) unless Hash === properties
       body = {'props' => properties}.to_json
       @client.http.put(204, @client.prefix, escape(name), body, {"Content-Type" => "application/json"})
       @props.merge!(properties)
     end
+
+    # @return [Hash] Internal Riak bucket properties.
+    # @see #props=
+    def props
+      @props
+    end
+    alias_attribute :properties, :props
 
     # Retrieve an object from within the bucket.
     # @param [String] key the key of the object to retrieve

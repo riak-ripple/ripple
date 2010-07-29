@@ -199,7 +199,7 @@ module Ripple
       @using ||= options[:using] || (embeddable? ? :embedded : :linked)
     end
 
-    # @raises [ArgumentError] if the value does not match the class of the association
+    # @raise [ArgumentError] if the value does not match the class of the association
     def verify_type!(value)
       unless type_matches?(value)
         raise ArgumentError.new(t('invalid_association_value',
