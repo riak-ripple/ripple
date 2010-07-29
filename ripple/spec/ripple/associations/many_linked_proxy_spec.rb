@@ -86,12 +86,18 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.tasks.count.should == 2
   end
 
-  it "should be able to build a new associated document" do
-    pending "Need unsaved document support"
-  end
+  # it "should be able to build a new associated document" do
+  #   pending "Need unsaved document support"
+  # end
 
   it "should return an array from to_ary" do
     @person.tasks << @task
     @person.tasks.to_ary.should == [@task]
+  end
+
+  it "should refuse assigning a collection of the wrong type" do
+    lambda { @person.tasks = nil }.should raise_error
+    lambda { @person.tasks = @task }.should raise_error
+    lambda { @person.tasks = [@person] }.should raise_error
   end
 end

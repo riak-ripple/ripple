@@ -20,7 +20,6 @@ module Ripple
       include Linked
 
       def <<(value)
-        # TODO: verify inputs!
         load_target
         new_target = @target.concat(Array(value))
         replace new_target

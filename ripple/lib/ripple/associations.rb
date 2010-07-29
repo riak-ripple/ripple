@@ -69,7 +69,7 @@ module Ripple
           value
         end
 
-        if association.one?
+        unless association.many?
           define_method("#{name}?") do
             get_proxy(association).present?
           end
@@ -101,6 +101,7 @@ module Ripple
   end
 
   class Association
+    include Ripple::Translation
     attr_reader :type, :name, :options
 
     # association options :using, :class_name, :class, :extend,
@@ -196,6 +197,28 @@ module Ripple
     # @return [Symbol] which method is used for representing the association - currently only supports :embedded and :linked
     def using
       @using ||= options[:using] || (embeddable? ? :embedded : :linked)
+    end
+
+    # @raises [ArgumentError] if the value does not match the class of the association
+    def verify_type!(value)
+      unless type_matches?(value)
+        raise ArgumentError.new(t('invalid_association_value',
+                                  :name => name,
+                                  :owner => owner.inspect,
+                                  :klass => polymorphic? ? "<polymorphic>" : klass.name,
+                                  :value => value))
+      end
+    end
+
+    def type_matches?(value)
+      case
+      when polymorphic?
+        one? || Array === value
+      when many?
+        Array === value && value.all? {|d| (embeddable? && Hash === d) || klass === d }
+      when one?
+        (embeddable? && Hash === value) || klass === value
+      end
     end
   end
 end

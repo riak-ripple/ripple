@@ -66,7 +66,11 @@ describe Ripple::Associations::OneLinkedProxy do
     @person.profile.should == @other_profile
   end
 
-  it "should be able to build a new associated document" do
-    pending "Need unsaved document support"
+  # it "should be able to build a new associated document" do
+  #   @person.profile.build
+  # end
+
+  it "should refuse assigning a document of the wrong type" do
+    lambda { @person.profile = @person }.should raise_error
   end
 end

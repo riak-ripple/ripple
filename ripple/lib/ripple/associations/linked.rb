@@ -16,8 +16,8 @@ require 'ripple'
 module Ripple
   module Associations
     module Linked
-      # TODO: decide whether to save owner automatically
       def replace(value)
+        @reflection.verify_type!(value)
         @owner.robject.links -= links
         Array(value).compact.each do |doc|
           doc.save if doc.new?
