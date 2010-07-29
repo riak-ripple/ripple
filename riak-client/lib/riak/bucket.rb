@@ -84,7 +84,7 @@ module Riak
       raise ArgumentError, t("hash_type", :hash => properties.inspect) unless Hash === properties
       body = {'props' => properties}.to_json
       @client.http.put(204, @client.prefix, escape(name), body, {"Content-Type" => "application/json"})
-      @props = properties
+      @props.merge!(properties)
     end
 
     # Retrieve an object from within the bucket.
