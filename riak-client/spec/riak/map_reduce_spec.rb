@@ -49,9 +49,19 @@ describe Riak::MapReduce do
       @mr.inputs.should == [["foo","bar"]]
     end
 
+    it "should add bucket/key pairs to the inputs" do
+      @mr.add("[foo]","(bar)")
+      @mr.inputs.should == [["%5Bfoo%5D","%28bar%29"]]
+    end
+
     it "should add an array containing a bucket/key pair to the inputs" do
       @mr.add(["foo","bar"])
       @mr.inputs.should == [["foo","bar"]]
+    end
+
+    it "should add an escaped array containing a bucket/key pair to the inputs" do
+      @mr.add(["[foo]","(bar)"])
+      @mr.inputs.should == [["%5Bfoo%5D","%28bar%29"]]
     end
 
     it "should add an object to the inputs by its bucket and key" do
@@ -61,14 +71,33 @@ describe Riak::MapReduce do
       @mr.inputs.should == [["foo", "bar"]]
     end
 
+    it "should add an object to the inputs by its escaped bucket and key" do
+      bucket = Riak::Bucket.new(@client, "[foo]")
+      obj = Riak::RObject.new(bucket, "(bar)")
+      @mr.add(obj)
+      @mr.inputs.should == [["%5Bfoo%5D", "%28bar%29"]]
+    end
+
     it "should add an array containing a bucket/key/key-data triple to the inputs" do
       @mr.add(["foo","bar",1000])
       @mr.inputs.should == [["foo","bar",1000]]
     end
 
+    it "should add an escaped array containing a bucket/key/key-data triple to the inputs" do
+      @mr.add(["[foo]","(bar)","[]()"])
+      @mr.inputs.should == [["%5Bfoo%5D", "%28bar%29","[]()"]]
+    end
+
     it "should use a bucket name as the single input" do
       @mr.add(Riak::Bucket.new(@client, "foo"))
       @mr.inputs.should == "foo"
+      @mr.add("docs")
+      @mr.inputs.should == "docs"
+    end
+
+    it "should use an escaped bucket name as the single input" do
+      @mr.add(Riak::Bucket.new(@client, "[foo]"))
+      @mr.inputs.should == "%5Bfoo%5D"
       @mr.add("docs")
       @mr.inputs.should == "docs"
     end
