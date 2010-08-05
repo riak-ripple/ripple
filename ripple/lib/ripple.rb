@@ -59,11 +59,11 @@ module Ripple
 
     def config=(hash)
       self.client = nil
-      Thread.current[:config] = hash.symbolize_keys
+      @config = hash.symbolize_keys
     end
-    
+
     def config
-      Thread.current[:config] ||= {}
+      @config ||= {}
     end
 
     def load_configuration(config_file, config_keys = [:ripple])
