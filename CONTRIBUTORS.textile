@@ -1,4 +1,4 @@
-These developers have contributed code to Ripple:
+These developers have contributed code and documentation to Ripple:
 
 * Sean Cribbs <sean@basho.com>
 * John Lynch <john@rigelgroupllc.com>
@@ -8,3 +8,4 @@ These developers have contributed code to Ripple:
 * Misha Gorodnitzky <misaka@pobox.com>
 * Nicolas Fouché <nicolas@silentale.com>
 * Justin Pease <justin.pease@gmail.com>
+* Ashley Woodard <ashley.c.woodard@gmail.com>
