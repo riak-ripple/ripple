@@ -37,6 +37,7 @@ module Riak
   # Cache store - only supports Rails 3 style
   if ActiveSupport::VERSION::STRING >= "3.0.0"
     autoload :CacheStore,      "riak/cache_store"
+    ::ActiveSupport::Cache.autoload :RiakStore, "riak/cache_store"
   end
 
   # Exceptions

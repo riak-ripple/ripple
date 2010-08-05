@@ -18,9 +18,5 @@ module Ripple
     initializer "ripple.configure_rails_initialization" do
       Ripple.load_configuration Rails.root.join('config', 'ripple.yml'), [Rails.env]
     end
-
-    def eager_load!
-      require 'riak/cache_store'
-    end
   end
 end
