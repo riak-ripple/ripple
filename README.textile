@@ -91,13 +91,12 @@ reply.save                               # POST /riak/emails (Riak-assigned key)
 
 h2. Database.yml Example
 
-When using Ripple, config/database.yml should contain your Riak connection information:
+When using Ripple, config/ripple.yml should contain your Riak connection information:
 
 <notextile><pre>
-ripple:
-  development:
-    port: 8098
-    host: localhost
+development:
+  port: 8098
+  host: localhost
 </pre></notextile>
 
 h2. How to Contribute
