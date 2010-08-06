@@ -89,7 +89,7 @@ reply.body = "Riak is a good fit for scalable Ruby apps."
 reply.save                               # POST /riak/emails (Riak-assigned key)
 </pre></notextile>
 
-h2. Database.yml Example
+h2. Configuration Example
 
 When using Ripple, config/ripple.yml should contain your Riak connection information:
 
