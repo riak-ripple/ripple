@@ -59,7 +59,7 @@ module Riak
     # @return [Array<RObject>] An array of RObject instances
     def self.load_from_mapreduce(client, response)
       response.map do |item|
-        RObject.new(client[item['bucket']], item['key']).load_from_mapreduce(item)
+        RObject.new(client[CGI.unescape(item['bucket'])], CGI.unescape(item['key'])).load_from_mapreduce(item)
       end
     end
     

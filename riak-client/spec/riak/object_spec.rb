@@ -198,6 +198,11 @@ describe Riak::RObject do
       @object.key.should == "baz"
     end
 
+    it "should parse and escape the location header into the key when present" do
+      @object.load({:headers => {"content-type" => ["application/json"], "location" => ["/riak/foo/%5Bbaz%5D"]}})
+      @object.key.should == "[baz]"
+    end
+
     it "should be in conflict when the response code is 300 and the content-type is multipart/mixed" do
       @object.load({:headers => {"content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300 })
       @object.should be_conflict
@@ -215,7 +220,7 @@ describe Riak::RObject do
 
       @sample_response = [
                           {"bucket"=>"users",
-                            "key"=>"A2IbUQ2KEMbe4WGtdL97LoTi1DN",
+                            "key"=>"A2IbUQ2KEMbe4WGtdL97LoTi1DN%5B%28%5C%2F%29%5D",
                             "vclock"=> "a85hYGBgzmDKBVIsCfs+fc9gSN9wlA8q/hKosDpIOAsA",
                             "values"=> [
                                         {"metadata"=>
@@ -269,7 +274,7 @@ describe Riak::RObject do
     end
 
     it "should set the key" do
-      @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN"
+      @object.key.should == "A2IbUQ2KEMbe4WGtdL97LoTi1DN[(\\/)]"
     end
 
     it "should not set conflict when there is none" do
