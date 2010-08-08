@@ -11,9 +11,9 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-begin
+if ActiveSupport::VERSION::STRING >= "3.0"
   require 'active_support/i18n'
-rescue LoadError
+else
   require 'i18n' # support ActiveSupport < 3
 end
 
