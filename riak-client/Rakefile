@@ -14,6 +14,7 @@ gemspec = Gem::Specification.new do |gem|
   gem.add_development_dependency "rack", ">=1.0"
   gem.add_development_dependency "curb", ">=0.6"
   gem.add_dependency "activesupport", ">= 2.3.5"
+  gem.add_dependency "i18n", "~>0.4.0"
   gem.requirements << "`gem install curb` for better HTTP performance"
 
   files = FileList["**/*"]
