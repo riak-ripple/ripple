@@ -68,7 +68,7 @@ module Ripple
 
     def load_configuration(config_file, config_keys = [:ripple])
       config_file = File.expand_path(config_file)
-      config_hash = YAML.load_file(config_file).with_indifferent_access
+      config_hash = YAML.load(ERB.new(config_file).result).with_indifferent_access
       config_keys.each {|k| config_hash = config_hash[k]}
       self.config = config_hash || {}
     rescue Errno::ENOENT
