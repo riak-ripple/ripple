@@ -101,39 +101,19 @@ describe Riak::RObject do
       end
     end
 
-    describe "when the content type is an octet-stream" do
+    describe "when the content type is application/x-ruby-marshal" do
       before :each do
-        @object.content_type = "application/octet-stream"
+        @object.content_type = "application/x-ruby-marshal"
+        @payload = Marshal.dump({"foo" => "bar"})
       end
 
-      describe "if the ruby-serialization meta field is set to Marshal" do
-        before :each do
-          @object.meta['ruby-serialization'] = "Marshal"
-          @payload = Marshal.dump({"foo" => "bar"})
-        end
 
-        it "should dump via Marshal" do
-          @object.serialize({"foo" => "bar"}).should == @payload
-        end
-
-        it "should load from Marshal" do
-          @object.deserialize(@payload).should == {"foo" => "bar"}
-        end
+      it "should dump via Marshal" do
+        @object.serialize({"foo" => "bar"}).should == @payload
       end
 
-      describe "if the ruby-serialization meta field is not set to Marshal" do
-        before :each do
-          @object.meta.delete("ruby-serialization")
-        end
-
-        it "should dump to a string" do
-          @object.serialize(2).should == "2"
-          @object.serialize("foo").should == "foo"
-        end
-
-        it "should load the body unmodified" do
-          @object.deserialize("foo").should == "foo"
-        end
+      it "should load from Marshal" do
+        @object.deserialize(@payload).should == {"foo" => "bar"}
       end
     end
   end

@@ -62,7 +62,7 @@ module Riak
         RObject.new(client[CGI.unescape(item['bucket'])], CGI.unescape(item['key'])).load_from_mapreduce(item)
       end
     end
-    
+
     # Create a new object manually
     # @param [Bucket] bucket the bucket in which the object exists
     # @param [String] key the key at which the object resides. If nil, a key will be assigned when the object is saved.
@@ -93,7 +93,7 @@ module Riak
       @data = deserialize(response[:body]) if response[:body].present?
       self
     end
-    
+
     # Load object data from a map/reduce response item.
     # This method is used by RObject::load_from_mapreduce to instantiate the necessary
     # objects.
@@ -214,12 +214,8 @@ module Riak
         ActiveSupport::JSON.encode(payload)
       when /yaml/
         YAML.dump(payload)
-      when "application/octet-stream"
-        if @meta['ruby-serialization'] == "Marshal"
-          Marshal.dump(payload)
-        else
-          payload.to_s
-        end
+      when "application/x-ruby-marshal"
+        Marshal.dump(payload)
       else
         payload.to_s
       end
@@ -238,12 +234,8 @@ module Riak
         ActiveSupport::JSON.decode(body)
       when /yaml/
         YAML.load(body)
-      when "application/octet-stream"
-        if @meta['ruby-serialization'] == "Marshal"
-          Marshal.load(body)
-        else
-          body
-        end
+      when "application/x-ruby-marshal"
+        Marshal.load(body)
       else
         body
       end
