@@ -19,7 +19,10 @@ module Ripple
 
       def initialize(*args)
         super
-        owner.class.validates reflection.name, :associated => true
+        # owner.class.validates reflection.name, :associated => true
+        # hack to prevent multiple validations
+        # todo remove this
+        owner.class.validates reflection.name, :associated => true unless owner.class.validators.map(&:attributes).flatten.include?(reflection.name.to_sym)
       end
 
       protected
