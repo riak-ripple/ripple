@@ -25,7 +25,7 @@ module Ripple
 
       # @return [Riak::Bucket] The bucket assigned to this class.
       def bucket
-        Ripple.client[bucket_name, {:keys => false}]
+        Riak::Bucket.new(Ripple.client, bucket_name)
       end
 
       # Set the bucket name for this class and its subclasses.

@@ -18,9 +18,9 @@ module Ripple
     module Persistence
       extend ActiveSupport::Concern
       extend ActiveSupport::Autoload
-      
+
       module ClassMethods
-        
+
         # Instantiates a new record, applies attributes from a block, and saves it
         def create(attrs={}, &block)
           new(attrs, &block).tap {|s| s.save}
@@ -31,7 +31,13 @@ module Ripple
         def destroy_all
           all(&:destroy)
         end
-        
+
+        attr_writer :quorums
+        alias_method "set_quorums", "quorums="
+
+        def quorums
+          @quorums ||= {}
+        end
       end
 
       module InstanceMethods
@@ -46,12 +52,27 @@ module Ripple
           @new || false
         end
 
+        # Updates a single attribute and then saves the document
+        # NOTE: THIS SKIPS VALIDATIONS! Use with caution.
+        # @return [true,false] whether the document succeeded in saving
+        def update_attribute(attribute, value)
+          send("#{attribute}=", value)
+          save(:validate => false)
+        end
+
+        # Writes new attributes and then saves the document
+        # @return [true,false] whether the document succeeded in saving
+        def update_attributes(attrs)
+          self.attributes = attrs
+          save
+        end
+
         # Saves the document in Riak.
         # @return [true,false] whether the document succeeded in saving
-        def save
+        def save(*args)
           robject.key = key if robject.key != key
           robject.data = attributes_for_persistence
-          robject.store
+          robject.store(self.class.quorums.slice(:w,:dw))
           self.key = robject.key
           @new = false
           true
@@ -70,7 +91,7 @@ module Ripple
 
         # Deletes the document from Riak and freezes this instance
         def destroy
-          robject.delete unless new?
+          robject.delete(self.class.quorums.slice(:rw)) unless new?
           freeze
           true
         rescue Riak::FailedRequest
@@ -81,8 +102,7 @@ module Ripple
         def freeze
           @attributes.freeze; super
         end
-        
-        protected
+
         attr_writer :robject
 
         def robject

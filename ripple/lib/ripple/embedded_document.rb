@@ -34,6 +34,7 @@ module Ripple
       include Ripple::Callbacks
       include Ripple::Conversion
       include Finders
+      include Ripple::Inspection
     end
 
     module ClassMethods

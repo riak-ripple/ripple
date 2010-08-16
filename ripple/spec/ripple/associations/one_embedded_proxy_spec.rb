@@ -87,6 +87,11 @@ describe Ripple::Associations::OneEmbeddedProxy do
     @gchild._root_document.should   == @parent
     @gchild._parent_document.should == @child
   end
+
+  it "should refuse assigning a document of the wrong type" do
+    lambda { @parent.child = @gchild }.should raise_error
+    lambda { @child.gchild = [] }.should raise_error
+  end
   
   describe "callbacks" do
     before :each do

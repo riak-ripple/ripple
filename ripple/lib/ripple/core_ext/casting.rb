@@ -57,13 +57,15 @@ end
 # @private
 class String
   def self.ripple_cast(value)
+    return nil if value.nil?
     value.respond_to?(:to_s) && value.to_s or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
 
 # Stand-in for true/false property types.
-module Boolean
-  def self.ripple_cast(value)
+module ::Boolean
+  extend self
+  def ripple_cast(value)
     case value
     when NilClass
       nil
@@ -83,16 +85,12 @@ end
 
 # @private
 class TrueClass
-  def self.ripple_cast(value)
-    Boolean.ripple_cast(value)
-  end
+  extend Boolean
 end
 
 # @private
 class FalseClass
-  def self.ripple_cast(value)
-    Boolean.ripple_cast(value)
-  end
+  extend Boolean
 end
 
 # @private

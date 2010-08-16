@@ -14,36 +14,21 @@
 require 'ripple'
 
 module Ripple
-  module AttributeMethods
-    module Dirty
-      extend ActiveSupport::Concern
-      include ActiveModel::Dirty
+  module Associations
+    class ManyLinkedProxy < Proxy
+      include Many
+      include Linked
 
-      # @private
-      def save(*args)
-        if result = super
-          changed_attributes.clear
-        end
-        result
+      def <<(value)
+        load_target
+        new_target = @target.concat(Array(value))
+        replace new_target
+        self
       end
 
-      # @private
-      def reload
-        super.tap do
-          changed_attributes.clear
-        end
-      end
-
-      # @private
-      def initialize(attrs={})
-        super(attrs)
-        changed_attributes.clear
-      end
-
-      private
-      def attribute=(attr_name, value)
-        attribute_will_change!(attr_name)
-        super
+      protected
+      def find_target
+        robjects.map {|robj| klass.send(:instantiate, robj) }
       end
     end
   end

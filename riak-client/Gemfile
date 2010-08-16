@@ -1,0 +1,13 @@
+# A sample Gemfile
+source :gemcutter
+
+gem 'activesupport', '~>2.3.5' # '3.0.0.rc'
+gem 'i18n'
+
+gem 'rspec', "~>2.0.0.beta.11"
+gem 'fakeweb', ">=1.2"
+gem 'rack', '>=1.0'
+gem 'curb', '>=0.6'
+gem 'yajl-ruby'
+gem 'rake'
+gem 'bundler'

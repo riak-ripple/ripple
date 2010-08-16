@@ -57,6 +57,42 @@ describe Riak::CacheStore do
       @cache = ActiveSupport::Cache.lookup_store(:riak_store, :n_value => 1)
       @cache.bucket.n_value.should == 1
     end
+
+    it "should set the bucket R value to 1 by default" do
+      @cache.bucket.r.should == 1
+    end
+
+    it "should set the bucket R default to the specified value" do
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :r => "quorum")
+      @cache.bucket.r.should == "quorum"
+    end
+
+    it "should set the bucket W value to 1 by default" do
+      @cache.bucket.w.should == 1
+    end
+
+    it "should set the bucket W default to the specified value" do
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :w => "all")
+      @cache.bucket.w.should == "all"
+    end
+
+    it "should set the bucket DW value to 0 by default" do
+      @cache.bucket.dw.should == 0
+    end
+
+    it "should set the bucket DW default to the specified value" do
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :dw => "quorum")
+      @cache.bucket.dw.should == "quorum"
+    end
+
+    it "should set the bucket RW value to quorum by default" do
+      @cache.bucket.rw.should == "quorum"
+    end
+
+    it "should set the bucket RW default to the specified value" do
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :rw => "all")
+      @cache.bucket.rw.should == "all"
+    end
   end
 
 
@@ -91,20 +127,6 @@ describe Riak::CacheStore do
 
   it "should return the default value when forcing a miss" do
     @cache.fetch('foo', :force => true){'bar'}.should == 'bar'
-  end
-
-  it "should increment an integer value in the cache" do
-    @cache.write('foo', 1, :raw => true)
-    @cache.read('foo', :raw => true).to_i.should == 1
-    @cache.increment('foo')
-    @cache.read('foo', :raw => true).to_i.should == 2
-  end
-
-  it "should decrement an integer value in the cache" do
-    @cache.write('foo', 1, :raw => true)
-    @cache.read('foo', :raw => true).to_i.should == 1
-    @cache.decrement('foo')
-    @cache.read('foo', :raw => true).to_i.should == 0
   end
 
   it "should detect if a value exists in the cache" do

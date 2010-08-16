@@ -39,12 +39,12 @@ module Riak
 
     # @return [String] bucket_name, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
     def bucket
-      URI.unescape($1) if url =~ %r{^/[^/]+/([^/]+)/?}
+      CGI.unescape($1) if url =~ %r{^/[^/]+/([^/]+)/?}
     end
     
     # @return [String] key, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
     def key
-      URI.unescape($1) if url =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
+      CGI.unescape($1) if url =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
     end
 
     def inspect; to_s; end

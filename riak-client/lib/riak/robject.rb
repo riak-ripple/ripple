@@ -38,7 +38,7 @@ module Riak
     # @return [Object] the data stored in Riak at this object's key. Varies in format by content-type, defaulting to String from the response body.
     attr_accessor :data
 
-    # @return [Set<Link>] an Set of {Riak::Link} objects for relationships between this object and other resources
+    # @return [Set<Link>] a Set of {Riak::Link} objects for relationships between this object and other resources
     attr_accessor :links
 
     # @return [String] the ETag header from the most recent HTTP response, useful for caching and reloading
@@ -49,6 +49,19 @@ module Riak
 
     # @return [Hash] a hash of any X-Riak-Meta-* headers that were in the HTTP response, keyed on the trailing portion
     attr_accessor :meta
+
+    # Loads a list of RObjects that were emitted from a MapReduce
+    # query.
+    # @param [Client] client A Riak::Client with which the results will be
+    # associated
+    # @param [Array<Hash>] response A list of results a MapReduce job. Each
+    # entry should contain these keys: bucket, key, vclock, values
+    # @return [Array<RObject>] An array of RObject instances
+    def self.load_from_mapreduce(client, response)
+      response.map do |item|
+        RObject.new(client[CGI.unescape(item['bucket'])], CGI.unescape(item['key'])).load_from_mapreduce(item)
+      end
+    end
 
     # Create a new object manually
     # @param [Bucket] bucket the bucket in which the object exists
@@ -78,6 +91,28 @@ module Riak
       @conflict = response[:code].try(:to_i) == 300 && content_type =~ /multipart\/mixed/
       @siblings = nil
       @data = deserialize(response[:body]) if response[:body].present?
+      self
+    end
+
+    # Load object data from a map/reduce response item.
+    # This method is used by RObject::load_from_mapreduce to instantiate the necessary
+    # objects.
+    # @param [Hash] response a response from {Riak::MapReduce}
+    # @return [RObject] self
+    def load_from_mapreduce(response)
+      self.vclock = response['vclock']
+      if response['values'].size == 1
+        value = response['values'].first
+        load_map_reduce_value(value)
+      else
+        @conflict = true
+        @siblings = response['values'].map do |v|
+          RObject.new(self.bucket, self.key) do |robj|
+            robj.vclock = self.vclock
+            robj.load_map_reduce_value(v)
+          end
+        end
+      end
       self
     end
 
@@ -141,9 +176,9 @@ module Riak
 
     # Delete the object from Riak and freeze this instance.  Will work whether or not the object actually
     # exists in the Riak database.
-    def delete
+    def delete(options={})
       return if key.blank?
-      @bucket.delete(key)
+      @bucket.delete(key, options)
       freeze
     end
 
@@ -179,12 +214,8 @@ module Riak
         ActiveSupport::JSON.encode(payload)
       when /yaml/
         YAML.dump(payload)
-      when "application/octet-stream"
-        if @meta['ruby-serialization'] == "Marshal"
-          Marshal.dump(payload)
-        else
-          payload.to_s
-        end
+      when "application/x-ruby-marshal"
+        Marshal.dump(payload)
       else
         payload.to_s
       end
@@ -203,12 +234,8 @@ module Riak
         ActiveSupport::JSON.decode(body)
       when /yaml/
         YAML.load(body)
-      when "application/octet-stream"
-        if @meta['ruby-serialization'] == "Marshal"
-          Marshal.load(body)
-        else
-          body
-        end
+      when "application/x-ruby-marshal"
+        Marshal.load(body)
       else
         body
       end
@@ -246,12 +273,37 @@ module Riak
       @bucket.client.http.path(*segments).to_s
     end
 
+    protected
+    def load_map_reduce_value(hash)
+      metadata = hash['metadata']
+      extract_if_present(metadata, 'X-Riak-VTag', :etag)
+      extract_if_present(metadata, 'content-type', :content_type)
+      extract_if_present(metadata, 'X-Riak-Last-Modified', :last_modified) { |v| Time.httpdate( v ) }
+      extract_if_present(metadata, 'Links', :links) do |links|
+        Set.new( links.map { |l| Link.new("#{@bucket.client.prefix}#{l[0]}/#{l[1]}", l[2]) } )
+      end
+      extract_if_present(metadata, 'X-Riak-Meta', :meta) do |meta|
+        Hash[
+             meta.map do |k,v|
+               [k.sub(%r{^x-riak-meta-}i, ''), [v]]
+             end
+            ]
+      end
+      extract_if_present(hash, 'data', :data) { |v| deserialize(v) }
+    end
+
     private
-    def extract_header(response, name, attribute=nil)
-      if response[:headers][name].present?
-        value = response[:headers][name].try(:first)
-        value = yield value if block_given?
-        send("#{attribute}=", value) if attribute
+    def extract_if_present(hash, key, attribute=nil)
+      if hash[key].present?
+        attribute ||= key
+        value = block_given? ? yield(hash[key]) : hash[key]
+        send("#{attribute}=", value)
+      end
+    end
+
+    def extract_header(response, name, attribute=nil, &block)
+      extract_if_present(response[:headers], name, attribute) do |value|
+        block ? block.call(value[0]) : value[0]
       end
     end
 

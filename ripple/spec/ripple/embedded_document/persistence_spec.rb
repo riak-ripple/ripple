@@ -71,4 +71,16 @@ describe Ripple::EmbeddedDocument::Persistence do
     @root.addresses << @addr
     @root.attributes_for_persistence.should == {'_type' => 'User', 'addresses' => [{'_type' => 'Address', 'street' => nil}]}
   end
+
+  it "should modify its attributes and save" do
+    @addr.should_receive(:save).and_return(true)
+    @addr.update_attributes(:street => "4 Folsom Ave")
+    @addr.street.should == "4 Folsom Ave"
+  end
+
+  it "should update a single attribute and save without validations" do
+    @addr.should_receive(:save).with(:validate => false).and_return(true)
+    @addr.update_attribute(:street, "4 Folsom Ave")
+    @addr.street.should == "4 Folsom Ave"
+  end
 end

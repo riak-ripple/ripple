@@ -21,12 +21,14 @@ module Ripple
 
       def <<(docs)
         load_target
+        @reflection.verify_type!(Array(docs))
         assign_references(docs)
         @target += Array(docs)
         self
       end
 
       def replace(docs)
+        @reflection.verify_type!(docs)
         @_docs = docs.map { |doc| attrs = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc }
         assign_references(docs)
         reset

@@ -26,10 +26,6 @@ module Riak
     # @return [String] the bucket name
     attr_reader :name
 
-    # @return [Hash] Internal Riak bucket properties.
-    attr_reader :props
-    alias_attribute :properties, :props
-
     # Create a Riak bucket manually.
     # @param [Client] client the {Riak::Client} for this bucket
     # @param [String] name the name of the bucket
@@ -49,7 +45,7 @@ module Riak
         raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], t("loading_bucket", :name => name))
       end
       payload = ActiveSupport::JSON.decode(response[:body])
-      @keys = payload['keys'].map {|k| URI.unescape(k) }  if payload['keys']
+      @keys = payload['keys'].map {|k| CGI.unescape(k) }  if payload['keys']
       @props = payload['props'] if payload['props']
       self
     end
@@ -66,26 +62,48 @@ module Riak
       if block_given?
         @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => 'stream'}, {}) do |chunk|
           obj = ActiveSupport::JSON.decode(chunk) rescue {}
-          yield obj['keys'].map {|k| URI.unescape(k) } if obj['keys']
+          yield obj['keys'].map {|k| CGI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
-        response = @client.http.get(200, @client.prefix, escape(name), {:props => false}, {})
+        response = @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => true}, {})
         load(response)
       end
       @keys
     end
 
+
     # Sets internal properties on the bucket
     # Note: this results in a request to the Riak server!
     # @param [Hash] properties new properties for the bucket
-    # @return [Hash] the properties that were accepted
-    # @raise [FailedRequest] if the new properties were not accepted by the Riak server
+    # @option properties [Fixnum] :n_val (3) The N value (replication factor)
+    # @option properties [true,false] :allow_mult (false) Whether to permit object siblings
+    # @option properties [true,false] :last_write_wins (false) Whether to ignore vclocks
+    # @option properties [Array<Hash>] :precommit ([]) precommit hooks
+    # @option properties [Array<Hash>] :postcommit ([])postcommit hooks
+    # @option properties [Fixnum,String] :r ("quorum") read quorum (numeric or
+    # symbolic)
+    # @option properties [Fixnum,String] :w ("quorum") write quorum (numeric or
+    # symbolic)
+    # @option properties [Fixnum,String] :dw ("quorum") durable write quorum
+    # (numeric or symbolic)
+    # @option properties [Fixnum,String] :rw ("quorum") delete quorum (numeric or
+    # symbolic)
+    # @return [Hash] the merged bucket properties
+    # @raise [FailedRequest] if the new properties were not accepted by the Riakserver
+    # @see #n_value, #allow_mult, #r, #w, #dw, #rw
     def props=(properties)
       raise ArgumentError, t("hash_type", :hash => properties.inspect) unless Hash === properties
       body = {'props' => properties}.to_json
       @client.http.put(204, @client.prefix, escape(name), body, {"Content-Type" => "application/json"})
-      @props = properties
+      @props.merge!(properties)
     end
+
+    # @return [Hash] Internal Riak bucket properties.
+    # @see #props=
+    def props
+      @props
+    end
+    alias_attribute :properties, :props
 
     # Retrieve an object from within the bucket.
     # @param [String] key the key of the object to retrieve
@@ -168,9 +186,22 @@ module Riak
       value
     end
 
-    # @return [String] a representation suitable for IRB and debugging output
-    def inspect
-      "#<Riak::Bucket #{client.http.path(client.prefix, escape(name)).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
+    [:r,:w,:dw,:rw].each do |q|
+      class_eval <<-CODE
+        def #{q}
+          props["#{q}"]
+        end
+
+        def #{q}=(value)
+          self.props = {"#{q}" => value}
+          value
+        end
+        CODE
+      end
+
+      # @return [String] a representation suitable for IRB and debugging output
+      def inspect
+        "#<Riak::Bucket #{client.http.path(client.prefix, escape(name)).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
+      end
     end
   end
-end

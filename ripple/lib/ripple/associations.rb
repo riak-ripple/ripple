@@ -22,9 +22,12 @@ module Ripple
     autoload :One
     autoload :Many
     autoload :Embedded
+    autoload :Linked
     autoload :Instantiators
     autoload :OneEmbeddedProxy
     autoload :ManyEmbeddedProxy
+    autoload :OneLinkedProxy
+    autoload :ManyLinkedProxy
 
     module ClassMethods
       # @private
@@ -66,7 +69,7 @@ module Ripple
           value
         end
 
-        if association.one?
+        unless association.many?
           define_method("#{name}?") do
             get_proxy(association).present?
           end
@@ -98,6 +101,7 @@ module Ripple
   end
 
   class Association
+    include Ripple::Translation
     attr_reader :type, :name, :options
 
     # association options :using, :class_name, :class, :extend,
@@ -107,6 +111,7 @@ module Ripple
       @type, @name, @options = type, name, options.to_options
     end
 
+    # @return String The class name of the associated object(s)
     def class_name
       @class_name ||= case
                       when @options[:class_name]
@@ -120,38 +125,100 @@ module Ripple
                       end
     end
 
+    # @return [Class] The class of the associated object(s)
     def klass
       @klass ||= options[:class] || class_name.constantize
     end
 
+    # @return [true,false] Is the cardinality of the association > 1
     def many?
       @type == :many
     end
 
+    # @return [true,false] Is the cardinality of the association == 1
     def one?
       @type == :one
     end
 
+    # @return [true,false] Is the associated class an EmbeddedDocument
     def embeddable?
       klass.embeddable?
     end
 
+    # TODO: Polymorphic not supported
+    # @return [true,false] Does the association support more than one associated class
     def polymorphic?
       false
     end
 
+    # @return [true,false] Does the association use links
+    def linked?
+      using == :linked
+    end
+
+    # @return [String] the instance variable in the owner where the association will be stored
     def ivar
       "@_#{name}"
     end
 
+    # @return [Class] the association proxy class
     def proxy_class
       @proxy_class ||= proxy_class_name.constantize
     end
 
+    # @return [String] the class name of the association proxy
     def proxy_class_name
-      @using   ||= options[:using] || (embeddable? ? :embedded : :link)
-      klass_name = (many? ? 'Many' : 'One') + @using.to_s.camelize + ('Polymorphic' if polymorphic?).to_s + 'Proxy'
+      klass_name = (many? ? 'Many' : 'One') + using.to_s.camelize + ('Polymorphic' if polymorphic?).to_s + 'Proxy'
       "Ripple::Associations::#{klass_name}"
+    end
+
+    # @return [Proc] a filter proc to be used with Enumerable#select for collecting links that belong to this association (only when #linked? is true)
+    def link_filter
+      linked? ? lambda {|link| link.tag == link_tag } : lambda {|_| false }
+    end
+
+    # @return [String,nil] when #linked? is true, the tag for outgoing links
+    def link_tag
+      linked? ? Array(link_spec).first.tag : nil
+    end
+
+    # @return [Riak::WalkSpec] when #linked? is true, a specification for which links to follow to retrieve the associated documents
+    def link_spec
+      # TODO: support transitive linked associations
+      if linked?
+        tag = name.to_s
+        bucket = polymorphic? ? '_' : klass.bucket_name
+        Riak::WalkSpec.new(:tag => tag, :bucket => bucket)
+      else
+        nil
+      end
+    end
+
+    # @return [Symbol] which method is used for representing the association - currently only supports :embedded and :linked
+    def using
+      @using ||= options[:using] || (embeddable? ? :embedded : :linked)
+    end
+
+    # @raise [ArgumentError] if the value does not match the class of the association
+    def verify_type!(value)
+      unless type_matches?(value)
+        raise ArgumentError.new(t('invalid_association_value',
+                                  :name => name,
+                                  :owner => owner.inspect,
+                                  :klass => polymorphic? ? "<polymorphic>" : klass.name,
+                                  :value => value))
+      end
+    end
+
+    def type_matches?(value)
+      case
+      when polymorphic?
+        one? || Array === value
+      when many?
+        Array === value && value.all? {|d| (embeddable? && Hash === d) || klass === d }
+      when one?
+        (embeddable? && Hash === value) || klass === value
+      end
     end
   end
 end

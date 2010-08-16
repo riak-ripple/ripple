@@ -21,7 +21,7 @@ describe Riak::Bucket do
 
   def do_load(overrides={})
     @bucket.load({
-                   :body => '{"props":{"name":"foo","allow_mult":false,"big_vclock":50,"chash_keyfun":{"mod":"riak_util","fun":"chash_std_keyfun"},"linkfun":{"mod":"jiak_object","fun":"mapreduce_linkfun"},"n_val":3,"old_vclock":86400,"small_vclock":10,"young_vclock":20},"keys":["bar"]}',
+                   :body => '{"props":{"name":"foo","n_val":3,"allow_mult":false,"last_write_wins":false,"precommit":[],"postcommit":[],"chash_keyfun":{"mod":"riak_core_util","fun":"chash_std_keyfun"},"linkfun":{"mod":"riak_kv_wm_link_walker","fun":"mapreduce_linkfun"},"old_vclock":86400,"young_vclock":20,"big_vclock":50,"small_vclock":10,"r":"quorum","w":"quorum","dw":"quorum","rw":"quorum"},"keys":["bar"]}',
                    :headers => {
                      "vary" => ["Accept-Encoding"],
                      "server" => ["MochiWeb/1.1 WebMachine/1.5.1 (hack the charles gibson)"],
@@ -53,7 +53,7 @@ describe Riak::Bucket do
   describe "when loading data from an HTTP response" do
     it "should load the bucket properties from the response body" do
       do_load
-      @bucket.props.should == {"name"=>"foo","allow_mult" => false,"big_vclock" => 50,"chash_keyfun" => {"mod" =>"riak_util","fun"=>"chash_std_keyfun"},"linkfun"=>{"mod"=>"jiak_object","fun"=>"mapreduce_linkfun"},"n_val"=>3,"old_vclock"=>86400,"small_vclock"=>10,"young_vclock"=>20}
+      @bucket.props.should == {"name"=>"foo", "n_val"=>3, "allow_mult"=>false, "last_write_wins"=>false, "precommit"=>[], "postcommit"=>[], "chash_keyfun"=>{"mod"=>"riak_core_util", "fun"=>"chash_std_keyfun"}, "linkfun"=>{"mod"=>"riak_kv_wm_link_walker", "fun"=>"mapreduce_linkfun"}, "old_vclock"=>86400, "young_vclock"=>20, "big_vclock"=>50, "small_vclock"=>10, "r"=>"quorum", "w"=>"quorum", "dw"=>"quorum", "rw"=>"quorum"}
     end
 
     it "should load the keys from the response body" do
@@ -80,12 +80,12 @@ describe Riak::Bucket do
     end
 
     it "should load the keys if not present" do
-      @http.should_receive(:get).with(200, "/riak/", "foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @http.should_receive(:get).with(200, "/riak/", "foo", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       @bucket.keys.should == ["bar"]
     end
 
     it "should allow reloading of the keys" do
-      @http.should_receive(:get).with(200, "/riak/","foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @http.should_receive(:get).with(200, "/riak/","foo", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       do_load # Ensures they're already loaded
       @bucket.keys(:reload => true).should == ["bar"]
     end
@@ -101,13 +101,13 @@ describe Riak::Bucket do
     end
 
     it "should unescape key names" do
-      @http.should_receive(:get).with(200, "/riak/","foo", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
+      @http.should_receive(:get).with(200, "/riak/","foo", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
       @bucket.keys.should == ["bar baz"]
     end
 
     it "should escape the bucket name" do
       @bucket.instance_variable_set :@name, "unescaped "
-      @http.should_receive(:get).with(200, "/riak/","unescaped%20", {:props => false}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
+      @http.should_receive(:get).with(200, "/riak/","unescaped%20", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       @bucket.keys.should == ["bar"]
     end
   end
@@ -227,6 +227,24 @@ describe Riak::Bucket do
       @bucket.n_value = 1
     end
   end
+
+  [:r, :w, :dw, :rw].each do |q|
+    describe "get/set the default #{q} quorum" do
+      before :each do
+        do_load
+      end
+
+      it "should extract the default #{q} quorum" do
+        @bucket.send(q).should == "quorum"
+      end
+
+      it "should set the #{q} quorum" do
+        @bucket.should_receive(:props=).with(hash_including("#{q}" => 1))
+        @bucket.send("#{q}=",1)
+      end
+    end
+  end
+
 
   describe "checking whether a key exists" do
     it "should return true if the object does exist" do

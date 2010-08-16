@@ -16,6 +16,7 @@ require 'riak'
 require 'active_support/all'
 require 'active_model'
 require 'ripple/i18n'
+require 'ripple/core_ext'
 
 # Contains the classes and modules related to the ODM built on top of
 # the basic Riak client.
@@ -41,6 +42,7 @@ module Ripple
   autoload :PropertyTypeMismatch
 
   # Utilities
+  autoload :Inspection
   autoload :Translation
 
   class << self
@@ -57,16 +59,16 @@ module Ripple
 
     def config=(hash)
       self.client = nil
-      Thread.current[:config] = hash.symbolize_keys
+      @config = hash.symbolize_keys
     end
-    
+
     def config
-      Thread.current[:config] ||= {}
+      @config ||= {}
     end
 
     def load_configuration(config_file, config_keys = [:ripple])
       config_file = File.expand_path(config_file)
-      config_hash = YAML.load_file(config_file).with_indifferent_access
+      config_hash = YAML.load(ERB.new(File.read(config_file)).result).with_indifferent_access
       config_keys.each {|k| config_hash = config_hash[k]}
       self.config = config_hash || {}
     rescue Errno::ENOENT
