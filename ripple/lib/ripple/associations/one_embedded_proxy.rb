@@ -20,7 +20,7 @@ module Ripple
       include Embedded
 
       def replace(doc)
-        @reflection.verify_type!(doc)
+        @reflection.verify_type!(doc, @owner)
         @_doc = doc.respond_to?(:attributes_for_persistence) ? doc.attributes_for_persistence : doc
         assign_references(doc)
         reset
