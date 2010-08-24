@@ -11,10 +11,10 @@ gemspec = Gem::Specification.new do |gem|
   gem.email = "seancribbs@gmail.com"
   gem.homepage = "http://seancribbs.github.com/ripple"
   gem.authors = ["Sean Cribbs"]
-  gem.add_development_dependency "rspec", "~>2.0.0.beta.11"
+  gem.add_development_dependency "rspec", "~>2.0.0.beta.18"
   gem.add_dependency "riak-client", version
-  gem.add_dependency "activesupport", "3.0.0.rc"
-  gem.add_dependency "activemodel", "3.0.0.rc"
+  gem.add_dependency "activesupport", "3.0.0.rc2"
+  gem.add_dependency "activemodel", "3.0.0.rc2"
 
   files = FileList["**/*"]
   files.exclude /\.DS_Store/
@@ -49,7 +49,7 @@ end
 
 desc %{Release the gem to RubyGems.org}
 task :release => :gem do
-  "gem push pkg/#{gemspec.name}-#{gemspec.version}.gem"
+  system "gem push pkg/#{gemspec.name}-#{gemspec.version}.gem"
 end
 
 require 'rspec/core'

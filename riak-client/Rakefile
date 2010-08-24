@@ -49,7 +49,7 @@ end
 
 desc %{Release the gem to RubyGems.org}
 task :release => :gem do
-  "gem push pkg/#{gemspec.name}-#{gemspec.version}.gem"
+  system "gem push pkg/#{gemspec.name}-#{gemspec.version}.gem"
 end
 
 require 'rspec/core'
