@@ -206,7 +206,7 @@ module Ripple
                                   :name => name,
                                   :owner => owner.inspect,
                                   :klass => polymorphic? ? "<polymorphic>" : klass.name,
-                                  :value => value))
+                                  :value => value.inspect))
       end
     end
 
@@ -217,7 +217,7 @@ module Ripple
       when many?
         Array === value && value.all? {|d| (embeddable? && Hash === d) || klass === d }
       when one?
-        (embeddable? && Hash === value) || klass === value
+        value.nil? || (embeddable? && Hash === value) || klass === value
       end
     end
   end
