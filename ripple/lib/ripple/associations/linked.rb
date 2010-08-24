@@ -17,7 +17,7 @@ module Ripple
   module Associations
     module Linked
       def replace(value)
-        @reflection.verify_type!(value)
+        @reflection.verify_type!(value, @owner)
         @owner.robject.links -= links
         Array(value).compact.each do |doc|
           doc.save if doc.new?

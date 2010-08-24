@@ -200,7 +200,7 @@ module Ripple
     end
 
     # @raise [ArgumentError] if the value does not match the class of the association
-    def verify_type!(value)
+    def verify_type!(value, owner)
       unless type_matches?(value)
         raise ArgumentError.new(t('invalid_association_value',
                                   :name => name,
