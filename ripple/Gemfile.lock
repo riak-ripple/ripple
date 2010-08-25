@@ -1,5 +1,5 @@
 PATH
-  remote: /Users/sean/Development/ripple/riak-client
+  remote: /Users/adam/Studio/github/ripple/riak-client
   specs:
     riak-client (0.8.0.beta)
       activesupport (>= 2.3.5)
@@ -38,6 +38,6 @@ DEPENDENCIES
   curb (> 0.6)
   rake
   riak-client!
-  rspec (~> 2.0.0.beta.18)
+  rspec (= 2.0.0.beta.20)
   tzinfo
   yajl-ruby
