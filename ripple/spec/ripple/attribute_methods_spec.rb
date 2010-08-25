@@ -171,4 +171,9 @@ describe Ripple::AttributeMethods do
     @widget = Widget.new { |w| w.key = 'some-key' }
     @widget.key.should == 'some-key'
   end
+  
+  it "should raise an argument error when assigning a non hash to attributes" do
+    @widget = Widget.new
+    lambda { @widget.attributes = nil }.should raise_error(ArgumentError)
+  end
 end
