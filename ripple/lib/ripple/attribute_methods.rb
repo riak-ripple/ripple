@@ -17,6 +17,7 @@ module Ripple
   # Makes ActiveRecord-like attribute accessors based on your
   # {Document}'s properties.
   module AttributeMethods
+    include Translation
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
     include ActiveModel::AttributeMethods
