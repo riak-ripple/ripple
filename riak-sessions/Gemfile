@@ -2,7 +2,6 @@ source "http://rubygems.org/"
 
 gem 'bundler'
 gem 'riak-client', :path => "../riak-client"
-gem 'ripple', :path => "../ripple"
 gem 'yajl-ruby'
 gem 'rack'
 gem 'curb', '>0.6'

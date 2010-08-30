@@ -19,7 +19,6 @@ module Riak
 end
 
 if defined?(ActionDispatch)
-  require 'ripple'
   module Ripple
     autoload :SessionStore, "ripple/session_store"
   end

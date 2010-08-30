@@ -15,14 +15,13 @@ begin
   require 'action_dispatch/middleware/session/abstract_store'
 rescue LoadError, NameError
   # TODO i18n this message
-  $stderr.puts "Ripple::SessionStore requires ActionPack >= 3.0.0.rc2"
+  $stderr.puts "Ripple::SessionStore requires ActionPack >= 3.0.0"
   exit 1
 end
 
 module Ripple
   class SessionStore < ActionDispatch::Session::AbstractStore
     def initialize(app, options={})
-      require 'ripple'
       super
       @default_options = {
         :bucket => "_sessions",
