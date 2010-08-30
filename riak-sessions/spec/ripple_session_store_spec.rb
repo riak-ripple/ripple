@@ -11,7 +11,7 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require File.expand_path("../../spec_helper", __FILE__)
+require File.expand_path("../spec_helper", __FILE__)
 require 'ripple/session_store'
 
 describe "Ripple::SessionStore" do

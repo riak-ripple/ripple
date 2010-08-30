@@ -75,10 +75,6 @@ module Riak
         robject.data = {}
         robject.store
       end
-      # if robject.meta['expires-at'] && Time.parse(robject.meta['expires-at']) > Time.now.utc
-      #   robject.delete
-      #   return get_session(env, nil)
-      # end
       [session_id, robject.data]
     end
 
@@ -90,9 +86,6 @@ module Riak
       end
       robject = bucket.get_or_new(session_id)
       robject.data = session
-      # if options[:expire_after]
-      #   robject.meta['expires-at'] = (Time.now.utc + options[:expire_after]).to_s
-      # end
       robject.store
       session_id
     rescue Riak::FailedRequest
