@@ -1,7 +1,7 @@
 PATH
   remote: /Users/sean/Development/ripple/riak-client
   specs:
-    riak-client (0.8.0.beta)
+    riak-client (0.8.0.beta2)
       activesupport (>= 2.3.5)
       i18n (~> 0.4.0)
 
