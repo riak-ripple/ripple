@@ -29,7 +29,7 @@ module Riak
       private
       def perform(method, uri, headers, expect, data=nil)
         # Setup
-        curl.headers = headers
+        curl.headers = create_request_headers(headers)
         curl.url = uri.to_s
         response_headers.initialize_http_header(nil)
         if block_given?
@@ -47,7 +47,8 @@ module Riak
         # Perform
         case method
         when :put, :post
-          curl.send("http_#{method}", data)
+          curl.post_body = data
+          curl.http("#{method}".upcase)
         else
           curl.send("http_#{method}")
         end
@@ -76,6 +77,16 @@ module Riak
 
       def response_headers
         Thread.current[:response_headers] ||= Riak::Util::Headers.new
+      end
+
+      def create_request_headers(hash)
+        h = Riak::Util::Headers.new
+        hash.each {|k,v| h.add_field(k,v) }
+        [].tap do |arr|
+          h.each_capitalized do |k,v|
+            arr << "#{k}: #{v}"
+          end
+        end
       end
     end
   end
