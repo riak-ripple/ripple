@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.files = ["lib/riak/session_store.rb", "lib/riak-sessions.rb", "lib/ripple/session_store.rb", "Rakefile", "spec/fixtures/session_autoload_test/session_autoload_test/foo.rb", "spec/riak_session_store_spec.rb", "spec/ripple_session_store_spec.rb", "spec/spec_helper.rb", "spec/support/ripple_session_support.rb"]
   s.homepage = %q{http://seancribbs.github.com/ripple}
   s.require_paths = ["lib"]
-  s.requirements = ["actiondispatch 3.0.0.rc for the Rails-based session store"]
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{riak-sessions is a session store backed by Riak, the distributed database by Basho.}
   s.test_files = ["spec/fixtures/session_autoload_test/session_autoload_test/foo.rb", "spec/riak_session_store_spec.rb", "spec/ripple_session_store_spec.rb", "spec/spec_helper.rb", "spec/support/ripple_session_support.rb"]
@@ -25,29 +24,29 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, ["~> 2.0.0.beta.18"])
       s.add_development_dependency(%q<rspec-rails>, ["~> 2.0.0.beta.18"])
       s.add_development_dependency(%q<yajl-ruby>, [">= 0"])
-      s.add_development_dependency(%q<actiondispatch>, ["= 3.0.0.rc"])
+      s.add_development_dependency(%q<rails>, ["~> 3.0.0"])
       s.add_development_dependency(%q<curb>, ["> 0.6"])
       s.add_development_dependency(%q<rake>, [">= 0"])
-      s.add_runtime_dependency(%q<riak-client>, ["= 0.8.0.beta2"])
+      s.add_runtime_dependency(%q<riak-client>, ["~> 0.8.0.beta2"])
       s.add_runtime_dependency(%q<rack>, [">= 1.0"])
     else
       s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.18"])
       s.add_dependency(%q<rspec-rails>, ["~> 2.0.0.beta.18"])
       s.add_dependency(%q<yajl-ruby>, [">= 0"])
-      s.add_dependency(%q<actiondispatch>, ["= 3.0.0.rc"])
+      s.add_dependency(%q<rails>, ["~> 3.0.0"])
       s.add_dependency(%q<curb>, ["> 0.6"])
       s.add_dependency(%q<rake>, [">= 0"])
-      s.add_dependency(%q<riak-client>, ["= 0.8.0.beta2"])
+      s.add_dependency(%q<riak-client>, ["~> 0.8.0.beta2"])
       s.add_dependency(%q<rack>, [">= 1.0"])
     end
   else
     s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.18"])
     s.add_dependency(%q<rspec-rails>, ["~> 2.0.0.beta.18"])
     s.add_dependency(%q<yajl-ruby>, [">= 0"])
-    s.add_dependency(%q<actiondispatch>, ["= 3.0.0.rc"])
+    s.add_dependency(%q<rails>, ["~> 3.0.0"])
     s.add_dependency(%q<curb>, ["> 0.6"])
     s.add_dependency(%q<rake>, [">= 0"])
-    s.add_dependency(%q<riak-client>, ["= 0.8.0.beta2"])
+    s.add_dependency(%q<riak-client>, ["~> 0.8.0.beta2"])
     s.add_dependency(%q<rack>, [">= 1.0"])
   end
 end
