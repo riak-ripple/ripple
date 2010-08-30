@@ -56,7 +56,7 @@ module Ripple
         #   @return [Array<Document>] a list of found documents, including nil for missing documents
         def find(*args)
           args.flatten!
-          return nil if args.empty?
+          return nil if args.empty? || args.all?(&:blank?)
           return find_one(args.first) if args.one?
           args.map {|key| find_one(key) }
         end

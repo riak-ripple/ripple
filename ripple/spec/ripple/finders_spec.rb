@@ -25,10 +25,15 @@ describe Ripple::Document::Finders do
     Box.stub!(:bucket).and_return(@bucket)
   end
 
-  it "should return an empty array if no keys are passed to find" do
+  it "should return nil if no keys are passed to find" do
     Box.find().should be_nil
   end
 
+  it "should return nil if no valid keys are passed to find" do
+    Box.find(nil).should be_nil
+    Box.find("").should be_nil
+  end
+  
   it "should raise Ripple::DocumentNotFound if an empty array is passed to find!" do
     lambda { Box.find!() }.should raise_error(Ripple::DocumentNotFound, "Couldn't find document without a key")
   end
