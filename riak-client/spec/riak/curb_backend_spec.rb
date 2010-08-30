@@ -66,7 +66,7 @@ else
       lambda do
         setup_http_mock(:post, @backend.path("/riak/","foo").to_s, :body => "ok")
         @backend.post(200, "/riak/", "foo", file, {})
-      end
+      end.should_not raise_error
     end
 
     after :each do
