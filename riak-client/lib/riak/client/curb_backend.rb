@@ -46,9 +46,15 @@ module Riak
         end
         # Perform
         case method
-        when :put, :post
-          curl.post_body = data
-          curl.http("#{method}".upcase)
+        when :post
+          data = data.read if data.respond_to?(:read)
+          curl.http_post(data)
+        when :put
+          # Hacks around limitations in curb's PUT semantics
+          _headers, curl.headers = curl.headers, {}
+          curl.put_data = data
+          curl.headers = create_request_headers(curl.headers) + _headers
+          curl.http("PUT")
         else
           curl.send("http_#{method}")
         end

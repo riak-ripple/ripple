@@ -57,6 +57,18 @@ else
       end.should_not raise_error
     end
 
+    it "should support IO objects as the request body" do
+      file = File.open(File.expand_path("../../fixtures/cat.jpg", __FILE__))
+      lambda do
+        setup_http_mock(:put, @backend.path("/riak/","foo").to_s, :body => "ok")
+        @backend.put(200, "/riak/", "foo", file,{})
+      end.should_not raise_error
+      lambda do
+        setup_http_mock(:post, @backend.path("/riak/","foo").to_s, :body => "ok")
+        @backend.post(200, "/riak/", "foo", file, {})
+      end
+    end
+
     after :each do
       $server.detach
       Thread.current[:curl_easy_handle] = nil
