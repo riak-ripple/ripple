@@ -17,6 +17,7 @@ module Riak
     attr_accessor :client
 
     def initialize(options = {})
+      super
       @bucket_name = options.delete(:bucket) || '_cache'
       @n_value = options.delete(:n_value) || 2
       @r = options.delete(:r) || 1

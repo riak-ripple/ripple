@@ -8,11 +8,11 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    activemodel (3.0.0.rc2)
-      activesupport (= 3.0.0.rc2)
+    activemodel (3.0.0)
+      activesupport (= 3.0.0)
       builder (~> 2.1.2)
       i18n (~> 0.4.1)
-    activesupport (3.0.0.rc2)
+    activesupport (3.0.0)
     builder (2.1.2)
     curb (0.7.8)
     diff-lcs (1.1.2)
@@ -33,7 +33,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activemodel (= 3.0.0.rc2)
+  activemodel (= 3.0.0)
   bundler
   curb (> 0.6)
   rake
