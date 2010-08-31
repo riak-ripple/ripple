@@ -11,25 +11,33 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require File.expand_path("../../spec_helper", __FILE__)
+require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
-describe Ripple::Conversion do
+describe Ripple::Document::Key do
   require 'support/models/box'
-
-  before :each do
-    @box = Box.new { |a| a.key = 'some-key' }
-    @box.stub!(:new?).and_return(false)
+  before do
+    @box = Box.new
+  end
+  
+  it "should define key getter and setter" do
+    @box.should respond_to(:key)
+    @box.should respond_to(:key=)
   end
 
-  it "should return the key as an array for to_key" do
-    @box.to_key.should == ['some-key']
+  it "should stringify the assigned key" do
+    @box.key = 2
+    @box.key.should == "2"
   end
 
-  it "should be able to be converted to a param" do
-    @box.to_param.should == 'some-key'
-  end
-
-  it "should be able to be converted to a model" do
-    @box.to_model.should == @box
-  end
+  it "should use a property as the key" do
+    class ShapedBox < Box
+      key_on :shape
+    end
+    @box = ShapedBox.new
+    @box.key = "square"
+    @box.key.should == "square"
+    @box.shape.should == "square"
+    @box.shape = "oblong"
+    @box.key.should == "oblong"
+  end  
 end

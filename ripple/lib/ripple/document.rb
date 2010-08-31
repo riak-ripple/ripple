@@ -44,11 +44,13 @@ module Ripple
 
     autoload :BucketAccess
     autoload :Finders
+    autoload :Key
     autoload :Persistence
 
     included do
       extend ActiveModel::Naming
       extend BucketAccess
+      include Ripple::Document::Key
       include Ripple::Document::Persistence
       extend Ripple::Properties
       include Ripple::AttributeMethods
