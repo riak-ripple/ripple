@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>File: RELEASE_NOTES</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html" title="Index">Index</a> &raquo; 
+    <span class="title">File: RELEASE_NOTES</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><div id='filecontents'><h1>Riak-Client/Ripple Release Notes</h1>
+<h2>0.8.0 Feature Release &#8211; 2010-08-31</h2>
+<p>The 0.8.0 release is packed full of new features and bugfixes. Of particular note are:</p>
+<ul>
+	<li>Rails 3 final support</li>
+	<li>Session stores</li>
+	<li>Linked associations</li>
+	<li>Riak 0.12 support</li>
+</ul>
+<p>Full notes:</p>
+<ul>
+	<li>Ripple::Document classes can define their desired quorum parameters.</li>
+	<li>ripple and riak-sessions use Rails 3 final. riak-client is still compatible with active_support &gt;= 2.3.5.</li>
+	<li>Keys are not loaded by default when requesting a Riak::Bucket. This matches the default for Riak 0.12.</li>
+	<li>Ripple::Document now supports update_attributes and update_attribute.</li>
+	<li>Inspection output has been improved for Ripple documents.</li>
+	<li>Ripple::Document classes can now have associations that use links.</li>
+	<li>Property-casting patches are now eagerly loaded.</li>
+	<li>Certain responses from MapReduce can be converted into Riak::RObjects. [Misha Gorodnitzky]</li>
+	<li>Key/bucket (un)escaping has been improved. [Nicolas Fouché]</li>
+	<li>Riak::CacheStore sets and uses bucket-default quorums instead of per-request parameters.</li>
+	<li>Riak::Bucket supports new quorum defaults.</li>
+	<li>The default configuration file for Ripple is now config/ripple.yml. [Ashley Woodard]</li>
+	<li>Added a Rails 3 model generator. [Ashley Woodard]</li>
+	<li>Serializing RObject data via Marshal is now simpler, using &#8220;application/x-ruby-marshal&#8221; content-type.</li>
+	<li>Large <span class="caps">HTTP</span> headers (Link tends to be one) are split into 8KB chunks for both backends.</li>
+	<li>Added session stores for Rack and Rails 3.</li>
+	<li>Document#find returns nil when all arguments are blank.</li>
+	<li>CurbBackend now properly handles IO objects as the request body data.</li>
+	<li>Ripple::Document classes that have the same bucket/key are equivalent using ==.</li>
+	<li>Ripple::Document classes can use a property as the key, as long as it&#8217;s a String.</li>
+</ul>
+<h2>0.7.1 Patch Release &#8211; 2010-06-08</h2>
+<p>This release has no new features but includes bug fixes and some internal refactoring of the Ripple::Document hierarchy.</p>
+<ul>
+	<li>The Net::<span class="caps">HTTP</span> backend should handle streamed keys better (although
+  still not perfectly).</li>
+	<li>The Riak::MapReduce#timeout method now returns self, allowing
+  chaining.</li>
+	<li>The Ripple::Document and Ripple::EmbeddedDocument are less coupled
+  from one another so numerous internal confusions about calling order
+  are fixed.</li>
+	<li>When using Riak::RObject#to_link, a blank tag is no longer allowed.</li>
+</ul>
+<h2>0.7.0 Feature Release &#8211; 2010-05-06</h2>
+<p>This release includes a number of new features.  The largest change is that the library is now split into two gems, &#8216;riak-client&#8217; and &#8216;ripple&#8217;.  &#8216;riak-client&#8217; supports ActiveSupport 2.3.5, &#8216;ripple&#8217; only supports 3.0.0.beta3.</p>
+<p>A big kudos goes to Adam Hunter who contributed the majority of the new associations code.</p>
+<p>In addition, these changes were made:</p>
+<ul>
+	<li>Keys should stream properly now from Bucket#keys (the &#8220;stream&#8221; option was left off).</li>
+	<li>Deletes can be issued directly from a Bucket without instantiating an RObject.</li>
+	<li>Added a ActiveSupport 3.0-compatible Cache Store. [Shay Frendt]</li>
+	<li>Added Bucket#exists?</li>
+	<li>A provisionally complete implementation of embedded document associations. [Adam Hunter]</li>
+	<li>Ripple::Document passes ActiveModel::Lint tests.</li>
+	<li>Updated Rails 3 dependencies to beta3 and RSpec to 2.0.0.beta6</li>
+	<li>Ripple::Document handles nil keys better. [John Lynch]</li>
+</ul>
+<h2>0.6.1 Patch Release &#8211; 2010-03-17</h2>
+<p>This is a minor release with fixes for a few issues:</p>
+<ul>
+	<li>Riak::Link objects will now be unique when added to RObject#links
+  Set. [John Lynch]</li>
+	<li>Attributes on Ripple::Document classes are no longer clone, which had
+  prevented non-scalar properties from being modified directly (e.g. Array).</li>
+	<li>Buckets, keys, and walk specs are properly escaped in URLs
+  (including slashes).</li>
+	<li>Time-related properties properly convert to string formats in <span class="caps">JSON</span> that
+  they will work in the context of MapReduce jobs.</li>
+</ul>
+<h2>0.6.0 Feature Release &#8211; 2010-03-05</h2>
+<p>This release contains enhancements and bugfixes in preparation for the
+Riak 0.9 release.</p>
+<ul>
+	<li>The CurbBackend now uses fibers to prevent curl-handle corruption when
+  a block is given to streaming operations.</li>
+	<li>The default prefix is now &#8220;/riak/&#8221; to match the latest version of Riak.</li>
+	<li>The client configuration for Ripple is now used.</li>
+	<li>Added Bucket#new and Bucket#get_or_new for easily creating new objects.</li>
+	<li>Added Bucket#allow_mult and Bucket#n_value accessors for more easily setting
+  bucket properties.</li>
+	<li>Added timestamps! method for easily adding created_at/updated_at to documents.
+  [Adam Hunter]</li>
+	<li>The &#8216;links&#8217; collection on RObject is now a Set instead of an Array.</li>
+	<li>All literal messages are now stored in <span class="caps">YAML</span> localization files.</li>
+	<li>Object siblings (caused by concurrent updates when allow_mult is true) can now
+  be accessed directly.</li>
+	<li>Map-reduce jobs now have timeouts (in parity with Riak).</li>
+</ul>
+<h2>0.5.1 Patch Release &#8211; 2010-02-22</h2>
+<p>This is a minor release with fixes for Ruby 1.9, bundler/edge Rails,
+and a minor feature addition. Changes:</p>
+<ul>
+	<li>Qualify namespaces for Ruby 1.9.</li>
+	<li>Decoupled a few specs that gave the appearance of failure.</li>
+	<li>Added &#8220;bucket&#8221; and &#8220;key&#8221; properties on Riak::Link objects. [John Lynch]</li>
+	<li>Fully-qualify the <code>JSON</code> constant, using <code>ActiveSupport::JSON</code> instead.</li>
+	<li>Adjusted gem specification to accommodate edge Rails. [Preston Marshall]</li>
+</ul>
+<h2>0.5 Initial Release &#8211; 2010-02-10</h2>
+<p>This is the first release of Ripple, which would not have been possible
+without the generous support of Sonian and Basho Technologies.  Many thanks.
+It includes:</p>
+<ul>
+	<li>A robust basic client, <code>Riak</code>, with:
+	<ul>
+		<li>multiple <span class="caps">HTTP</span> backends (curb, net/http)</li>
+		<li>sensible client defaults (local, default port)</li>
+		<li>bucket access and manipulation, including key-streaming</li>
+		<li>object reading, storing, deleting and reloading</li>
+		<li>automatic de-serialization of <span class="caps">JSON</span>, <span class="caps">YAML</span>, and Marshal (when given the right content type)</li>
+		<li>streaming <span class="caps">POST</span>/<span class="caps">PUT</span> bodies (when given an IO)</li>
+		<li>method-chained map-reduce job construction</li>
+	</ul></li>
+	<li>A document-style modeling library, Ripple, with:
+	<ul>
+		<li>ActiveModel 3.0 compatibility</li>
+		<li>Property/attribute definition with automatic type-casting</li>
+		<li>Bucket selection based on class name, with single-bucket inheritance (configurable)</li>
+		<li>Validations</li>
+		<li>Dirty-tracking</li>
+		<li>Simple finders &#8211; all documents, by key</li>
+		<li>Reloading</li>
+	</ul></li>
+</ul></div></div>
+    
+    <div id="footer">
+  Generated on Tue Aug 31 17:58:40 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>

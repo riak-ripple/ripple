@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta name="Content-Type" content="text/html; charset=utf-8" />
-<title>Documentation by YARD 0.5.4</title>
+<title>Documentation by YARD 0.6.0</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -42,24 +42,19 @@
     <iframe id="search_frame"></iframe>
     
     <div id="content"><div id='filecontents'><h1>ripple</h1>
-<p>ripple is a rich Ruby client for Riak, Basho&#8217;s distributed
-database. It consists of two gems:</p>
+<p>ripple is a rich Ruby toolkit for Riak, Basho&#8217;s distributed database. It consists of three gems:</p>
 <ul>
 	<li><code>riak-client</code> (<code>Riak</code> namespace) contains a basic wrapper around typical operations, including bucket manipulation, object <span class="caps">CRUD</span>, link-walking, and map-reduce.</li>
 	<li><code>ripple</code> (<code>Ripple</code> namespace) contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.</li>
+	<li><code>riak-sessions</code> contains session stores for Rack and Rails 3 applications.</li>
 </ul>
 <h2>Dependencies</h2>
-<p>riak-client requires ActiveSupport 2.3.5 or later, but the version 3 is recommended. I highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
-<p>ripple requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).  Please see the Rails 3 beta release notes for installing those gems.</p>
-<p>In development, you will also need these gems:</p>
-<ul>
-	<li>rspec = 2.0.0.beta6</li>
-	<li>fakeweb &gt;= 1.2</li>
-	<li>curb &gt;= 0.6</li>
-	<li>rack &gt;= 1.0</li>
-	<li>yard &gt;= 0.5.2</li>
-</ul>
-<h2>Basic Example</h2>
+<p><code>riak-client</code> requires ActiveSupport 2.3.5 or later, but the version 3 is recommended. I highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
+<p><code>ripple</code> requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).</p>
+<p><code>riak-sessions</code> requires Rack (any version &gt; 1.0), and Rails 3.0 if you want the Rails-specific session store.</p>
+<p>Development dependencies are handled with bundler. Install bundler (<code>gem install bundler</code>) and run this command in each sub-project to get started:</p>
+<pre class="code">$ bundle install</pre><p>Run the RSpec suite using <code>bundle exec</code>:</p>
+<pre class="code">$ bundle exec rake spec</pre><h2>Basic Example</h2>
 <pre class="code"><span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>riak</span><span class='tstring_end'>'</span></span>
 
 <span class='comment'># Create a client interface
@@ -98,11 +93,13 @@ database. It consists of two gems:</p>
 <span class='id p'>p</span> <span class='id results'>results</span> <span class='comment'># =&gt; [&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, 
 </span>          <span class='comment'>#     &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,
 </span>          <span class='comment'>#     &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;Magical Mystery Tour&quot;, 
-</span>          <span class='comment'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span></pre><h2>Document model Example</h2>
+</span>          <span class='comment'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span></pre><h2>Document Model Examples</h2>
 <pre class="code">
 <span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ripple</span><span class='tstring_end'>'</span></span>
 
-<span class='kw'>class</span> <span class='const'>Email</span>
+<span class='comment'># Documents are stored as JSON objects in Riak but have rich
+</span><span class='comment'># semantics, including validations and associations.
+</span><span class='kw'>class</span> <span class='const'>Email</span>
   <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>Document</span>
   <span class='id property'>property</span> <span class='symbol'>:from</span><span class='comma'>,</span>    <span class='const'>String</span><span class='comma'>,</span> <span class='symbol'>:presence</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
   <span class='id property'>property</span> <span class='symbol'>:to</span><span class='comma'>,</span>      <span class='const'>String</span><span class='comma'>,</span> <span class='symbol'>:presence</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
@@ -119,7 +116,48 @@ database. It consists of two gems:</p>
 <span class='id reply'>reply</span><span class='period'>.</span><span class='id to'>to</span>   <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sean@geeemail.com</span><span class='tstring_end'>&quot;</span></span>
 <span class='id reply'>reply</span><span class='period'>.</span><span class='id body'>body</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Riak is a good fit for scalable Ruby apps.</span><span class='tstring_end'>&quot;</span></span>
 <span class='id reply'>reply</span><span class='period'>.</span><span class='id save'>save</span>                               <span class='comment'># POST /riak/emails (Riak-assigned key)
-</span></pre><h2>How to Contribute</h2>
+</span>
+<span class='comment'># Documents can contain embedded documents, and link to other standalone documents 
+</span><span class='comment'># via associations using the many and one class methods.
+</span><span class='kw'>class</span> <span class='const'>Person</span>
+  <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>Document</span>
+  <span class='id property'>property</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='const'>String</span>
+  <span class='id many'>many</span> <span class='symbol'>:addresses</span>
+  <span class='id many'>many</span> <span class='symbol'>:friends</span><span class='comma'>,</span> <span class='symbol'>:class_name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Person</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id one'>one</span> <span class='symbol'>:account</span>
+<span class='kw'>end</span>
+
+<span class='comment'># Account and Address are embeddable documents
+</span><span class='kw'>class</span> <span class='const'>Account</span>
+  <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>EmbeddedDocument</span>
+  <span class='id property'>property</span> <span class='symbol'>:paid_until</span><span class='comma'>,</span> <span class='const'>Time</span>
+  <span class='id embedded_in'>embedded_in</span> <span class='symbol'>:person</span> <span class='comment'># Adds &quot;person&quot; method to get parent document
+</span><span class='kw'>end</span>
+
+<span class='kw'>class</span> <span class='const'>Address</span>
+  <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>EmbeddedDocument</span>
+  <span class='id property'>property</span> <span class='symbol'>:street</span><span class='comma'>,</span> <span class='const'>String</span>
+  <span class='id property'>property</span> <span class='symbol'>:city</span><span class='comma'>,</span> <span class='const'>String</span>
+  <span class='id property'>property</span> <span class='symbol'>:state</span><span class='comma'>,</span> <span class='const'>String</span>
+  <span class='id property'>property</span> <span class='symbol'>:zip</span><span class='comma'>,</span> <span class='const'>String</span>
+<span class='kw'>end</span>
+
+<span class='id person'>person</span> <span class='op'>=</span> <span class='const'>Person</span><span class='period'>.</span><span class='id find'>find</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>adamhunter</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id person'>person</span><span class='period'>.</span><span class='id friends'>friends</span> <span class='op'>&lt;&lt;</span> <span class='const'>Person</span><span class='period'>.</span><span class='id find'>find</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>seancribbs</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># Links to people/seancribbs with tag &quot;friend&quot;
+</span><span class='id person'>person</span><span class='period'>.</span><span class='id addresses'>addresses</span> <span class='op'>&lt;&lt;</span> <span class='const'>Address</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:street</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>100 Main Street</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># Adds an embedded address
+</span><span class='id person'>person</span><span class='period'>.</span><span class='id account'>account</span><span class='period'>.</span><span class='id paid_until'>paid_until</span> <span class='op'>=</span> <span class='int'>3</span><span class='period'>.</span><span class='id months'>months</span><span class='period'>.</span><span class='id from_now'>from_now</span>
+</pre><h2>Configuration Example</h2>
+<p>When using Ripple with Rails 3, <code>config/ripple.yml</code> should contain your Riak connection information:</p>
+<pre class="code">
+development:
+  port: 8098
+  host: localhost
+
+production:
+  port: 8098
+  host: production.load-balancer.example.com
+</pre><p><code>require 'ripple/railtie'</code> from the top of your <code>config/application.rb</code> file to turn this on.</p>
+<h2>How to Contribute</h2>
 <ul>
 	<li>Fork the project on <a href="http://github.com/seancribbs/ripple">Github</a>.  If you have already forked, use <code>git pull --rebase</code> to reapply your changes on top of the mainline. Example:
   <pre class="code">$ git checkout master
@@ -131,7 +169,7 @@ $ git pull --rebase seancribbs master</pre></li>
 		<li>Existing branch:
   <pre class="code">$ git rebase master</pre></li>
 	</ul></li>
-	<li>Write an RSpec example, set of examples, and/or Cucumber story that demonstrate the necessity and validity of your changes. <strong>Patches without specs will most often be ignored. Just do it, you&#8217;ll thank me later.</strong> Documentation patches need no specs, of course.</li>
+	<li>Write an RSpec example or set of examples that demonstrate the necessity and validity of your changes. <strong>Patches without specs will most often be ignored. Just do it, you&#8217;ll thank me later.</strong> Documentation patches need no specs, of course.</li>
 	<li>Make your feature addition or bug fix. Make your specs and stories pass (green).</li>
 	<li>Run the suite using multiruby or rvm to ensure cross-version compatibility.</li>
 	<li>Cleanup any trailing whitespace in your code (try <code>whitespace-mode</code> in Emacs, or &#8220;Remove Trailing Spaces in Document&#8221; in the &#8220;Text&#8221; bundle in Textmate).</li>
@@ -140,24 +178,17 @@ $ git pull --rebase seancribbs master</pre></li>
 </ul>
 <h2>License &amp; Copyright</h2>
 <p>Copyright &copy;2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.</p>
-<p>Licensed under the Apache License, Version 2.0 (the &#8220;License&#8221;);
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at</p>
+<p>Licensed under the Apache License, Version 2.0 (the &#8220;License&#8221;); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
 <p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/<span class="caps">LICENSE</span>-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an &#8220;AS IS&#8221; <span class="caps">BASIS</span>,
-<span class="caps">WITHOUT</span> <span class="caps">WARRANTIES</span> OR <span class="caps">CONDITIONS</span> OF <span class="caps">ANY</span> <span class="caps">KIND</span>, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.</p>
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an &#8220;AS IS&#8221; <span class="caps">BASIS</span>, <span class="caps">WITHOUT</span> <span class="caps">WARRANTIES</span> OR <span class="caps">CONDITIONS</span> OF <span class="caps">ANY</span> <span class="caps">KIND</span>, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
 <h2>Auxillary Licenses</h2>
-<p>The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 <a href="http://seancribbs.com/">Sean Cribbs</a>, and is 
-licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creative Commons Attribution Non-Commercial 3.0</a> license. <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" alt="" /></p>
+<p>The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 <a href="http://seancribbs.com/">Sean Cribbs</a>, and is licensed under the <a href="http://creativecommons.org/licenses/by-nc/3.0">Creative Commons Attribution Non-Commercial 3.0</a> license. <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" alt="" /></p>
 <p>The &#8220;Poor Man&#8217;s Fibers&#8221; implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.</p></div></div>
     
     <div id="footer">
-  Generated on Tue Jun  8 17:21:08 2010 by 
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.4 (ruby-1.9.1).
+  Generated on Tue Aug 31 17:58:39 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
 </div>
 
   </body>

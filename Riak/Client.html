@@ -24,7 +24,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (C)</a> &raquo; 
-    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
+    <span class='title'><span class='object_link'><a href="../Riak.html" title="Riak (module)">Riak</a></span></span>
      &raquo; 
     <span class="title">Client</span>
   
@@ -43,7 +43,8 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Class: Riak::Client 
+    <div id="content"><h1>Class: Riak::Client
+  
   
   
 </h1>
@@ -52,10 +53,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../Object.html" title="Object (class)">Object</a></span>
+      <span class="inheritName"><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></span>
       
         <ul class="fullTree">
-          <li><a href="../Object.html" title="Object (class)">Object</a></li>
+          <li><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></li>
           
             <li class="next">Riak::Client</li>
           
@@ -70,7 +71,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a>, <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
+      <dd class="r2"><span class='object_link'><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span>, <span class='object_link'><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></dd>
       
     
   
@@ -78,7 +79,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">riak-client/lib/riak/client.rb<span class="defines">,<br />
-  riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb</span>
+  riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb</span>
 </dd>
   
 </dl>
@@ -101,7 +102,7 @@ A client connection to Riak.
     
    
     
-      <strong class="classes">Classes:</strong> <a href="Client/CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a>, <a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a>, <a href="Client/NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Client/CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a></span>, <span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span>, <span class='object_link'><a href="Client/NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a></span>
     
   
 </p>
@@ -154,7 +155,7 @@ Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
   
   
   
-  <h2>Instance Attribute Summary</h2>
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
     
       <li class="public ">
@@ -169,6 +170,7 @@ Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
   
     
     
+  
   
   
   
@@ -199,6 +201,7 @@ The internal client ID used by Riak to route responses.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -221,6 +224,7 @@ The host or IP address for the Riak endpoint.
   
     
     
+  
   
   
   
@@ -251,6 +255,7 @@ The URL path to the map-reduce HTTP endpoint.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -277,6 +282,7 @@ The port of the Riak HTTP endpoint.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -291,7 +297,10 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint.
 
 
   
-    <h2>Instance Method Summary</h2>
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
 
     <ul class="summary">
       
@@ -305,6 +314,7 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint.
       (also: #[])
     
   </span>
+  
   
   
   
@@ -328,6 +338,7 @@ Retrieves a bucket from Riak.
 
     
   </span>
+  
   
   
   
@@ -358,6 +369,7 @@ Automatically detects and returns an appropriate HTTP backend.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -376,6 +388,7 @@ Creates a client connection to Riak.
 
     
   </span>
+  
   
   
   
@@ -402,8 +415,8 @@ A representation suitable for IRB and debugging output.
   
   
   
-  <h3 class="inherited">Methods included from <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></h3>
-  <p class="inherited"><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span></p>
 
   
   
@@ -412,15 +425,15 @@ A representation suitable for IRB and debugging output.
   
   
   
-  <h3 class="inherited">Methods included from <a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></h3>
-  <p class="inherited"><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></p>
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Riak::Client (class)">Client</a></tt>) <strong>initialize</strong>(options = {}) 
+    - (<tt><span class='object_link'><a href="" title="Riak::Client (class)">Client</a></span></tt>) <strong>initialize</strong>(options = {}) 
   
 
   
@@ -465,7 +478,7 @@ configuration options for the client
     <ul class="option">
       
         <li>
-          <span class="type">(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:host</span>
           <span class="default">
             
@@ -495,7 +508,7 @@ The port of the Riak HTTP endpoint
         </tr>
       
         <li>
-          <span class="type">(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:prefix</span>
           <span class="default">
             
@@ -510,7 +523,7 @@ The URL path prefix to the main HTTP endpoint
         </tr>
       
         <li>
-          <span class="type">(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:mapred</span>
           <span class="default">
             
@@ -525,7 +538,7 @@ The path to the map-reduce HTTP endpoint
         </tr>
       
         <li>
-          <span class="type">(<tt>Fixnum</tt>, <tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+          <span class="type">(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:client_id</span>
           <span class="default">
             
@@ -605,7 +618,7 @@ raised if any options are invalid
       <div class="method_details first">
   <p class="signature first" id="client_id-instance_method">
   
-    - (<tt><a href="../String.html" title="String (class)">String</a></tt>) <strong>client_id</strong> 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>client_id</strong> 
   
 
   
@@ -624,7 +637,7 @@ The internal client ID used by Riak to route responses
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -666,7 +679,7 @@ The internal client ID used by Riak to route responses
       <div class="method_details ">
   <p class="signature " id="host-instance_method">
   
-    - (<tt><a href="../String.html" title="String (class)">String</a></tt>) <strong>host</strong> 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>host</strong> 
   
 
   
@@ -685,7 +698,7 @@ The host or IP address for the Riak endpoint
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -727,7 +740,7 @@ The host or IP address for the Riak endpoint
       <div class="method_details ">
   <p class="signature " id="mapred-instance_method">
   
-    - (<tt><a href="../String.html" title="String (class)">String</a></tt>) <strong>mapred</strong> 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>mapred</strong> 
   
 
   
@@ -746,7 +759,7 @@ The URL path to the map-reduce HTTP endpoint
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -849,7 +862,7 @@ The port of the Riak HTTP endpoint
       <div class="method_details ">
   <p class="signature " id="prefix-instance_method">
   
-    - (<tt><a href="../String.html" title="String (class)">String</a></tt>) <strong>prefix</strong> 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>prefix</strong> 
   
 
   
@@ -868,7 +881,7 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -914,7 +927,7 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint
       <div class="method_details first">
   <p class="signature first" id="bucket-instance_method">
   
-    - (<tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>) <strong>bucket</strong>(name, options = {}) 
+    - (<tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>) <strong>bucket</strong>(name, options = {}) 
   
 
   
@@ -937,7 +950,7 @@ Retrieves a bucket from Riak.
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
         <span class='name'>bucket</span>
@@ -982,7 +995,7 @@ options for retrieving the bucket
     <ul class="option">
       
         <li>
-          <span class="type">(<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
           <span class="name">:keys</span>
           <span class="default">
             
@@ -997,7 +1010,7 @@ whether to retrieve the bucket keys
         </tr>
       
         <li>
-          <span class="type">(<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
           <span class="name">:props</span>
           <span class="default">
             
@@ -1018,7 +1031,7 @@ whether to retreive the bucket properties
   
     <li>
       
-        <span class='type'>(<tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
       
       
       
@@ -1050,7 +1063,7 @@ the requested bucket
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id options'>options</span><span class='period'>.</span><span class='id assert_valid_keys'>assert_valid_keys</span><span class='lparen'>(</span><span class='symbol'>:keys</span><span class='comma'>,</span> <span class='symbol'>:props</span><span class='rparen'>)</span>
-  <span class='id response'>response</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id options'>options</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id load'>load</span><span class='lparen'>(</span><span class='id response'>response</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1061,7 +1074,7 @@ the requested bucket
       <div class="method_details ">
   <p class="signature " id="http-instance_method">
   
-    - (<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></tt>) <strong>http</strong> 
+    - (<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>) <strong>http</strong> 
   
 
   
@@ -1082,7 +1095,7 @@ access the server directly.
   
     <li>
       
-        <span class='type'>(<tt><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>)</span>
       
       
       
@@ -1133,7 +1146,7 @@ the HTTP backend for this client
       <div class="method_details ">
   <p class="signature " id="inspect-instance_method">
   
-    - (<tt><a href="../String.html" title="String (class)">String</a></tt>) <strong>inspect</strong> 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>inspect</strong> 
   
 
   
@@ -1152,7 +1165,7 @@ A representation suitable for IRB and debugging output.
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1193,9 +1206,9 @@ A representation suitable for IRB and debugging output.
 </div>
     
     <div id="footer">
-  Generated on Tue Jun  8 17:21:08 2010 by 
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.4 (ruby-1.9.1).
+  Generated on Tue Aug 31 17:58:40 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
 </div>
 
   </body>

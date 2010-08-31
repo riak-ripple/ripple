@@ -24,7 +24,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (M)</a> &raquo; 
-    <span class='title'><a href="../Riak.html" title="Riak (module)">Riak</a></span>
+    <span class='title'><span class='object_link'><a href="../Riak.html" title="Riak (module)">Riak</a></span></span>
      &raquo; 
     <span class="title">MapReduce</span>
   
@@ -43,7 +43,8 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Class: Riak::MapReduce 
+    <div id="content"><h1>Class: Riak::MapReduce
+  
   
   
 </h1>
@@ -52,10 +53,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../Object.html" title="Object (class)">Object</a></span>
+      <span class="inheritName"><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></span>
       
         <ul class="fullTree">
-          <li><a href="../Object.html" title="Object (class)">Object</a></li>
+          <li><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></li>
           
             <li class="next">Riak::MapReduce</li>
           
@@ -70,7 +71,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></dd>
+      <dd class="r2"><span class='object_link'><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span>, <span class='object_link'><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></dd>
       
     
   
@@ -99,7 +100,7 @@ Class for invoking map-reduce jobs using the HTTP interface.
     
    
     
-      <strong class="classes">Classes:</strong> <a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a></span>
     
   
 </p>
@@ -109,7 +110,11 @@ Class for invoking map-reduce jobs using the HTTP interface.
   
   
   
-  <h2>Instance Attribute Summary</h2>
+  
+  
+  
+  
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
     
       <li class="public ">
@@ -124,6 +129,7 @@ Class for invoking map-reduce jobs using the HTTP interface.
   
     
     
+  
   
   
   
@@ -154,6 +160,7 @@ The bucket/keys for input to the job, or the bucket (all keys).
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -168,7 +175,10 @@ The map and reduce phases that will be executed.
 
 
   
-    <h2>Instance Method Summary</h2>
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
 
     <ul class="summary">
       
@@ -182,6 +192,7 @@ The map and reduce phases that will be executed.
       (also: #&lt;&lt;, #include)
     
   </span>
+  
   
   
   
@@ -212,6 +223,7 @@ Add or replace inputs for the job.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -230,6 +242,7 @@ Creates a new map-reduce job.
 
     
   </span>
+  
   
   
   
@@ -258,6 +271,7 @@ Add a link phase to the job.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -281,6 +295,7 @@ Add a map phase to the job.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -299,6 +314,7 @@ Add a reduce phase to the job.
 
     
   </span>
+  
   
   
   
@@ -329,6 +345,7 @@ Executes this map-reduce job.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -347,6 +364,7 @@ Sets the timeout for the map-reduce job.
 
     
   </span>
+  
   
   
   
@@ -373,15 +391,25 @@ Convert the job to JSON for submission over the HTTP interface.
   
   
   
-  <h3 class="inherited">Methods included from <a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></h3>
-  <p class="inherited"><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>) <strong>initialize</strong>(client) {|self| ... }
+    - (<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>) <strong>initialize</strong>(client) {|self| ... }
   
 
   
@@ -400,7 +428,7 @@ Creates a new map-reduce job.
   
     <li>
       
-        <span class='type'>(<tt><a href="Client.html" title="Riak::Client (class)">Client</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="Client.html" title="Riak::Client (class)">Client</a></span></tt>)</span>
       
       
         <span class='name'>client</span>
@@ -442,13 +470,13 @@ helpful for initializing the job
       <pre class="lines">
 
 
-33
-34
 35
-36</pre>
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span>
   <span class='ivar'>@client</span><span class='comma'>,</span> <span class='ivar'>@inputs</span><span class='comma'>,</span> <span class='ivar'>@query</span> <span class='op'>=</span> <span class='id client'>client</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -470,7 +498,7 @@ helpful for initializing the job
       <div class="method_details first">
   <p class="signature first" id="inputs-instance_method">
   
-    - (<tt>Array&lt;[bucket,key]&gt;</tt>, <tt><a href="../String.html" title="String (class)">String</a></tt>) <strong>inputs</strong> 
+    - (<tt>Array&lt;[bucket,key]&gt;</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>inputs</strong> 
   
 
   
@@ -489,7 +517,7 @@ The bucket/keys for input to the job, or the bucket (all keys).
   
     <li>
       
-        <span class='type'>(<tt>Array&lt;[bucket,key]&gt;</tt>, <tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt>Array&lt;[bucket,key]&gt;</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -507,7 +535,7 @@ The bucket/keys for input to the job, or the bucket (all keys).
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li><a href="#add-instance_method" title="Riak::MapReduce#add (method)">#add</a></li>
+      <li><span class='object_link'><a href="#add-instance_method" title="Riak::MapReduce#add (method)">#add</a></span></li>
     
   </ul>
 
@@ -517,12 +545,12 @@ The bucket/keys for input to the job, or the bucket (all keys).
       <pre class="lines">
 
 
-22
-23
-24</pre>
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id inputs'>inputs</span>
   <span class='ivar'>@inputs</span>
@@ -538,7 +566,7 @@ The bucket/keys for input to the job, or the bucket (all keys).
       <div class="method_details ">
   <p class="signature " id="query-instance_method">
   
-    - (<tt>Array&lt;<a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a>&gt;</tt>) <strong>query</strong> 
+    - (<tt>Array&lt;<span class='object_link'><a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a></span>&gt;</tt>) <strong>query</strong> 
   
 
   
@@ -557,7 +585,7 @@ The map and reduce phases that will be executed
   
     <li>
       
-        <span class='type'>(<tt>Array&lt;<a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a>&gt;</tt>)</span>
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a></span>&gt;</tt>)</span>
       
       
       
@@ -575,11 +603,11 @@ The map and reduce phases that will be executed
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li><a href="#map-instance_method" title="Riak::MapReduce#map (method)">#map</a></li>
+      <li><span class='object_link'><a href="#map-instance_method" title="Riak::MapReduce#map (method)">#map</a></span></li>
     
-      <li><a href="#reduce-instance_method" title="Riak::MapReduce#reduce (method)">#reduce</a></li>
+      <li><span class='object_link'><a href="#reduce-instance_method" title="Riak::MapReduce#reduce (method)">#reduce</a></span></li>
     
-      <li><a href="#link-instance_method" title="Riak::MapReduce#link (method)">#link</a></li>
+      <li><span class='object_link'><a href="#link-instance_method" title="Riak::MapReduce#link (method)">#link</a></span></li>
     
   </ul>
 
@@ -589,12 +617,12 @@ The map and reduce phases that will be executed
       <pre class="lines">
 
 
-28
-29
-30</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id query'>query</span>
   <span class='ivar'>@query</span>
@@ -615,13 +643,13 @@ The map and reduce phases that will be executed
   <p class="signature first" id="add-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(bucket) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket) </span>
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(bucket, key) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket, key) </span>
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(object) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(object) </span>
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(bucket, key, keydata) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket, key, keydata) </span>
     
   
 
@@ -646,7 +674,7 @@ Add or replace inputs for the job.
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(bucket) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -663,7 +691,7 @@ inputs previously added.
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
       
       
         <span class='name'>bucket</span>
@@ -685,7 +713,7 @@ the bucket to run the job on
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(bucket, key) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket, key) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -701,7 +729,7 @@ Add a bucket/key pair to the job.
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
       
       
         <span class='name'>bucket</span>
@@ -718,7 +746,7 @@ the bucket of the object
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
         <span class='name'>key</span>
@@ -740,7 +768,7 @@ the key of the object
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(object) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(object) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -756,7 +784,7 @@ Add an object to the job (by its bucket/key)
   
     <li>
       
-        <span class='type'>(<tt><a href="RObject.html" title="Riak::RObject (class)">RObject</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="RObject.html" title="Riak::RObject (class)">RObject</a></span></tt>)</span>
       
       
         <span class='name'>object</span>
@@ -778,7 +806,7 @@ the object to add to the inputs
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>add</strong>(bucket, key, keydata) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket, key, keydata) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -791,7 +819,7 @@ the object to add to the inputs
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
       
       
         <span class='name'>bucket</span>
@@ -808,7 +836,7 @@ the bucket of the object
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
         <span class='name'>key</span>
@@ -825,7 +853,7 @@ the key of the object
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
         <span class='name'>keydata</span>
@@ -851,7 +879,7 @@ extra data to pass along with the object to the job
   
     <li>
       
-        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>)</span>
       
       
       
@@ -872,8 +900,6 @@ self
       <pre class="lines">
 
 
-54
-55
 56
 57
 58
@@ -891,10 +917,13 @@ self
 70
 71
 72
-73</pre>
+73
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id add'>add</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id params'>params</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id flatten'>flatten</span>
@@ -903,16 +932,17 @@ self
     <span class='id p'>p</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id first'>first</span>
     <span class='kw'>case</span> <span class='id p'>p</span>
     <span class='kw'>when</span> <span class='const'>Bucket</span>
-      <span class='ivar'>@inputs</span> <span class='op'>=</span> <span class='id p'>p</span><span class='period'>.</span><span class='id name'>name</span>
+      <span class='ivar'>@inputs</span> <span class='op'>=</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id p'>p</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span>
     <span class='kw'>when</span> <span class='const'>RObject</span>
-      <span class='ivar'>@inputs</span> <span class='op'>&lt;&lt;</span> <span class='lbracket'>[</span><span class='id p'>p</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id p'>p</span><span class='period'>.</span><span class='id key'>key</span><span class='rbracket'>]</span>
+      <span class='ivar'>@inputs</span> <span class='op'>&lt;&lt;</span> <span class='lbracket'>[</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id p'>p</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id p'>p</span><span class='period'>.</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rbracket'>]</span>
     <span class='kw'>when</span> <span class='const'>String</span>
-      <span class='ivar'>@inputs</span> <span class='op'>=</span> <span class='id p'>p</span>
+      <span class='ivar'>@inputs</span> <span class='op'>=</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id p'>p</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>when</span> <span class='int'>2</span><span class='op'>..</span><span class='int'>3</span>
     <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id shift'>shift</span>
     <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span> <span class='kw'>if</span> <span class='const'>Bucket</span> <span class='op'>===</span> <span class='id bucket'>bucket</span>
-    <span class='ivar'>@inputs</span> <span class='op'>&lt;&lt;</span> <span class='id params'>params</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span>
+    <span class='id key'>key</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id shift'>shift</span>
+    <span class='ivar'>@inputs</span> <span class='op'>&lt;&lt;</span> <span class='id params'>params</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
@@ -925,11 +955,11 @@ self
   <p class="signature " id="link-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>link</strong>(walk_spec, options = {}) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>link</strong>(walk_spec, options = {}) </span>
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>link</strong>(bucket, tag, keep, options = {}) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>link</strong>(bucket, tag, keep, options = {}) </span>
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>link</strong>(options) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>link</strong>(options) </span>
     
   
 
@@ -951,7 +981,7 @@ automatically (a special case of map).
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>link</strong>(walk_spec, options = {}) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>link</strong>(walk_spec, options = {}) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -964,7 +994,7 @@ automatically (a special case of map).
   
     <li>
       
-        <span class='type'>(<tt><a href="WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a></span></tt>)</span>
       
       
         <span class='name'>walk_spec</span>
@@ -990,7 +1020,7 @@ a WalkSpec that represents the types of links to follow
       
         &mdash;
         <div class='inline'><p>
-extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+extra options for the phase (see <span class='object_link'><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></span>)
 </p>
 </div>
       
@@ -1003,7 +1033,7 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>link</strong>(bucket, tag, keep, options = {}) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>link</strong>(bucket, tag, keep, options = {}) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -1016,7 +1046,7 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt>nil</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>nil</tt>)</span>
       
       
         <span class='name'>bucket</span>
@@ -1033,7 +1063,7 @@ the bucket to limit links to
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt>nil</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>nil</tt>)</span>
       
       
         <span class='name'>tag</span>
@@ -1050,7 +1080,7 @@ the tag to limit links to
   
     <li>
       
-        <span class='type'>(<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
       
         <span class='name'>keep</span>
@@ -1076,7 +1106,7 @@ whether to keep results of this phase (overrides the phase options)
       
         &mdash;
         <div class='inline'><p>
-extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+extra options for the phase (see <span class='object_link'><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></span>)
 </p>
 </div>
       
@@ -1089,7 +1119,7 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>link</strong>(options) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>link</strong>(options) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -1122,7 +1152,7 @@ options for both the walk spec and link phase
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li><a href="WalkSpec.html#initialize-instance_method" title="Riak::WalkSpec#initialize (method)">WalkSpec#initialize</a></li>
+      <li><span class='object_link'><a href="WalkSpec.html#initialize-instance_method" title="Riak::WalkSpec#initialize (method)">Riak::WalkSpec#initialize</a></span></li>
     
   </ul>
 
@@ -1135,7 +1165,7 @@ options for both the walk spec and link phase
   
     <li>
       
-        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>)</span>
       
       
       
@@ -1153,7 +1183,7 @@ self
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></li>
+      <li><span class='object_link'><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></span></li>
     
   </ul>
 
@@ -1163,16 +1193,16 @@ self
       <pre class="lines">
 
 
-119
-120
-121
 122
 123
 124
-125</pre>
+125
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 122</span>
 
 <span class='kw'>def</span> <span class='id link'>link</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1190,9 +1220,9 @@ self
   <p class="signature " id="map-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>map</strong>(function) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>map</strong>(function) </span>
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>map</strong>(function?, options) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>map</strong>(function?, options) </span>
     
   
 
@@ -1213,7 +1243,7 @@ Add a map phase to the job.
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>map</strong>(function) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>map</strong>(function) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -1226,7 +1256,7 @@ Add a map phase to the job.
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>function</span>
@@ -1249,7 +1279,7 @@ a Javascript function that represents the phase, or an Erlang
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>map</strong>(function?, options) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>map</strong>(function?, options) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -1262,7 +1292,7 @@ a Javascript function that represents the phase, or an Erlang
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>function</span>
@@ -1289,7 +1319,7 @@ function] pair
       
         &mdash;
         <div class='inline'><p>
-extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+extra options for the phase (see <span class='object_link'><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></span>)
 </p>
 </div>
       
@@ -1306,7 +1336,7 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
   
     <li>
       
-        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>)</span>
       
       
       
@@ -1324,7 +1354,7 @@ self
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></li>
+      <li><span class='object_link'><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></span></li>
     
   </ul>
 
@@ -1334,14 +1364,14 @@ self
       <pre class="lines">
 
 
-85
-86
-87
 88
-89</pre>
+89
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='id map'>map</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1357,9 +1387,9 @@ self
   <p class="signature " id="reduce-instance_method">
   
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>reduce</strong>(function) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>reduce</strong>(function) </span>
     
-      <span class="overload">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>reduce</strong>(function?, options) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>reduce</strong>(function?, options) </span>
     
   
 
@@ -1380,7 +1410,7 @@ Add a reduce phase to the job.
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>reduce</strong>(function) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>reduce</strong>(function) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -1393,7 +1423,7 @@ Add a reduce phase to the job.
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>function</span>
@@ -1416,7 +1446,7 @@ a Javascript function that represents the phase, or an Erlang
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>reduce</strong>(function?, options) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>reduce</strong>(function?, options) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -1429,7 +1459,7 @@ a Javascript function that represents the phase, or an Erlang
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>Array</tt>)</span>
       
       
         <span class='name'>function</span>
@@ -1456,7 +1486,7 @@ function] pair
       
         &mdash;
         <div class='inline'><p>
-extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></tt>)
+extra options for the phase (see <span class='object_link'><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></span>)
 </p>
 </div>
       
@@ -1473,7 +1503,7 @@ extra options for the phase (see <tt><a href="MapReduce/Phase.html#initialize-in
   
     <li>
       
-        <span class='type'>(<tt><a href="" title="Riak::MapReduce (class)">MapReduce</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>)</span>
       
       
       
@@ -1491,7 +1521,7 @@ self
   <h3>See Also:</h3>
   <ul class="see">
     
-      <li><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></li>
+      <li><span class='object_link'><a href="MapReduce/Phase.html#initialize-instance_method" title="Riak::MapReduce::Phase#initialize (method)">Phase#initialize</a></span></li>
     
   </ul>
 
@@ -1501,14 +1531,14 @@ self
       <pre class="lines">
 
 
-99
-100
-101
 102
-103</pre>
+103
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id reduce'>reduce</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1565,9 +1595,6 @@ phase, only the results from that phase will be returned.
       <pre class="lines">
 
 
-145
-146
-147
 148
 149
 150
@@ -1578,10 +1605,13 @@ phase, only the results from that phase will be returned.
 155
 156
 157
-158</pre>
+158
+159
+160
+161</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 145</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 148</span>
 
 <span class='kw'>def</span> <span class='id run'>run</span>
   <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id mapred'>mapred</span><span class='comma'>,</span> <span class='id to_json'>to_json</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -1605,7 +1635,7 @@ phase, only the results from that phase will be returned.
       <div class="method_details ">
   <p class="signature " id="timeout-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>timeout</strong>(value) 
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>timeout</strong>(value) 
   
 
   
@@ -1651,13 +1681,13 @@ the job timeout, in milliseconds
       <pre class="lines">
 
 
-129
-130
-131
-132</pre>
+132
+133
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 132</span>
 
 <span class='kw'>def</span> <span class='id timeout'>timeout</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@timeout</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -1671,7 +1701,7 @@ the job timeout, in milliseconds
       <div class="method_details ">
   <p class="signature " id="to_json-instance_method">
   
-    - (<tt><a href="../String.html" title="String (class)">String</a></tt>) <strong>to_json</strong>(options = {}) 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>to_json</strong>(options = {}) 
   
 
   
@@ -1690,7 +1720,7 @@ Convert the job to JSON for submission over the HTTP interface.
   
     <li>
       
-        <span class='type'>(<tt><a href="../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1711,14 +1741,14 @@ the JSON representation
       <pre class="lines">
 
 
-137
-138
-139
 140
-141</pre>
+141
+142
+143
+144</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 140</span>
 
 <span class='kw'>def</span> <span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id hash'>hash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>inputs</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id inputs'>inputs</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>query</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id query'>query</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:as_json</span><span class='rparen'>)</span><span class='rbrace'>}</span>
@@ -1735,9 +1765,9 @@ the JSON representation
 </div>
     
     <div id="footer">
-  Generated on Tue Jun  8 17:21:09 2010 by 
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.4 (ruby-1.9.1).
+  Generated on Tue Aug 31 17:58:42 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
 </div>
 
   </body>

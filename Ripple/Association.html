@@ -24,7 +24,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (A)</a> &raquo; 
-    <span class='title'><a href="../Ripple.html" title="Ripple (module)">Ripple</a></span>
+    <span class='title'><span class='object_link'><a href="../Ripple.html" title="Ripple (module)">Ripple</a></span></span>
      &raquo; 
     <span class="title">Association</span>
   
@@ -43,7 +43,8 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Class: Ripple::Association 
+    <div id="content"><h1>Class: Ripple::Association
+  
   
   
 </h1>
@@ -52,10 +53,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../Object.html" title="Object (class)">Object</a></span>
+      <span class="inheritName"><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></span>
       
         <ul class="fullTree">
-          <li><a href="../Object.html" title="Object (class)">Object</a></li>
+          <li><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></li>
           
             <li class="next">Ripple::Association</li>
           
@@ -69,18 +70,42 @@
     
   
     
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><span class='object_link'><a href="Translation.html" title="Ripple::Translation (module)">Translation</a></span></dd>
+      
+    
   
   
   
-    <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">ripple/lib/ripple/associations.rb</dd>
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">ripple/lib/ripple/associations.rb</dd>
   
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+The &#8220;reflection&#8221; for an association - metadata about how it is
+configured.
+</p>
 
 
-  <h2>Instance Attribute Summary</h2>
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
     
       <li class="public ">
@@ -95,6 +120,7 @@
   
     <span class="note title readonly">readonly</span>
     
+  
   
   
   
@@ -125,6 +151,7 @@ Returns the value of attribute name.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -151,6 +178,7 @@ Returns the value of attribute options.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -165,7 +193,10 @@ Returns the value of attribute type.
 
 
   
-    <h2>Instance Method Summary</h2>
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
 
     <ul class="summary">
       
@@ -182,9 +213,13 @@ Returns the value of attribute type.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+String The class name of the associated object(s).
+</p>
+</div></span>
   
 </li>
 
@@ -192,7 +227,7 @@ Returns the value of attribute type.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#embeddable%3F-instance_method" title="#embeddable? (instance method)">- (Boolean) <strong>embeddable?</strong> </a>
+      <a href="#embeddable%3F-instance_method" title="#embeddable? (instance method)">- (true, false) <strong>embeddable?</strong> </a>
     
 
     
@@ -202,9 +237,13 @@ Returns the value of attribute type.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+Is the associated class an EmbeddedDocument.
+</p>
+</div></span>
   
 </li>
 
@@ -224,6 +263,7 @@ Returns the value of attribute type.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -238,7 +278,7 @@ be added :validate.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#ivar-instance_method" title="#ivar (instance method)">- (Object) <strong>ivar</strong> </a>
+      <a href="#ivar-instance_method" title="#ivar (instance method)">- (String) <strong>ivar</strong> </a>
     
 
     
@@ -248,9 +288,13 @@ be added :validate.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+The instance variable in the owner where the association will be stored.
+</p>
+</div></span>
   
 </li>
 
@@ -258,7 +302,7 @@ be added :validate.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#klass-instance_method" title="#klass (instance method)">- (Object) <strong>klass</strong> </a>
+      <a href="#klass-instance_method" title="#klass (instance method)">- (Class) <strong>klass</strong> </a>
     
 
     
@@ -268,9 +312,13 @@ be added :validate.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+The class of the associated object(s).
+</p>
+</div></span>
   
 </li>
 
@@ -278,7 +326,7 @@ be added :validate.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#many%3F-instance_method" title="#many? (instance method)">- (Boolean) <strong>many?</strong> </a>
+      <a href="#link_filter-instance_method" title="#link_filter (instance method)">- (Proc) <strong>link_filter</strong> </a>
     
 
     
@@ -288,9 +336,14 @@ be added :validate.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+A filter proc to be used with Enumerable#select for collecting links that
+belong to this association (only when #linked? is true).
+</p>
+</div></span>
   
 </li>
 
@@ -298,7 +351,7 @@ be added :validate.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#one%3F-instance_method" title="#one? (instance method)">- (Boolean) <strong>one?</strong> </a>
+      <a href="#link_spec-instance_method" title="#link_spec (instance method)">- (Riak::WalkSpec) <strong>link_spec</strong> </a>
     
 
     
@@ -308,9 +361,14 @@ be added :validate.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+When #linked? is true, a specification for which links to follow to
+retrieve the associated documents.
+</p>
+</div></span>
   
 </li>
 
@@ -318,7 +376,7 @@ be added :validate.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#polymorphic%3F-instance_method" title="#polymorphic? (instance method)">- (Boolean) <strong>polymorphic?</strong> </a>
+      <a href="#link_tag-instance_method" title="#link_tag (instance method)">- (String<sup>?</sup>) <strong>link_tag</strong> </a>
     
 
     
@@ -328,9 +386,13 @@ be added :validate.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+When #linked? is true, the tag for outgoing links.
+</p>
+</div></span>
   
 </li>
 
@@ -338,7 +400,7 @@ be added :validate.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#proxy_class-instance_method" title="#proxy_class (instance method)">- (Object) <strong>proxy_class</strong> </a>
+      <a href="#linked%3F-instance_method" title="#linked? (instance method)">- (true, false) <strong>linked?</strong> </a>
     
 
     
@@ -348,9 +410,13 @@ be added :validate.
   
   
   
+  
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'><p>
+Does the association use links.
+</p>
+</div></span>
   
 </li>
 
@@ -358,11 +424,157 @@ be added :validate.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#proxy_class_name-instance_method" title="#proxy_class_name (instance method)">- (Object) <strong>proxy_class_name</strong> </a>
+      <a href="#many%3F-instance_method" title="#many? (instance method)">- (true, false) <strong>many?</strong> </a>
     
 
     
   </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Is the cardinality of the association > 1.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#one%3F-instance_method" title="#one? (instance method)">- (true, false) <strong>one?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Is the cardinality of the association == 1.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#polymorphic%3F-instance_method" title="#polymorphic? (instance method)">- (true, false) <strong>polymorphic?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+TODO: Polymorphic not supported.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#proxy_class-instance_method" title="#proxy_class (instance method)">- (Class) <strong>proxy_class</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The association proxy class.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#proxy_class_name-instance_method" title="#proxy_class_name (instance method)">- (String) <strong>proxy_class_name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The class name of the association proxy.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#using-instance_method" title="#using (instance method)">- (Symbol) <strong>using</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Which method is used for representing the association - currently only
+supports :embedded and :linked.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#verify_type%21-instance_method" title="#verify_type! (instance method)">- (Object) <strong>verify_type!</strong>(value, owner) </a>
+    
+
+    
+  </span>
+  
   
   
   
@@ -378,13 +590,33 @@ be added :validate.
     </ul>
   
 
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="Translation.html" title="Ripple::Translation (module)">Translation</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="Translation.html#i18n_scope-instance_method" title="Ripple::Translation#i18n_scope (method)">#i18n_scope</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Riak/Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Riak/Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Riak/Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Ripple::Association (class)">Association</a></tt>) <strong>initialize</strong>(type, name, options = {}) 
+    - (<tt><span class='object_link'><a href="" title="Ripple::Association (class)">Association</a></span></tt>) <strong>initialize</strong>(type, name, options = {}) 
   
 
   
@@ -406,12 +638,12 @@ be added :validate
       <pre class="lines">
 
 
-106
-107
-108</pre>
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 106</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id type'>type</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@type</span><span class='comma'>,</span> <span class='ivar'>@name</span><span class='comma'>,</span> <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id type'>type</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='period'>.</span><span class='id to_options'>to_options</span>
@@ -432,7 +664,7 @@ be added :validate
       <div class="method_details first">
   <p class="signature first" id="name-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>name</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>name</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -453,12 +685,12 @@ Returns the value of attribute name
       <pre class="lines">
 
 
-101
-102
-103</pre>
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 139</span>
 
 <span class='kw'>def</span> <span class='id name'>name</span>
   <span class='ivar'>@name</span>
@@ -474,7 +706,7 @@ Returns the value of attribute name
       <div class="method_details ">
   <p class="signature " id="options-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>options</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>options</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -495,12 +727,12 @@ Returns the value of attribute options
       <pre class="lines">
 
 
-101
-102
-103</pre>
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 139</span>
 
 <span class='kw'>def</span> <span class='id options'>options</span>
   <span class='ivar'>@options</span>
@@ -516,7 +748,7 @@ Returns the value of attribute options
       <div class="method_details ">
   <p class="signature " id="type-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>type</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>type</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -537,12 +769,12 @@ Returns the value of attribute type
       <pre class="lines">
 
 
-101
-102
-103</pre>
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 139</span>
 
 <span class='kw'>def</span> <span class='id type'>type</span>
   <span class='ivar'>@type</span>
@@ -562,31 +794,61 @@ Returns the value of attribute type
       <div class="method_details first">
   <p class="signature first" id="class_name-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>class_name</strong> 
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>class_name</strong> 
   
 
   
-</p><table class="source_code">
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+String The class name of the associated object(s)
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'></span>
+      
+      
+      
+      
+        
+        <div class='inline'><p>
+String The class name of the associated object(s)
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121</pre>
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 149</span>
 
 <span class='kw'>def</span> <span class='id class_name'>class_name</span>
   <span class='ivar'>@class_name</span> <span class='op'>||=</span> <span class='kw'>case</span>
@@ -608,13 +870,16 @@ Returns the value of attribute type
       <div class="method_details ">
   <p class="signature " id="embeddable?-instance_method">
   
-    - (<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>embeddable?</strong> 
+    - (<tt>true</tt>, <tt>false</tt>) <strong>embeddable?</strong> 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
-    
+    <p>
+Is the associated class an EmbeddedDocument
+</p>
+
 
   </div>
 </div>
@@ -624,10 +889,16 @@ Returns the value of attribute type
   
     <li>
       
-        <span class='type'>(<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
       
+      
+        &mdash;
+        <div class='inline'><p>
+Is the associated class an EmbeddedDocument
+</p>
+</div>
       
     </li>
   
@@ -639,12 +910,12 @@ Returns the value of attribute type
       <pre class="lines">
 
 
-135
-136
-137</pre>
+178
+179
+180</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 135</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 178</span>
 
 <span class='kw'>def</span> <span class='id embeddable?'>embeddable?</span>
   <span class='id klass'>klass</span><span class='period'>.</span><span class='id embeddable?'>embeddable?</span>
@@ -657,22 +928,52 @@ Returns the value of attribute type
       <div class="method_details ">
   <p class="signature " id="ivar-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>ivar</strong> 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>ivar</strong> 
   
 
   
-</p><table class="source_code">
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The instance variable in the owner where the association will be stored
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the instance variable in the owner where the association will be stored
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-143
-144
-145</pre>
+194
+195
+196</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 194</span>
 
 <span class='kw'>def</span> <span class='id ivar'>ivar</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>@_</span><span class='embexpr_beg'>#{</span><span class='id name'>name</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
@@ -685,41 +986,16 @@ Returns the value of attribute type
       <div class="method_details ">
   <p class="signature " id="klass-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>klass</strong> 
-  
-
-  
-</p><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-123
-124
-125</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 123</span>
-
-<span class='kw'>def</span> <span class='id klass'>klass</span>
-  <span class='ivar'>@klass</span> <span class='op'>||=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:class</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id class_name'>class_name</span><span class='period'>.</span><span class='id constantize'>constantize</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="many?-instance_method">
-  
-    - (<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>many?</strong> 
+    - (<tt>Class</tt>) <strong>klass</strong> 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
-    
+    <p>
+The class of the associated object(s)
+</p>
+
 
   </div>
 </div>
@@ -729,10 +1005,16 @@ Returns the value of attribute type
   
     <li>
       
-        <span class='type'>(<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+        <span class='type'>(<tt>Class</tt>)</span>
       
       
       
+      
+        &mdash;
+        <div class='inline'><p>
+The class of the associated object(s)
+</p>
+</div>
       
     </li>
   
@@ -744,12 +1026,320 @@ Returns the value of attribute type
       <pre class="lines">
 
 
-127
-128
-129</pre>
+163
+164
+165</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 163</span>
+
+<span class='kw'>def</span> <span class='id klass'>klass</span>
+  <span class='ivar'>@klass</span> <span class='op'>||=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:class</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id class_name'>class_name</span><span class='period'>.</span><span class='id constantize'>constantize</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="link_filter-instance_method">
+  
+    - (<tt>Proc</tt>) <strong>link_filter</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A filter proc to be used with Enumerable#select for collecting links that
+belong to this association (only when #linked? is true)
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Proc</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a filter proc to be used with Enumerable#select for collecting links that
+belong to this association (only when #linked? is true)
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+210
+211
+212</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 210</span>
+
+<span class='kw'>def</span> <span class='id link_filter'>link_filter</span>
+  <span class='id linked?'>linked?</span> <span class='op'>?</span> <span class='id lambda'>lambda</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id link'>link</span><span class='op'>|</span> <span class='id link'>link</span><span class='period'>.</span><span class='id tag'>tag</span> <span class='op'>==</span> <span class='id link_tag'>link_tag</span> <span class='rbrace'>}</span> <span class='op'>:</span> <span class='id lambda'>lambda</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id _'>_</span><span class='op'>|</span> <span class='kw'>false</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="link_spec-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Riak/WalkSpec.html" title="Riak::WalkSpec (class)">Riak::WalkSpec</a></span></tt>) <strong>link_spec</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+When #linked? is true, a specification for which links to follow to
+retrieve the associated documents
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Riak/WalkSpec.html" title="Riak::WalkSpec (class)">Riak::WalkSpec</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+when #linked? is true, a specification for which links to follow to
+retrieve the associated documents
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 220</span>
+
+<span class='kw'>def</span> <span class='id link_spec'>link_spec</span>
+  <span class='comment'># TODO: support transitive linked associations
+</span>  <span class='kw'>if</span> <span class='id linked?'>linked?</span>
+    <span class='id tag'>tag</span> <span class='op'>=</span> <span class='id name'>name</span><span class='period'>.</span><span class='id to_s'>to_s</span>
+    <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id polymorphic?'>polymorphic?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span> <span class='op'>:</span> <span class='id klass'>klass</span><span class='period'>.</span><span class='id bucket_name'>bucket_name</span>
+    <span class='const'>Riak</span><span class='op'>::</span><span class='const'>WalkSpec</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:tag</span> <span class='op'>=&gt;</span> <span class='id tag'>tag</span><span class='comma'>,</span> <span class='symbol'>:bucket</span> <span class='op'>=&gt;</span> <span class='id bucket'>bucket</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="link_tag-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt><sup>?</sup>) <strong>link_tag</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+When #linked? is true, the tag for outgoing links
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>nil</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+when #linked? is true, the tag for outgoing links
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+215
+216
+217</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 215</span>
+
+<span class='kw'>def</span> <span class='id link_tag'>link_tag</span>
+  <span class='id linked?'>linked?</span> <span class='op'>?</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id link_spec'>link_spec</span><span class='rparen'>)</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id tag'>tag</span> <span class='op'>:</span> <span class='kw'>nil</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="linked?-instance_method">
+  
+    - (<tt>true</tt>, <tt>false</tt>) <strong>linked?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Does the association use links
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Does the association use links
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+189
+190
+191</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 189</span>
+
+<span class='kw'>def</span> <span class='id linked?'>linked?</span>
+  <span class='id using'>using</span> <span class='op'>==</span> <span class='symbol'>:linked</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="many?-instance_method">
+  
+    - (<tt>true</tt>, <tt>false</tt>) <strong>many?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Is the cardinality of the association > 1
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Is the cardinality of the association > 1
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+168
+169
+170</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 168</span>
 
 <span class='kw'>def</span> <span class='id many?'>many?</span>
   <span class='ivar'>@type</span> <span class='op'>==</span> <span class='symbol'>:many</span>
@@ -762,13 +1352,16 @@ Returns the value of attribute type
       <div class="method_details ">
   <p class="signature " id="one?-instance_method">
   
-    - (<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>one?</strong> 
+    - (<tt>true</tt>, <tt>false</tt>) <strong>one?</strong> 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
-    
+    <p>
+Is the cardinality of the association == 1
+</p>
+
 
   </div>
 </div>
@@ -778,10 +1371,16 @@ Returns the value of attribute type
   
     <li>
       
-        <span class='type'>(<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
       
+      
+        &mdash;
+        <div class='inline'><p>
+Is the cardinality of the association == 1
+</p>
+</div>
       
     </li>
   
@@ -793,12 +1392,12 @@ Returns the value of attribute type
       <pre class="lines">
 
 
-131
-132
-133</pre>
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 131</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id one?'>one?</span>
   <span class='ivar'>@type</span> <span class='op'>==</span> <span class='symbol'>:one</span>
@@ -811,13 +1410,16 @@ Returns the value of attribute type
       <div class="method_details ">
   <p class="signature " id="polymorphic?-instance_method">
   
-    - (<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>polymorphic?</strong> 
+    - (<tt>true</tt>, <tt>false</tt>) <strong>polymorphic?</strong> 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
-    
+    <p>
+TODO: Polymorphic not supported
+</p>
+
 
   </div>
 </div>
@@ -827,10 +1429,16 @@ Returns the value of attribute type
   
     <li>
       
-        <span class='type'>(<tt><a href="../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
       
+      
+        &mdash;
+        <div class='inline'><p>
+Does the association support more than one associated class
+</p>
+</div>
       
     </li>
   
@@ -842,12 +1450,12 @@ Returns the value of attribute type
       <pre class="lines">
 
 
-139
-140
-141</pre>
+184
+185
+186</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 139</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 184</span>
 
 <span class='kw'>def</span> <span class='id polymorphic?'>polymorphic?</span>
   <span class='kw'>false</span>
@@ -860,22 +1468,52 @@ Returns the value of attribute type
       <div class="method_details ">
   <p class="signature " id="proxy_class-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>proxy_class</strong> 
+    - (<tt>Class</tt>) <strong>proxy_class</strong> 
   
 
   
-</p><table class="source_code">
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The association proxy class
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Class</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the association proxy class
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-147
-148
-149</pre>
+199
+200
+201</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 199</span>
 
 <span class='kw'>def</span> <span class='id proxy_class'>proxy_class</span>
   <span class='ivar'>@proxy_class</span> <span class='op'>||=</span> <span class='id proxy_class_name'>proxy_class_name</span><span class='period'>.</span><span class='id constantize'>constantize</span>
@@ -888,29 +1526,184 @@ Returns the value of attribute type
       <div class="method_details ">
   <p class="signature " id="proxy_class_name-instance_method">
   
-    - (<tt><a href="../Object.html" title="Object (class)">Object</a></tt>) <strong>proxy_class_name</strong> 
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>proxy_class_name</strong> 
   
 
   
-</p><table class="source_code">
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The class name of the association proxy
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the class name of the association proxy
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-151
-152
-153
-154
-155</pre>
+204
+205
+206
+207</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 151</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 204</span>
 
 <span class='kw'>def</span> <span class='id proxy_class_name'>proxy_class_name</span>
-  <span class='ivar'>@using</span>   <span class='op'>||=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:using</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='lparen'>(</span><span class='id embeddable?'>embeddable?</span> <span class='op'>?</span> <span class='symbol'>:embedded</span> <span class='op'>:</span> <span class='symbol'>:link</span><span class='rparen'>)</span>
-  <span class='id klass_name'>klass_name</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id many?'>many?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Many</span><span class='tstring_end'>'</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>One</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='ivar'>@using</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='period'>.</span><span class='id camelize'>camelize</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Polymorphic</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id polymorphic?'>polymorphic?</span><span class='rparen'>)</span><span class='period'>.</span><span class='id to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Proxy</span><span class='tstring_end'>'</span></span>
+  <span class='id klass_name'>klass_name</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id many?'>many?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Many</span><span class='tstring_end'>'</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>One</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id using'>using</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='period'>.</span><span class='id camelize'>camelize</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Polymorphic</span><span class='tstring_end'>'</span></span> <span class='kw'>if</span> <span class='id polymorphic?'>polymorphic?</span><span class='rparen'>)</span><span class='period'>.</span><span class='id to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Proxy</span><span class='tstring_end'>'</span></span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Ripple::Associations::</span><span class='embexpr_beg'>#{</span><span class='id klass_name'>klass_name</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="using-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>) <strong>using</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Which method is used for representing the association - currently only
+supports :embedded and :linked
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+which method is used for representing the association - currently only
+supports :embedded and :linked
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+232
+233
+234</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 232</span>
+
+<span class='kw'>def</span> <span class='id using'>using</span>
+  <span class='ivar'>@using</span> <span class='op'>||=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:using</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='lparen'>(</span><span class='id embeddable?'>embeddable?</span> <span class='op'>?</span> <span class='symbol'>:embedded</span> <span class='op'>:</span> <span class='symbol'>:linked</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="verify_type!-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>verify_type!</strong>(value, owner) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+if the value does not match the class of the association
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+237
+238
+239
+240
+241
+242
+243
+244
+245</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 237</span>
+
+<span class='kw'>def</span> <span class='id verify_type!'>verify_type!</span><span class='lparen'>(</span><span class='id value'>value</span><span class='comma'>,</span> <span class='id owner'>owner</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id type_matches?'>type_matches?</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+    <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>invalid_association_value</span><span class='tstring_end'>'</span></span><span class='comma'>,</span>
+                              <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='id name'>name</span><span class='comma'>,</span>
+                              <span class='symbol'>:owner</span> <span class='op'>=&gt;</span> <span class='id owner'>owner</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='comma'>,</span>
+                              <span class='symbol'>:klass</span> <span class='op'>=&gt;</span> <span class='id polymorphic?'>polymorphic?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;polymorphic&gt;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='id klass'>klass</span><span class='period'>.</span><span class='id name'>name</span><span class='comma'>,</span>
+                              <span class='symbol'>:value</span> <span class='op'>=&gt;</span> <span class='id value'>value</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -922,9 +1715,9 @@ Returns the value of attribute type
 </div>
     
     <div id="footer">
-  Generated on Tue Jun  8 17:21:09 2010 by 
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.4 (ruby-1.9.1).
+  Generated on Tue Aug 31 17:58:41 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
 </div>
 
   </body>

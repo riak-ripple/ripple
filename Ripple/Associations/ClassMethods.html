@@ -24,7 +24,7 @@
       <div id="menu">
   
     <a href="../../_index.html">Index (C)</a> &raquo; 
-    <span class='title'><a href="../../Ripple.html" title="Ripple (module)">Ripple</a></span> &raquo; <span class='title'><a href="../Associations.html" title="Ripple::Associations (module)">Associations</a></span>
+    <span class='title'><span class='object_link'><a href="../../Ripple.html" title="Ripple (module)">Ripple</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Associations.html" title="Ripple::Associations (module)">Associations</a></span></span>
      &raquo; 
     <span class="title">ClassMethods</span>
   
@@ -43,7 +43,8 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Module: Ripple::Associations::ClassMethods 
+    <div id="content"><h1>Module: Ripple::Associations::ClassMethods
+  
   
   
 </h1>
@@ -67,7 +68,10 @@
 
 
   
-    <h2>Instance Method Summary</h2>
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
 
     <ul class="summary">
       
@@ -79,6 +83,7 @@
 
     
   </span>
+  
   
   
   
@@ -107,6 +112,7 @@ Associations defined on the document.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -125,6 +131,7 @@ Associations of embedded documents.
 
     
   </span>
+  
   
   
   
@@ -153,6 +160,7 @@ Creates a plural association.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -175,7 +183,7 @@ Creates a singular association.
       <div class="method_details first">
   <p class="signature first" id="associations-instance_method">
   
-    - (<tt><a href="../../Object.html" title="Object (class)">Object</a></tt>) <strong>associations</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>associations</strong> 
   
 
   
@@ -196,12 +204,12 @@ Associations defined on the document
       <pre class="lines">
 
 
-37
-38
-39</pre>
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id associations'>associations</span>
   <span class='ivar'>@associations</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span>
@@ -214,7 +222,7 @@ Associations defined on the document
       <div class="method_details ">
   <p class="signature " id="embedded_associations-instance_method">
   
-    - (<tt><a href="../../Object.html" title="Object (class)">Object</a></tt>) <strong>embedded_associations</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>embedded_associations</strong> 
   
 
   
@@ -235,12 +243,12 @@ Associations of embedded documents
       <pre class="lines">
 
 
-42
-43
-44</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id embedded_associations'>embedded_associations</span>
   <span class='id associations'>associations</span><span class='period'>.</span><span class='id values'>values</span><span class='period'>.</span><span class='id select'>select</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:embeddable?</span><span class='rparen'>)</span>
@@ -253,7 +261,7 @@ Associations of embedded documents
       <div class="method_details ">
   <p class="signature " id="many-instance_method">
   
-    - (<tt><a href="../../Object.html" title="Object (class)">Object</a></tt>) <strong>many</strong>(name, options = {}) 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>many</strong>(name, options = {}) 
   
 
   
@@ -274,12 +282,12 @@ Creates a plural association
       <pre class="lines">
 
 
-52
-53
-54</pre>
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id many'>many</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id create_association'>create_association</span><span class='lparen'>(</span><span class='symbol'>:many</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -292,7 +300,7 @@ Creates a plural association
       <div class="method_details ">
   <p class="signature " id="one-instance_method">
   
-    - (<tt><a href="../../Object.html" title="Object (class)">Object</a></tt>) <strong>one</strong>(name, options = {}) 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>one</strong>(name, options = {}) 
   
 
   
@@ -313,12 +321,12 @@ Creates a singular association
       <pre class="lines">
 
 
-47
-48
-49</pre>
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 82</span>
 
 <span class='kw'>def</span> <span class='id one'>one</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id create_association'>create_association</span><span class='lparen'>(</span><span class='symbol'>:one</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -333,9 +341,9 @@ Creates a singular association
 </div>
     
     <div id="footer">
-  Generated on Tue Jun  8 17:21:09 2010 by 
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.4 (ruby-1.9.1).
+  Generated on Tue Aug 31 17:58:41 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
 </div>
 
   </body>

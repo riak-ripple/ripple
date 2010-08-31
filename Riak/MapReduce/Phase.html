@@ -24,7 +24,7 @@
       <div id="menu">
   
     <a href="../../_index.html">Index (P)</a> &raquo; 
-    <span class='title'><a href="../../Riak.html" title="Riak (module)">Riak</a></span> &raquo; <span class='title'><a href="../MapReduce.html" title="Riak::MapReduce (class)">MapReduce</a></span>
+    <span class='title'><span class='object_link'><a href="../../Riak.html" title="Riak (module)">Riak</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../MapReduce.html" title="Riak::MapReduce (class)">MapReduce</a></span></span>
      &raquo; 
     <span class="title">Phase</span>
   
@@ -43,7 +43,8 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Class: Riak::MapReduce::Phase 
+    <div id="content"><h1>Class: Riak::MapReduce::Phase
+  
   
   
 </h1>
@@ -52,10 +53,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName"><a href="../../Object.html" title="Object (class)">Object</a></span>
+      <span class="inheritName"><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></span>
       
         <ul class="fullTree">
-          <li><a href="../../Object.html" title="Object (class)">Object</a></li>
+          <li><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></li>
           
             <li class="next">Riak::MapReduce::Phase</li>
           
@@ -70,7 +71,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></dd>
+      <dd class="r2"><span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></span></dd>
       
     
   
@@ -86,7 +87,7 @@
   <div class="discussion">
     <p>
 Represents an individual phase in a map-reduce pipeline. Generally
-you&#8217;ll want to call methods of <tt><a href="../MapReduce.html" title="Riak::MapReduce (class)">MapReduce</a></tt> instead of using this
+you&#8217;ll want to call methods of MapReduce instead of using this
 directly.
 </p>
 
@@ -101,7 +102,7 @@ directly.
   
   
   
-  <h2>Instance Attribute Summary</h2>
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
     
       <li class="public ">
@@ -116,6 +117,7 @@ directly.
   
     
     
+  
   
   
   
@@ -142,6 +144,7 @@ Any extra static arguments to pass to the phase.
   
     
     
+  
   
   
   
@@ -173,6 +176,7 @@ hash with bucket/key), or the module + function in Erlang to run.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -195,6 +199,7 @@ Whether results of this phase will be returned.
   
     
     
+  
   
   
   
@@ -226,6 +231,7 @@ The language of the phase&#8217;s function - &#8220;javascript&#8221; or
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -240,7 +246,10 @@ The type of phase - :map, :reduce, or :link.
 
 
   
-    <h2>Instance Method Summary</h2>
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
 
     <ul class="summary">
       
@@ -252,6 +261,7 @@ The type of phase - :map, :reduce, or :link.
 
     
   </span>
+  
   
   
   
@@ -283,6 +293,7 @@ invocation.
   
   
   
+  
 
   
     <span class="summary_desc"><div class='inline'><p>
@@ -301,6 +312,7 @@ Creates a phase in the map-reduce pipeline.
 
     
   </span>
+  
   
   
   
@@ -327,15 +339,15 @@ Converts the phase to JSON for use while invoking a job.
   
   
   
-  <h3 class="inherited">Methods included from <a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></h3>
-  <p class="inherited"><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a>, <a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></p>
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><a href="" title="Riak::MapReduce::Phase (class)">Phase</a></tt>) <strong>initialize</strong>(options = {}) 
+    - (<tt><span class='object_link'><a href="" title="Riak::MapReduce::Phase (class)">Phase</a></span></tt>) <strong>initialize</strong>(options = {}) 
   
 
   
@@ -380,7 +392,7 @@ options for the phase
     <ul class="option">
       
         <li>
-          <span class="type">(<tt><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
           <span class="name">:type</span>
           <span class="default">
             
@@ -394,7 +406,7 @@ one of :map, :reduce, :link
         </tr>
       
         <li>
-          <span class="type">(<tt><a href="../../String.html" title="String (class)">String</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:language</span>
           <span class="default">
             
@@ -409,7 +421,7 @@ one of :map, :reduce, :link
         </tr>
       
         <li>
-          <span class="type">(<tt><a href="../../String.html" title="String (class)">String</a></tt>, <tt>Array</tt>, <tt>Hash</tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array</tt>, <tt>Hash</tt>)</span>
           <span class="name">:function</span>
           <span class="default">
             
@@ -425,7 +437,7 @@ For a :link phase, a hash including any of :bucket, :tag or a WalkSpec.
         </tr>
       
         <li>
-          <span class="type">(<tt><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+          <span class="type">(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
           <span class="name">:keep</span>
           <span class="default">
             
@@ -463,16 +475,16 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-186
-187
-188
 189
 190
 191
-192</pre>
+192
+193
+194
+195</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 186</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 189</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id type'>type</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span>
@@ -537,12 +549,12 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-177
-178
-179</pre>
+180
+181
+182</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 177</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 180</span>
 
 <span class='kw'>def</span> <span class='id arg'>arg</span>
   <span class='ivar'>@arg</span>
@@ -558,7 +570,7 @@ any extra static arguments to pass to the phase
       <div class="method_details ">
   <p class="signature " id="function-instance_method">
   
-    - (<tt><a href="../../String.html" title="String (class)">String</a></tt>, ...) <strong>function</strong> 
+    - (<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, ...) <strong>function</strong> 
   
 
   
@@ -567,7 +579,7 @@ any extra static arguments to pass to the phase
     <p>
 For :map and :reduce types, the Javascript function to run (as a string or
 hash with bucket/key), or the module + function in Erlang to run. For a
-:link type, a <tt><a href="../WalkSpec.html" title="Riak::WalkSpec (class)">Riak::WalkSpec</a></tt> or an equivalent hash.
+:link type, a <span class='object_link'><a href="../WalkSpec.html" title="Riak::WalkSpec (class)">Riak::WalkSpec</a></span> or an equivalent hash.
 </p>
 
 
@@ -579,7 +591,7 @@ hash with bucket/key), or the module + function in Erlang to run. For a
   
     <li>
       
-        <span class='type'>(<tt><a href="../../String.html" title="String (class)">String</a></tt>, <tt>Array&lt;<a href="../../String.html" title="String (class)">String</a>, <a href="../../String.html" title="String (class)">String</a>&gt;</tt>, <tt>Hash</tt>, <tt><a href="../WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>, <span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>, <tt>Hash</tt>, <tt><span class='object_link'><a href="../WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a></span></tt>)</span>
       
       
       
@@ -588,7 +600,7 @@ hash with bucket/key), or the module + function in Erlang to run. For a
         <div class='inline'><p>
 For :map and :reduce types, the Javascript function to run (as a string or
 hash with bucket/key), or the module + function in Erlang to run. For a
-:link type, a <tt><a href="../WalkSpec.html" title="Riak::WalkSpec (class)">Riak::WalkSpec</a></tt> or an equivalent hash.
+:link type, a <span class='object_link'><a href="../WalkSpec.html" title="Riak::WalkSpec (class)">Riak::WalkSpec</a></span> or an equivalent hash.
 </p>
 </div>
       
@@ -602,12 +614,12 @@ hash with bucket/key), or the module + function in Erlang to run. For a
       <pre class="lines">
 
 
-168
-169
-170</pre>
+171
+172
+173</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 168</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 171</span>
 
 <span class='kw'>def</span> <span class='id function'>function</span>
   <span class='ivar'>@function</span>
@@ -623,7 +635,7 @@ hash with bucket/key), or the module + function in Erlang to run. For a
       <div class="method_details ">
   <p class="signature " id="keep-instance_method">
   
-    - (<tt><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></tt>) <strong>keep</strong> 
+    - (<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>keep</strong> 
   
 
   
@@ -642,7 +654,7 @@ Whether results of this phase will be returned
   
     <li>
       
-        <span class='type'>(<tt><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
       
       
@@ -663,12 +675,12 @@ whether results of this phase will be returned
       <pre class="lines">
 
 
-174
-175
-176</pre>
+177
+178
+179</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 174</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 177</span>
 
 <span class='kw'>def</span> <span class='id keep'>keep</span>
   <span class='ivar'>@keep</span>
@@ -684,7 +696,7 @@ whether results of this phase will be returned
       <div class="method_details ">
   <p class="signature " id="language-instance_method">
   
-    - (<tt><a href="../../String.html" title="String (class)">String</a></tt>) <strong>language</strong> 
+    - (<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>) <strong>language</strong> 
   
 
   
@@ -704,7 +716,7 @@ The language of the phase&#8217;s function - &#8220;javascript&#8221; or
   
     <li>
       
-        <span class='type'>(<tt><a href="../../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -726,12 +738,12 @@ the language of the phase&#8217;s function - &#8220;javascript&#8221; or
       <pre class="lines">
 
 
-171
-172
-173</pre>
+174
+175
+176</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 171</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 174</span>
 
 <span class='kw'>def</span> <span class='id language'>language</span>
   <span class='ivar'>@language</span>
@@ -747,7 +759,7 @@ the language of the phase&#8217;s function - &#8220;javascript&#8221; or
       <div class="method_details ">
   <p class="signature " id="type-instance_method">
   
-    - (<tt><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></tt>) <strong>type</strong> 
+    - (<tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>) <strong>type</strong> 
   
 
   
@@ -766,7 +778,7 @@ The type of phase - :map, :reduce, or :link
   
     <li>
       
-        <span class='type'>(<tt><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
       
       
       
@@ -787,12 +799,12 @@ the type of phase - :map, :reduce, or :link
       <pre class="lines">
 
 
-165
-166
-167</pre>
+168
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 165</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 168</span>
 
 <span class='kw'>def</span> <span class='id type'>type</span>
   <span class='ivar'>@type</span>
@@ -853,9 +865,6 @@ a Hash-equivalent of the phase
       <pre class="lines">
 
 
-225
-226
-227
 228
 229
 230
@@ -875,10 +884,13 @@ a Hash-equivalent of the phase
 244
 245
 246
-247</pre>
+247
+248
+249
+250</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 225</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 228</span>
 
 <span class='kw'>def</span> <span class='id as_json'>as_json</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id obj'>obj</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id type'>type</span>
@@ -911,7 +923,7 @@ a Hash-equivalent of the phase
       <div class="method_details ">
   <p class="signature " id="to_json-instance_method">
   
-    - (<tt><a href="../../String.html" title="String (class)">String</a></tt>) <strong>to_json</strong>(options = nil) 
+    - (<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>) <strong>to_json</strong>(options = nil) 
   
 
   
@@ -930,7 +942,7 @@ Converts the phase to JSON for use while invoking a job.
   
     <li>
       
-        <span class='type'>(<tt><a href="../../String.html" title="String (class)">String</a></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -951,12 +963,12 @@ a JSON representation of the phase
       <pre class="lines">
 
 
-219
-220
-221</pre>
+222
+223
+224</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 219</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 222</span>
 
 <span class='kw'>def</span> <span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>JSON</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='id as_json'>as_json</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -971,9 +983,9 @@ a JSON representation of the phase
 </div>
     
     <div id="footer">
-  Generated on Tue Jun  8 17:21:09 2010 by 
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.4 (ruby-1.9.1).
+  Generated on Tue Aug 31 17:58:42 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
 </div>
 
   </body>

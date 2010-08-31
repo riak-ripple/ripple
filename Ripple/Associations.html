@@ -24,7 +24,7 @@
       <div id="menu">
   
     <a href="../_index.html">Index (A)</a> &raquo; 
-    <span class='title'><a href="../Ripple.html" title="Ripple (module)">Ripple</a></span>
+    <span class='title'><span class='object_link'><a href="../Ripple.html" title="Ripple (module)">Ripple</a></span></span>
      &raquo; 
     <span class="title">Associations</span>
   
@@ -43,7 +43,8 @@
     
     <iframe id="search_frame"></iframe>
     
-    <div id="content"><h1>Module: Ripple::Associations 
+    <div id="content"><h1>Module: Ripple::Associations
+  
   
   
 </h1>
@@ -52,7 +53,7 @@
   
   
     
-      <dt class="r1">Extends:</dt>
+      <dt class="r1">Extended by:</dt>
       <dd class="r1">ActiveSupport::Autoload, ActiveSupport::Concern</dd>
       
     
@@ -63,21 +64,63 @@
   
     <dt class="r2 last">Defined in:</dt>
     <dd class="r2 last">ripple/lib/ripple/associations.rb<span class="defines">,<br />
-  ripple/lib/ripple/associations/one.rb,<br /> ripple/lib/ripple/associations/many.rb,<br /> ripple/lib/ripple/associations/proxy.rb,<br /> ripple/lib/ripple/associations/linked.rb,<br /> ripple/lib/ripple/associations/embedded.rb,<br /> ripple/lib/ripple/associations/instantiators.rb,<br /> ripple/lib/ripple/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/associations/many_embedded_proxy.rb</span>
+  ripple/lib/ripple/associations/one.rb,<br /> ripple/lib/ripple/associations/many.rb,<br /> ripple/lib/ripple/associations/proxy.rb,<br /> ripple/lib/ripple/associations/linked.rb,<br /> ripple/lib/ripple/associations/embedded.rb,<br /> ripple/lib/ripple/associations/instantiators.rb,<br /> ripple/lib/ripple/associations/one_linked_proxy.rb,<br /> ripple/lib/ripple/associations/many_linked_proxy.rb,<br /> ripple/lib/ripple/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/associations/many_embedded_proxy.rb</span>
 </dd>
   
 </dl>
 <div class="clear"></div>
 
-<h2>Defined Under Namespace</h2>
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Adds associations via links and embedding to <span class='object_link'><a href="Document.html" title="Ripple::Document (module)">Document</a></span> models.
+Examples:
+</p>
+<pre class="code">
+  <span class='comment'># Documents can contain embedded documents, and link to other standalone documents
+</span>  <span class='comment'># via associations using the many and one class methods.
+</span>  <span class='kw'>class</span> <span class='const'>Person</span>
+    <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>Document</span>
+    <span class='id property'>property</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='const'>String</span>
+    <span class='id many'>many</span> <span class='symbol'>:addresses</span>
+    <span class='id many'>many</span> <span class='symbol'>:friends</span><span class='comma'>,</span> <span class='symbol'>:class_name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Person</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id one'>one</span> <span class='symbol'>:account</span>
+  <span class='kw'>end</span>
+   
+  <span class='comment'># Account and Address are embeddable documents
+</span>  <span class='kw'>class</span> <span class='const'>Account</span>
+    <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>EmbeddedDocument</span>
+    <span class='id property'>property</span> <span class='symbol'>:paid_until</span><span class='comma'>,</span> <span class='const'>Time</span>
+    <span class='id embedded_in'>embedded_in</span> <span class='symbol'>:person</span> <span class='comment'># Adds &quot;person&quot; method to get parent document
+</span>  <span class='kw'>end</span>
+   
+  <span class='kw'>class</span> <span class='const'>Address</span>
+    <span class='id include'>include</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>EmbeddedDocument</span>
+    <span class='id property'>property</span> <span class='symbol'>:street</span><span class='comma'>,</span> <span class='const'>String</span>
+    <span class='id property'>property</span> <span class='symbol'>:city</span><span class='comma'>,</span> <span class='const'>String</span>
+    <span class='id property'>property</span> <span class='symbol'>:state</span><span class='comma'>,</span> <span class='const'>String</span>
+    <span class='id property'>property</span> <span class='symbol'>:zip</span><span class='comma'>,</span> <span class='const'>String</span>
+  <span class='kw'>end</span>
+   
+  <span class='id person'>person</span> <span class='op'>=</span> <span class='const'>Person</span><span class='period'>.</span><span class='id find'>find</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>adamhunter</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id person'>person</span><span class='period'>.</span><span class='id friends'>friends</span> <span class='op'>&lt;&lt;</span> <span class='const'>Person</span><span class='period'>.</span><span class='id find'>find</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>seancribbs</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># Links to people/seancribbs with tag &quot;friend&quot;
+</span>  <span class='id person'>person</span><span class='period'>.</span><span class='id addresses'>addresses</span> <span class='op'>&lt;&lt;</span> <span class='const'>Address</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:street</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>100 Main Street</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># Adds an embedded address
+</span>  <span class='id person'>person</span><span class='period'>.</span><span class='id account'>account</span><span class='period'>.</span><span class='id paid_until'>paid_until</span> <span class='op'>=</span> <span class='int'>3</span><span class='period'>.</span><span class='id months'>months</span><span class='period'>.</span><span class='id from_now'>from_now</span></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><h2>Defined Under Namespace</h2>
 <p class="children">
    
     
-      <strong class="modules">Modules:</strong> <a href="Associations/ClassMethods.html" title="Ripple::Associations::ClassMethods (module)">ClassMethods</a>, <a href="Associations/Embedded.html" title="Ripple::Associations::Embedded (module)">Embedded</a>, <a href="Associations/InstanceMethods.html" title="Ripple::Associations::InstanceMethods (module)">InstanceMethods</a>, <a href="Associations/Instantiators.html" title="Ripple::Associations::Instantiators (module)">Instantiators</a>, <a href="Associations/Linked.html" title="Ripple::Associations::Linked (module)">Linked</a>, <a href="Associations/Many.html" title="Ripple::Associations::Many (module)">Many</a>, <a href="Associations/One.html" title="Ripple::Associations::One (module)">One</a>
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Associations/ClassMethods.html" title="Ripple::Associations::ClassMethods (module)">ClassMethods</a></span>, <span class='object_link'><a href="Associations/Embedded.html" title="Ripple::Associations::Embedded (module)">Embedded</a></span>, <span class='object_link'><a href="Associations/InstanceMethods.html" title="Ripple::Associations::InstanceMethods (module)">InstanceMethods</a></span>, <span class='object_link'><a href="Associations/Instantiators.html" title="Ripple::Associations::Instantiators (module)">Instantiators</a></span>, <span class='object_link'><a href="Associations/Linked.html" title="Ripple::Associations::Linked (module)">Linked</a></span>, <span class='object_link'><a href="Associations/Many.html" title="Ripple::Associations::Many (module)">Many</a></span>, <span class='object_link'><a href="Associations/One.html" title="Ripple::Associations::One (module)">One</a></span>
     
    
     
-      <strong class="classes">Classes:</strong> <a href="Associations/ManyEmbeddedProxy.html" title="Ripple::Associations::ManyEmbeddedProxy (class)">ManyEmbeddedProxy</a>, <a href="Associations/OneEmbeddedProxy.html" title="Ripple::Associations::OneEmbeddedProxy (class)">OneEmbeddedProxy</a>, <a href="Associations/Proxy.html" title="Ripple::Associations::Proxy (class)">Proxy</a>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Associations/ManyEmbeddedProxy.html" title="Ripple::Associations::ManyEmbeddedProxy (class)">ManyEmbeddedProxy</a></span>, <span class='object_link'><a href="Associations/ManyLinkedProxy.html" title="Ripple::Associations::ManyLinkedProxy (class)">ManyLinkedProxy</a></span>, <span class='object_link'><a href="Associations/OneEmbeddedProxy.html" title="Ripple::Associations::OneEmbeddedProxy (class)">OneEmbeddedProxy</a></span>, <span class='object_link'><a href="Associations/OneLinkedProxy.html" title="Ripple::Associations::OneLinkedProxy (class)">OneLinkedProxy</a></span>, <span class='object_link'><a href="Associations/Proxy.html" title="Ripple::Associations::Proxy (class)">Proxy</a></span>
     
   
 </p>
@@ -93,9 +136,9 @@
 </div>
     
     <div id="footer">
-  Generated on Tue Jun  8 17:21:09 2010 by 
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
-  0.5.4 (ruby-1.9.1).
+  Generated on Tue Aug 31 17:58:41 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.0 (ruby-1.9.2).
 </div>
 
   </body>
