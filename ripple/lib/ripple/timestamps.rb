@@ -14,10 +14,14 @@
 require 'ripple'
 
 module Ripple
+  # Adds automatic creation and update timestamps to a
+  # {Ripple::Document} model.
   module Timestamps
     extend ActiveSupport::Concern
 
     module ClassMethods
+      # Adds the :created_at and :updated_at timestamp properties to
+      # the document.
       def timestamps!
         property :created_at, Time, :default => proc { Time.now.utc }
         property :updated_at, Time
@@ -26,6 +30,7 @@ module Ripple
     end
 
     module InstanceMethods
+      # Sets the :updated_at attribute before saving the document.
       def touch
         self.updated_at = Time.now.utc
       end

@@ -15,6 +15,7 @@ require 'ripple'
 
 module Ripple
   module EmbeddedDocument
+    # @private
     module Finders
       extend ActiveSupport::Concern
 

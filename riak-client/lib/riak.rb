@@ -44,6 +44,7 @@ module Riak
   autoload :InvalidResponse, "riak/invalid_response"
   autoload :MapReduceError,  "riak/map_reduce_error"
 
+  # Utility classes and mixins
   module Util
     autoload :Escape,        "riak/util/escape"
     autoload :Headers,       "riak/util/headers"

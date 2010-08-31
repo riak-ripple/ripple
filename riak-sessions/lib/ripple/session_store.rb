@@ -20,6 +20,7 @@ rescue LoadError, NameError
 end
 
 module Ripple
+  # A Rails 3-compatible, Riak-backed session store.
   class SessionStore < ActionDispatch::Session::AbstractStore
     def initialize(app, options={})
       super

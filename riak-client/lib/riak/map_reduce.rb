@@ -161,7 +161,7 @@ module Riak
     end
 
     # Represents an individual phase in a map-reduce pipeline. Generally you'll want to call
-    # methods of {MapReduce} instead of using this directly.
+    # methods of MapReduce instead of using this directly.
     class Phase
       include Util::Translation
       # @return [Symbol] the type of phase - :map, :reduce, or :link

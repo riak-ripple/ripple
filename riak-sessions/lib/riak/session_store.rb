@@ -44,7 +44,6 @@ module Riak
     # Creates a new Riak::SessionStore middleware
     # @param app the Rack application
     # @param [Hash] options configuration options
-    # @option
     # @see Rack::Session::Abstract::ID#initialize
     def initialize(app, options={})
       super

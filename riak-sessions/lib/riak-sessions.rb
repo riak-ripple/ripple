@@ -23,7 +23,9 @@ if defined?(ActionDispatch)
     autoload :SessionStore, "ripple/session_store"
   end
 
+  # @private
   module ActionDispatch
+    # @private
     module Session
       autoload :RiakStore, "ripple/session_store"
     end

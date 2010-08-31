@@ -14,6 +14,8 @@
 require 'ripple'
 
 module Ripple
+  # Adds lifecycle callbacks to {Ripple::Document} models, in the typical
+  # ActiveModel fashion.
   module Callbacks
     extend ActiveSupport::Concern
 
@@ -24,6 +26,7 @@ module Ripple
     end
 
     module ClassMethods
+      # Defines a callback to be run before validations.
       def before_validation(*args, &block)
         options = args.last
         if options.is_a?(Hash) && options[:on]
@@ -33,6 +36,7 @@ module Ripple
         set_callback(:validation, :before, *args, &block)
       end
 
+      # Defines a callback to be run after validations.
       def after_validation(*args, &block)
         options = args.extract_options!
         options[:prepend] = true
@@ -43,6 +47,7 @@ module Ripple
       end
     end
 
+    # @private
     module InstanceMethods
       # @private
       def save(*args, &block)

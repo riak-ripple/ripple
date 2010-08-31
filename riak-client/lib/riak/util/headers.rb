@@ -14,6 +14,7 @@
 require 'riak'
 
 # Splits headers into < 8KB chunks
+# @private
 module Net::HTTPHeader
   def each_capitalized
     # 1.9 check
@@ -35,7 +36,8 @@ end
 
 module Riak
   module Util
-    # Represents headers from an HTTP response
+    # Represents headers from an HTTP request or response.
+    # Used internally by HTTP backends for processing headers.
     class Headers
       include Net::HTTPHeader
 

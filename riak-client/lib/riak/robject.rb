@@ -15,8 +15,8 @@ require 'riak'
 require 'set'
 
 module Riak
-  # Parent class of all object types supported by ripple. {Riak::RObject} represents
-  # the data and metadata stored in a bucket/key pair in the Riak database.
+  # Represents the data and metadata stored in a bucket/key pair in
+  # the Riak database, the base unit of data manipulation.  
   class RObject
     include Util
     include Util::Translation
@@ -52,10 +52,8 @@ module Riak
 
     # Loads a list of RObjects that were emitted from a MapReduce
     # query.
-    # @param [Client] client A Riak::Client with which the results will be
-    # associated
-    # @param [Array<Hash>] response A list of results a MapReduce job. Each
-    # entry should contain these keys: bucket, key, vclock, values
+    # @param [Client] client A Riak::Client with which the results will be associated
+    # @param [Array<Hash>] response A list of results a MapReduce job. Each entry should contain these keys: bucket, key, vclock, values
     # @return [Array<RObject>] An array of RObject instances
     def self.load_from_mapreduce(client, response)
       response.map do |item|
@@ -66,6 +64,7 @@ module Riak
     # Create a new object manually
     # @param [Bucket] bucket the bucket in which the object exists
     # @param [String] key the key at which the object resides. If nil, a key will be assigned when the object is saved.
+    # @yield self the new RObject
     # @see Bucket#get
     def initialize(bucket, key=nil)
       @bucket, @key = bucket, key
@@ -205,7 +204,9 @@ module Riak
     # Automatically serialized formats:
     # * JSON (application/json)
     # * YAML (text/yaml)
-    # * Marshal (application/octet-stream if meta['ruby-serialization'] == "Marshal")
+    # * Marshal (application/x-ruby-marshal)
+    # When given an IO-like object (e.g. File), no serialization will
+    # be done.
     # @param [Object] payload the data to serialize
     def serialize(payload)
       return payload if IO === payload
@@ -226,7 +227,7 @@ module Riak
     # Automatically deserialized formats:
     # * JSON (application/json)
     # * YAML (text/yaml)
-    # * Marshal (application/octet-stream if meta['ruby-serialization'] == "Marshal")
+    # * Marshal (application/x-ruby-marshal)
     # @param [String] body the serialized response body
     def deserialize(body)
       case @content_type
@@ -247,6 +248,7 @@ module Riak
     end
 
     # Walks links from this object to other objects in Riak.
+    # @param [Array<Hash,WalkSpec>] link specifications for the query
     def walk(*params)
       specs = WalkSpec.normalize(*params)
       response = @bucket.client.http.get(200, @bucket.client.prefix, escape(@bucket.name), escape(@key), specs.join("/"))
@@ -259,7 +261,9 @@ module Riak
       end
     end
 
-    # Converts the object to a link suitable for linking other objects to it
+    # Converts the object to a link suitable for linking other objects
+    # to it
+    # @param [String] tag the tag to apply to the link
     def to_link(tag)
       Link.new(@bucket.client.http.path(@bucket.client.prefix, escape(@bucket.name), escape(@key)).path, tag)
     end

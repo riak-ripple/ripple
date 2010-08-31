@@ -12,10 +12,14 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+
 module Riak
+  # An ActiveSupport::Cache::Store implementation that uses Riak.
+  # Compatible only with ActiveSupport version 3 or greater.
   class CacheStore < ActiveSupport::Cache::Store
     attr_accessor :client
 
+    # Creates a Riak-backed cache store.
     def initialize(options = {})
       super
       @bucket_name = options.delete(:bucket) || '_cache'

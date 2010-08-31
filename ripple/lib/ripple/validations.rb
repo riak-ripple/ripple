@@ -14,7 +14,6 @@
 require 'ripple'
 
 module Ripple
-
   # Raised by <tt>save!</tt> when the document is invalid.  Use the
   # +document+ method to retrieve the document which did not validate.
   #   begin
@@ -32,6 +31,8 @@ module Ripple
     end
   end
 
+  # Adds validations to {Ripple::Document} models. Validations are
+  # executed before saving the document.
   module Validations
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
@@ -60,11 +61,15 @@ module Ripple
         return false if options[:validate] && !valid?
         super()
       end
-      
+
+      # Saves the document and raises {DocumentInvalid} exception if
+      # validations fail. 
       def save!
         (raise Ripple::DocumentInvalid.new(self) unless save) || true
       end
 
+      # Sets the passed attributes and saves the document, raising a
+      # {DocumentInvalid} exception if the validations fail.
       def update_attributes!(attrs)
         self.attributes = attrs
         save!

@@ -1,5 +1,37 @@
 h1. Riak-Client/Ripple Release Notes
 
+h2. 0.8.0 Feature Release - 2010-08-31
+
+The 0.8.0 release is packed full of new features and bugfixes. Of particular note are:
+
+* Rails 3 final support
+* Session stores
+* Linked associations
+* Riak 0.12 support
+
+Full notes:
+
+* Ripple::Document classes can define their desired quorum parameters.
+* ripple and riak-sessions use Rails 3 final. riak-client is still compatible with active_support >= 2.3.5.
+* Keys are not loaded by default when requesting a Riak::Bucket. This matches the default for Riak 0.12.
+* Ripple::Document now supports update_attributes and update_attribute.
+* Inspection output has been improved for Ripple documents.
+* Ripple::Document classes can now have associations that use links.
+* Property-casting patches are now eagerly loaded.
+* Certain responses from MapReduce can be converted into Riak::RObjects. [Misha Gorodnitzky]
+* Key/bucket (un)escaping has been improved. [Nicolas Fouché]
+* Riak::CacheStore sets and uses bucket-default quorums instead of per-request parameters.
+* Riak::Bucket supports new quorum defaults.
+* The default configuration file for Ripple is now config/ripple.yml. [Ashley Woodard]
+* Added a Rails 3 model generator. [Ashley Woodard]
+* Serializing RObject data via Marshal is now simpler, using "application/x-ruby-marshal" content-type.
+* Large HTTP headers (Link tends to be one) are split into 8KB chunks for both backends.
+* Added session stores for Rack and Rails 3.
+* Document#find returns nil when all arguments are blank.
+* CurbBackend now properly handles IO objects as the request body data.
+* Ripple::Document classes that have the same bucket/key are equivalent using ==.
+* Ripple::Document classes can use a property as the key, as long as it's a String.
+
 h2. 0.7.1 Patch Release - 2010-06-08
 
 This release has no new features but includes bug fixes and some internal refactoring of the Ripple::Document hierarchy.

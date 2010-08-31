@@ -14,11 +14,13 @@
 require 'ripple'
 
 module Ripple
+  # Represents a document model that is composed into or stored in a parent
+  # Document.  Embedded documents may also embed other documents, have
+  # callbacks and validations, but are solely dependent on the parent Document.
   module EmbeddedDocument
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
 
-    autoload :Conversion
     autoload :Finders
     autoload :Persistence
     include Translation

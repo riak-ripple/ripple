@@ -15,7 +15,9 @@ require "rails/generators/named_base"
 require "rails/generators/active_model"
 
 module Ripple
+  # ActiveModel generators for use in a Rails project.
   module Generators
+    # @private
     class Base < ::Rails::Generators::NamedBase
 
       def self.source_root
@@ -24,6 +26,7 @@ module Ripple
       end
     end
 
+    # Generator for a {Ripple::Document} model
     class ActiveModel < ::Rails::Generators::ActiveModel
       def self.all(klass)
         "#{klass}.all"
@@ -60,6 +63,7 @@ module Ripple
   end
 end
 
+# @private
 module Rails
   module Generators
     class GeneratedAttribute #:nodoc:
