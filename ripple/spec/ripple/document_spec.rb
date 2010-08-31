@@ -27,6 +27,36 @@ describe Ripple::Document do
     Page.should_not be_embeddable
   end
 
+  describe "equivalence" do
+    before do
+      class Homepage < Page; end
+      class ErrorPage; include Ripple::Document; self.bucket_name = "pages"; end
+      @doc = Page.new
+      @doc2 = Page.new
+      @sub = Homepage.new
+      @error = ErrorPage.new
+      [@doc,@doc2,@sub,@error].each {|d| d.key = "root"; d.stub!(:new?).and_return(false) }
+    end
+
+    it "should be equal if the same object" do
+      @doc.should == @doc
+    end
+
+    it "should be equal if instance of same class and key" do
+      @doc.should == @doc2
+      @doc.should == @sub
+    end
+
+    it "should be equal if of the same bucket and key" do
+      @doc.should == @error
+    end
+
+    it "should not be equal if new record" do
+      @doc2.stub!(:new?).and_return(true)
+      @doc.should_not == @doc2
+    end
+  end
+
   describe "ActiveModel compatibility" do
     include ActiveModel::Lint::Tests
 

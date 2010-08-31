@@ -71,6 +71,13 @@ module Ripple
       def _root_document
         self
       end
+
+      # Returns true if the +comparison_object+ is the same object, or is of the same type and has the same key.
+      def ==(comparison_object)
+        comparison_object.equal?(self) ||
+          (comparison_object.class < Document && (comparison_object.instance_of?(self.class) || comparison_object.class.bucket.name == self.class.bucket.name) &&
+           comparison_object.key == key && !comparison_object.new?)
+      end
     end
   end
 end
