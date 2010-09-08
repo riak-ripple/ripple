@@ -25,3 +25,4 @@ doc
 create
 update-rails
 .bundle
+riak-client/spec/support/test_server.yml
