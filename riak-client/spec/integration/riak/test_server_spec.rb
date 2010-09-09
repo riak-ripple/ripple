@@ -22,9 +22,17 @@ end
 
 if $test_config
   describe Riak::TestServer do
+    before do
+      @server = Riak::TestServer.new($test_config.symbolize_keys)
+    end
+
+    after do
+      @server.stop
+      @server.cleanup
+    end
+
     describe "isolation from and modification of the existing install" do
       before do
-        @server = Riak::TestServer.new($test_config.symbolize_keys)
         @server.prepare!
         @riak_bin    = "#{@server.temp_dir}/bin/riak"
         @vm_args     = "#{@server.temp_dir}/etc/vm.args"
@@ -36,15 +44,15 @@ if $test_config
           File.should be_exist(File.expand_path(@app_config))
         end
 
-        it "should be a correct Erlang config" do          
+        it "should be a correct Erlang config" do
           config = File.read(@app_config)
           config[-2..-1].should == '].'
           config[0..0].should == '['
         end
 
-        it "should set the backend to use ets" do
+        it "should set the backend to use the cache backend" do
           File.readlines(@app_config).should be_any do |line|
-            line =~ /\{storage_backend\s*,\s*(.*)\}/ && $1 == "riak_kv_ets_backend"
+            line =~ /\{storage_backend\s*,\s*(.*)\}/ && $1 == "riak_kv_cache_backend"
           end
         end
 
@@ -69,13 +77,13 @@ if $test_config
         end
       end
 
-      describe "for vm.args" do          
+      describe "for vm.args" do
         it "should create the vm.args file in the temporary directory" do
           File.should be_exist(File.expand_path(@vm_args))
         end
 
         it "should set a quasi-random node name" do
-          File.readlines(@vm_args).should be_any do |line|            
+          File.readlines(@vm_args).should be_any do |line|
             line =~ /^-name (.*)/ && $1 =~ /riaktest\d+@/
           end
         end
@@ -122,6 +130,51 @@ if $test_config
             line =~ /RUNNER_BASE_DIR=(.*)/ && $1.strip != "${RUNNER_SCRIPT_DIR%/*}" && File.directory?($1)
           end
         end
+
+        it "should modify the PIPE_DIR to point to the temporary directory" do
+          File.readlines(@riak_bin).should be_any do |line|
+            line =~ /PIPE_DIR=(.*)/ &&  $1 == File.expand_path("#{@server.temp_dir}/pipe") && File.directory?($1)
+          end
+        end
+      end
+    end
+
+    it "should cleanup the existing config" do
+      @server.prepare!
+      @server.cleanup
+      File.should_not be_directory(@server.temp_dir)
+    end
+
+    it "should start Riak in the background" do
+      @server.prepare!
+      @server.start.should be_true
+      @server.ping.should be_true
+      @server.should be_started
+    end
+
+    it "should stop a started test server" do
+      @server.prepare!
+      @server.start.should be_true
+      @server.stop
+      @server.should_not be_started
+      @server.ping.should be_false
+    end
+
+    it "should recycle the server contents" do
+      begin
+        @server.prepare!
+        @server.start.should be_true
+        @server.ping.should be_true
+
+        client = Riak::Client.new(:port => 9000)
+        obj = client['test_bucket'].new("test_item")
+        obj.data = {"data" => "testing"}
+        obj.store rescue nil
+
+        @server.recycle
+        lambda { client['test_bucket']['test_item'] }.should raise_error(Riak::FailedRequest)
+      ensure
+        @server.stop
       end
     end
   end
