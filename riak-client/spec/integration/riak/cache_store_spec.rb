@@ -14,15 +14,29 @@
 require File.expand_path("../../spec_helper", File.dirname(__FILE__))
 
 describe Riak::CacheStore do
+  before :all do
+    if $test_server
+      @web_port = 9000
+      $test_server.start
+    end
+  end
+  
   before do
-    @cache = ActiveSupport::Cache.lookup_store(:riak_store)
+    @web_port ||= 8098
+    @cache = ActiveSupport::Cache.lookup_store(:riak_store, :port => @web_port)
     @cleanup = true
   end
 
   after do
-    @cache.bucket.keys(:force => true).each do |k|
-      @cache.bucket.delete(k, :rw => 1) unless k.blank?
-    end if @cleanup
+    if @cleanup
+      if $test_server
+        $test_server.recycle
+      else
+        @cache.bucket.keys(:force => true).each do |k|
+          @cache.bucket.delete(k, :rw => 1) unless k.blank?
+        end
+      end
+    end
   end
 
   describe "Riak integration" do

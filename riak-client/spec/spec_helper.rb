@@ -19,6 +19,18 @@ require 'riak'
 require 'rspec/autorun'
 require 'fakeweb'
 
+begin
+  require 'yaml'
+  config = YAML.load_file("spec/support/test_server.yml")
+  $test_server = Riak::TestServer.new(config.symbolize_keys)
+  $test_server.prepare!
+  $test_server.start
+  at_exit { $test_server.cleanup }
+rescue => e
+  warn "Can't run Riak::TestServer specs. Specify the location of your Riak installation in spec/support/test_server.yml. See Riak::TestServer docs for more info."
+  warn e.inspect
+end
+
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
 Rspec.configure do |config|

@@ -13,6 +13,8 @@
 #    limitations under the License.
 require 'riak'
 require 'tempfile'
+require 'expect'
+require 'open3'
 require 'riak/util/tcp_socket_extensions'
 
 module Riak
@@ -25,7 +27,7 @@ module Riak
         :ring_creation_size => 64
       },
       :riak_kv => {
-        :storage_backend => :riak_kv_cache_backend,
+        :storage_backend => :riak_kv_ets_backend,
         :pb_ip => "127.0.0.1",
         :pb_port => 9002,
         :js_vm_count => 8,
@@ -48,7 +50,7 @@ module Riak
       :vm_args => VM_ARGS_DEFAULTS,
       :temp_dir => File.join(Dir.tmpdir,'riaktest'),
     }
-    attr_accessor :temp_dir
+    attr_accessor :temp_dir, :app_config, :vm_args, :cin, :cout, :cerr, :cpid
 
     def initialize(options={})
       options   = deep_merge(DEFAULTS.dup, options)
@@ -80,25 +82,24 @@ module Riak
     def start
       if @prepared && !@started
         @mutex.synchronize do
-          system("#{@riak_script} start")
-          wait_for_startup
+          @cin, @cout, @cerr, @cpid = Open3.popen3("#{@riak_script} console")
+          @cin.puts
+          wait_for_erlang_prompt
           @started = true
         end
       end
-    end
-
-    # Checks whether the test server is running.
-    def ping
-      @prepared && `#{@riak_script} ping` =~ /pong/
     end
 
     # Stops the test server if it is running.
     def stop
       if @started
         @mutex.synchronize do
-          `#{@riak_script} stop`
-          wait_for_shutdown
-          @started = false
+          begin
+            @cin.puts "init:stop()."
+          rescue Errno::EPIPE
+          ensure
+            register_stop
+          end
         end
         true
       end
@@ -114,10 +115,19 @@ module Riak
     def recycle
       if @started
         @mutex.synchronize do
-          `#{@riak_script} restart`
-          wait_for_startup
+          begin
+            @cin.puts "init:restart()."
+            wait_for_erlang_prompt
+            wait_for_startup
+          rescue Errno::EPIPE
+            warn "Broken pipe when recycling, is Riak alive?"
+            register_stop
+            return false
+          end
         end
         true
+      else
+        start
       end
     end
 
@@ -198,10 +208,15 @@ module Riak
                                               :port => @app_config[:riak_core][:web_port], :timeout => 10)
     end
 
-    def wait_for_shutdown
-      TCPSocket.wait_for_service_termination_with_timeout(:host => @app_config[:riak_core][:web_ip],
-                                                          :port => @app_config[:riak_core][:web_port], :timeout => 10)
+    def wait_for_erlang_prompt
+      @cout.expect(/\(#{Regexp.escape(vm_args["-name"])}\)\d+>/)
     end
 
+    def register_stop
+      %w{@cin @cout @cerr}.each {|io| if instance_variable_get(io); instance_variable_get(io).close; instance_variable_set(io, nil) end }
+      _cpid = @cpid; @cpid = nil
+      at_exit { _cpid.join if _cpid.alive? }
+      @started = false
+    end
   end
 end

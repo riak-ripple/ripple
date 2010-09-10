@@ -13,17 +13,10 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", File.dirname(__FILE__))
 
-begin
-  require 'yaml'
-  $test_config = YAML.load_file(File.expand_path("../../support/test_server.yml", File.dirname(__FILE__)))
-rescue
-  warn "Can't run Riak::TestServer specs. Specify the location of your Riak installation in spec/support/test_server.yml. See Riak::TestServer docs for more info."
-end
-
-if $test_config
+if $test_server
   describe Riak::TestServer do
     before do
-      @server = Riak::TestServer.new($test_config.symbolize_keys)
+      @server = $test_server
     end
 
     after do
@@ -148,7 +141,6 @@ if $test_config
     it "should start Riak in the background" do
       @server.prepare!
       @server.start.should be_true
-      @server.ping.should be_true
       @server.should be_started
     end
 
@@ -157,14 +149,12 @@ if $test_config
       @server.start.should be_true
       @server.stop
       @server.should_not be_started
-      @server.ping.should be_false
     end
 
     it "should recycle the server contents" do
       begin
         @server.prepare!
         @server.start.should be_true
-        @server.ping.should be_true
 
         client = Riak::Client.new(:port => 9000)
         obj = client['test_bucket'].new("test_item")
@@ -172,7 +162,11 @@ if $test_config
         obj.store rescue nil
 
         @server.recycle
-        lambda { client['test_bucket']['test_item'] }.should raise_error(Riak::FailedRequest)
+        @server.should be_started
+        lambda do
+          puts client['test_bucket'].inspect
+          puts client['test_bucket']['test_item'].inspect
+        end.should raise_error(Riak::FailedRequest)
       ensure
         @server.stop
       end
