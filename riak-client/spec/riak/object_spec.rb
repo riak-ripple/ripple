@@ -335,6 +335,23 @@ describe Riak::RObject do
       @object.store_headers.should_not have_key("X-Riak-Vclock")
     end
 
+    describe "when conditional PUTs are requested" do
+      before :each do
+        @object.prevent_stale_writes = true
+      end
+
+      it "should include an If-None-Match: * header" do
+        @object.store_headers.should have_key("If-None-Match")
+        @object.store_headers["If-None-Match"].should == "*"
+      end
+
+      it "should include an If-Match header with the etag when an etag is present" do
+        @object.etag = "foobar"
+        @object.store_headers.should have_key("If-Match")
+        @object.store_headers["If-Match"].should == @object.etag
+      end
+    end
+
     describe "when links are defined" do
       before :each do
         @object.links << Riak::Link.new("/riak/foo/baz", "next")

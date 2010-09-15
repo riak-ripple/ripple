@@ -50,6 +50,10 @@ module Riak
     # @return [Hash] a hash of any X-Riak-Meta-* headers that were in the HTTP response, keyed on the trailing portion
     attr_accessor :meta
 
+    # @return [Boolean] whether to attempt to prevent stale writes using conditional PUT semantics, If-None-Match: * or If-Match: {#etag}
+    # @see http://wiki.basho.com/display/RIAK/REST+API#RESTAPI-Storeaneworexistingobjectwithakey Riak Rest API Docs
+    attr_accessor :prevent_stale_writes
+
     # Loads a list of RObjects that were emitted from a MapReduce
     # query.
     # @param [Client] client A Riak::Client with which the results will be associated
@@ -121,6 +125,11 @@ module Riak
       {}.tap do |hash|
         hash["Content-Type"] = @content_type
         hash["X-Riak-Vclock"] = @vclock if @vclock
+        if @prevent_stale_writes && @etag.present?
+          hash["If-Match"] = @etag
+        elsif @prevent_stale_writes
+          hash["If-None-Match"] = "*"
+        end
         unless @links.blank?
           hash["Link"] = @links.reject {|l| l.rel == "up" }.map(&:to_s).join(", ")
         end
