@@ -125,7 +125,7 @@ module Riak
       @data
     end
 
-    # @param [Object] unmarshaled form of the data to be stored in riak. Object will be serialized using #{serialize} if a known content_type is used. Setting this overrides values stored with {#raw_data=}
+    # @param [Object] unmarshaled form of the data to be stored in riak. Object will be serialized using {#serialize} if a known content_type is used. Setting this overrides values stored with {#raw_data=}
     # @return [Object] the object stored
     def data=(new_data)
       @raw_data = nil
@@ -141,8 +141,8 @@ module Riak
       @raw_data
     end
 
-    # @param [String|IO] the raw data to be stored in riak at this key, will not be marshaled or manipulated prior to storage. Overrides any data stored by #{data=}
-    # @return the data stored
+    # @param [String, IO] the raw data to be stored in riak at this key, will not be marshaled or manipulated prior to storage. Overrides any data stored by {#data=}
+    # @return [String] the data stored
     def raw_data=(new_raw_data)
       @data = nil
       @raw_data = new_raw_data
