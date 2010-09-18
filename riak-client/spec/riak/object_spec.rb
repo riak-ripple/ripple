@@ -118,6 +118,64 @@ describe Riak::RObject do
     end
   end
 
+  describe "data access methods" do
+    before :each do
+      @object = Riak::RObject.new(@bucket, "bar")
+      @object.content_type = "application/json"
+    end
+
+    describe "for raw data" do
+      describe "when unserialized data was already provided" do
+        before do
+          @object.data = { :some => :data }
+        end
+
+        it "should reset unserialized forms when stored" do
+          @object.raw_data = value = '{ "raw": "json" }'
+
+          @object.raw_data.should == value
+          @object.data.should == { "raw" => "json" }
+        end
+
+        it "should lazily serialize when read" do
+          @object.raw_data.should == '{"some":"data"}'
+        end
+      end
+
+      it "should not unnecessarily marshal/demarshal" do
+        @object.should_not_receive(:serialize)
+        @object.should_not_receive(:deserialize)
+        @object.raw_data = value = "{not even valid json!}}"
+        @object.raw_data.should == value
+      end
+    end
+
+    describe "for unserialized data" do
+      describe "when raw data was already provided" do
+        before do
+          @object.raw_data = '{"some":"data"}'
+        end
+
+        it "should reset previously stored raw data" do
+          @object.data = value = { "new" => "data" }
+          @object.raw_data.should == '{"new":"data"}'
+          @object.data.should == value
+        end
+
+        it "should lazily deserialize when read" do
+          @object.data.should == { "some" => "data" }
+        end
+      end
+
+      it "should not unnecessarily marshal/demarshal" do
+        @object.should_not_receive(:serialize)
+        @object.should_not_receive(:deserialize)
+        @object.data = value = { "some" => "data" }
+        @object.data.should == value
+      end
+    end
+  end
+
   describe "loading data from the response" do
     before :each do
       @object = Riak::RObject.new(@bucket, "bar")
@@ -130,7 +188,14 @@ describe Riak::RObject do
 
     it "should load the body data" do
       @object.load({:headers => {"content-type" => ["application/json"]}, :body => '{"foo":"bar"}'})
+      @object.raw_data.should be_present
       @object.data.should be_present
+    end
+
+    it "should handle raw data properly" do
+      @object.should_not_receive(:deserialize) # optimize for the raw_data case, don't penalize people for using raw_data
+      @object.load({:headers => {"content-type" => ["application/json"]}, :body => body = '{"foo":"bar"}'})
+      @object.raw_data.should == body
     end
 
     it "should deserialize the body data" do

@@ -35,9 +35,6 @@ module Riak
     attr_accessor :vclock
     alias_attribute :vector_clock, :vclock
 
-    # @return [Object] the data stored in Riak at this object's key. Varies in format by content-type, defaulting to String from the response body.
-    attr_accessor :data
-
     # @return [Set<Link>] a Set of {Riak::Link} objects for relationships between this object and other resources
     attr_accessor :links
 
@@ -93,7 +90,7 @@ module Riak
       end
       @conflict = response[:code].try(:to_i) == 300 && content_type =~ /multipart\/mixed/
       @siblings = nil
-      @data = deserialize(response[:body]) if response[:body].present?
+      self.raw_data = response[:body] if response[:body].present?
       self
     end
 
@@ -117,6 +114,38 @@ module Riak
         end
       end
       self
+    end
+
+    # @return [Object] the unmarshaled form of {#raw_data} stored in riak at this object's key 
+    def data
+      if @raw_data && !@data
+        @data = deserialize(@raw_data)
+        @raw_data = nil
+      end
+      @data
+    end
+
+    # @param [Object] unmarshaled form of the data to be stored in riak. Object will be serialized using #{serialize} if a known content_type is used. Setting this overrides values stored with {#raw_data=}
+    # @return [Object] the object stored
+    def data=(new_data)
+      @raw_data = nil
+      @data = new_data
+    end
+
+    # @return [String] raw data stored in riak for this object's key
+    def raw_data
+      if @data && !@raw_data
+        @raw_data = serialize(@data)
+        @data = nil
+      end
+      @raw_data
+    end
+
+    # @param [String|IO] the raw data to be stored in riak at this key, will not be marshaled or manipulated prior to storage. Overrides any data stored by #{data=}
+    # @return the data stored
+    def raw_data=(new_raw_data)
+      @data = nil
+      @raw_data = new_raw_data
     end
 
     # HTTP header hash that will be sent along when storing the object
