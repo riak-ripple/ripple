@@ -164,8 +164,7 @@ if $test_server
         @server.recycle
         @server.should be_started
         lambda do
-          puts client['test_bucket'].inspect
-          puts client['test_bucket']['test_item'].inspect
+          client['test_bucket']['test_item']
         end.should raise_error(Riak::FailedRequest)
       ensure
         @server.stop

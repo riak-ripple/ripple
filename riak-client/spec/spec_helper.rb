@@ -16,7 +16,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rubygems' # Use the gems path only for the spec suite
 require 'riak'
-require 'rspec/autorun'
+require 'rspec'
 require 'fakeweb'
 
 begin
@@ -35,7 +35,7 @@ Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
 Rspec.configure do |config|
   config.mock_with :rspec
-  
+
   config.before(:each) do
     FakeWeb.clean_registry
   end

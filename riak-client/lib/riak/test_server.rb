@@ -27,7 +27,7 @@ module Riak
         :ring_creation_size => 64
       },
       :riak_kv => {
-        :storage_backend => :riak_kv_ets_backend,
+        :storage_backend => :riak_kv_test_backend,
         :pb_ip => "127.0.0.1",
         :pb_port => 9002,
         :js_vm_count => 8,
@@ -43,7 +43,8 @@ module Riak
       "+A" => 64,
       "-smp" => "enable",
       "-env ERL_MAX_PORTS" => 4096,
-      "-env ERL_FULLSWEEP_AFTER" => 10
+      "-env ERL_FULLSWEEP_AFTER" => 10,
+      "-pa" => File.expand_path("../../../erl_src", __FILE__)
     }
     DEFAULTS = {
       :app_config => APP_CONFIG_DEFAULTS,
@@ -116,9 +117,14 @@ module Riak
       if @started
         @mutex.synchronize do
           begin
-            @cin.puts "init:restart()."
-            wait_for_erlang_prompt
-            wait_for_startup
+            if @app_config[:riak_kv][:storage_backend] == :riak_kv_test_backend
+              @cin.puts "riak_kv_test_backend:reset()."
+              wait_for_erlang_prompt
+            else
+              @cin.puts "init:restart()."
+              wait_for_erlang_prompt
+              wait_for_startup
+            end
           rescue Errno::EPIPE
             warn "Broken pipe when recycling, is Riak alive?"
             register_stop
