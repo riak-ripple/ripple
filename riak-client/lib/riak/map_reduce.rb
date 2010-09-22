@@ -77,6 +77,15 @@ module Riak
     alias :<< :add
     alias :include :add
 
+    # Use a search query to start a map/reduce job.
+    # @param [String, Bucket] bucket the bucket to search
+    # @param [String, Query] the query to run
+    # @return [MapReduce] self
+    def search(bucket, query)
+      @inputs = {:module => "riak_search", :function=> "mapred_search", :arg=>[bucket, query]}
+      self
+    end
+
     # Add a map phase to the job.
     # @overload map(function)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair
@@ -146,6 +155,12 @@ module Riak
     # Executes this map-reduce job.
     # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true. If there is only one "keep" phase, only the results from that phase will be returned.
     def run
+      # If we are running a map/reduce with no phases, then reflect the inputs back to the user. 
+      # This is especially useful during a search.
+      if query.size == 0
+          self.reduce(["riak_kv_mapreduce", "reduce_identity"], :keep => true)
+      end
+        
       response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
       if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
         ActiveSupport::JSON.decode(response[:body])
