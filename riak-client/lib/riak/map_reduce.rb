@@ -18,7 +18,7 @@ module Riak
   class MapReduce
     include Util::Translation
     include Util::Escape
-    
+
     # @return [Array<[bucket,key]>,String] The bucket/keys for input to the job, or the bucket (all keys).
     # @see #add
     attr_accessor :inputs
@@ -78,11 +78,12 @@ module Riak
     alias :include :add
 
     # Use a search query to start a map/reduce job.
-    # @param [String, Bucket] bucket the bucket to search
-    # @param [String, Query] the query to run
+    # @param [String, Bucket] bucket the bucket/index to search
+    # @param [String] query the query to run
     # @return [MapReduce] self
     def search(bucket, query)
-      @inputs = {:module => "riak_search", :function=> "mapred_search", :arg=>[bucket, query]}
+      bucket = bucket.name if bucket.respond_to?(:name)
+      @inputs = {:module => "riak_search", :function => "mapred_search", :arg => [bucket, query]}
       self
     end
 
@@ -143,10 +144,14 @@ module Riak
       return self
     end
     alias :timeout= :timeout
-    
+
     # Convert the job to JSON for submission over the HTTP interface.
     # @return [String] the JSON representation
     def to_json(options={})
+      # If we are running a map/reduce with no phases, then reflect the inputs back to the user.
+      # This is especially useful during a search.
+      reduce(["riak_kv_mapreduce", "reduce_identity"], :keep => true) if query.empty?
+
       hash = {"inputs" => inputs, "query" => query.map(&:as_json)}
       hash['timeout'] = @timeout.to_i if @timeout
       ActiveSupport::JSON.encode(hash, options)
@@ -155,12 +160,6 @@ module Riak
     # Executes this map-reduce job.
     # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true. If there is only one "keep" phase, only the results from that phase will be returned.
     def run
-      # If we are running a map/reduce with no phases, then reflect the inputs back to the user. 
-      # This is especially useful during a search.
-      if query.size == 0
-          self.reduce(["riak_kv_mapreduce", "reduce_identity"], :keep => true)
-      end
-        
       response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
       if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
         ActiveSupport::JSON.decode(response[:body])

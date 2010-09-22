@@ -103,6 +103,18 @@ describe Riak::MapReduce do
     end
   end
 
+  describe "using a search query as inputs" do
+    it "should accept a bucket name and query" do
+      @mr.search("foo", "bar OR baz")
+      @mr.inputs.should == {:module => "riak_search", :function => "mapred_search", :arg => ["foo", "bar OR baz"]}
+    end
+
+    it "should accept a Riak::Bucket and query" do
+      @mr.search(Riak::Bucket.new(@client, "foo"), "bar OR baz")
+      @mr.inputs.should == {:module => "riak_search", :function => "mapred_search", :arg => ["foo", "bar OR baz"]}
+    end
+  end
+
   [:map, :reduce].each do |type|
     describe "adding #{type} phases" do
       it "should return self for chaining" do
@@ -198,6 +210,14 @@ describe Riak::MapReduce do
       @mr.to_json.should include('"inputs":"foo"')
     end
 
+    it "should emit the Erlang function and arguments when there are search inputs" do
+      @mr.search("foo", "bar OR baz")
+      @mr.to_json.should include('"inputs":{')
+      @mr.to_json.should include('"module":"riak_search"')
+      @mr.to_json.should include('"function":"mapred_search"')
+      @mr.to_json.should include('"arg":["foo","bar OR baz"]')
+    end
+
     it "should emit an array of inputs when there are multiple inputs" do
       @mr.add("foo","bar",1000).add("foo","baz")
       @mr.to_json.should include('"inputs":[["foo","bar",1000],["foo","baz"]]')
@@ -208,9 +228,17 @@ describe Riak::MapReduce do
       @mr.to_json.should include('"timeout":50000')
     end
 
-    it "should return self from setting the timeout" do
-      @mr.timeout(5000).should == @mr
+    it "should add an identity reduce phase when no phases are defined" do
+      @mr.query.clear
+      @mr.to_json.should include('"query":[{"reduce":{')
+      @mr.to_json.should include('"module":"riak_kv_mapreduce"')
+      @mr.to_json.should include('"function":"reduce_identity"')
+      @mr.to_json.should include('"keep":true')
     end
+  end
+
+  it "should return self from setting the timeout" do
+    @mr.timeout(5000).should == @mr
   end
 
   describe "executing the map reduce job" do
@@ -335,7 +363,7 @@ describe Riak::MapReduce::Phase do
           @phase.to_json.should include('"name":"Riak.mapValues"')
           @phase.to_json.should_not include('"source"')
         end
-        
+
         it "should include the bucket and key when referring to a stored function" do
           @phase.function = {:bucket => "design", :key => "wordcount_map"}
           @phase.to_json.should include('"bucket":"design"')
