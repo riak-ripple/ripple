@@ -191,7 +191,7 @@ module Riak
       raise ArgumentError, t("content_type_undefined") unless @content_type.present?
       params = {:returnbody => true}.merge(options)
       method, codes, path = @key.present? ? [:put, [200,204,300], "#{escape(@bucket.name)}/#{escape(@key)}"] : [:post, 201, escape(@bucket.name)]
-      response = @bucket.client.http.send(method, codes, @bucket.client.prefix, path, params, serialize(data), store_headers)
+      response = @bucket.client.http.send(method, codes, @bucket.client.prefix, path, params, raw_data, store_headers)
       load(response)
     end
 

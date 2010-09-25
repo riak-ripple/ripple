@@ -529,6 +529,22 @@ describe Riak::RObject do
         @object.key = "bar"
       end
 
+      describe "when the content is of a known serializable type" do
+        before :each do
+          @object.content_type = "application/json"
+          @headers = @object.store_headers
+        end
+
+        it "should not serialize content if #raw_data is used" do
+          storing = @object.raw_data = "{this is probably invalid json}}"
+          @http.should_receive(:put).with([200,204,300], "/riak/", "foo/bar", {:returnbody => true}, storing, @headers).and_return({:headers => {"x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
+          @object.should_not_receive(:serialize)
+          @object.should_not_receive(:deserialize)
+          @object.store
+          @object.raw_data.should == storing
+        end
+      end
+
       it "should issue a PUT request to the bucket, and update the object properties (returning the body by default)" do
         @http.should_receive(:put).with([200,204,300], "/riak/", "foo/bar", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @object.store
