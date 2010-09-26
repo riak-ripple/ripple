@@ -29,6 +29,9 @@ module Ripple
           def key=(value)
             self.#{prop} = value
           end
+          def key_attr
+            :#{prop}
+          end          
           CODE
         end
       end
@@ -43,6 +46,10 @@ module Ripple
         def key=(value)
           @key = value.to_s
         end
+
+        def key_attr
+          :key
+        end        
       end
     end
   end

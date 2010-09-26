@@ -37,6 +37,7 @@ module Ripple
       include Ripple::Conversion
       include Finders
       include Ripple::Inspection
+      include Ripple::NestedAttributes
     end
 
     module ClassMethods

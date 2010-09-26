@@ -12,3 +12,4 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'ripple/core_ext/casting'
+require 'ripple/core_ext/hash'
