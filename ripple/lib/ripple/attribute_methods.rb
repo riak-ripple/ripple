@@ -102,7 +102,7 @@ module Ripple
 
       def attributes_from_property_defaults
         self.class.properties.values.inject({}) do |hash, prop|
-          hash[prop.key] = prop.default if prop.default
+          hash[prop.key] = prop.default unless prop.default.nil?
           hash
         end.with_indifferent_access
       end

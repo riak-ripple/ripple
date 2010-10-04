@@ -16,6 +16,7 @@ class Widget
   include Ripple::Document
   property :size, Integer
   property :name, String, :default => "widget"
+  property :manufactured, Boolean, :default => false
 end
 
 class Cog < Widget
