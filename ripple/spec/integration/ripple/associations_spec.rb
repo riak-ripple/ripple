@@ -14,8 +14,10 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe "Ripple Associations" do
+  require 'support/test_server'
+
   before :all do
-    Object.module_eval do      
+    Object.module_eval do
       class User
         include Ripple::Document
         one  :profile
@@ -37,7 +39,7 @@ describe "Ripple Associations" do
       end
     end
   end
-  
+
   before :each do
     @user     = User.new(:email => 'riak@ripple.com')
     @profile  = Profile.new(:name => 'Ripple')
@@ -46,7 +48,7 @@ describe "Ripple Associations" do
     @friend1 = User.create(:email => "friend@ripple.com")
     @friend2 = User.create(:email => "friend2@ripple.com")
   end
-  
+
   it "should save one embedded associations" do
     @user.profile = @profile
     @user.save
@@ -55,7 +57,7 @@ describe "Ripple Associations" do
     @found.profile.should be_a(Profile)
     @found.profile.user.should == @found
   end
-  
+
   it "should save many embedded associations" do
     @user.addresses << @billing << @shipping
     @user.save
@@ -71,7 +73,7 @@ describe "Ripple Associations" do
     @ship.should be_a(Address)
   end
 
-  it "should save a many linked association" do    
+  it "should save a many linked association" do
     @user.friends << @friend1 << @friend2
     @user.save
     @user.should_not be_new_record
@@ -87,7 +89,7 @@ describe "Ripple Associations" do
     @found = User.find(@user.key)
     @found.emergency_contact.key.should == @friend1.key
   end
-  
+
   after :each do
     User.destroy_all
   end
@@ -97,5 +99,5 @@ describe "Ripple Associations" do
     Object.send(:remove_const, :Profile)
     Object.send(:remove_const, :Address)
   end
-  
+
 end

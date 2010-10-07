@@ -14,6 +14,8 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe "Ripple Persistence" do
+  require 'support/test_server'
+
   before :all do    
     Object.module_eval do
       class Widget

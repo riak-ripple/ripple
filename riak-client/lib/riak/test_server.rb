@@ -34,6 +34,9 @@ module Riak
         :js_max_vm_mem => 8,
         :js_thread_stack => 16,
         :riak_kv_stat => true
+      },
+      :luwak => {
+        :enabled => false
       }
     }
     VM_ARGS_DEFAULTS = {

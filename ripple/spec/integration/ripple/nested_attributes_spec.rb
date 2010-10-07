@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Ripple::NestedAttributes do
   require 'support/models/car'
@@ -7,7 +7,7 @@ describe Ripple::NestedAttributes do
   require 'support/models/engine'
   require 'support/models/seat'
   require 'support/models/wheel'
-
+  require 'support/test_server'
 
   context "one :driver (link)" do
     subject { Car.new }
@@ -64,7 +64,7 @@ describe Ripple::NestedAttributes do
       end
     end
   end
-  
+
   context "many :passengers (link)" do
     subject { Car.new }
 
@@ -75,8 +75,8 @@ describe Ripple::NestedAttributes do
     end
 
     describe "creation" do
-      subject { Car.new(:make => 'VW', 
-                        :model => 'Rabbit', 
+      subject { Car.new(:make => 'VW',
+                        :model => 'Rabbit',
                         :passengers_attributes => [ { :name => 'Joe' },
                                                     { :name => 'Sue' },
                                                     { :name => 'Pat' } ] ) }
@@ -84,7 +84,7 @@ describe Ripple::NestedAttributes do
       it "should have 3 passengers" do
         subject.passengers.size.should == 3
       end
-      
+
       it "should have 3 passengers with specified names" do
         subject.passengers.first.name.should == 'Joe'
         subject.passengers.second.name.should == 'Sue'
@@ -104,7 +104,7 @@ describe Ripple::NestedAttributes do
       let(:passenger2) { Passenger.create(:name => 'Two') }
       let(:passenger3) { Passenger.create(:name => 'Three') }
 
-      before do 
+      before do
         subject.passengers << passenger1
         subject.passengers << passenger2
         subject.passengers << passenger3
@@ -207,8 +207,8 @@ describe Ripple::NestedAttributes do
     end
 
     describe "creation" do
-      subject { Car.new(:make => 'VW', 
-                        :model => 'Rabbit', 
+      subject { Car.new(:make => 'VW',
+                        :model => 'Rabbit',
                         :seats_attributes => [ { :color => 'red' },
                                                { :color => 'blue' },
                                                { :color => 'brown' } ] ) }
@@ -216,13 +216,13 @@ describe Ripple::NestedAttributes do
       it "should have 3 seats" do
         subject.seats.size.should == 3
       end
-      
+
       it "should have 3 passengers with specified names" do
         subject.seats.first.color.should == 'red'
         subject.seats.second.color.should == 'blue'
         subject.seats.third.color.should == 'brown'
       end
-    
+
       specify "replace/clobber" do
         subject.seats_attributes = [ { :color => 'orange' } ]
         subject.seats.size.should == 1
@@ -256,5 +256,5 @@ describe Ripple::NestedAttributes do
     end
 
   end
-  
+
 end
