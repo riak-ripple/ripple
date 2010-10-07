@@ -9,3 +9,4 @@ These developers have contributed code and documentation to Ripple:
 * Nicolas Fouché <nicolas@silentale.com>
 * Justin Pease <justin.pease@gmail.com>
 * Ashley Woodard <ashley.c.woodard@gmail.com>
+* Brian Kaney <brian@vermonster.com>
