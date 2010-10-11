@@ -21,7 +21,7 @@ describe "Ripple::SessionStore" do
 
   before :each do
     @app = build_app do |middleware|
-      middleware.use Ripple::SessionStore, :key => '_session_id'
+      middleware.use Ripple::SessionStore, :key => '_session_id', :port => ($test_server ? 9000 : 8098)
       middleware.delete "ActionDispatch::ShowExceptions"
     end
     @app.routes.draw do

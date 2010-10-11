@@ -14,7 +14,9 @@
 require File.expand_path("../spec_helper", __FILE__)
 require 'rack/mock'
 
+
 describe Riak::SessionStore do
+  Riak::SessionStore::DEFAULT_OPTIONS[:port] = 9000 if $test_server 
   session_key = Riak::SessionStore::DEFAULT_OPTIONS[:key]
   session_match = /#{session_key}=([0-9a-fA-F]+);/
   incrementor = lambda do |env|

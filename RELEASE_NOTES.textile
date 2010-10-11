@@ -1,4 +1,17 @@
-h1. Riak-Client/Ripple Release Notes
+h1. Ripple Release Notes
+
+h2. 0.8.1 Patch/Minor Feature Release - 2010-10-11
+
+Release 0.8.1 includes several new features and bugfixes.
+
+Full notes:
+
+* Riak::TestServer makes it easier and faster to run automated tests that need to store data in Riak. It includes an in-memory Riak backend that quickly clears its contents at the end of a test/example. All included integration tests now use this.
+* Headers are turned into strings before splitting into 8KB chunks. [Nicolas Fouché]
+* Riak::RObject#prevent_stale_writes option allows conditional PUT semantics, matching on ETag. [Lee Jensen]
+* Riak::RObject#raw_data gives access to the object data before deserialization. [Lee Jensen]
+* Boolean properties on Ripple documents now allow a default value of false. [Duff O'Melia]
+* Ripple documents now support accepts_nested_attributes_for. [Brian Kaney]
 
 h2. 0.8.0 Feature Release - 2010-08-31
 
