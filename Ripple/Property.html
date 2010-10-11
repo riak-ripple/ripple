@@ -662,15 +662,17 @@ The default value for this property if defined, or nil.
 61
 62
 63
-64</pre>
+64
+65</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id default'>default</span>
-  <span class='kw'>if</span> <span class='id default'>default</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span>
-    <span class='id type_cast'>type_cast</span><span class='lparen'>(</span><span class='id default'>default</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:call</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id default'>default</span><span class='period'>.</span><span class='id call'>call</span> <span class='op'>:</span> <span class='id default'>default</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
+  <span class='id default'>default</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span>
+
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id default'>default</span><span class='period'>.</span><span class='id nil?'>nil?</span>
+  <span class='id type_cast'>type_cast</span><span class='lparen'>(</span><span class='id default'>default</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:call</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id default'>default</span><span class='period'>.</span><span class='id call'>call</span> <span class='op'>:</span> <span class='id default'>default</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -760,16 +762,16 @@ if the value cannot be coerced into the property&#8217;s type
       <pre class="lines">
 
 
-75
 76
 77
 78
 79
 80
-81</pre>
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 75</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='id type_cast'>type_cast</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@type</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:ripple_cast</span><span class='rparen'>)</span>
@@ -826,12 +828,12 @@ options appropriate for the validates class method
       <pre class="lines">
 
 
-67
 68
-69</pre>
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id validation_options'>validation_options</span>
   <span class='ivar'>@options</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id except'>except</span><span class='lparen'>(</span><span class='symbol'>:default</span><span class='rparen'>)</span>
@@ -846,7 +848,7 @@ options appropriate for the validates class method
 </div>
     
     <div id="footer">
-  Generated on Tue Aug 31 17:58:40 2010 by 
+  Generated on Mon Oct 11 16:04:31 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>

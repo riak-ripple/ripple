@@ -123,6 +123,27 @@ Sets the key for this Document.
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#key_attr-instance_method" title="#key_attr (instance method)">- (Object) <strong>key_attr</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -156,12 +177,12 @@ Reads the key for this Document.
       <pre class="lines">
 
 
-38
-39
-40</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/key.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/key.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id key'>key</span>
   <span class='ivar'>@key</span>
@@ -195,15 +216,43 @@ Sets the key for this Document.
       <pre class="lines">
 
 
-43
-44
-45</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/key.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/key.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id key='>key=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@key</span> <span class='op'>=</span> <span class='id value'>value</span><span class='period'>.</span><span class='id to_s'>to_s</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="key_attr-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>key_attr</strong> 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+50
+51
+52</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/key.rb', line 50</span>
+
+<span class='kw'>def</span> <span class='id key_attr'>key_attr</span>
+  <span class='symbol'>:key</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -215,7 +264,7 @@ Sets the key for this Document.
 </div>
     
     <div id="footer">
-  Generated on Tue Aug 31 17:58:41 2010 by 
+  Generated on Mon Oct 11 16:04:32 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>

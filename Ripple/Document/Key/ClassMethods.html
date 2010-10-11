@@ -162,7 +162,10 @@ the property to derive the key from
 30
 31
 32
-33</pre>
+33
+34
+35
+36</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/key.rb', line 24</span>
@@ -174,6 +177,9 @@ the property to derive the key from
   def key=(value)
 </span><span class='tstring_content'>    self.</span><span class='embexpr_beg'>#{</span><span class='id prop'>prop</span><span class='rbrace'>}</span><span class='tstring_content'> = value
   end
+  def key_attr
+</span><span class='tstring_content'>    :</span><span class='embexpr_beg'>#{</span><span class='id prop'>prop</span><span class='rbrace'>}</span><span class='tstring_content'>
+  end          
 </span><span class='heredoc_end'>  CODE
 </span>
 <span class='kw'>end</span></pre>
@@ -187,7 +193,7 @@ the property to derive the key from
 </div>
     
     <div id="footer">
-  Generated on Tue Aug 31 17:58:41 2010 by 
+  Generated on Mon Oct 11 16:04:31 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>
