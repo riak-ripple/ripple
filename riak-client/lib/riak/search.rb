@@ -14,14 +14,39 @@
 
 require 'riak'
 require 'riak/client'
+require 'riak/bucket'
 require 'riak/map_reduce'
 
 module Riak
-  # class Client
-  #   # Add search stuff here
-  # end
-  
-  class MapReduce    
+  class Bucket
+    # The precommit specification for kv/search integration
+    SEARCH_PRECOMMIT_HOOK = {"mod" => "riak_search_kv_hook", "fun" => "precommit"}
+
+    # Installs a precommit hook that automatically indexes objects
+    # into riak_search.
+    def enable_index!
+      unless is_indexed?
+        self.props = {"precommit" => (props['precommit'] + [SEARCH_PRECOMMIT_HOOK])}
+      end
+    end
+
+    # Removes the precommit hook that automatically indexes objects
+    # into riak_search.
+    def disable_index!
+      if is_indexed?
+        self.props = {"precommit" => (props['precommit'] - [SEARCH_PRECOMMIT_HOOK])}
+      end
+    end
+
+    # Detects whether the bucket is automatically indexed into
+    # riak_search.
+    # @return [true,false] whether the bucket includes the search indexing hook
+    def is_indexed?
+      props['precommit'].include?(SEARCH_PRECOMMIT_HOOK)
+    end
+  end
+
+  class MapReduce
     # Use a search query to start a map/reduce job.
     # @param [String, Bucket] bucket the bucket/index to search
     # @param [String] query the query to run
