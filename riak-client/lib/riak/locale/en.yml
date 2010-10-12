@@ -16,6 +16,7 @@ en:
     bucket_link_conversion: "Can't convert a bucket link to a walk spec"
     client_type: "invalid argument %{client} is not a Riak::Client"
     content_type_undefined: "content_type is not defined!"
+    empty_map_reduce_query: "Specify one or more query phases to your MapReduce."
     failed_request: "Expected %{expected} from Riak but received %{code}. %{body}"
     hash_type: "invalid argument %{hash} is not a Hash"
     hostname_invalid: "host must be a valid hostname"
