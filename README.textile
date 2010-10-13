@@ -67,6 +67,57 @@ p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night",
           #     "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "Magical Mystery Tour", 
           #     "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]</pre></notextile>
 
+h2. Riak Search Examples
+
+For more information about Riak Search, see "the Basho wiki":http://wiki.basho.com/display/RIAK/Riak+Search.
+
+<notextile><pre>
+require 'riak/search' # optional riak_search additions
+
+# Create a client, specifying the Solr-compatible endpoint
+client = Riak::Client.new :solr => "/solr"
+
+# Search the default index for documents
+result = client.search("title:Yesterday") # Returns a vivified JSON object
+                                          # containing 'responseHeaders' and 'response' keys
+result['response']['numFound'] # total number of results
+result['response']['start']    # offset into the total result set
+result['response']['docs']     # the list of indexed documents
+
+# Search the 'users' index for documents
+client.search("users", "name:Sean")
+
+# Add a document to an index
+client.index("users", {:id => "sean@basho.com", :name => "Sean Cribbs"}) # adds to the 'users' index
+
+client.index({:id => "index.html", :content => "Hello, world!"}) # adds to the default index
+
+client.index({:id => 1, :name => "one"}, {:id => 2, :name => "two"}) # adds multiple docs
+
+# Remove document(s) from an index
+client.remove({:id => 1})             # removes the document with ID 1
+client.remove({:query => "archived"}) # removes all documents matching query
+client.remove({:id => 1}, {:id => 5}) # removes multiple docs
+
+client.remove("users", {:id => "sean@basho.com"}) # removes from the 'users' index
+
+# Seed MapReduce with search results
+Riak::MapReduce.new(client).
+        search("users","email:basho").
+        map("Riak.mapValuesJson", :keep => true).
+        run
+
+# Detect whether a bucket has auto-indexing
+client['users'].is_indexed?
+
+# Enable auto-indexing on a bucket
+client['users'].enable_index!
+
+# Disable auto-indexing on a bucket
+client['users'].disable_index!
+
+</pre><notextile>
+
 h2. Document Model Examples
 
 <notextile><pre>
