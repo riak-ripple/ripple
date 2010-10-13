@@ -18,6 +18,101 @@ describe "Search mixins" do
     require 'riak/search'
   end
 
+  describe Riak::Client do
+    before :each do
+      @client = Riak::Client.new
+      @http = mock(Riak::Client::HTTPBackend)
+      @client.stub!(:http).and_return(@http)
+    end
+    describe "searching" do
+      it "should exclude the index from the URL when not specified" do
+        @http.should_receive(:get).with(200, "/solr", "select", hash_including("q" => "foo"), {}).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => "{}"})
+        @client.search("foo")
+      end
+
+      it "should include extra options in the query string" do
+        @http.should_receive(:get).with(200, "/solr", "select", hash_including('rows' => 30), {}).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => "{}"})
+        @client.search("foo", 'rows' => 30)
+      end
+
+      it "should include the index in the URL when specified" do
+        @http.should_receive(:get).with(200, "/solr", "search", "select", hash_including("q" => "foo"), {}).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => "{}"})
+        @client.search("search", "foo")
+      end
+
+      it "should vivify JSON responses" do
+        @http.should_receive(:get).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => '{"response":{"docs":["foo"]}}'})
+        @client.search("foo").should == {"response" => {"docs" => ["foo"]}}
+      end
+
+      it "should return non-JSON responses raw" do
+        @http.should_receive(:get).and_return({:code => 200, :headers => {"content-type"=>["text/plain"]}, :body => '{"response":{"docs":["foo"]}}'})
+        @client.search("foo").should == '{"response":{"docs":["foo"]}}'
+      end
+    end
+    describe "indexing documents" do
+      it "should exclude the index from the URL when not specified" do
+        @http.should_receive(:post).with(200, "/solr", "update", anything, anything).and_return({:code => 200, :headers => {'content-type' => ['text/html']}, :body => ""})
+        @client.index({:id => 1, :field => "value"})
+      end
+
+      it "should include the index in the URL when specified" do
+        @http.should_receive(:post).with(200, "/solr", "foo", "update", anything, anything).and_return({:code => 200, :headers => {'content-type' => ['text/html']}, :body => ""})
+        @client.index("foo", {:id => 1, :field => "value"})
+      end
+
+      it "should raise an error when documents do not contain an id" do
+        @http.stub!(:post).and_return(true)
+        lambda { @client.index({:field => "value"}) }.should raise_error(ArgumentError)
+        lambda { @client.index({:id => 1, :field => "value"}) }.should_not raise_error(ArgumentError)
+      end
+
+      it "should build a Solr <add> request" do
+        expect_update_body('<add><doc><field name="id">1</field><field name="field">value</field></doc></add>')
+        @client.index({:id => 1, :field => "value"})
+      end
+
+      it "should include multiple documents in the <add> request" do
+        expect_update_body('<add><doc><field name="id">1</field><field name="field">value</field></doc><doc><field name="id">2</field><field name="foo">bar</field></doc></add>')
+        @client.index({:id => 1, :field => "value"}, {:id => 2, :foo => "bar"})
+      end
+    end
+    describe "removing documents" do
+      it "should exclude the index from the URL when not specified" do
+        @http.should_receive(:post).with(200, "/solr","update", anything, anything).and_return({:code => 200, :headers => {'content-type' => ['text/html']}, :body => ""})
+        @client.remove({:id => 1})
+      end
+
+      it "should include the index in the URL when specified" do
+        @http.should_receive(:post).with(200, "/solr", "foo", "update", anything, anything).and_return({:code => 200, :headers => {'content-type' => ['text/html']}, :body => ""})
+        @client.remove("foo", {:id => 1})
+      end
+
+      it "should raise an error when document specifications don't include an id or query" do
+        @http.stub!(:post).and_return({:code => 200})
+        lambda { @client.remove({:foo => "bar"}) }.should raise_error(ArgumentError)
+        lambda { @client.remove({:id => 1}) }.should_not raise_error
+      end
+
+      it "should build a Solr <delete> request" do
+        expect_update_body('<delete><id>1</id></delete>')
+        @client.remove(:id => 1)
+        expect_update_body('<delete><query>title:old</query></delete>')
+        @client.remove(:query => "title:old")
+      end
+
+      it "should include multiple specs in the <delete> request" do
+        expect_update_body('<delete><id>1</id><query>title:old</query></delete>')
+        @client.remove({:id => 1}, {:query => "title:old"})
+      end
+    end
+
+    def expect_update_body(body, index=nil)
+      args = [200, "/solr", index, "update", body, {"Content-Type" => "text/xml"}].compact
+      @http.should_receive(:post).with(*args).and_return({:code => 200, :headers => {'content-type' => ['text/html']}, :body => ""})
+    end
+  end
+
   describe Riak::Bucket do
     before :each do
       @client = Riak::Client.new

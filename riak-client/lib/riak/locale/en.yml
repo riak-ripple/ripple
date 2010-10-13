@@ -31,6 +31,8 @@ en:
     port_invalid: "port must be an integer between 0 and 65535"
     request_body_type: "Request body must be a string or IO."
     resource_path_short: "Resource path too short"
+    search_docs_require_id: "Search index documents must include the 'id' field."
+    search_remove_requires_id_or_query: "Search index documents to be removed must have 'id' or 'query' keys."
     stored_function_invalid: "function must have :bucket and :key when a hash"
     string_type: "invalid_argument %{string} is not a String"
     too_few_arguments: "too few arguments: %{params}"
