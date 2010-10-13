@@ -115,8 +115,7 @@ client['users'].enable_index!
 
 # Disable auto-indexing on a bucket
 client['users'].disable_index!
-
-</pre><notextile>
+</pre></notextile>
 
 h2. Document Model Examples
 
