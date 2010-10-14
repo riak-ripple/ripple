@@ -11,3 +11,4 @@ These developers have contributed code and documentation to Ripple:
 * Ashley Woodard <ashley.c.woodard@gmail.com>
 * Brian Kaney <brian@vermonster.com>
 * Rusty Klophaus <rklophaus@gmail.com>
+* John Axel Eriksson <john@insane.se>
