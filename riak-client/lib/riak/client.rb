@@ -188,11 +188,9 @@ module Riak
     
     # Checks whether a file exists in "Luwak".
     # @param [String] key the key to check
-    # @param [Hash] options quorum options
-    # @option options [Fixnum] :r - the read quorum value for the request (R)
     # @return [true, false] whether the key exists in "Luwak"
-    def file_exists?(key, options={})
-      result = http.head([200,404], luwak, escape(key), options, {})
+    def file_exists?(key)
+      result = http.head([200,404], luwak, escape(key))
       result[:code] == 200
     end
     alias :file_exist? :file_exists?
