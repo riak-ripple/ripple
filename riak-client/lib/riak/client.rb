@@ -142,7 +142,7 @@ module Riak
     def store_file(*args)
       data, content_type, filename = args.reverse
       if filename
-        http.put(204, luwak, filename, data, {"Content-Type" => content_type})
+        http.put(204, luwak, escape(filename), data, {"Content-Type" => content_type})
         filename
       else
         response = http.post(201, luwak, data, {"Content-Type" => content_type})
@@ -163,12 +163,12 @@ module Riak
     # @yieldparam [String] chunk a single chunk of the object's data
     def get_file(filename, &block)
       if block_given?
-        http.get(200, luwak, filename, &block)
+        http.get(200, luwak, escape(filename), &block)
         nil
       else
-        tmpfile = LuwakFile.new(filename)
+        tmpfile = LuwakFile.new(escape(filename))
         begin
-          response = http.get(200, luwak, filename) do |chunk|
+          response = http.get(200, luwak, escape(filename)) do |chunk|
             tmpfile.write chunk
           end
           tmpfile.content_type = response[:headers]['content-type'].first
@@ -182,7 +182,7 @@ module Riak
     # Deletes a file stored via the "Luwak" interface
     # @param [String] filename the key/filename to delete
     def delete_file(filename)
-      http.delete([204,404], luwak, filename)
+      http.delete([204,404], luwak, escape(filename))
       true
     end
 
