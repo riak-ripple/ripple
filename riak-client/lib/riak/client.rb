@@ -185,6 +185,17 @@ module Riak
       http.delete([204,404], luwak, escape(filename))
       true
     end
+    
+    # Checks whether a file exists in "Luwak".
+    # @param [String] key the key to check
+    # @param [Hash] options quorum options
+    # @option options [Fixnum] :r - the read quorum value for the request (R)
+    # @return [true, false] whether the key exists in "Luwak"
+    def file_exists?(key, options={})
+      result = http.head([200,404], luwak, escape(key), options, {})
+      result[:code] == 200
+    end
+    alias :file_exist? :file_exists?
 
     # @return [String] A representation suitable for IRB and debugging output.
     def inspect

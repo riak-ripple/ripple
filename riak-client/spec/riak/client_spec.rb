@@ -1,4 +1,4 @@
-60# Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
+# Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -232,6 +232,18 @@ describe Riak::Client do
     @client.stub!(:http).and_return(@http)
     @http.should_receive(:delete).with([204,404], "/luwak", "greeting.txt")
     @client.delete_file("greeting.txt")
+  end
+  
+  it "should return true if the file exists" do
+    @client = Riak::Client.new
+    @client.http.should_receive(:head).and_return(:code => 200)
+    @client.file_exists?("foo").should be_true
+  end
+  
+  it "should return false if the file doesn't exist" do
+    @client = Riak::Client.new
+    @client.http.should_receive(:head).and_return(:code => 404)
+    @client.file_exists?("foo").should be_false
   end
 
   it "should escape the filename when storing, retrieving or deleting files" do
