@@ -12,6 +12,8 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+require 'tempfile'
+require 'delegate'
 
 module Riak
   # A client connection to Riak.
@@ -44,6 +46,9 @@ module Riak
     # @return [String] The URL path to the map-reduce HTTP endpoint
     attr_accessor :mapred
 
+    # @return [String] The URL path to the luwak HTTP endpoint
+    attr_accessor :luwak
+
     # Creates a client connection to Riak
     # @param [Hash] options configuration options for the client
     # @option options [String] :host ('127.0.0.1') The host or IP address for the Riak endpoint
@@ -53,12 +58,13 @@ module Riak
     # @option options [Fixnum, String] :client_id (rand(MAX_CLIENT_ID)) The internal client ID used by Riak to route responses
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
-      options.assert_valid_keys(:host, :port, :prefix, :client_id, :mapred)
+      options.assert_valid_keys(:host, :port, :prefix, :client_id, :mapred, :luwak)
       self.host      = options[:host]      || "127.0.0.1"
       self.port      = options[:port]      || 8098
       self.client_id = options[:client_id] || make_client_id
       self.prefix    = options[:prefix]    || "/riak/"
       self.mapred    = options[:mapred]    || "/mapred"
+      self.luwak     = options[:luwak]     || "/luwak"
       raise ArgumentError, t("missing_host_and_port") unless @host && @port
     end
 
@@ -122,6 +128,64 @@ module Riak
     end
     alias :[] :bucket
 
+    # Stores a large file/IO object in Riak via the "Luwak" interface.
+    # @overload store_file(filename, content_type, data)
+    #   Stores the file at the given key/filename
+    #   @param [String] filename the key/filename for the object
+    #   @param [String] content_type the MIME Content-Type for the data
+    #   @param [IO, String] data the contents of the file
+    # @overload store_file(content_type, data)
+    #   Stores the file with a server-determined key/filename
+    #   @param [String] content_type the MIME Content-Type for the data
+    #   @param [IO, String] data the contents of the file
+    # @return [String] the key/filename where the object was stored
+    def store_file(*args)
+      data, content_type, filename = args.reverse
+      if filename
+        http.put(204, luwak, filename, data, {"Content-Type" => content_type})
+        filename
+      else
+        response = http.post(201, luwak, data, {"Content-Type" => content_type})
+        response[:headers]["location"].first.split("/").last
+      end
+    end
+
+    # Retrieves a large file/IO object from Riak via the "Luwak"
+    # interface. Streams the data to a temporary file unless a block
+    # is given.
+    # @param [String] filename the key/filename for the object
+    # @return [IO, nil] the file (also having content_type and
+    #   original_filename accessors). The file will need to be
+    #   reopened to be read. nil will be returned if a block is given.
+    # @yield [chunk] stream contents of the file through the
+    #     block. Passing the block will result in nil being returned
+    #     from the method.
+    # @yieldparam [String] chunk a single chunk of the object's data
+    def get_file(filename, &block)
+      if block_given?
+        http.get(200, luwak, filename, &block)
+        nil
+      else
+        tmpfile = LuwakFile.new(filename)
+        begin
+          response = http.get(200, luwak, filename) do |chunk|
+            tmpfile.write chunk
+          end
+          tmpfile.content_type = response[:headers]['content-type'].first
+          tmpfile
+        ensure
+          tmpfile.close
+        end
+      end
+    end
+
+    # Deletes a file stored via the "Luwak" interface
+    # @param [String] filename the key/filename to delete
+    def delete_file(filename)
+      http.delete([204,404], luwak, filename)
+      true
+    end
+
     # @return [String] A representation suitable for IRB and debugging output.
     def inspect
       "#<Riak::Client #{http.root_uri.to_s}>"
@@ -134,6 +198,16 @@ module Riak
 
     def b64encode(n)
       Base64.encode64([n].pack("N")).chomp
+    end
+
+    # @private
+    class LuwakFile < DelegateClass(Tempfile)
+      attr_accessor :original_filename, :content_type
+      alias :key :original_filename
+      def initialize(fn)
+        super(Tempfile.new(fn))
+        @original_filename = fn
+      end
     end
   end
 end
