@@ -58,9 +58,10 @@ module Ripple
 
     # @return [Object] The default value for this property if defined, or nil.
     def default
-      if default = options[:default]
-        type_cast(default.respond_to?(:call) ? default.call : default)
-      end
+      default = options[:default]
+
+      return nil if default.nil?
+      type_cast(default.respond_to?(:call) ? default.call : default)
     end
 
     # @return [Hash] options appropriate for the validates class method

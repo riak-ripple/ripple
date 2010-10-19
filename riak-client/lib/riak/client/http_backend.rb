@@ -15,6 +15,7 @@ require 'riak'
 
 module Riak
   class Client
+    # The parent class for all backends that connect to Riak via HTTP.
     class HTTPBackend
       include Util::Translation
       # The Riak::Client that uses this backend

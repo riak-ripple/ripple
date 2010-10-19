@@ -77,6 +77,11 @@ describe Ripple::Property do
       prop.default.should == "bar"
     end
 
+    it "should allow false for a Boolean" do
+      prop = Ripple::Property.new('foo', Boolean, :default => false)
+      prop.default.should == false
+    end
+
     it "should allow lambdas for deferred evaluation" do
       prop = Ripple::Property.new('foo', String, :default => lambda { "bar" })
       prop.default.should == "bar"
@@ -122,11 +127,11 @@ describe Ripple::Property do
           @prop.type_cast([]).should == "[]"
         end
       end
-      
+
       it "should not cast nil" do
         @prop.type_cast(nil).should be_nil
       end
-    
+
     end
 
     describe "when type is an Integer type" do

@@ -62,10 +62,8 @@ class String
   end
 end
 
-# Stand-in for true/false property types.
-module ::Boolean
-  extend self
-  def ripple_cast(value)
+boolean_cast = proc do
+  def self.ripple_cast(value)
     case value
     when NilClass
       nil
@@ -83,15 +81,14 @@ module ::Boolean
   end
 end
 
-# @private
-class TrueClass
-  extend Boolean
+unless defined?(::Boolean)
+  # Stand-in for true/false property types.
+  module ::Boolean; end
 end
 
-# @private
-class FalseClass
-  extend Boolean
-end
+::Boolean.module_eval(&boolean_cast)
+TrueClass.module_eval(&boolean_cast)
+FalseClass.module_eval(&boolean_cast)
 
 # @private
 class Time

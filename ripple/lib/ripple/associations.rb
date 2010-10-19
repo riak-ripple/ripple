@@ -14,6 +14,38 @@
 require 'ripple'
 
 module Ripple
+  # Adds associations via links and embedding to {Ripple::Document}
+  # models. Examples:
+  # 
+  #   # Documents can contain embedded documents, and link to other standalone documents
+  #   # via associations using the many and one class methods.
+  #   class Person
+  #     include Ripple::Document
+  #     property :name, String
+  #     many :addresses
+  #     many :friends, :class_name => "Person"
+  #     one :account
+  #   end
+  #    
+  #   # Account and Address are embeddable documents
+  #   class Account
+  #     include Ripple::EmbeddedDocument
+  #     property :paid_until, Time
+  #     embedded_in :person # Adds "person" method to get parent document
+  #   end
+  #    
+  #   class Address
+  #     include Ripple::EmbeddedDocument
+  #     property :street, String
+  #     property :city, String
+  #     property :state, String
+  #     property :zip, String
+  #   end
+  #    
+  #   person = Person.find("adamhunter")
+  #   person.friends << Person.find("seancribbs") # Links to people/seancribbs with tag "friend"
+  #   person.addresses << Address.new(:street => "100 Main Street") # Adds an embedded address
+  #   person.account.paid_until = 3.months.from_now
   module Associations
     extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
@@ -100,6 +132,8 @@ module Ripple
     end
   end
 
+  # The "reflection" for an association - metadata about how it is
+  # configured.
   class Association
     include Ripple::Translation
     attr_reader :type, :name, :options
@@ -210,6 +244,7 @@ module Ripple
       end
     end
 
+    # @private
     def type_matches?(value)
       case
       when polymorphic?

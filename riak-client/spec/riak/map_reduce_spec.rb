@@ -207,21 +207,30 @@ describe Riak::MapReduce do
       @mr.timeout(50000)
       @mr.to_json.should include('"timeout":50000')
     end
+  end
 
-    it "should return self from setting the timeout" do
-      @mr.timeout(5000).should == @mr
-    end
+  it "should return self from setting the timeout" do
+    @mr.timeout(5000).should == @mr
   end
 
   describe "executing the map reduce job" do
+    before :each do
+      @mr.map("Riak.mapValues",:keep => true)
+    end
+
+    it "should raise an exception when no phases are defined" do
+      @mr.query.clear
+      lambda { @mr.run }.should raise_error(Riak::MapReduceError)
+    end
+
     it "should issue POST request to the mapred endpoint" do
-      @http.should_receive(:post).with(200, "/mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "{}"})
+      @http.should_receive(:post).with(200, "/mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "[]"})
       @mr.run
     end
 
     it "should vivify JSON responses" do
-      @http.stub!(:post).and_return(:headers => {'content-type' => ["application/json"]}, :body => '{"key":"value"}')
-      @mr.run.should == {"key" => "value"}
+      @http.stub!(:post).and_return(:headers => {'content-type' => ["application/json"]}, :body => '[{"key":"value"}]')
+      @mr.run.should == [{"key" => "value"}]
     end
 
     it "should return the full response hash for non-JSON responses" do
@@ -335,7 +344,7 @@ describe Riak::MapReduce::Phase do
           @phase.to_json.should include('"name":"Riak.mapValues"')
           @phase.to_json.should_not include('"source"')
         end
-        
+
         it "should include the bucket and key when referring to a stored function" do
           @phase.function = {:bucket => "design", :key => "wordcount_map"}
           @phase.to_json.should include('"bucket":"design"')

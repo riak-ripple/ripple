@@ -37,7 +37,6 @@ module Riak
   # Cache store - only supports Rails 3 style
   if ActiveSupport::VERSION::STRING >= "3.0.0"
     autoload :CacheStore,      "riak/cache_store"
-    ::ActiveSupport::Cache.autoload :RiakStore, "riak/cache_store"
   end
 
   # Exceptions
@@ -45,6 +44,10 @@ module Riak
   autoload :InvalidResponse, "riak/invalid_response"
   autoload :MapReduceError,  "riak/map_reduce_error"
 
+  # Test server
+  autoload :TestServer,      "riak/test_server"
+
+  # Utility classes and mixins
   module Util
     autoload :Escape,        "riak/util/escape"
     autoload :Headers,       "riak/util/headers"

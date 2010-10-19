@@ -18,7 +18,7 @@ module Riak
   class MapReduce
     include Util::Translation
     include Util::Escape
-    
+
     # @return [Array<[bucket,key]>,String] The bucket/keys for input to the job, or the bucket (all keys).
     # @see #add
     attr_accessor :inputs
@@ -134,11 +134,11 @@ module Riak
       return self
     end
     alias :timeout= :timeout
-    
+
     # Convert the job to JSON for submission over the HTTP interface.
     # @return [String] the JSON representation
     def to_json(options={})
-      hash = {"inputs" => inputs, "query" => query.map(&:as_json)}
+      hash = {"inputs" => inputs.as_json, "query" => query.map(&:as_json)}
       hash['timeout'] = @timeout.to_i if @timeout
       ActiveSupport::JSON.encode(hash, options)
     end
@@ -146,6 +146,7 @@ module Riak
     # Executes this map-reduce job.
     # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true. If there is only one "keep" phase, only the results from that phase will be returned.
     def run
+      raise MapReduceError.new(t("empty_map_reduce_query")) if @query.empty?
       response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
       if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
         ActiveSupport::JSON.decode(response[:body])
@@ -161,7 +162,7 @@ module Riak
     end
 
     # Represents an individual phase in a map-reduce pipeline. Generally you'll want to call
-    # methods of {MapReduce} instead of using this directly.
+    # methods of MapReduce instead of using this directly.
     class Phase
       include Util::Translation
       # @return [Symbol] the type of phase - :map, :reduce, or :link

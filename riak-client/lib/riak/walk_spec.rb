@@ -14,7 +14,6 @@
 require 'riak'
 
 module Riak
-
   # The specification of how to follow links from one object to another in Riak,
   # when using the link-walker resource.
   # Example link-walking operation:

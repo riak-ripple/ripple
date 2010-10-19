@@ -37,6 +37,7 @@ module Ripple
   autoload :Property, "ripple/properties"
   autoload :Timestamps
   autoload :Validations
+  autoload :NestedAttributes
 
   # Exceptions
   autoload :PropertyTypeMismatch
@@ -57,15 +58,19 @@ module Ripple
       Thread.current[:ripple_client] = value
     end
 
+    # Sets the global Ripple configuration.
     def config=(hash)
       self.client = nil
       @config = hash.symbolize_keys
     end
 
+    # Reads the global Ripple configuration.
     def config
       @config ||= {}
     end
 
+    # Loads the Ripple configuration from a given YAML file.
+    # Evaluates the configuration with ERB before loading.
     def load_configuration(config_file, config_keys = [:ripple])
       config_file = File.expand_path(config_file)
       config_hash = YAML.load(ERB.new(File.read(config_file)).result).with_indifferent_access
@@ -76,7 +81,9 @@ module Ripple
     end
     alias_method :load_config, :load_configuration
   end
-  
+
+  # Exception raised when the path passed to
+  # {Ripple::load_configuration} does not point to a existing file.
   class MissingConfiguration < StandardError
     include Translation
     def initialize(file_path)

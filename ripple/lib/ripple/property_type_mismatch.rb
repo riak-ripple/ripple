@@ -14,6 +14,8 @@
 require 'ripple'
 
 module Ripple
+  # Exception raised when the value assigned to a document property
+  # cannot be coerced into the property's defined type.
   class PropertyTypeMismatch < StandardError
     include Translation
     def initialize(klass, value)

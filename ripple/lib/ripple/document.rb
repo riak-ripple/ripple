@@ -44,11 +44,13 @@ module Ripple
 
     autoload :BucketAccess
     autoload :Finders
+    autoload :Key
     autoload :Persistence
 
     included do
       extend ActiveModel::Naming
       extend BucketAccess
+      include Ripple::Document::Key
       include Ripple::Document::Persistence
       extend Ripple::Properties
       include Ripple::AttributeMethods
@@ -59,6 +61,7 @@ module Ripple
       include Ripple::Conversion
       include Ripple::Document::Finders
       include Ripple::Inspection
+      include Ripple::NestedAttributes
     end
 
     module ClassMethods
@@ -70,6 +73,13 @@ module Ripple
     module InstanceMethods
       def _root_document
         self
+      end
+
+      # Returns true if the +comparison_object+ is the same object, or is of the same type and has the same key.
+      def ==(comparison_object)
+        comparison_object.equal?(self) ||
+          (comparison_object.class < Document && (comparison_object.instance_of?(self.class) || comparison_object.class.bucket.name == self.class.bucket.name) &&
+           comparison_object.key == key && !comparison_object.new?)
       end
     end
   end

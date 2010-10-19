@@ -177,7 +177,8 @@ module Riak
     def n_value
       props['n_val']
     end
-
+    alias :n_val :n_value
+    
     # Set the N value (number of replicas). *NOTE* This will result in a PUT request to Riak.
     # Setting this value after the bucket has objects stored in it may have unpredictable results.
     # @param [Fixnum] value the number of replicas the bucket should keep of each object
@@ -185,7 +186,8 @@ module Riak
       self.props = {'n_val' => value}
       value
     end
-
+    alias :n_val= :n_value=
+    
     [:r,:w,:dw,:rw].each do |q|
       class_eval <<-CODE
         def #{q}

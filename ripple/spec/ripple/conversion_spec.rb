@@ -14,22 +14,22 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Ripple::Conversion do
-  require 'support/models/address'
+  require 'support/models/box'
 
   before :each do
-    @addr = Address.new { |a| a.key = 'some-key' }
-    @addr.stub!(:new?).and_return(false)
+    @box = Box.new { |a| a.key = 'some-key' }
+    @box.stub!(:new?).and_return(false)
   end
 
   it "should return the key as an array for to_key" do
-    @addr.to_key.should == ['some-key']
+    @box.to_key.should == ['some-key']
   end
 
   it "should be able to be converted to a param" do
-    @addr.to_param.should == 'some-key'
+    @box.to_param.should == 'some-key'
   end
 
   it "should be able to be converted to a model" do
-    @addr.to_model.should == @addr
+    @box.to_model.should == @box
   end
 end

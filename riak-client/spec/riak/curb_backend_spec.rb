@@ -20,7 +20,7 @@ rescue LoadError
 else
   $server = MockServer.new
   at_exit { $server.stop }
-  
+
   describe Riak::Client::CurbBackend do
     def setup_http_mock(method, uri, options={})
       method = method.to_s.upcase
@@ -46,8 +46,32 @@ else
 
     it_should_behave_like "HTTP backend"
 
+    it "should split long headers into 8KB chunks" do
+      setup_http_mock(:put, @backend.path("/riak/","foo").to_s, :body => "ok")
+      lambda do
+        @backend.put(200, "/riak/", "foo", "body",{"Long-Header" => (["12345678"*10]*100).join(", ") })
+        headers = @backend.send(:curl).headers
+        headers.should be_kind_of(Array)
+        headers.select {|h| h =~ /^Long-Header:/ }.should have(2).items
+        headers.select {|h| h =~ /^Long-Header:/ }.should be_all {|h| h.size < 8192 }
+      end.should_not raise_error
+    end
+
+    it "should support IO objects as the request body" do
+      file = File.open(File.expand_path("../../fixtures/cat.jpg", __FILE__))
+      lambda do
+        setup_http_mock(:put, @backend.path("/riak/","foo").to_s, :body => "ok")
+        @backend.put(200, "/riak/", "foo", file,{})
+      end.should_not raise_error
+      lambda do
+        setup_http_mock(:post, @backend.path("/riak/","foo").to_s, :body => "ok")
+        @backend.post(200, "/riak/", "foo", file, {})
+      end.should_not raise_error
+    end
+
     after :each do
       $server.detach
+      Thread.current[:curl_easy_handle] = nil
     end
   end
 end
