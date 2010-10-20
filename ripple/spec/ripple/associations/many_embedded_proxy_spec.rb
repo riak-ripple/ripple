@@ -127,4 +127,9 @@ describe Ripple::Associations::ManyEmbeddedProxy do
     lambda { @user.addresses = @address }.should raise_error
     lambda { @user.addresses = [@note] }.should raise_error
   end
+  
+  it "should not add the associated validator multiple times" do
+    #$stderr.puts User.validators.collect(&:inspect)
+    User.validators_on(:addresses).count.should eq(1)
+  end
 end
