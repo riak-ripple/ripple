@@ -19,10 +19,15 @@ module Ripple
 
       def initialize(*args)
         super
-        owner.class.validates reflection.name, :associated => true
+        lazy_load_validates_associated
       end
 
       protected
+      
+      def lazy_load_validates_associated
+        return if @owner.class.validators_on(@reflection.name).any? {|v| Ripple::Validations::AssociatedValidator === v}
+        @owner.class.validates @reflection.name, :associated => true
+      end
 
       def assign_references(docs)
         Array(docs).each do |doc|
