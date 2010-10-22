@@ -1,5 +1,20 @@
 h1. Ripple Release Notes
 
+h2. 0.8.2 Patch/Minor Feature Release - 2010-10-22
+
+Relese 0.8.2 includes significant additions to support features in Riak 0.13, including Riak Search and Luwak.
+
+Simply @require 'riak/search'@ to add Search-related features to riak-client.
+
+Full notes:
+
+* Fixed bug in embedded associations where associated validators would be added every time the association was instantiated. [Adam Hunter]
+* Update and loosen dependencies to Rails 3.0.1 and RSpec 2.
+* Add support for file-existence check in Luwak. [John Axel Eriksson]
+* Avoid clobbering an existing Boolean class or module.
+* Add Luwak support.
+* Add Search features. [Sean Cribbs, Rusty Klophaus]
+
 h2. 0.8.1 Patch/Minor Feature Release - 2010-10-11
 
 Release 0.8.1 includes several new features and bugfixes.

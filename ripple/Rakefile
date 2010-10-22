@@ -27,6 +27,7 @@ gemspec = Gem::Specification.new do |gem|
   files.exclude /^pkg/
   files.exclude 'ripple.gemspec'
   files.exclude 'Gemfile'
+  files.exclude 'spec/support/test_server.yml'
 
   gem.files = files.to_a
 
