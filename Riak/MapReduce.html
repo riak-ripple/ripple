@@ -78,7 +78,9 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">riak-client/lib/riak/map_reduce.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/map_reduce.rb<span class="defines">,<br />
+  riak-client/lib/riak/search.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
@@ -324,6 +326,30 @@ Add a reduce phase to the job.
   
     <span class="summary_desc"><div class='inline'><p>
 Executes this map-reduce job.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#search-instance_method" title="#search (instance method)">- (MapReduce) <strong>search</strong>(bucket, query) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Use a search query to start a map/reduce job.
 </p>
 </div></span>
   
@@ -1608,12 +1634,14 @@ phase, only the results from that phase will be returned.
 158
 159
 160
-161</pre>
+161
+162</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 148</span>
 
 <span class='kw'>def</span> <span class='id run'>run</span>
+  <span class='id raise'>raise</span> <span class='const'>MapReduceError</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>empty_map_reduce_query</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@query</span><span class='period'>.</span><span class='id empty?'>empty?</span>
   <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id mapred'>mapred</span><span class='comma'>,</span> <span class='id to_json'>to_json</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id response'>response</span><span class='period'>.</span><span class='id try'>try</span><span class='lparen'>(</span><span class='symbol'>:[]</span><span class='comma'>,</span> <span class='symbol'>:headers</span><span class='rparen'>)</span><span class='period'>.</span><span class='id try'>try</span><span class='lparen'>(</span><span class='symbol'>:[]</span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>content-type</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
     <span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>JSON</span><span class='period'>.</span><span class='id decode'>decode</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1626,6 +1654,106 @@ phase, only the results from that phase will be returned.
   <span class='kw'>else</span>
     <span class='id raise'>raise</span> <span class='id fr'>fr</span>
   <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="search-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>) <strong>search</strong>(bucket, query) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Use a search query to start a map/reduce job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the bucket/index to search
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>query</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the query to run
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+self
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+151
+152
+153
+154
+155</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/search.rb', line 151</span>
+
+<span class='kw'>def</span> <span class='id search'>search</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='id query'>query</span><span class='rparen'>)</span>
+  <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span> <span class='kw'>if</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:name</span><span class='rparen'>)</span>
+  <span class='ivar'>@inputs</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:module</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>riak_search</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:function</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mapred_search</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:arg</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='id query'>query</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1751,7 +1879,7 @@ the JSON representation
       <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 140</span>
 
 <span class='kw'>def</span> <span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id hash'>hash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>inputs</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id inputs'>inputs</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>query</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id query'>query</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:as_json</span><span class='rparen'>)</span><span class='rbrace'>}</span>
+  <span class='id hash'>hash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>inputs</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id inputs'>inputs</span><span class='period'>.</span><span class='id as_json'>as_json</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>query</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id query'>query</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:as_json</span><span class='rparen'>)</span><span class='rbrace'>}</span>
   <span class='id hash'>hash</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>timeout</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@timeout</span><span class='period'>.</span><span class='id to_i'>to_i</span> <span class='kw'>if</span> <span class='ivar'>@timeout</span>
   <span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>JSON</span><span class='period'>.</span><span class='id encode'>encode</span><span class='lparen'>(</span><span class='id hash'>hash</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -1765,7 +1893,7 @@ the JSON representation
 </div>
     
     <div id="footer">
-  Generated on Mon Oct 11 16:04:32 2010 by 
+  Generated on Fri Oct 22 10:46:56 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>

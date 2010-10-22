@@ -53,17 +53,9 @@
   
   
     
-      <dt class="r1">Extended by:</dt>
-      <dd class="r1"><span class='object_link'><a href="" title="Boolean (module)">Boolean</a></span></dd>
-      
-    
   
     
   
-  
-    <dt class="r2">Included in:</dt>
-    <dd class="r2"><span class='object_link'><a href="" title="Boolean (module)">Boolean</a></span></dd>
-    
   
   
     <dt class="r1 last">Defined in:</dt>
@@ -86,104 +78,12 @@ Stand-in for true/false property types.
 </div>
 
 
-  
-    <h2>
-      Instance Method Summary
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
 
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#ripple_cast-instance_method" title="#ripple_cast (instance method)">- (Object) <strong>ripple_cast</strong>(value) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-    </ul>
-  
-
-
-
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-    
-    
-      <div class="method_details first">
-  <p class="signature first" id="ripple_cast-instance_method">
-  
-    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>ripple_cast</strong>(value) 
-  
-
-  
-</p><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/core_ext/casting.rb', line 68</span>
-
-<span class='kw'>def</span> <span class='id ripple_cast'>ripple_cast</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
-  <span class='kw'>case</span> <span class='id value'>value</span>
-  <span class='kw'>when</span> <span class='const'>NilClass</span>
-    <span class='kw'>nil</span>
-  <span class='kw'>when</span> <span class='const'>Numeric</span>
-    <span class='op'>!</span><span class='id value'>value</span><span class='period'>.</span><span class='id zero?'>zero?</span>
-  <span class='kw'>when</span> <span class='const'>TrueClass</span><span class='comma'>,</span> <span class='const'>FalseClass</span>
-    <span class='id value'>value</span>
-  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\s*t</span><span class='regexp_end'>/i</span></span>
-    <span class='kw'>true</span>
-  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\s*f</span><span class='regexp_end'>/i</span></span>
-    <span class='kw'>false</span>
-  <span class='kw'>else</span>
-    <span class='id value'>value</span><span class='period'>.</span><span class='id present?'>present?</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-  </div>
 
 </div>
     
     <div id="footer">
-  Generated on Mon Oct 11 16:04:32 2010 by 
+  Generated on Fri Oct 22 10:46:58 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>

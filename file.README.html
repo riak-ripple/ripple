@@ -93,7 +93,53 @@
 <span class='id p'>p</span> <span class='id results'>results</span> <span class='comment'># =&gt; [&quot;Please Please Me&quot;, &quot;With The Beatles&quot;, &quot;A Hard Day's Night&quot;, 
 </span>          <span class='comment'>#     &quot;Beatles For Sale&quot;, &quot;Help!&quot;, &quot;Rubber Soul&quot;,
 </span>          <span class='comment'>#     &quot;Revolver&quot;, &quot;Sgt. Pepper's Lonely Hearts Club Band&quot;, &quot;Magical Mystery Tour&quot;, 
-</span>          <span class='comment'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span></pre><h2>Document Model Examples</h2>
+</span>          <span class='comment'>#     &quot;The Beatles&quot;, &quot;Yellow Submarine&quot;, &quot;Abbey Road&quot;, &quot;Let It Be&quot;]</span></pre><h2>Riak Search Examples</h2>
+<p>For more information about Riak Search, see <a href="http://wiki.basho.com/display/RIAK/Riak+Search">the Basho wiki</a>.</p>
+<pre class="code">
+<span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>riak/search</span><span class='tstring_end'>'</span></span> <span class='comment'># optional riak_search additions
+</span>
+<span class='comment'># Create a client, specifying the Solr-compatible endpoint
+</span><span class='id client'>client</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span> <span class='symbol'>:solr</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/solr</span><span class='tstring_end'>&quot;</span></span>
+
+<span class='comment'># Search the default index for documents
+</span><span class='id result'>result</span> <span class='op'>=</span> <span class='id client'>client</span><span class='period'>.</span><span class='id search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>title:Yesterday</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># Returns a vivified JSON object
+</span>                                          <span class='comment'># containing 'responseHeaders' and 'response' keys
+</span><span class='id result'>result</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>response</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>numFound</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='comment'># total number of results
+</span><span class='id result'>result</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>response</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>start</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>    <span class='comment'># offset into the total result set
+</span><span class='id result'>result</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>response</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>docs</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>     <span class='comment'># the list of indexed documents
+</span>
+<span class='comment'># Search the 'users' index for documents
+</span><span class='id client'>client</span><span class='period'>.</span><span class='id search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>users</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name:Sean</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+
+<span class='comment'># Add a document to an index
+</span><span class='id client'>client</span><span class='period'>.</span><span class='id index'>index</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>users</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sean@basho.com</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Sean Cribbs</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='comment'># adds to the 'users' index
+</span>
+<span class='id client'>client</span><span class='period'>.</span><span class='id index'>index</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>index.html</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:content</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hello, world!</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='comment'># adds to the default index
+</span>
+<span class='id client'>client</span><span class='period'>.</span><span class='id index'>index</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='comma'>,</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>one</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>2</span><span class='comma'>,</span> <span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>two</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='comment'># adds multiple docs
+</span>
+<span class='comment'># Remove document(s) from an index
+</span><span class='id client'>client</span><span class='period'>.</span><span class='id remove'>remove</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='rbrace'>}</span><span class='rparen'>)</span>             <span class='comment'># removes the document with ID 1
+</span><span class='id client'>client</span><span class='period'>.</span><span class='id remove'>remove</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:query</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>archived</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='comment'># removes all documents matching query
+</span><span class='id client'>client</span><span class='period'>.</span><span class='id remove'>remove</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='int'>5</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='comment'># removes multiple docs
+</span>
+<span class='id client'>client</span><span class='period'>.</span><span class='id remove'>remove</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>users</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:id</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sean@basho.com</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='comment'># removes from the 'users' index
+</span>
+<span class='comment'># Seed MapReduce with search results
+</span><span class='const'>Riak</span><span class='op'>::</span><span class='const'>MapReduce</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span><span class='period'>.</span>
+        <span class='id search'>search</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>users</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>email:basho</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span>
+        <span class='id map'>map</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Riak.mapValuesJson</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:keep</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='period'>.</span>
+        <span class='id run'>run</span>
+
+<span class='comment'># Detect whether a bucket has auto-indexing
+</span><span class='id client'>client</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>users</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id is_indexed?'>is_indexed?</span>
+
+<span class='comment'># Enable auto-indexing on a bucket
+</span><span class='id client'>client</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>users</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id enable_index!'>enable_index!</span>
+
+<span class='comment'># Disable auto-indexing on a bucket
+</span><span class='id client'>client</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>users</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id disable_index!'>disable_index!</span>
+</pre><h2>Document Model Examples</h2>
 <pre class="code">
 <span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ripple</span><span class='tstring_end'>'</span></span>
 
@@ -186,7 +232,7 @@ $ git pull --rebase seancribbs master</pre></li>
 <p>The &#8220;Poor Man&#8217;s Fibers&#8221; implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.</p></div></div>
     
     <div id="footer">
-  Generated on Mon Oct 11 16:04:30 2010 by 
+  Generated on Fri Oct 22 10:46:55 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>

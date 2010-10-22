@@ -79,7 +79,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">riak-client/lib/riak/client.rb<span class="defines">,<br />
-  riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb</span>
+  riak-client/lib/riak/search.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb</span>
 </dd>
   
 </dl>
@@ -215,6 +215,33 @@ The host or IP address for the Riak endpoint.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#luwak-instance_method" title="#luwak (instance method)">- (String) <strong>luwak</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The URL path to the luwak HTTP endpoint.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#mapred-instance_method" title="#mapred (instance method)">- (String) <strong>mapred</strong> </a>
     
 
@@ -293,6 +320,33 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint.
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#solr-instance_method" title="#solr (instance method)">- (String) <strong>solr</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The URL path prefix to the Solr HTTP endpoint.
+</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -333,6 +387,81 @@ Retrieves a bucket from Riak.
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#delete_file-instance_method" title="#delete_file (instance method)">- (Object) <strong>delete_file</strong>(filename) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Deletes a file stored via the &#8220;Luwak&#8221; interface.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#file_exists%3F-instance_method" title="#file_exists? (instance method)">- (true, false) <strong>file_exists?</strong>(key) </a>
+    
+
+    
+      (also: #file_exist?)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Checks whether a file exists in &#8220;Luwak&#8221;.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_file-instance_method" title="#get_file (instance method)">- (IO<sup>?</sup>) <strong>get_file</strong>(filename) {|chunk| ... }</a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Retrieves a large file/IO object from Riak via the &#8220;Luwak&#8221;
+interface.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#http-instance_method" title="#http (instance method)">- (HTTPBackend) <strong>http</strong> </a>
     
 
@@ -357,9 +486,37 @@ Automatically detects and returns an appropriate HTTP backend.
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#index-instance_method" title="#index (instance method)">- (Object) <strong>index</strong>(*args) </a>
+    
+
+    
+      (also: #add_doc)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Adds documents to a search index via the Solr interface.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#initialize-instance_method" title="#initialize (instance method)">- (Client) <strong>initialize</strong>(options = {}) </a>
     
 
+    
+      (also: #initialize_core)
     
   </span>
   
@@ -373,7 +530,7 @@ Automatically detects and returns an appropriate HTTP backend.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Creates a client connection to Riak.
+A new instance of Client.
 </p>
 </div></span>
   
@@ -398,6 +555,83 @@ Creates a client connection to Riak.
   
     <span class="summary_desc"><div class='inline'><p>
 A representation suitable for IRB and debugging output.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#remove-instance_method" title="#remove (instance method)">- (Object) <strong>remove</strong>(*args) </a>
+    
+
+    
+      (also: #delete_doc, #deindex)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Removes documents from a search index via the Solr interface.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#search-instance_method" title="#search (instance method)">- (Hash) <strong>search</strong>(*args) </a>
+    
+
+    
+      (also: #select)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Performs a search via the Solr interface.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#store_file-instance_method" title="#store_file (instance method)">- (String) <strong>store_file</strong>(*args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Stores a large file/IO object in Riak via the &#8220;Luwak&#8221;
+interface.
 </p>
 </div></span>
   
@@ -437,10 +671,14 @@ A representation suitable for IRB and debugging output.
   
 
   
+    <span class="aliases">Also known as:
+    <span class="names"><span id='initialize_core-instance_method'>initialize_core</span></span>
+    </span>
+  
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Creates a client connection to Riak
+A new instance of Client
 </p>
 
 
@@ -463,7 +701,7 @@ Creates a client connection to Riak
       
         &mdash;
         <div class='inline'><p>
-configuration options for the client
+a customizable set of options
 </p>
 </div>
       
@@ -479,100 +717,21 @@ configuration options for the client
       
         <li>
           <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-          <span class="name">:host</span>
+          <span class="name">:solr</span>
           <span class="default">
             
               &mdash; default:
-              <tt>'127.0.0.1'</tt>
+              <tt>'/solr'</tt>
             
           </span>
           &mdash;<div class='inline'><p>
-The host or IP address for the Riak endpoint
-</p>
-</div>
-        </tr>
-      
-        <li>
-          <span class="type">(<tt>Fixnum</tt>)</span>
-          <span class="name">:port</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>8098</tt>
-            
-          </span>
-          &mdash;<div class='inline'><p>
-The port of the Riak HTTP endpoint
-</p>
-</div>
-        </tr>
-      
-        <li>
-          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-          <span class="name">:prefix</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>'/riak/'</tt>
-            
-          </span>
-          &mdash;<div class='inline'><p>
-The URL path prefix to the main HTTP endpoint
-</p>
-</div>
-        </tr>
-      
-        <li>
-          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-          <span class="name">:mapred</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>'/mapred'</tt>
-            
-          </span>
-          &mdash;<div class='inline'><p>
-The path to the map-reduce HTTP endpoint
-</p>
-</div>
-        </tr>
-      
-        <li>
-          <span class="type">(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-          <span class="name">:client_id</span>
-          <span class="default">
-            
-              &mdash; default:
-              <tt>rand(MAX_CLIENT_ID)</tt>
-            
-          </span>
-          &mdash;<div class='inline'><p>
-The internal client ID used by Riak to route responses
+The URL path prefix to the Solr HTTP endpoint
 </p>
 </div>
         </tr>
       
     </ul>
   
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-raised if any options are invalid
-</p>
-</div>
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -580,27 +739,17 @@ raised if any options are invalid
       <pre class="lines">
 
 
-55
-56
-57
-58
-59
 60
 61
 62
 63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='id options'>options</span><span class='period'>.</span><span class='id assert_valid_keys'>assert_valid_keys</span><span class='lparen'>(</span><span class='symbol'>:host</span><span class='comma'>,</span> <span class='symbol'>:port</span><span class='comma'>,</span> <span class='symbol'>:prefix</span><span class='comma'>,</span> <span class='symbol'>:client_id</span><span class='comma'>,</span> <span class='symbol'>:mapred</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id host'>host</span>      <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:host</span><span class='rbracket'>]</span>      <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>127.0.0.1</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id port'>port</span>      <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span>      <span class='op'>||</span> <span class='int'>8098</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id client_id'>client_id</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:client_id</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id make_client_id'>make_client_id</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id prefix'>prefix</span>    <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:prefix</span><span class='rbracket'>]</span>    <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/riak/</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id mapred'>mapred</span>    <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:mapred</span><span class='rbracket'>]</span>    <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/mapred</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>missing_host_and_port</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='ivar'>@host</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@port</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id solr'>solr</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:solr</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/solr</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id initialize_core'>initialize_core</span><span class='lparen'>(</span><span class='id options'>options</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -658,12 +807,12 @@ The internal client ID used by Riak to route responses
       <pre class="lines">
 
 
-39
-40
-41</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id client_id'>client_id</span>
   <span class='ivar'>@client_id</span>
@@ -719,15 +868,76 @@ The host or IP address for the Riak endpoint
       <pre class="lines">
 
 
-33
-34
-35</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id host'>host</span>
   <span class='ivar'>@host</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="luwak=-instance_method"></span>
+      <span id="luwak-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="luwak-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>luwak</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The URL path to the luwak HTTP endpoint
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The URL path to the luwak HTTP endpoint
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+50
+51
+52</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 50</span>
+
+<span class='kw'>def</span> <span class='id luwak'>luwak</span>
+  <span class='ivar'>@luwak</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -780,12 +990,12 @@ The URL path to the map-reduce HTTP endpoint
       <pre class="lines">
 
 
-45
-46
-47</pre>
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id mapred'>mapred</span>
   <span class='ivar'>@mapred</span>
@@ -841,12 +1051,12 @@ The port of the Riak HTTP endpoint
       <pre class="lines">
 
 
-36
-37
-38</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id port'>port</span>
   <span class='ivar'>@port</span>
@@ -902,15 +1112,76 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint
       <pre class="lines">
 
 
-42
-43
-44</pre>
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id prefix'>prefix</span>
   <span class='ivar'>@prefix</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="solr=-instance_method"></span>
+      <span id="solr-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="solr-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>solr</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The URL path prefix to the Solr HTTP endpoint
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The URL path prefix to the Solr HTTP endpoint
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+24
+25
+26</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/search.rb', line 24</span>
+
+<span class='kw'>def</span> <span class='id solr'>solr</span>
+  <span class='ivar'>@solr</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1052,19 +1323,317 @@ the requested bucket
       <pre class="lines">
 
 
-118
-119
-120
-121
-122</pre>
+124
+125
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 124</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id options'>options</span><span class='period'>.</span><span class='id assert_valid_keys'>assert_valid_keys</span><span class='lparen'>(</span><span class='symbol'>:keys</span><span class='comma'>,</span> <span class='symbol'>:props</span><span class='rparen'>)</span>
   <span class='id response'>response</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id options'>options</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id load'>load</span><span class='lparen'>(</span><span class='id response'>response</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="delete_file-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>delete_file</strong>(filename) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Deletes a file stored via the &#8220;Luwak&#8221; interface
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>filename</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key/filename to delete
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+184
+185
+186
+187</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 184</span>
+
+<span class='kw'>def</span> <span class='id delete_file'>delete_file</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span>
+  <span class='id http'>http</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="file_exists?-instance_method">
+  
+    - (<tt>true</tt>, <tt>false</tt>) <strong>file_exists?</strong>(key) 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='file_exist?-instance_method'>file_exist?</span></span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Checks whether a file exists in &#8220;Luwak&#8221;.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>key</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key to check
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+whether the key exists in &#8220;Luwak&#8220;
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+192
+193
+194
+195</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 192</span>
+
+<span class='kw'>def</span> <span class='id file_exists?'>file_exists?</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span>
+  <span class='id result'>result</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id head'>head</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id result'>result</span><span class='lbracket'>[</span><span class='symbol'>:code</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='int'>200</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="get_file-instance_method">
+  
+    - (<tt>IO</tt><sup>?</sup>) <strong>get_file</strong>(filename) {|chunk| ... }
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Retrieves a large file/IO object from Riak via the &#8220;Luwak&#8221;
+interface. Streams the data to a temporary file unless a block is given.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>filename</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key/filename for the object
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'>(<tt>chunk</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+stream contents of the file through the block. Passing the block will
+result in nil being returned from the method.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Yield Parameters:</h3>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>chunk</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a single chunk of the object&#8217;s data
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>IO</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the file (also having content_type and original_filename accessors). The
+file will need to be reopened to be read. nil will be returned if a block
+is given.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 164</span>
+
+<span class='kw'>def</span> <span class='id get_file'>get_file</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
+    <span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+    <span class='kw'>nil</span>
+  <span class='kw'>else</span>
+    <span class='id tmpfile'>tmpfile</span> <span class='op'>=</span> <span class='const'>LuwakFile</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>begin</span>
+      <span class='id response'>response</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id chunk'>chunk</span><span class='op'>|</span>
+        <span class='id tmpfile'>tmpfile</span><span class='period'>.</span><span class='id write'>write</span> <span class='id chunk'>chunk</span>
+      <span class='kw'>end</span>
+      <span class='id tmpfile'>tmpfile</span><span class='period'>.</span><span class='id content_type'>content_type</span> <span class='op'>=</span> <span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>content-type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id first'>first</span>
+      <span class='id tmpfile'>tmpfile</span>
+    <span class='kw'>ensure</span>
+      <span class='id tmpfile'>tmpfile</span><span class='period'>.</span><span class='id close'>close</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1116,18 +1685,18 @@ the HTTP backend for this client
       <pre class="lines">
 
 
-102
-103
-104
-105
-106
-107
 108
 109
-110</pre>
+110
+111
+112
+113
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='id http'>http</span>
   <span class='ivar'>@http</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -1137,6 +1706,198 @@ the HTTP backend for this client
               <span class='id warn'>warn</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>install_curb</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
               <span class='const'>NetHTTPBackend</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
             <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="index-instance_method">
+  
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>index</strong>(index, *docs) </span>
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>index</strong>(*docs) </span>
+    
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='add_doc-instance_method'>add_doc</span></span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Adds documents to a search index via the Solr interface.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>index</strong>(index, *docs) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Adds documents to the specified search index
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>index</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the index in which to add/update the given documents
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>docs</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+unnested document hashes, with one key per field
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>index</strong>(*docs) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Adds documents to the default search index
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>docs</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+unnested document hashes, with one key per field
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+if any documents don&#8217;t include &#8216;id&#8217; key
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/search.rb', line 71</span>
+
+<span class='kw'>def</span> <span class='id index'>index</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id index'>index</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id shift'>shift</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='id args'>args</span><span class='period'>.</span><span class='id first'>first</span> <span class='comment'># Documents must be hashes of fields
+</span>  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>search_docs_require_id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id args'>args</span><span class='period'>.</span><span class='id all?'>all?</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id d'>d</span><span class='op'>|</span> <span class='id d'>d</span><span class='period'>.</span><span class='id key?'>key?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id d'>d</span><span class='period'>.</span><span class='id key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='id xml'>xml</span> <span class='op'>=</span> <span class='const'>Builder</span><span class='op'>::</span><span class='const'>XmlMarkup</span><span class='period'>.</span><span class='id new'>new</span>
+  <span class='id xml'>xml</span><span class='period'>.</span><span class='id add'>add</span> <span class='kw'>do</span>
+    <span class='id args'>args</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id doc'>doc</span><span class='op'>|</span>
+      <span class='id xml'>xml</span><span class='period'>.</span><span class='id doc'>doc</span> <span class='kw'>do</span>
+        <span class='id doc'>doc</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span>
+          <span class='id xml'>xml</span><span class='period'>.</span><span class='id field'>field</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id k'>k</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='id xml'>xml</span><span class='period'>.</span><span class='id text!'>text!</span><span class='lparen'>(</span><span class='id v'>v</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id path'>path</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id solr'>solr</span><span class='comma'>,</span> <span class='id index'>index</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>update</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id xml'>xml</span><span class='period'>.</span><span class='id target!'>target!</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>text/xml</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id compact'>compact</span>
+  <span class='id http'>http</span><span class='period'>.</span><span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='op'>*</span><span class='id path'>path</span><span class='rparen'>)</span>
+  <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1186,15 +1947,618 @@ A representation suitable for IRB and debugging output.
       <pre class="lines">
 
 
-126
-127
-128</pre>
+199
+200
+201</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 199</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;Riak::Client </span><span class='embexpr_beg'>#{</span><span class='id http'>http</span><span class='period'>.</span><span class='id root_uri'>root_uri</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="remove-instance_method">
+  
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>remove</strong>(index, specs) </span>
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>remove</strong>(specs) </span>
+    
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='delete_doc-instance_method'>delete_doc</span>, <span id='deindex-instance_method'>deindex</span></span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Removes documents from a search index via the Solr interface.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>remove</strong>(index, specs) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Removes documents from the specified index
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>index</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the index from which to remove documents
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>specs</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the specificaiton of documents to remove (must contain &#8216;id&#8217; or
+&#8216;query&#8217; keys)
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>remove</strong>(specs) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Removes documents from the default index
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
+      
+      
+        <span class='name'>specs</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the specification of documents to remove (must contain &#8216;id&#8217; or
+&#8216;query&#8217; keys)
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+if any document specs don&#8217;t include &#8216;id&#8217; or
+&#8216;query&#8217; keys
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/search.rb', line 99</span>
+
+<span class='kw'>def</span> <span class='id remove'>remove</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id index'>index</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id shift'>shift</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='id args'>args</span><span class='period'>.</span><span class='id first'>first</span>
+  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>search_remove_requires_id_or_query</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id args'>args</span><span class='period'>.</span><span class='id all?'>all?</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id s'>s</span><span class='op'>|</span> <span class='id s'>s</span><span class='period'>.</span><span class='id stringify_keys'>stringify_keys</span><span class='period'>.</span><span class='id key?'>key?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id s'>s</span><span class='period'>.</span><span class='id stringify_keys'>stringify_keys</span><span class='period'>.</span><span class='id key?'>key?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>query</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='id xml'>xml</span> <span class='op'>=</span> <span class='const'>Builder</span><span class='op'>::</span><span class='const'>XmlMarkup</span><span class='period'>.</span><span class='id new'>new</span>
+  <span class='id xml'>xml</span><span class='period'>.</span><span class='id delete'>delete</span> <span class='kw'>do</span>
+    <span class='id args'>args</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id spec'>spec</span><span class='op'>|</span>
+      <span class='id spec'>spec</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span>
+        <span class='id xml'>xml</span><span class='period'>.</span><span class='id tag!'>tag!</span><span class='lparen'>(</span><span class='id k'>k</span><span class='period'>.</span><span class='id to_sym'>to_sym</span><span class='comma'>,</span> <span class='id v'>v</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id path'>path</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id solr'>solr</span><span class='comma'>,</span> <span class='id index'>index</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>update</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id xml'>xml</span><span class='period'>.</span><span class='id target!'>target!</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>text/xml</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id compact'>compact</span>
+  <span class='id http'>http</span><span class='period'>.</span><span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='op'>*</span><span class='id path'>path</span><span class='rparen'>)</span>
+  <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="search-instance_method">
+  
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(index, query, options = {}) </span>
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(query, options = {}) </span>
+    
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='select-instance_method'>select</span></span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Performs a search via the Solr interface.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(index, query, options = {}) </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>index</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the index to query on
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>query</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a Lucene query string
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(query, options = {}) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Queries the default index
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>query</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a Lucene query string
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+extra options for the Solr query
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the query result, containing the &#8216;responseHeaders&#8217; and
+&#8216;response&#8217; keys
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/search.rb', line 49</span>
+
+<span class='kw'>def</span> <span class='id search'>search</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id options'>options</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
+  <span class='id index'>index</span><span class='comma'>,</span> <span class='id query'>query</span> <span class='op'>=</span> <span class='id args'>args</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id args'>args</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span>  <span class='comment'># Allows nil index, while keeping it as first argument
+</span>  <span class='id path'>path</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id solr'>solr</span><span class='comma'>,</span> <span class='id index'>index</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>select</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>q</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id query'>query</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wt</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id options'>options</span><span class='period'>.</span><span class='id stringify_keys'>stringify_keys</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id compact'>compact</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='op'>*</span><span class='id path'>path</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>content-type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>JSON</span><span class='period'>.</span><span class='id decode'>decode</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="store_file-instance_method">
+  
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(filename, content_type, data) </span>
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(content_type, data) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Stores a large file/IO object in Riak via the &#8220;Luwak&#8221;
+interface.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(filename, content_type, data) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Stores the file at the given key/filename
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>filename</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key/filename for the object
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>content_type</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the MIME Content-Type for the data
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>IO</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>data</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the contents of the file
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(content_type, data) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Stores the file with a server-determined key/filename
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>content_type</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the MIME Content-Type for the data
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>IO</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>data</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the contents of the file
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key/filename where the object was stored
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 142</span>
+
+<span class='kw'>def</span> <span class='id store_file'>store_file</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id data'>data</span><span class='comma'>,</span> <span class='id content_type'>content_type</span><span class='comma'>,</span> <span class='id filename'>filename</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id reverse'>reverse</span>
+  <span class='kw'>if</span> <span class='id filename'>filename</span>
+    <span class='id http'>http</span><span class='period'>.</span><span class='id put'>put</span><span class='lparen'>(</span><span class='int'>204</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id data'>data</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id content_type'>content_type</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id filename'>filename</span>
+  <span class='kw'>else</span>
+    <span class='id response'>response</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id post'>post</span><span class='lparen'>(</span><span class='int'>201</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id data'>data</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id content_type'>content_type</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>location</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id last'>last</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1206,7 +2570,7 @@ A representation suitable for IRB and debugging output.
 </div>
     
     <div id="footer">
-  Generated on Mon Oct 11 16:04:30 2010 by 
+  Generated on Fri Oct 22 10:46:56 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>

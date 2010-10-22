@@ -42,6 +42,18 @@
     <iframe id="search_frame"></iframe>
     
     <div id="content"><div id='filecontents'><h1>Ripple Release Notes</h1>
+<h2>0.8.2 Patch/Minor Feature Release &#8211; 2010-10-22</h2>
+<p>Relese 0.8.2 includes significant additions to support features in Riak 0.13, including Riak Search and Luwak.</p>
+<p>Simply <code>require 'riak/search'</code> to add Search-related features to riak-client.</p>
+<p>Full notes:</p>
+<ul>
+	<li>Fixed bug in embedded associations where associated validators would be added every time the association was instantiated. [Adam Hunter]</li>
+	<li>Update and loosen dependencies to Rails 3.0.1 and RSpec 2.</li>
+	<li>Add support for file-existence check in Luwak. [John Axel Eriksson]</li>
+	<li>Avoid clobbering an existing Boolean class or module.</li>
+	<li>Add Luwak support.</li>
+	<li>Add Search features. [Sean Cribbs, Rusty Klophaus]</li>
+</ul>
 <h2>0.8.1 Patch/Minor Feature Release &#8211; 2010-10-11</h2>
 <p>Release 0.8.1 includes several new features and bugfixes.</p>
 <p>Full notes:</p>
@@ -179,7 +191,7 @@ It includes:</p>
 </ul></div></div>
     
     <div id="footer">
-  Generated on Mon Oct 11 16:04:30 2010 by 
+  Generated on Fri Oct 22 10:46:55 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.0 (ruby-1.9.2).
 </div>
