@@ -1,11 +1,13 @@
 #include <ruby.h>
-#include "riakpb-ruby.h"
+#include "riakclient.pb.h"
+#include <arpa/inet.h>
+#include <string>
 
 // We're using google's protobufs, so we have to compile in C++. MRI
 // is in C, so we need C calling conventions in our extension
 // functions for it all to hook up.
 extern "C" {
-
+#include "riakpb-ruby.h"
   static VALUE cTCPSocket;
   static VALUE ivar_socket;
   static VALUE eFailedRequest;
@@ -70,6 +72,11 @@ extern "C" {
     args[4] = (res.has_errmsg()) ? rb_str_new2(res.errmsg().c_str()) : rb_str_new2("failed");
     err = rb_class_new_instance(5, args, eFailedRequest);
     rb_exc_raise(err);
+  }
+
+  VALUE rpb_ping(VALUE self){
+    WriteProtobuff(SOCKET, PingReq, NULL);
+    return rpb_decode_response(self);
   }
 
   VALUE rpb_get_client_id(VALUE self){
@@ -248,6 +255,7 @@ extern "C" {
     cRiakClient = rb_define_class_under(cRiakClient, "Client", rb_cObject);
     mProtobufs = rb_define_module_under(cRiakClient, "Protobufs");
     rb_define_method(mProtobufs, "initialize", RUBY_METHOD_FUNC(rpb_init), 1);
+    rb_define_method(mProtobufs, "ping", RUBY_METHOD_FUNC(rpb_ping), 0);
     rb_define_method(mProtobufs, "get_client_id", RUBY_METHOD_FUNC(rpb_get_client_id), 0);
     rb_alias(mProtobufs, rb_intern("client_id"), rb_intern("get_client_id"));
     rb_define_method(mProtobufs, "set_client_id", RUBY_METHOD_FUNC(rpb_set_client_id), 1);

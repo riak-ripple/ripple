@@ -1,31 +1,28 @@
-#include <arpa/inet.h>
-#include "riakclient.pb.h"
-#include <string>
 
 enum RpbMessageCodes {
-  ErrorResp,
-  PingReq,
-  PingResp,
-  GetClientIdReq,
-  GetClientIdResp,
-  SetClientIdReq,
-  SetClientIdResp,
-  GetServerInfoReq,
-  GetServerInfoResp,
+  ErrorResp,            //
+  PingReq,              //
+  PingResp,             //
+  GetClientIdReq,       //
+  GetClientIdResp,      //
+  SetClientIdReq,       //
+  SetClientIdResp,      //
+  GetServerInfoReq,     //
+  GetServerInfoResp,    //
   GetReq,
   GetResp,
   PutReq,
   PutResp,
-  DelReq,
-  DelResp,
-  ListBucketsReq,
-  ListBucketsResp,
-  ListKeysReq,
-  ListKeysResp,
-  GetBucketReq,
-  GetBucketResp,
-  SetBucketReq,
-  SetBucketResp,
+  DelReq,               //
+  DelResp,              //
+  ListBucketsReq,       //
+  ListBucketsResp,      //
+  ListKeysReq,          //
+  ListKeysResp,         //
+  GetBucketReq,         //
+  GetBucketResp,        //
+  SetBucketReq,         //
+  SetBucketResp,        //
   MapRedReq,
   MapRedResp
 };
@@ -86,10 +83,10 @@ static inline uint32_t QuorumValue(VALUE q){
 }
 
 #define SOCKET rb_ivar_get(self, ivar_socket)
-
 extern "C" {
-
   VALUE rpb_decode_error(VALUE);
+
+  VALUE rpb_ping(VALUE);
 
   VALUE rbp_get_client_id(VALUE);
   VALUE rpb_decode_get_client_id(VALUE);
@@ -114,4 +111,5 @@ extern "C" {
 
   VALUE rpb_decode_response(VALUE);
   VALUE rpb_init(VALUE, VALUE);
+
 }
