@@ -83,33 +83,26 @@ static inline uint32_t QuorumValue(VALUE q){
 }
 
 #define SOCKET rb_ivar_get(self, ivar_socket)
+
 extern "C" {
   VALUE rpb_decode_error(VALUE);
-
   VALUE rpb_ping(VALUE);
-
   VALUE rbp_get_client_id(VALUE);
-  VALUE rpb_decode_get_client_id(VALUE);
-
   VALUE rpb_set_client_id(VALUE, VALUE);
-
   VALUE rpb_get_server_info(VALUE);
-  VALUE rpb_decode_get_server_info(VALUE);
-
+  VALUE rpb_get(int, VALUE*, VALUE);
   VALUE rpb_delete(int, VALUE*, VALUE);
-
   VALUE rpb_list_buckets(VALUE);
-  VALUE rpb_decode_list_buckets(VALUE);
-
   VALUE rpb_list_keys(VALUE, VALUE);
-  VALUE rpb_decode_list_keys(VALUE, VALUE);
-
   VALUE rpb_get_bucket(VALUE, VALUE);
-  VALUE rpb_decode_get_bucket(VALUE);
-
   VALUE rpb_set_bucket(VALUE, VALUE, VALUE);
-
-  VALUE rpb_decode_response(VALUE);
   VALUE rpb_init(VALUE, VALUE);
-
 }
+
+VALUE rpb_decode_response(VALUE);
+VALUE rpb_decode_get_client_id(VALUE);
+VALUE rpb_decode_get_server_info(VALUE);
+VALUE rpb_decode_get(VALUE);
+VALUE rpb_decode_list_buckets(VALUE);
+VALUE rpb_decode_list_keys(VALUE, VALUE);
+VALUE rpb_decode_get_bucket(VALUE);
