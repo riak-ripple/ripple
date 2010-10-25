@@ -6,13 +6,12 @@
 // We're using google's protobufs, so we have to compile in C++. MRI
 // is in C, so we need C calling conventions in our extension
 // functions for it all to hook up.
-
-
 extern "C" {
 #include "riakpb-ruby.h"
   VALUE cTCPSocket;
   VALUE ivar_socket;
   VALUE eFailedRequest;
+  VALUE mJSON;
 
   VALUE rpb_ping(VALUE self){
     WriteProtobuff(SOCKET, PingReq, NULL);
@@ -178,6 +177,15 @@ extern "C" {
     return rpb_decode_response(self);
   }
 
+  VALUE rpb_mapred(VALUE self, VALUE json){
+    RpbMapRedReq req = RpbMapRedReq();
+    VALUE ctype = rb_str_new2("application/json");
+    req.set_content_type((void*)RSTRING_PTR(ctype), (size_t)RSTRING_LEN(ctype));
+    req.set_request((void*)RSTRING_PTR(json), (size_t)RSTRING_LEN(json));
+    WriteProtobuff(SOCKET, MapRedReq, &req);
+    return rpb_decode_response(self);
+  }
+
   // TODO: This might should be done in Ruby, not getting any benefit from C.
   VALUE rpb_init(VALUE self, VALUE client){
     VALUE socket, host, port;
@@ -200,6 +208,8 @@ extern "C" {
     eFailedRequest = rb_const_get(cRiakClient, rb_intern("FailedRequest"));
     cRiakClient = rb_define_class_under(cRiakClient, "Client", rb_cObject);
     mProtobufs = rb_define_module_under(cRiakClient, "Protobufs");
+    mJSON = rb_const_get(rb_const_get(rb_cObject, rb_intern("ActiveSupport")), rb_intern("JSON"));
+
     rb_define_method(mProtobufs, "initialize", RUBY_METHOD_FUNC(rpb_init), 1);
     rb_define_method(mProtobufs, "ping", RUBY_METHOD_FUNC(rpb_ping), 0);
     rb_define_method(mProtobufs, "get_client_id", RUBY_METHOD_FUNC(rpb_get_client_id), 0);
@@ -214,5 +224,6 @@ extern "C" {
     rb_define_method(mProtobufs, "list_keys", RUBY_METHOD_FUNC(rpb_list_keys), 1);
     rb_define_method(mProtobufs, "get_bucket", RUBY_METHOD_FUNC(rpb_get_bucket), 1);
     rb_define_method(mProtobufs, "set_bucket", RUBY_METHOD_FUNC(rpb_set_bucket), 2);
+    rb_define_method(mProtobufs, "mapred", RUBY_METHOD_FUNC(rpb_mapred), 1);
   }
 }

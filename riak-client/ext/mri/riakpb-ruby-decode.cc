@@ -8,6 +8,7 @@ extern "C" {
   extern VALUE cTCPSocket;
   extern VALUE ivar_socket;
   extern VALUE eFailedRequest;
+  extern VALUE mJSON;
 }
 
 VALUE rpb_decode_response(VALUE self){
@@ -62,6 +63,9 @@ VALUE rpb_decode_response(VALUE self){
       break;
     case GetBucketResp:
       return rpb_decode_get_bucket(str);
+      break;
+    case MapRedResp:
+      return rpb_decode_mapred(str, socket);
       break;
     default:
       break;
@@ -187,7 +191,6 @@ VALUE rpb_decode_list_keys(VALUE string, VALUE socket){
   return list;
 }
 
-
 VALUE rpb_decode_get_bucket(VALUE string){
   RpbGetBucketResp res;
   VALUE hash;
@@ -201,6 +204,49 @@ VALUE rpb_decode_get_bucket(VALUE string){
       rb_hash_aset(hash, rb_str_new2("allow_mult"), (res.props().allow_mult()) ? Qtrue : Qfalse);
   }
   return hash;
+}
+
+VALUE rpb_decode_mapred(VALUE string, VALUE socket){
+  RpbMapRedResp res = RpbMapRedResp();
+  bool done = 0;
+  VALUE list = rb_ary_new(), phase, prolog, phase_i, data;
+  int i;
+  uint32_t msglen;
+  uint8_t msgcode;
+  while(!done){
+    DecodeProtobuff(res, string);
+    done = res.has_done() && res.done();
+    phase_i = res.has_phase() ? UINT2NUM(res.phase()) : Qnil;
+    data = res.has_response() ? rb_funcall(mJSON, rb_intern("decode"), 1, rb_str_new2(res.response().c_str())) : Qnil;
+    if(!done) {
+      if(rb_block_given_p()){
+        // yield phase counter and phase data
+        if(!NIL_P(data))
+          rb_yield_values(2, phase_i, data);
+      } else {
+        // add to a specific phase accumulator
+        phase = (NIL_P(phase_i)) ? list : rb_ary_entry(list, phase_i);
+        if(NIL_P(phase)){
+          phase = rb_ary_new();
+          rb_ary_store(list, NUM2LONG(phase_i), phase);
+        }
+        if(TYPE(data) == T_ARRAY)
+          rb_ary_concat(phase, data);
+        else // Based on riak_kv_pb_socket, probably won't happen
+          rb_ary_push(phase, data);
+      }
+      res.Clear(); // reuse the pbuf
+      prolog = ReadSocket(socket, 5);
+      msglen = ntohl(((uint32_t*)RSTRING_PTR(prolog))[0]) - 1;
+      msgcode = (uint8_t)(RSTRING_PTR(prolog)[4]);
+      string = ReadSocket(socket, msglen);
+      if(msgcode == ErrorResp)
+        rpb_decode_error(string);
+      else if(msgcode != MapRedResp) // TODO: throw an exception, don't exit
+        rb_fatal("Unexpected response code from mapred operation: %d", msgcode);
+    }
+  }
+  return list;
 }
 
 VALUE rpb_decode_content(RpbContent *c){

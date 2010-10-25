@@ -1,28 +1,28 @@
 
 enum RpbMessageCodes {
-  ErrorResp,            //
-  PingReq,              //
-  PingResp,             //
-  GetClientIdReq,       //
-  GetClientIdResp,      //
-  SetClientIdReq,       //
-  SetClientIdResp,      //
-  GetServerInfoReq,     //
-  GetServerInfoResp,    //
+  ErrorResp,
+  PingReq,
+  PingResp,
+  GetClientIdReq,
+  GetClientIdResp,
+  SetClientIdReq,
+  SetClientIdResp,
+  GetServerInfoReq,
+  GetServerInfoResp,
   GetReq,
   GetResp,
   PutReq,
   PutResp,
-  DelReq,               //
-  DelResp,              //
-  ListBucketsReq,       //
-  ListBucketsResp,      //
-  ListKeysReq,          //
-  ListKeysResp,         //
-  GetBucketReq,         //
-  GetBucketResp,        //
-  SetBucketReq,         //
-  SetBucketResp,        //
+  DelReq,
+  DelResp,
+  ListBucketsReq,
+  ListBucketsResp,
+  ListKeysReq,
+  ListKeysResp,
+  GetBucketReq,
+  GetBucketResp,
+  SetBucketReq,
+  SetBucketResp,
   MapRedReq,
   MapRedResp
 };
@@ -97,6 +97,7 @@ extern "C" {
   VALUE rpb_list_keys(VALUE, VALUE);
   VALUE rpb_get_bucket(VALUE, VALUE);
   VALUE rpb_set_bucket(VALUE, VALUE, VALUE);
+  VALUE rpb_mapred(VALUE, VALUE);
   VALUE rpb_init(VALUE, VALUE);
 }
 
@@ -108,4 +109,5 @@ VALUE rpb_decode_put(VALUE);
 VALUE rpb_decode_list_buckets(VALUE);
 VALUE rpb_decode_list_keys(VALUE, VALUE);
 VALUE rpb_decode_get_bucket(VALUE);
+VALUE rpb_decode_mapred(VALUE, VALUE);
 VALUE rpb_decode_content(RpbContent *);
