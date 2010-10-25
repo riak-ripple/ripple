@@ -16,6 +16,9 @@ VALUE rpb_decode_response(VALUE self){
   uint8_t msgcode;
   socket = SOCKET;
   str = ReadSocket(socket, 5);
+  // At this point, a bad request might have killed the socket. We
+  // need to raise an error and potentially reopen the socket.
+  // if(NIL_P(str)) return Qnil;
   msglen = ntohl(((uint32_t*)RSTRING_PTR(str))[0]) - 1;
   msgcode = (uint8_t)(RSTRING_PTR(str)[4]);
   if(msglen == 0){
@@ -47,6 +50,9 @@ VALUE rpb_decode_response(VALUE self){
       break;
     case GetResp:
       return rpb_decode_get(str);
+      break;
+    case PutResp:
+      return rpb_decode_put(str);
       break;
     case ListBucketsResp:
       return rpb_decode_list_buckets(str);
@@ -102,8 +108,8 @@ VALUE rpb_decode_get_server_info(VALUE string){
 
 VALUE rpb_decode_get(VALUE string){
   RpbGetResp res = RpbGetResp();
-  VALUE obj, values, contents, links, link, usermeta;
-  int i,j,k;
+  VALUE obj, values, contents;
+  int i;
   DecodeProtobuff(res, string);
 
   obj = rb_hash_new();
@@ -113,50 +119,25 @@ VALUE rpb_decode_get(VALUE string){
   values = rb_ary_new2(res.content_size());
   rb_hash_aset(obj, rb_str_new2("values"), values);
   for(i = 0; i < res.content_size(); i++){
-    contents = rb_hash_new();
-    rb_ary_push(values, contents);
-    rb_hash_aset(contents, rb_str_new2("data"), rb_str_new2(res.content(i).value().c_str()));
-    if(res.content(i).has_content_type()){
-      rb_hash_aset(contents, rb_str_new2("content-type"), rb_str_new2(res.content(i).content_type().c_str()));
-    }
-    if(res.content(i).has_charset()){
-      rb_hash_aset(contents, rb_str_new2("charset"), rb_str_new2(res.content(i).charset().c_str()));
-    }
-    if(res.content(i).has_content_encoding()){
-      rb_hash_aset(contents, rb_str_new2("encoding"), rb_str_new2(res.content(i).content_encoding().c_str()));
-    }
-    if(res.content(i).has_vtag()){
-      rb_hash_aset(contents, rb_str_new2("vtag"), rb_str_new2(res.content(i).vtag().c_str()));
-    }
-    if(res.content(i).has_last_mod()){
-      rb_hash_aset(contents, rb_str_new2("last-modified"), UINT2NUM(res.content(i).last_mod()));
-    }
-    if(res.content(i).has_last_mod_usecs()){
-      rb_hash_aset(contents, rb_str_new2("last-modified-usecs"), UINT2NUM(res.content(i).last_mod_usecs()));
-    }
-    links = rb_ary_new2(res.content(i).links_size());
-    rb_hash_aset(contents, rb_str_new2("links"), links);
-    for(j = 0; j < res.content(i).links_size(); j++){
-      link = rb_hash_new();
-      rb_ary_push(links, link);
-      if(res.content(i).links(j).has_bucket()){
-        rb_hash_aset(link, rb_str_new2("bucket"), rb_str_new2(res.content(i).links(j).bucket().c_str()));
-      }
-      if(res.content(i).links(j).has_key()){
-        rb_hash_aset(link, rb_str_new2("key"), rb_str_new2(res.content(i).links(j).key().c_str()));
-      }
-      if(res.content(i).links(j).has_tag()){
-        rb_hash_aset(link, rb_str_new2("tag"), rb_str_new2(res.content(i).links(j).tag().c_str()));
-      }
-    }
-    usermeta = rb_hash_new();
-    rb_hash_aset(contents, rb_str_new2("meta"), usermeta);
-    for(k = 0; k < res.content(i).usermeta_size(); k++){
-      if(res.content(i).usermeta(k).has_value())
-        rb_hash_aset(usermeta, rb_str_new2(res.content(i).usermeta(k).key().c_str()), rb_str_new2(res.content(i).usermeta(k).value().c_str()));
-      else
-        rb_hash_aset(usermeta, rb_str_new2(res.content(i).usermeta(k).key().c_str()), Qnil);
-    }
+    rb_ary_push(values, rpb_decode_content(res.mutable_content(i)));
+  }
+  return obj;
+}
+
+VALUE rpb_decode_put(VALUE string) {
+  RpbPutResp res = RpbPutResp();
+  VALUE obj, values;
+  int i;
+  DecodeProtobuff(res, string);
+
+  obj = rb_hash_new();
+  if(res.has_vclock()){
+    rb_hash_aset(obj, rb_str_new2("vclock"), rb_str_new2(res.vclock().c_str()));
+  }
+  values = rb_ary_new2(res.content_size());
+  rb_hash_aset(obj, rb_str_new2("values"), values);
+  for(i = 0; i < res.content_size(); i++){
+    rb_ary_push(values, rpb_decode_content(res.mutable_content(i)));
   }
   return obj;
 }
@@ -220,4 +201,52 @@ VALUE rpb_decode_get_bucket(VALUE string){
       rb_hash_aset(hash, rb_str_new2("allow_mult"), (res.props().allow_mult()) ? Qtrue : Qfalse);
   }
   return hash;
+}
+
+VALUE rpb_decode_content(RpbContent *c){
+  VALUE contents = rb_hash_new(), links, link, usermeta;
+  int j,k;
+  rb_hash_aset(contents, rb_str_new2("raw_data"), rb_str_new2(c->value().c_str()));
+  if(c->has_content_type()){
+    rb_hash_aset(contents, rb_str_new2("content-type"), rb_str_new2(c->content_type().c_str()));
+  }
+  if(c->has_charset()){
+    rb_hash_aset(contents, rb_str_new2("charset"), rb_str_new2(c->charset().c_str()));
+  }
+  if(c->has_content_encoding()){
+    rb_hash_aset(contents, rb_str_new2("encoding"), rb_str_new2(c->content_encoding().c_str()));
+  }
+  if(c->has_vtag()){
+    rb_hash_aset(contents, rb_str_new2("vtag"), rb_str_new2(c->vtag().c_str()));
+  }
+  if(c->has_last_mod()){
+    rb_hash_aset(contents, rb_str_new2("last-modified"), UINT2NUM(c->last_mod()));
+  }
+  if(c->has_last_mod_usecs()){
+    rb_hash_aset(contents, rb_str_new2("last-modified-usecs"), UINT2NUM(c->last_mod_usecs()));
+  }
+  links = rb_ary_new2(c->links_size());
+  rb_hash_aset(contents, rb_str_new2("links"), links);
+  for(j = 0; j < c->links_size(); j++){
+    link = rb_hash_new();
+    rb_ary_push(links, link);
+    if(c->links(j).has_bucket()){
+      rb_hash_aset(link, rb_str_new2("bucket"), rb_str_new2(c->links(j).bucket().c_str()));
+    }
+    if(c->links(j).has_key()){
+      rb_hash_aset(link, rb_str_new2("key"), rb_str_new2(c->links(j).key().c_str()));
+    }
+    if(c->links(j).has_tag()){
+      rb_hash_aset(link, rb_str_new2("tag"), rb_str_new2(c->links(j).tag().c_str()));
+    }
+  }
+  usermeta = rb_hash_new();
+  rb_hash_aset(contents, rb_str_new2("meta"), usermeta);
+  for(k = 0; k < c->usermeta_size(); k++){
+    if(c->usermeta(k).has_value())
+      rb_hash_aset(usermeta, rb_str_new2(c->usermeta(k).key().c_str()), rb_str_new2(c->usermeta(k).value().c_str()));
+    else
+      rb_hash_aset(usermeta, rb_str_new2(c->usermeta(k).key().c_str()), Qnil);
+  }
+  return contents;
 }

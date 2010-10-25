@@ -32,3 +32,4 @@ Gemfile.lock
 *.so
 *.bundle
 Makefile
+mkmf.log

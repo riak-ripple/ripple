@@ -52,6 +52,76 @@ extern "C" {
     return rpb_decode_response(self);
   }
 
+  VALUE rpb_put(int argc, VALUE *argv, VALUE self){
+    VALUE robject, w, dw, returnbody; // inputs
+    VALUE data, links, link, keys, metak, metav,
+      vclock, ctype, meta, bucket, key, tag; // internal uses
+    RpbPutReq *req = new RpbPutReq();
+    RpbContent *content = req->mutable_content();
+    RpbPair *pair;
+    RpbLink *pblink;
+    rb_scan_args(argc, argv, "13", &robject, &returnbody, &w, &dw);
+
+    // Set bucket, key, w, dw, returnbody
+    bucket = rb_funcall(rb_funcall(robject, rb_intern("bucket"), 0), rb_intern("name"), 0);
+    key = rb_funcall(robject, rb_intern("key"), 0);
+    req->set_bucket((void*)RSTRING_PTR(bucket), (size_t)RSTRING_LEN(bucket));
+    req->set_key((void*)RSTRING_PTR(key), (size_t)RSTRING_LEN(key));
+    if(!NIL_P(w))
+      req->set_w(QuorumValue(w));
+    if(!NIL_P(dw))
+      req->set_dw(QuorumValue(dw));
+    if(RTEST(returnbody))
+      req->set_return_body(1);
+
+    // Set vclock if present. For now Base64-decode it, until we do
+    // it in the client backend.
+    vclock = rb_funcall(robject, rb_intern("vclock"), 0);
+    vclock = rb_funcall(rb_const_get(rb_cObject, rb_intern("Base64")), rb_intern("decode64"), 1, vclock);
+    if(!NIL_P(vclock))
+      req->set_vclock((void*)RSTRING_PTR(vclock), (size_t)RSTRING_LEN(vclock));
+
+    // Set the data
+    data = rb_funcall(robject, rb_intern("raw_data"), 0);
+    content->set_value((void*)RSTRING_PTR(data), (size_t)RSTRING_LEN(data));
+
+    // Set content type if present
+    ctype = rb_funcall(robject, rb_intern("content_type"), 0);
+    if(!NIL_P(ctype))
+      content->set_content_type((void*)RSTRING_PTR(ctype), (size_t)RSTRING_LEN(ctype));
+
+    // Set user meta
+    meta = rb_funcall(robject, rb_intern("meta"), 0);
+    if(!NIL_P(meta)){
+      keys = rb_funcall(meta, rb_intern("keys"), 0);
+      while(!NIL_P(metak = rb_ary_shift(keys))){
+        pair = content->add_usermeta();
+        metav = rb_funcall(rb_hash_aref(meta, metak), rb_intern("to_s"), 0);
+        pair->set_key((void*)RSTRING_PTR(metak), (size_t)RSTRING_LEN(metak));
+        pair->set_value((void*)RSTRING_PTR(metav), (size_t)RSTRING_LEN(metav));
+      }
+    }
+
+    // Set links
+    links = rb_funcall(rb_funcall(robject, rb_intern("links"), 0), rb_intern("to_a"), 0);
+    if(!NIL_P(links) && !RTEST(rb_funcall(links, rb_intern("empty?"), 0))){
+      while(!NIL_P(link = rb_ary_shift(links))){
+        if(NIL_P(rb_funcall(link, rb_intern("key"), 0)))
+          continue;
+        pblink = content->add_links();
+        bucket = rb_funcall(link, rb_intern("bucket"), 0);
+        key = rb_funcall(link, rb_intern("key"), 0);
+        tag = rb_funcall(link, rb_intern("tag"), 0);
+        pblink->set_bucket((void*)RSTRING_PTR(bucket), (size_t)RSTRING_LEN(bucket));
+        pblink->set_key((void*)RSTRING_PTR(key), (size_t)RSTRING_LEN(key));
+        pblink->set_tag((void*)RSTRING_PTR(tag), (size_t)RSTRING_LEN(tag));
+      }
+    }
+
+    WriteProtobuff(SOCKET, PutReq, req);
+    return rpb_decode_response(self);
+  }
+
   VALUE rpb_delete(int argc, VALUE *argv, VALUE self){
     RpbDelReq req = RpbDelReq();
     VALUE bucket, key, rw;
@@ -138,6 +208,7 @@ extern "C" {
     rb_alias(mProtobufs, rb_intern("client_id="), rb_intern("set_client_id"));
     rb_define_method(mProtobufs, "get_server_info", RUBY_METHOD_FUNC(rpb_get_server_info), 0);
     rb_define_method(mProtobufs, "get", RUBY_METHOD_FUNC(rpb_get), -1);
+    rb_define_method(mProtobufs, "put", RUBY_METHOD_FUNC(rpb_put), -1);
     rb_define_method(mProtobufs, "delete", RUBY_METHOD_FUNC(rpb_delete), -1);
     rb_define_method(mProtobufs, "list_buckets", RUBY_METHOD_FUNC(rpb_list_buckets), 0);
     rb_define_method(mProtobufs, "list_keys", RUBY_METHOD_FUNC(rpb_list_keys), 1);
