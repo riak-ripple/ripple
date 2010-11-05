@@ -17,6 +17,7 @@ class Widget
   property :size, Integer
   property :name, String, :default => "widget"
   property :manufactured, Boolean, :default => false
+  property :shipped_at, Time
 end
 
 class Cog < Widget

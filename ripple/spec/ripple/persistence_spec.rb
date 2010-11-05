@@ -54,10 +54,11 @@ describe Ripple::Document::Persistence do
   end
 
   it "should instantiate and save a new object to riak" do
-    json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
+    json = @widget.attributes.merge(:size => 10, :shipped_at => "Sat, 01 Jan 2000 20:15:01 -0000", :_type => 'Widget').to_json
     @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
-    @widget = Widget.create(:size => 10)
+    @widget = Widget.create(:size => 10, :shipped_at => Time.utc(2000,"jan",1,20,15,1))
     @widget.size.should == 10
+    @widget.shipped_at.should == Time.utc(2000,"jan",1,20,15,1)
     @widget.should_not be_a_new_record
   end
 
@@ -75,11 +76,12 @@ describe Ripple::Document::Persistence do
     json = @widget.attributes.merge("_type" => "Widget").to_json
     @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
     @widget.save
-    @http.should_receive(:get).and_return(:code => 200, :headers => {'content-type' => ["application/json"]}, :body => '{"name":"spring","size":10}')
+    @http.should_receive(:get).and_return(:code => 200, :headers => {'content-type' => ["application/json"]}, :body => '{"name":"spring","size":10,"shipped_at":"Sat, 01 Jan 2000 20:15:01 -0000"}')
     @widget.reload
     @widget.changes.should be_blank
     @widget.name.should == "spring"
     @widget.size.should == 10
+    @widget.shipped_at.should == Time.utc(2000,"jan",1,20,15,1)
   end
 
   it "should destroy a saved object" do

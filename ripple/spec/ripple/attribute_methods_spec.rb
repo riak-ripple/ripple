@@ -137,7 +137,7 @@ describe Ripple::AttributeMethods do
   end
 
   it "should provide a hash representation of all of the attributes" do
-    @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false}
+    @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil}
   end
 
   it "should load attributes from mass assignment" do
