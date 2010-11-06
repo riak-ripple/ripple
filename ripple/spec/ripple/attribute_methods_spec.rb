@@ -130,6 +130,13 @@ describe Ripple::AttributeMethods do
     @widget.changes.should == {"name" => ["widget", "foobar"]}
   end
 
+  it "should report that an attribute is changed only if its value actually changes" do
+    @widget.name = "widget"
+    @widget.changed?.should be_false
+    @widget.name_changed?.should be_false
+    @widget.changes.should be_blank
+  end
+
   it "should refresh the attribute methods when adding a new property" do
     Widget.should_receive(:undefine_attribute_methods)
     Widget.property :start_date, Date
