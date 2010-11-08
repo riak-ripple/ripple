@@ -13,15 +13,29 @@
 #    limitations under the License.
 $KCODE = "UTF8" if RUBY_VERSION < "1.9"
 
-require 'active_support/all'
-require 'active_support/json'
-require 'active_support/version'
 require 'base64'
 require 'uri'
 require 'cgi'
+require 'set'
 require 'net/http'
 require 'yaml'
 require 'riak/i18n'
+
+# Load JSON
+unless defined? JSON
+  begin
+    require 'yajl/json_gem'
+  rescue
+    require 'json'
+  end
+end
+
+require 'riak/core_ext/blank'
+require 'riak/core_ext/extract_options'
+require 'riak/core_ext/slice'
+require 'riak/core_ext/stringify_keys'
+require 'riak/core_ext/symbolize_keys'
+require 'riak/core_ext/to_param'
 
 # The Riak module contains all aspects of the HTTP client interface
 # to Riak.
@@ -35,7 +49,7 @@ module Riak
   autoload :MapReduce,       "riak/map_reduce"
 
   # Cache store - only supports Rails 3 style
-  if ActiveSupport::VERSION::STRING >= "3.0.0"
+  if defined? ActiveSupport and ActiveSupport::VERSION::STRING >= "3.0.0"
     autoload :CacheStore,      "riak/cache_store"
   end
 

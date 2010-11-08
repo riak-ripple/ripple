@@ -52,7 +52,7 @@ module Riak
       path = [solr, index, "select", {"q" => query, "wt" => "json"}.merge(options.stringify_keys), {}].compact
       response = http.get(200, *path)
       if response[:headers]['content-type'].include?("application/json")
-        ActiveSupport::JSON.decode(response[:body])
+        JSON.parse(response[:body])
       else
         response[:body]
       end
@@ -98,7 +98,12 @@ module Riak
     # @raise [ArgumentError] if any document specs don't include 'id' or 'query' keys
     def remove(*args)
       index = args.shift if String === args.first
-      raise ArgumentError.new(t("search_remove_requires_id_or_query")) unless args.all? {|s| s.stringify_keys.key?("id") || s.stringify_keys.key?("query") }
+      raise ArgumentError.new(t("search_remove_requires_id_or_query")) unless args.all? { |s|
+        s.include? :id or 
+        s.include? 'id' or 
+        s.include? :query or 
+        s.include? 'query'
+      }
       xml = Builder::XmlMarkup.new
       xml.delete do
         args.each do |spec|

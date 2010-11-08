@@ -41,10 +41,11 @@ module Riak
     # @return [Bucket] self
     # @see Client#bucket
     def load(response={})
-      unless response.try(:[], :headers).try(:[],'content-type').try(:first) =~ /json$/
+      content_type = response[:headers]['content-type'].first rescue ""
+      unless content_type =~ /json$/
         raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], t("loading_bucket", :name => name))
       end
-      payload = ActiveSupport::JSON.decode(response[:body])
+      payload = JSON.parse(response[:body])
       @keys = payload['keys'].map {|k| CGI.unescape(k) }  if payload['keys']
       @props = payload['props'] if payload['props']
       self
@@ -61,7 +62,7 @@ module Riak
     def keys(options={})
       if block_given?
         @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => 'stream'}, {}) do |chunk|
-          obj = ActiveSupport::JSON.decode(chunk) rescue {}
+          obj = JSON.parse(chunk) rescue {}
           yield obj['keys'].map {|k| CGI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
@@ -97,13 +98,14 @@ module Riak
       @client.http.put(204, @client.prefix, escape(name), body, {"Content-Type" => "application/json"})
       @props.merge!(properties)
     end
+    alias properties= props=
 
     # @return [Hash] Internal Riak bucket properties.
     # @see #props=
     def props
       @props
     end
-    alias_attribute :properties, :props
+    alias properties props
 
     # Retrieve an object from within the bucket.
     # @param [String] key the key of the object to retrieve

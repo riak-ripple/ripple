@@ -23,7 +23,7 @@ module Riak
       private
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
         Net::HTTP.start(uri.host, uri.port) do |http|
-          request = Net::HTTP.const_get(method.to_s.camelize).new(uri.request_uri, headers)
+          request = Net::HTTP.const_get(method.to_s.capitalize).new(uri.request_uri, headers)
           case data
           when String
             request.body = data

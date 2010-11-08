@@ -1,8 +1,11 @@
 # A sample Gemfile
 source :gemcutter
 
-gem 'activesupport', '~>2.3.5' #'~>3.0.0'
 gem 'i18n'
+
+group 'spec' do
+  gem 'builder'
+end
 
 gem 'rspec', "~>2.0.0"
 gem 'fakeweb', ">=1.2"

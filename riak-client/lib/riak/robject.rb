@@ -33,7 +33,6 @@ module Riak
 
     # @return [String] the Riak vector clock for the object
     attr_accessor :vclock
-    alias_attribute :vector_clock, :vclock
 
     # @return [Set<Link>] a Set of {Riak::Link} objects for relationships between this object and other resources
     attr_accessor :links
@@ -88,7 +87,7 @@ module Riak
         end
         h
       end
-      @conflict = response[:code].try(:to_i) == 300 && content_type =~ /multipart\/mixed/
+      @conflict = (response[:code].to_i == 300 && content_type =~ /multipart\/mixed/) rescue false
       @siblings = nil
       self.raw_data = response[:body] if response[:body].present?
       self
@@ -250,7 +249,7 @@ module Riak
       return payload if IO === payload
       case @content_type
       when /json/
-        ActiveSupport::JSON.encode(payload)
+        payload.to_json
       when /yaml/
         YAML.dump(payload)
       when "application/x-ruby-marshal"
@@ -270,7 +269,7 @@ module Riak
     def deserialize(body)
       case @content_type
       when /json/
-        ActiveSupport::JSON.decode(body)
+        JSON.parse(body)
       when /yaml/
         YAML.load(body)
       when "application/x-ruby-marshal"
@@ -314,6 +313,9 @@ module Riak
       segments << escape(@key) if @key
       @bucket.client.http.path(*segments).to_s
     end
+
+    alias :vector_clock :vclock
+    alias :vector_clock= :vclock=
 
     protected
     def load_map_reduce_value(hash)

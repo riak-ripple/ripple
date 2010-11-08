@@ -68,12 +68,12 @@ describe "Search mixins" do
       end
 
       it "should build a Solr <add> request" do
-        expect_update_body('<add><doc><field name="id">1</field><field name="field">value</field></doc></add>')
+        expect_update_body('<add><doc><field name="field">value</field><field name="id">1</field></doc></add>')
         @client.index({:id => 1, :field => "value"})
       end
 
       it "should include multiple documents in the <add> request" do
-        expect_update_body('<add><doc><field name="id">1</field><field name="field">value</field></doc><doc><field name="id">2</field><field name="foo">bar</field></doc></add>')
+        expect_update_body('<add><doc><field name="field">value</field><field name="id">1</field></doc><doc><field name="foo">bar</field><field name="id">2</field></doc></add>')
         @client.index({:id => 1, :field => "value"}, {:id => 2, :foo => "bar"})
       end
     end

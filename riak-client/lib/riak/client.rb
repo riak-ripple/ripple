@@ -58,7 +58,9 @@ module Riak
     # @option options [Fixnum, String] :client_id (rand(MAX_CLIENT_ID)) The internal client ID used by Riak to route responses
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
-      options.assert_valid_keys(:host, :port, :prefix, :client_id, :mapred, :luwak)
+      unless (options.keys - [:host, :port, :prefix, :client_id, :mapred, :luwak]).empty?
+        raise ArgumentError, "invalid options"
+      end
       self.host      = options[:host]      || "127.0.0.1"
       self.port      = options[:port]      || 8098
       self.client_id = options[:client_id] || make_client_id
@@ -122,7 +124,9 @@ module Riak
     # @option options [Boolean] :props (true) whether to retreive the bucket properties
     # @return [Bucket] the requested bucket
     def bucket(name, options={})
-      options.assert_valid_keys(:keys, :props)
+      unless (options.keys - [:keys, :props]).empty?
+        raise ArgumentError, "invalid options"
+      end
       response = http.get(200, prefix, escape(name), {:keys => false}.merge(options), {})
       Bucket.new(self, name).load(response)
     end
