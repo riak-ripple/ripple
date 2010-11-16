@@ -224,7 +224,7 @@ module Riak
     def register_stop
       %w{@cin @cout @cerr}.each {|io| if instance_variable_get(io); instance_variable_get(io).close; instance_variable_set(io, nil) end }
       _cpid = @cpid; @cpid = nil
-      at_exit { _cpid.join if _cpid.alive? }
+      at_exit { _cpid.join if _cpid && _cpid.alive? }
       @started = false
     end
   end
