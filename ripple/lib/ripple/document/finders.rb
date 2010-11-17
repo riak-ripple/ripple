@@ -26,7 +26,7 @@ module Ripple
     def initialize(keys, found)
       if keys.empty?
         super(t("document_not_found.no_key"))
-      elsif keys.one?
+      elsif keys.size == 1
         super(t("document_not_found.one_key", :key => keys.first))
       else
         missing = keys - found.compact.map(&:key)
@@ -57,7 +57,7 @@ module Ripple
         def find(*args)
           args.flatten!
           return nil if args.empty? || args.all?(&:blank?)
-          return find_one(args.first) if args.one?
+          return find_one(args.first) if args.size == 1
           args.map {|key| find_one(key) }
         end
         

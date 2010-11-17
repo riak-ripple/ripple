@@ -1,10 +1,16 @@
-source "http://rubygems.org/"
+source :gemcutter
 
 gem 'bundler'
 gem 'riak-client', :path => "../riak-client"
-gem 'yajl-ruby'
-gem 'curb', '>0.6'
-gem 'activemodel', '3.0.0'
+gem 'activemodel', '~>3.0.0'
 gem 'rspec', '~>2.0.0'
 gem 'tzinfo'
 gem 'rake'
+
+if defined? JRUBY_VERSION
+  gem 'json'
+  gem 'jruby-openssl'
+else
+  gem 'yajl-ruby'
+  gem 'curb', '>0.6'
+end

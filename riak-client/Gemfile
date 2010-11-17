@@ -5,10 +5,16 @@ gem 'builder'
 gem 'rspec', "~>2.0.0"
 gem 'fakeweb', ">=1.2"
 gem 'rack', '>=1.0'
-gem 'curb', '>=0.6'
-gem 'yajl-ruby'
 gem 'rake'
 gem 'bundler'
+
+if defined? JRUBY_VERSION
+  gem 'json'
+  gem 'jruby-openssl'
+else
+  gem 'curb', '>=0.6'
+  gem 'yajl-ruby'
+end
 
 group :integration do
   gem 'activesupport', '~>3.0'

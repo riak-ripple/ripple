@@ -88,6 +88,7 @@ module Riak
         @mutex.synchronize do
           @cin, @cout, @cerr, @cpid = Open3.popen3("#{@riak_script} console")
           @cin.puts
+          @cin.flush
           wait_for_erlang_prompt
           @started = true
         end
@@ -100,6 +101,7 @@ module Riak
         @mutex.synchronize do
           begin
             @cin.puts "init:stop()."
+            @cin.flush
           rescue Errno::EPIPE
           ensure
             register_stop
@@ -122,9 +124,11 @@ module Riak
           begin
             if @app_config[:riak_kv][:storage_backend] == :riak_kv_test_backend
               @cin.puts "riak_kv_test_backend:reset()."
+              @cin.flush
               wait_for_erlang_prompt
             else
               @cin.puts "init:restart()."
+              @cin.flush
               wait_for_erlang_prompt
               wait_for_startup
             end
