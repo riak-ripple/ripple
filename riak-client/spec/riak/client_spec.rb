@@ -151,7 +151,6 @@ describe Riak::Client do
 
     it "should choose the Net::HTTP backend if Curb is unavailable" do
       @client.should_receive(:require).with('curb').and_raise(LoadError)
-      @client.should_receive(:warn).and_return(true)
       @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
     end
   end
