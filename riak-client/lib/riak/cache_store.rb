@@ -12,6 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+require 'active_support/cache'
 
 module Riak
   # An ActiveSupport::Cache::Store implementation that uses Riak.
