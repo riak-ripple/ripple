@@ -302,7 +302,7 @@ module Riak
     # to it
     # @param [String] tag the tag to apply to the link
     def to_link(tag)
-      Link.new(@bucket.client.http.path(@bucket.client.prefix, escape(@bucket.name), escape(@key)).path, tag)
+      Link.new(@bucket.name, @key, tag)
     end
 
     # Generates a URL representing the object according to the client, bucket and key.

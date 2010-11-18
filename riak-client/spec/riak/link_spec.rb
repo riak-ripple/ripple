@@ -32,20 +32,6 @@ describe Riak::Link do
       result[1].key.should == nil
       result[1].rel.should == "up"
     end
-    
-    it "should set url properly, and set bucket and key to nil for non-Riak links" do
-      result = Riak::Link.parse('<http://www.example.com/123.html>; riaktag="tag", </riak/foo>; rel="up"')
-      result[0].url.should == "http://www.example.com/123.html"
-      result[0].bucket.should == nil
-      result[0].key.should == nil
-      result[0].rel.should == "tag"
-
-      result = Riak::Link.parse('<http://www.example.com/>; riaktag="tag", </riak/foo>; rel="up"')
-      result[0].url.should == "http://www.example.com/"
-      result[0].bucket.should == nil
-      result[0].key.should == nil
-      result[0].rel.should == "tag"
-    end
   end
 
   it "should convert to a string appropriate for use in the Link header" do
@@ -78,5 +64,13 @@ describe Riak::Link do
     link = Riak::Link.new("/raw/bucket/key", "foo")
     link.bucket.should == "bucket"
     link.key.should == "key"
+  end
+
+  it "should construct from bucket, key and tag" do
+    link = Riak::Link.new("bucket", "key", "tag")
+    link.bucket.should == "bucket"
+    link.key.should == "key"
+    link.tag.should == "tag"
+    link.url.should == "/riak/bucket/key"
   end
 end

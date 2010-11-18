@@ -17,13 +17,18 @@ module Riak
   # Represents a link from one object to another in Riak
   class Link
     include Util::Translation
-    # @return [String] the URL (relative or absolute) of the related resource
-    attr_accessor :url
+    include Util::Escape
 
-    # @return [String] the relationship ("rel") of the other resource to this one
-    attr_accessor :rel
-    alias :tag :rel
-    alias :tag= :rel=
+    # @return [String] the relationship tag (or "rel") of the other resource to this one
+    attr_accessor :tag
+    alias_method :rel, :tag
+    alias_method :rel=, :tag=
+
+    # @return [String] the bucket of the related resource
+    attr_accessor :bucket
+
+    # @return [String] the key of the related resource
+    attr_accessor :key
 
     # @param [String] header_string the string value of the Link: HTTP header from a Riak response
     # @return [Array<Link>] an array of Riak::Link structs parsed from the header
@@ -33,24 +38,36 @@ module Riak
       end
     end
 
-    def initialize(url, rel)
-      @url, @rel = url, rel
+    # @overload initialize(url, tag)
+    #   @param [String] url the url of the related resource
+    #   @param [String] tag the tag for the related resource
+    # @overload initialize(bucket, key, tag)
+    #   @param [String] bucket the bucket of the related resource
+    #   @param [String] key the key of the related resource
+    #   @param [String] tag the tag for the related resource
+    def initialize(*args)
+      raise ArgumentError unless (2..3).include?(args.size)
+      if args.size == 2
+        self.url, @tag = args
+      else
+        @bucket, @key, @tag = args
+      end
     end
 
-    # @return [String] bucket_name, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
-    def bucket
-      CGI.unescape($1) if url =~ %r{^/[^/]+/([^/]+)/?}
+    # @return [String] the URL (relative or absolute) of the related resource
+    def url
+      "/riak/#{escape(bucket)}" + (key.blank? ? "" : "/#{escape(key)}")
     end
-    
-    # @return [String] key, if the Link url is a known Riak link ("/riak/<bucket>/<key>")
-    def key
-      CGI.unescape($1) if url =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
+
+    def url=(value)
+      @bucket = CGI.unescape($1) if value =~ %r{^/[^/]+/([^/]+)/?}
+      @key = CGI.unescape($1) if value =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
     end
 
     def inspect; to_s; end
 
     def to_s
-      %Q[<#{@url}>; riaktag="#{@rel}"]
+      %Q[<#{url}>; riaktag="#{tag}"]
     end
 
     def hash
@@ -62,12 +79,12 @@ module Riak
     end
 
     def ==(other)
-      other.is_a?(Link) && url == other.url && rel == other.rel
+      other.is_a?(Link) && url == other.url && tag == other.tag
     end
 
     def to_walk_spec
-      raise t("bucket_link_conversion") if @rel == "up" || key.nil?
-      WalkSpec.new(:bucket => bucket, :tag => @rel)
+      raise t("bucket_link_conversion") if tag == "up" || key.nil?
+      WalkSpec.new(:bucket => bucket, :tag => tag)
     end
   end
 end
