@@ -252,7 +252,7 @@ module Ripple
       when many?
         Array === value && value.all? {|d| (embeddable? && Hash === d) || klass === d }
       when one?
-        value.nil? || (embeddable? && Hash === value) || klass === value
+        value.nil? || (embeddable? && Hash === value) || value.kind_of?(klass)
       end
     end
   end
