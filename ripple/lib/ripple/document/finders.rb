@@ -118,10 +118,9 @@ module Ripple
 
         def instantiate(robject)
           klass = robject.data['_type'].constantize rescue self
-          data = {'key' => robject.key}
-          data.reverse_merge!(robject.data) rescue data
-          klass.new(data).tap do |doc|
-            doc.key = data['key']
+          klass.new.tap do |doc|
+            doc.key = robject.key
+            robject.data.each {|k,v| doc.send("#{k}=", v) } rescue nil
             doc.instance_variable_set(:@new, false)
             doc.instance_variable_set(:@robject, robject)
           end
