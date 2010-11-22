@@ -44,9 +44,7 @@ module Riak
   autoload :MapReduce,       "riak/map_reduce"
 
   # Cache store - only supports Rails 3 style
-  if defined? ActiveSupport and ActiveSupport::VERSION::STRING >= "3.0.0"
-    autoload :CacheStore,      "riak/cache_store"
-  end
+  autoload :CacheStore,      "riak/cache_store"
 
   # Exceptions
   autoload :FailedRequest,   "riak/failed_request"
