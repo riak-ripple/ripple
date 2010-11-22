@@ -49,6 +49,9 @@ module Riak
     # @return [String] The URL path to the luwak HTTP endpoint
     attr_accessor :luwak
 
+    # @return [Symbol] The HTTP backend/client to use
+    attr_accessor :http_backend
+
     # Creates a client connection to Riak
     # @param [Hash] options configuration options for the client
     # @option options [String] :host ('127.0.0.1') The host or IP address for the Riak endpoint
@@ -58,15 +61,16 @@ module Riak
     # @option options [Fixnum, String] :client_id (rand(MAX_CLIENT_ID)) The internal client ID used by Riak to route responses
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
-      unless (options.keys - [:host, :port, :prefix, :client_id, :mapred, :luwak]).empty?
+      unless (options.keys - [:host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend]).empty?
         raise ArgumentError, "invalid options"
       end
-      self.host      = options[:host]      || "127.0.0.1"
-      self.port      = options[:port]      || 8098
-      self.client_id = options[:client_id] || make_client_id
-      self.prefix    = options[:prefix]    || "/riak/"
-      self.mapred    = options[:mapred]    || "/mapred"
-      self.luwak     = options[:luwak]     || "/luwak"
+      self.host         = options[:host]         || "127.0.0.1"
+      self.port         = options[:port]         || 8098
+      self.client_id    = options[:client_id]    || make_client_id
+      self.prefix       = options[:prefix]       || "/riak/"
+      self.mapred       = options[:mapred]       || "/mapred"
+      self.luwak        = options[:luwak]        || "/luwak"
+      self.http_backend = options[:http_backend] || :NetHTTP
       raise ArgumentError, t("missing_host_and_port") unless @host && @port
     end
 
@@ -103,16 +107,24 @@ module Riak
       @port = value
     end
 
+    # Sets the desired HTTP backend
+    def http_backend=(value)
+      @http = nil
+      @http_backend = value
+    end
+
     # Automatically detects and returns an appropriate HTTP backend.
     # The HTTP backend is used internally by the Riak client, but can also
     # be used to access the server directly.
     # @return [HTTPBackend] the HTTP backend for this client
     def http
       @http ||= begin
-                  require 'curb'
-                  CurbBackend.new(self)
-                rescue LoadError, NameError
-                  NetHTTPBackend.new(self)
+                  klass = self.class.const_get("#{@http_backend}Backend")
+                  if klass.configured?
+                    klass.new(self)
+                  else
+                    raise t('http_configuration', :backend => @http_backend)
+                  end
                 end
     end
 
@@ -188,7 +200,7 @@ module Riak
       http.delete([204,404], luwak, escape(filename))
       true
     end
-    
+
     # Checks whether a file exists in "Luwak".
     # @param [String] key the key to check
     # @return [true, false] whether the key exists in "Luwak"

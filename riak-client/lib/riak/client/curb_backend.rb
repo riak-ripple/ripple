@@ -26,6 +26,15 @@ module Riak
     # the backend based on Net::HTTP.
     # Conforms to the Riak::Client::HTTPBackend interface.
     class CurbBackend < HTTPBackend
+      def self.configured?
+        begin
+          require 'curb'
+          true
+        rescue LoadError
+          false
+        end
+      end
+
       private
       def perform(method, uri, headers, expect, data=nil)
         # Setup

@@ -144,14 +144,19 @@ describe Riak::Client do
       @client = Riak::Client.new
     end
 
-    it "should choose the Curb backend if Curb is available" do
-      @client.should_receive(:require).with('curb').and_return(true)
+    it "should choose the selected backend" do
+      @client.http_backend = :NetHTTP
+      @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
+
+      @client = Riak::Client.new
+      @client.http_backend = :Curb
       @client.http.should be_instance_of(Riak::Client::CurbBackend)
     end
 
-    it "should choose the Net::HTTP backend if Curb is unavailable" do
-      @client.should_receive(:require).with('curb').and_raise(LoadError)
-      @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
+    it "should raise an error when the chosen backend is not valid" do
+      Riak::Client::NetHTTPBackend.should_receive(:configured?).and_return(false)
+      @client = Riak::Client.new(:http_backend => :NetHTTP)
+      lambda { @client.http }.should raise_error
     end
   end
 
@@ -232,13 +237,13 @@ describe Riak::Client do
     @http.should_receive(:delete).with([204,404], "/luwak", "greeting.txt")
     @client.delete_file("greeting.txt")
   end
-  
+
   it "should return true if the file exists" do
     @client = Riak::Client.new
     @client.http.should_receive(:head).and_return(:code => 200)
     @client.file_exists?("foo").should be_true
   end
-  
+
   it "should return false if the file doesn't exist" do
     @client = Riak::Client.new
     @client.http.should_receive(:head).and_return(:code => 404)

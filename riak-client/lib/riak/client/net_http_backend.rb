@@ -20,6 +20,15 @@ module Riak
     # be preferred when the 'curb' library is available.
     # Conforms to the Riak::Client::HTTPBackend interface.
     class NetHTTPBackend < HTTPBackend
+      def self.configured?
+        begin
+          require 'net/http'
+          true
+        rescue LoadError, NameError
+          false
+        end
+      end
+
       private
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
         Net::HTTP.start(uri.host, uri.port) do |http|
