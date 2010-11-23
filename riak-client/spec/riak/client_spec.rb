@@ -148,9 +148,11 @@ describe Riak::Client do
       @client.http_backend = :NetHTTP
       @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
 
-      @client = Riak::Client.new
-      @client.http_backend = :Curb
-      @client.http.should be_instance_of(Riak::Client::CurbBackend)
+      unless defined? JRUBY_VERSION
+        @client = Riak::Client.new
+        @client.http_backend = :Curb
+        @client.http.should be_instance_of(Riak::Client::CurbBackend)
+      end
     end
 
     it "should raise an error when the chosen backend is not valid" do
