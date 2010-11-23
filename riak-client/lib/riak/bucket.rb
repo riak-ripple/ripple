@@ -62,7 +62,8 @@ module Riak
     def keys(options={})
       if block_given?
         @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => 'stream'}, {}) do |chunk|
-          obj = JSON.parse(chunk) rescue {}
+          obj = JSON.parse(chunk) rescue nil
+          next unless obj and obj['keys']
           yield obj['keys'].map {|k| CGI.unescape(k) } if obj['keys']
         end
       elsif @keys.nil? || options[:reload]
