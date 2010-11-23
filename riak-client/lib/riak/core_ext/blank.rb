@@ -3,10 +3,6 @@ unless Object.new.respond_to? :blank?
     def blank?
       false
     end
-
-    def present?
-      not blank?
-    end
   end
 
   class NilClass
@@ -31,5 +27,13 @@ unless Object.new.respond_to? :blank?
 
   class Hash
     alias :blank? :empty?
+  end
+end
+
+unless Object.new.respond_to? :present?
+  class Object
+    def present?
+      not blank?
+    end
   end
 end
