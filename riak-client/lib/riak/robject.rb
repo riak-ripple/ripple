@@ -281,7 +281,12 @@ module Riak
 
     # @return [String] A representation suitable for IRB and debugging output
     def inspect
-      "#<#{self.class.name} #{url} [#{@content_type}]:#{self.data.inspect}>"
+      body = if @data || content_type =~ /json|yaml|marshal/
+               data.inspect
+             else
+               @raw_data && "(#{@raw_data.size} bytes)"
+             end
+      "#<#{self.class.name} #{url} [#{@content_type}]:#{body}>"
     end
 
     # Walks links from this object to other objects in Riak.
