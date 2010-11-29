@@ -3,21 +3,21 @@ DRBURI="druby://localhost:8787"
 
 module DrbMockServer
   extend self
-  def start_server
-    server = MockServer.new
-    DRb.start_service(DRBURI, server)
-    Signal.trap("HUP") { server.stop; exit }
-    DRb.thread.join
-  end
 
   def start_client
-    child_pid = fork do
-      start_server
+    # JRuby doesn't support fork
+    if defined? JRUBY_VERSION
+      @server = MockServer.new
+      at_exit { @server.stop }
+    else
+      child_pid = Process.fork do
+        start_server
+      end
+      sleep 1
+      at_exit { Process.kill("HUP", child_pid); Process.wait2 }
+      DRb.start_service
+      @server = DRbObject.new_with_uri(DRBURI)
     end
-    sleep 1
-    at_exit { Process.kill("HUP", child_pid); Process.wait2 }
-    DRb.start_service
-    @server = DRbObject.new_with_uri(DRBURI)
     true
   end
 
@@ -27,5 +27,13 @@ module DrbMockServer
 
   def method_missing(meth, *args, &block)
     @server.send(meth, *args, &block)
+  end
+
+  private
+  def start_server
+    server = MockServer.new
+    DRb.start_service(DRBURI, server)
+    Signal.trap("HUP") { server.stop; exit }
+    DRb.thread.join
   end
 end
