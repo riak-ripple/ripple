@@ -18,8 +18,8 @@ begin
 rescue LoadError
   warn "Skipping CurbBackend specs, curb library not found."
 else
-  $server = MockServer.new
-  at_exit { $server.stop }
+  $mock_server = DrbMockServer
+  $mock_server.maybe_start
 
   describe Riak::Client::CurbBackend do
     def setup_http_mock(method, uri, options={})
@@ -31,17 +31,21 @@ else
       body = options[:body] || []
       headers = options[:headers] || {}
       headers['Content-Type'] ||= "text/plain"
-      $server.attach do |env|
-        env["REQUEST_METHOD"].should == method
-        env["PATH_INFO"].should == path
-        env["QUERY_STRING"].should == query
-        [status, headers, Array(body)]
-      end
+      @_mock_set = [status, headers, method, path, query, body]
+      $mock_server.expect(*@_mock_set)
     end
 
     before :each do
-      @client = Riak::Client.new(:port => $server.port) # Point to our mock
-      @backend = Riak::Client::CurbBackend.new(@client)
+      @client = Riak::Client.new(:port => $mock_server.port, :http_backend => :Curb) # Point to our mock
+      @backend = @client.http
+      @_mock_set = false
+    end
+
+    after :each do
+      if @_mock_set
+        $mock_server.satisfied.should be_true("Expected #{@_mock_set.inspect}, failed")
+      end
+      Thread.current[:curl_easy_handle] = nil
     end
 
     it_should_behave_like "HTTP backend"
@@ -67,11 +71,6 @@ else
         setup_http_mock(:post, @backend.path("/riak/","foo").to_s, :body => "ok")
         @backend.post(200, "/riak/", "foo", file, {})
       end.should_not raise_error
-    end
-
-    after :each do
-      $server.detach
-      Thread.current[:curl_easy_handle] = nil
     end
   end
 end

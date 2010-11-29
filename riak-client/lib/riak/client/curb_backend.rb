@@ -22,8 +22,6 @@ end
 module Riak
   class Client
     # An HTTP backend for Riak::Client that uses the 'curb' library/gem.
-    # If the 'curb' library is present, this backend will be preferred to
-    # the backend based on Net::HTTP.
     # Conforms to the Riak::Client::HTTPBackend interface.
     class CurbBackend < HTTPBackend
       def self.configured?
@@ -86,20 +84,6 @@ module Riak
           c.on_header do |header_line|
             response_headers.parse(header_line)
             header_line.size
-          end
-        end
-      end
-
-      def response_headers
-        Thread.current[:response_headers] ||= Riak::Util::Headers.new
-      end
-
-      def create_request_headers(hash)
-        h = Riak::Util::Headers.new
-        hash.each {|k,v| h.add_field(k,v) }
-        [].tap do |arr|
-          h.each_capitalized do |k,v|
-            arr << "#{k}: #{v}"
           end
         end
       end
