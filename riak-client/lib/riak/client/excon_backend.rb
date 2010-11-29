@@ -15,7 +15,7 @@ require 'riak'
 
 module Riak
   class Client
-    # An HTTP backend for Riak::Client that uses Wesley Geary's Excon
+    # An HTTP backend for Riak::Client that uses Wesley Beary's Excon
     # HTTP library. Comforms to the Riak::Client::HTTPBackend
     # interface.
     class ExconBackend < HTTPBackend
