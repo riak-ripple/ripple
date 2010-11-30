@@ -22,7 +22,7 @@ module Riak
       def self.configured?
         begin
           require 'excon'
-          true
+          Excon::VERSION >= "0.2.5"
         rescue LoadError
           false
         end
@@ -32,18 +32,7 @@ module Riak
       def perform(method, uri, headers, expect, data=nil, &block)
         params = {:headers => RequestHeaders.new(headers)}
         params[:body] = data if [:put,:post].include?(method)
-        # Excon currently doesn't properly handle string query
-        # segment. Why?
-        if uri.query
-          q = uri.query.split('&').map {|kv| kv.split('=') }
-          uri.query = nil
-          params[:query] = {}
-          q.each do |pair|
-            params[:query][pair[0]] ||= []
-            params[:query][pair[0]] << pair[1]
-          end
-        end
-        # params[:idempotent] = (method != :post)
+        params[:idempotent] = (method != :post)
         response = Excon.send(method, uri.to_s, params, &block)
         if valid_response?(expect, response.status)
           response_headers.initialize_http_header(response.headers)
