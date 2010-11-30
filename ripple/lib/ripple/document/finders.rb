@@ -120,7 +120,7 @@ module Ripple
           klass = robject.data['_type'].constantize rescue self
           klass.new.tap do |doc|
             doc.key = robject.key
-            robject.data.except("_type").each {|k,v| doc.send("#{k}=", v) } rescue nil
+            robject.data.except("_type").each {|k,v| doc.send("#{k}=", v) } if robject.data
             doc.instance_variable_set(:@new, false)
             doc.instance_variable_set(:@robject, robject)
           end
