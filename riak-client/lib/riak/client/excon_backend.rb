@@ -31,7 +31,7 @@ module Riak
       private
       def perform(method, uri, headers, expect, data=nil, &block)
         params = {
-          :method => method,
+          :method => method.to_s.upcase,
           :headers => RequestHeaders.new(headers),
           :path => uri.path
         }
