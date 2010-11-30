@@ -30,10 +30,16 @@ module Riak
 
       private
       def perform(method, uri, headers, expect, data=nil, &block)
-        params = {:headers => RequestHeaders.new(headers)}
+        params = {
+          :method => method,
+          :headers => RequestHeaders.new(headers),
+          :path => uri.path
+        }
+        params[:query] = uri.query if uri.query
         params[:body] = data if [:put,:post].include?(method)
         params[:idempotent] = (method != :post)
-        response = Excon.send(method, uri.to_s, params, &block)
+
+        response = connection.request(params, &block)
         if valid_response?(expect, response.status)
           response_headers.initialize_http_header(response.headers)
           result = {:headers => response_headers.to_hash, :code => response.status}
@@ -44,6 +50,10 @@ module Riak
         else
           raise FailedRequest.new(method, expect, response.status, response.headers, response.body)
         end
+      end
+
+      def connection
+        @connection ||= Excon::Connection.new(root_uri.to_s)
       end
 
       # Excon uses for..in syntax to emit headers, but we still want
