@@ -207,19 +207,27 @@ module Riak
       end
 
       private
-      def create_request_headers(hash)
-        h = Riak::Util::Headers.new
-        hash.each {|k,v| h.add_field(k,v) }
-        [].tap do |arr|
-          h.each_capitalized do |k,v|
-            arr << "#{k}: #{v}"
+      def response_headers
+        Thread.current[:response_headers] ||= Riak::Util::Headers.new
+      end
+
+      # @private
+      class RequestHeaders < Riak::Util::Headers
+        alias each each_capitalized
+
+        def initialize(hash)
+          initialize_http_header(hash)
+        end
+
+        def to_a
+          [].tap do |arr|
+            each_capitalized do |k,v|
+              arr << "#{k}: #{v}"
+            end
           end
         end
       end
 
-      def response_headers
-        Thread.current[:response_headers] ||= Riak::Util::Headers.new
-      end
     end
   end
 end

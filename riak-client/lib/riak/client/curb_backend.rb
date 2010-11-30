@@ -36,7 +36,7 @@ module Riak
       private
       def perform(method, uri, headers, expect, data=nil)
         # Setup
-        curl.headers = create_request_headers(headers)
+        curl.headers = RequestHeaders.new(headers).to_a
         curl.url = uri.to_s
         response_headers.initialize_http_header(nil)
         if block_given?
@@ -60,7 +60,7 @@ module Riak
           # Hacks around limitations in curb's PUT semantics
           _headers, curl.headers = curl.headers, {}
           curl.put_data = data
-          curl.headers = create_request_headers(curl.headers) + _headers
+          curl.headers = RequestHeaders.new(curl.headers).to_a + _headers
           curl.http("PUT")
         else
           curl.send("http_#{method}")
