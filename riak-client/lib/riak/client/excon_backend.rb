@@ -55,16 +55,6 @@ module Riak
       def connection
         @connection ||= Excon::Connection.new(root_uri.to_s)
       end
-
-      # Excon uses for..in syntax to emit headers, but we still want
-      # to split them on 8KB boundaries.
-      class RequestHeaders < Riak::Util::Headers
-        alias each each_capitalized
-
-        def initialize(hash)
-          initialize_http_header(hash)
-        end
-      end
     end
   end
 end
