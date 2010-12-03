@@ -14,12 +14,25 @@
 require "rails/generators/named_base"
 require "rails/generators/active_model"
 
+class RippleGenerator < ::Rails::Generators::Base
+  def create_ripple
+    invoke "ripple:configuration"
+    invoke "ripple:test"
+  end
+end
+
 module Ripple
   # ActiveModel generators for use in a Rails project.
   module Generators
     # @private
-    class Base < ::Rails::Generators::NamedBase
+    class Base < ::Rails::Generators::Base
+      def self.source_root
+        @_ripple_source_root ||=
+        File.expand_path("../#{base_name}/#{generator_name}/templates", __FILE__)
+      end
+    end
 
+    class NamedBase < ::Rails::Generators::NamedBase
       def self.source_root
         @_ripple_source_root ||=
         File.expand_path("../#{base_name}/#{generator_name}/templates", __FILE__)

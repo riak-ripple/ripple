@@ -11,15 +11,15 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+require 'rails/generators/ripple_generator'
 
 module Ripple
-  # Railtie for automatic initialization of the Ripple framework
-  # during Rails initialization.
-  class Railtie < Rails::Railtie
-    initializer "ripple.configure_rails_initialization" do
-      if File.exist?(Rails.root + "config/ripple.yml")
-        Ripple.load_configuration Rails.root.join('config', 'ripple.yml'), [Rails.env]
+  module Generators
+    class ConfigurationGenerator < Base
+      desc 'Generates a configuration file for Ripple.'
+
+      def create_configuration_file
+        template 'ripple.yml', 'config/ripple.yml'
       end
     end
   end
