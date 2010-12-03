@@ -21,10 +21,10 @@ module Ripple
       def create_cucumber_file
         if File.directory?(Rails.root + "features/support")
           template 'test_server.rb', 'features/support/ripple.rb'
-          insert_into_file 'features/support/ripple.rb', "After do\n  Ripple::TestServer.clear\nend"
+          insert_into_file 'features/support/ripple.rb', "\n\nAfter do\n  Ripple::TestServer.clear\nend", :after => "Ripple::TestServer.setup"
         end
       end
-      
+
       # RSpec
       def create_rspec_file
         if File.file?(Rails.root + 'spec/spec_helper.rb')
