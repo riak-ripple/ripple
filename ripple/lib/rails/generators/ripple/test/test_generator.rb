@@ -29,8 +29,8 @@ module Ripple
       def create_rspec_file
         if File.file?(Rails.root + 'spec/spec_helper.rb')
           template 'test_server.rb', 'spec/support/ripple.rb'
-          inject_into_file 'spec/spec_helper.rb', :after => "RSpec.configure do |config|" do
-            "  config.after(:each) do\n   Ripple::TestServer.clear\n  end\n"
+          inject_into_file 'spec/spec_helper.rb', :after => /R[Ss]pec\.configure do \|config\|/ do
+            "\n  config.after(:each) do\n    Ripple::TestServer.clear\n  end\n"
           end
         end
       end
