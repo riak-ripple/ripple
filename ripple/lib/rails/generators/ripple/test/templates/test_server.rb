@@ -9,7 +9,7 @@ module Ripple
       {
         :app_config => {
           :riak_kv => { :js_source_dir => Ripple.config.delete(:js_source_dir) },
-          :riak_core => { :web_port => Ripple.config.delete(:port) }
+          :riak_core => { :web_port => Ripple.config[:port] || 8098 }
         },
         :bin_dir => Ripple.config.delete(:bin_dir),
         :temp_dir => Rails.root + "tmp/riak_test_server"
