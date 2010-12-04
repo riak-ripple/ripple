@@ -17,6 +17,7 @@ require "rails/generators/active_model"
 class RippleGenerator < ::Rails::Generators::Base
   def create_ripple
     invoke "ripple:configuration"
+    invoke "ripple:js"
     invoke "ripple:test"
   end
 end
