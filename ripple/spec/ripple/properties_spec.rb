@@ -151,11 +151,12 @@ describe Ripple::Property do
         end
       end
 
-      it "should not cast the empty string" do
+      it "should not cast the blank string" do
         @prop.type_cast("").should be_nil
+        @prop.type_cast("   ").should be_nil
       end
 
-      [true, false, [], ["something else"]].each do |v|
+      [true, false, [], {}, :symbol, ["something else"]].each do |v|
         it "should raise an error casting #{v.inspect}" do
           lambda { @prop.type_cast(v) }.should raise_error(Ripple::PropertyTypeMismatch)
         end
@@ -179,8 +180,9 @@ describe Ripple::Property do
         end
       end
 
-      it "should not cast the empty string" do
+      it "should not cast the blank string" do
         @prop.type_cast("").should be_nil
+        @prop.type_cast("   ").should be_nil
       end
 
       [true, false, :symbol, [], {}].each do |v|
@@ -207,10 +209,10 @@ describe Ripple::Property do
         end
       end
 
-      it "should not cast the empty string" do
+      it "should not cast the blank string" do
         @prop.type_cast("").should be_nil
+        @prop.type_cast("   ").should be_nil
       end
-
     end
 
     describe "when type is a Time type" do
@@ -223,6 +225,13 @@ describe Ripple::Property do
           @prop.type_cast(v).should == Time.utc(2010,03,16,12)
         end
       end
+
+      it "should not cast blank types" do
+        @prop.type_cast([]).should be_nil
+        @prop.type_cast({}).should be_nil
+        @prop.type_cast("").should be_nil
+        @prop.type_cast("  ").should be_nil
+      end
     end
 
     describe "when type is a Date type" do
@@ -234,6 +243,13 @@ describe Ripple::Property do
         it "should cast #{v.inspect} to 2010/03/16" do
           @prop.type_cast(v).should == Date.civil(2010,3,16)
         end
+      end
+
+      it "should not cast blank types" do
+        @prop.type_cast([]).should be_nil
+        @prop.type_cast({}).should be_nil
+        @prop.type_cast("").should be_nil
+        @prop.type_cast("  ").should be_nil
       end
     end
   end
