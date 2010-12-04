@@ -30,7 +30,7 @@ end
 # @private
 class Numeric
   def self.ripple_cast(value)
-    return nil if value.nil?
+    return nil if value.nil? || value == ""
     raise Ripple::PropertyTypeMismatch.new(self,value) unless value.respond_to?(:to_i) && value.respond_to?(:to_f)
     float_value = value.to_f
     int_value = value.to_i
@@ -41,7 +41,7 @@ end
 # @private
 class Integer
   def self.ripple_cast(value)
-    return nil if value.nil?
+    return nil if value.nil? || value == ""
     value.respond_to?(:to_i) && value.to_i or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
@@ -49,7 +49,7 @@ end
 # @private
 class Float
   def self.ripple_cast(value)
-    return nil if value.nil?
+    return nil if value.nil? || value == ""
     value.respond_to?(:to_f) && value.to_f or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
