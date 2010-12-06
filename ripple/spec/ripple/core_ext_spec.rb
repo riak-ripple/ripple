@@ -35,6 +35,14 @@ describe DateTime do
   end
 end
 
+describe ActiveSupport::TimeWithZone do
+  it "serializes to JSON in UTC, RFC 822 format" do
+    time = Time.utc(2010,3,16,12)
+    zone = ActiveSupport::TimeZone['Alaska']
+    ActiveSupport::TimeWithZone.new(time, zone).as_json.should == "Tue, 16 Mar 2010 12:00:00 -0000"
+  end
+end
+
 describe "Boolean" do
   it "should be available to properties on documents" do
     lambda {

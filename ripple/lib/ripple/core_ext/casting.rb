@@ -128,3 +128,13 @@ class DateTime
     value.respond_to?(:to_datetime) && value.to_datetime or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
+
+@private
+module ActiveSupport
+  class TimeWithZone
+    def as_json(options={})
+      self.utc.rfc822
+    end
+  end
+end
+
