@@ -23,7 +23,7 @@ module Ripple
       # Adds the :created_at and :updated_at timestamp properties to
       # the document.
       def timestamps!
-        property :created_at, Time, :default => proc { Time.now.utc }
+        property :created_at, Time, :default => proc { Time.now }
         property :updated_at, Time
         before_save :touch
       end
@@ -32,7 +32,7 @@ module Ripple
     module InstanceMethods
       # Sets the :updated_at attribute before saving the document.
       def touch
-        self.updated_at = Time.now.utc
+        self.updated_at = Time.now
       end
     end
   end
