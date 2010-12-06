@@ -14,6 +14,7 @@
 
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/to_json'
+require 'active_support/time_with_zone'
 
 # @private
 class Object
@@ -129,7 +130,7 @@ class DateTime
   end
 end
 
-@private
+# @private
 module ActiveSupport
   class TimeWithZone
     def as_json(options={})
