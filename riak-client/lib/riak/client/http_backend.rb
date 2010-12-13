@@ -226,8 +226,16 @@ module Riak
             end
           end
         end
-      end
 
+        def to_hash
+          {}.tap do |hash|
+            each_capitalized do |k,v|
+              hash[k] ||= []
+              hash[k] << v
+            end
+          end
+        end
+      end
     end
   end
 end

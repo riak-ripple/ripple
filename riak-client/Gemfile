@@ -7,7 +7,7 @@ gem 'fakeweb', ">=1.2"
 gem 'rack', '>=1.0'
 gem 'rake'
 gem 'bundler'
-gem 'excon', "~>0.2.6"
+gem 'excon', "~>0.3.4"
 
 if defined? JRUBY_VERSION
   gem 'json'

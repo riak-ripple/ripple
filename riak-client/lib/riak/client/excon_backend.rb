@@ -22,7 +22,7 @@ module Riak
       def self.configured?
         begin
           require 'excon'
-          Excon::VERSION >= "0.2.6" && Excon::VERSION < "0.3.0"
+          Excon::VERSION >= "0.3.4"
         rescue LoadError
           false
         end
@@ -32,7 +32,7 @@ module Riak
       def perform(method, uri, headers, expect, data=nil, &block)
         params = {
           :method => method.to_s.upcase,
-          :headers => RequestHeaders.new(headers),
+          :headers => RequestHeaders.new(headers).to_hash,
           :path => uri.path
         }
         params[:query] = uri.query if uri.query
