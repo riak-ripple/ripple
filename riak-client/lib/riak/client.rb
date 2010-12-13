@@ -60,6 +60,7 @@ module Riak
     # @option options [String] :prefix ('/riak/') The URL path prefix to the main HTTP endpoint
     # @option options [String] :mapred ('/mapred') The path to the map-reduce HTTP endpoint
     # @option options [Fixnum, String] :client_id (rand(MAX_CLIENT_ID)) The internal client ID used by Riak to route responses
+    # @option options [String, Symbol] :http_backend (:NetHTTP) which  HTTP backend to use
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
       unless (options.keys - [:host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend]).empty?

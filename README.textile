@@ -178,19 +178,46 @@ person.account.paid_until = 3.months.from_now
 
 h2. Configuration Example
 
-When using Ripple with Rails 3, @config/ripple.yml@ should contain your Riak connection information:
+When using Ripple with Rails 3, add ripple to your Gemfile and then run the @ripple@ generator.  This will generate a test harness, some MapReduce functions and a configuration file. Example:
 
 <notextile><pre>
+$ rails g ripple
+      create  config/ripple.yml
+      create  app/mapreduce
+      create  app/mapreduce/contrib.js
+      create  app/mapreduce/ripple.js
+      create  test/ripple_test_helper.rb
+      insert  test/test_helper.rb
+      insert  test/test_helper.rb
+</pre></notextile>
+
+@config/ripple.yml@ should contain your Riak connection information, and settings for the test server. Example:
+
+<notextile><pre>
+# Configure Riak connections for the Ripple library.
 development:
   port: 8098
   host: localhost
 
+# The test environment has additional keys for configuring the
+# Riak::TestServer for your test/spec suite:
+#
+# * bin_dir specifies the path to the "riak" script that you use to
+#           start Riak (just the directory)
+# * js_source_dir specifies where your custom Javascript functions for
+#           MapReduce should be loaded from. Usually app/mapreduce.
+test:
+  port: 9000
+  host: localhost
+  bin_dir: /usr/local/bin   # Default for Homebrew.
+  js_source_dir: <%= Rails.root + "app/mapreduce" %>
+
 production:
   port: 8098
-  host: production.load-balancer.example.com
+  host: localhost
 </pre></notextile>
 
-@require 'ripple/railtie'@ from the top of your @config/application.rb@ file to turn this on.
+@require 'ripple/railtie'@ from your @config/application.rb@ file to complete the integration.
 
 h2. How to Contribute
 
