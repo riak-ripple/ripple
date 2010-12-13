@@ -138,7 +138,7 @@ describe Riak::CacheStore do
   end
 
   it "should return the default value when fetching on miss" do
-    @cache.fetch('foo'){'baz'}.should == 'baz'
+    @cache.fetch('foo'){ 'baz' }.should == 'baz'
   end
 
   it "should return the default value when forcing a miss" do

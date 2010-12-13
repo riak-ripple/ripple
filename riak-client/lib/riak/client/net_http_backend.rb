@@ -49,7 +49,7 @@ module Riak
                   result[:body] = response.body
                 end
               else
-                raise FailedRequest.new(method, expect, response.code, response.to_hash, response.body)
+                raise FailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
               end
             end
           end
