@@ -64,7 +64,7 @@
   
     <dt class="r2 last">Defined in:</dt>
     <dd class="r2 last">ripple/lib/ripple.rb<span class="defines">,<br />
-  ripple/lib/ripple/railtie.rb,<br /> ripple/lib/ripple/document.rb,<br /> ripple/lib/ripple/callbacks.rb,<br /> ripple/lib/ripple/properties.rb,<br /> ripple/lib/ripple/timestamps.rb,<br /> ripple/lib/ripple/inspection.rb,<br /> ripple/lib/ripple/conversion.rb,<br /> ripple/lib/ripple/translation.rb,<br /> ripple/lib/ripple/validations.rb,<br /> ripple/lib/ripple/associations.rb,<br /> ripple/lib/ripple/document/key.rb,<br /> riak-sessions/lib/riak-sessions.rb,<br /> ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/associations/one.rb,<br /> ripple/lib/ripple/attribute_methods.rb,<br /> ripple/lib/ripple/embedded_document.rb,<br /> ripple/lib/ripple/associations/many.rb,<br /> ripple/lib/ripple/nested_attributes.rb,<br /> ripple/lib/ripple/associations/proxy.rb,<br /> ripple/lib/ripple/associations/linked.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> riak-sessions/lib/ripple/session_store.rb,<br /> ripple/lib/ripple/associations/embedded.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/attribute_methods/read.rb,<br /> ripple/lib/ripple/property_type_mismatch.rb,<br /> ripple/lib/ripple/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/attribute_methods/write.rb,<br /> ripple/lib/ripple/attribute_methods/query.rb,<br /> ripple/lib/ripple/embedded_document/finders.rb,<br /> ripple/lib/rails/generators/ripple_generator.rb,<br /> ripple/lib/ripple/associations/instantiators.rb,<br /> ripple/lib/ripple/associations/one_linked_proxy.rb,<br /> ripple/lib/ripple/embedded_document/persistence.rb,<br /> ripple/lib/ripple/associations/many_linked_proxy.rb,<br /> ripple/lib/ripple/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/associations/many_embedded_proxy.rb,<br /> ripple/lib/ripple/validations/associated_validator.rb,<br /> ripple/lib/rails/generators/ripple/model/model_generator.rb</span>
+  ripple/lib/ripple/railtie.rb,<br /> ripple/lib/ripple/document.rb,<br /> ripple/lib/ripple/callbacks.rb,<br /> ripple/lib/ripple/timestamps.rb,<br /> ripple/lib/ripple/inspection.rb,<br /> ripple/lib/ripple/conversion.rb,<br /> ripple/lib/ripple/properties.rb,<br /> ripple/lib/ripple/validations.rb,<br /> ripple/lib/ripple/translation.rb,<br /> ripple/lib/ripple/document/key.rb,<br /> ripple/lib/ripple/associations.rb,<br /> riak-sessions/lib/riak-sessions.rb,<br /> ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/associations/one.rb,<br /> ripple/lib/ripple/embedded_document.rb,<br /> ripple/lib/ripple/associations/many.rb,<br /> ripple/lib/ripple/nested_attributes.rb,<br /> ripple/lib/ripple/attribute_methods.rb,<br /> ripple/lib/ripple/associations/proxy.rb,<br /> ripple/lib/ripple/associations/linked.rb,<br /> riak-sessions/lib/ripple/session_store.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> ripple/lib/ripple/associations/embedded.rb,<br /> ripple/lib/ripple/property_type_mismatch.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/attribute_methods/read.rb,<br /> ripple/lib/ripple/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/attribute_methods/write.rb,<br /> ripple/lib/ripple/attribute_methods/query.rb,<br /> ripple/lib/ripple/embedded_document/finders.rb,<br /> ripple/lib/ripple/associations/instantiators.rb,<br /> ripple/lib/rails/generators/ripple_generator.rb,<br /> ripple/lib/ripple/associations/one_linked_proxy.rb,<br /> ripple/lib/ripple/embedded_document/persistence.rb,<br /> ripple/lib/ripple/associations/many_linked_proxy.rb,<br /> ripple/lib/ripple/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/validations/associated_validator.rb,<br /> ripple/lib/rails/generators/ripple/js/js_generator.rb,<br /> ripple/lib/ripple/associations/many_embedded_proxy.rb,<br /> ripple/lib/rails/generators/ripple/test/test_generator.rb,<br /> ripple/lib/rails/generators/ripple/model/model_generator.rb,<br /> ripple/lib/rails/generators/ripple/configuration/configuration_generator.rb</span>
 </dd>
   
 </dl>
@@ -281,12 +281,12 @@ The client for the current thread.
       <pre class="lines">
 
 
-51
 52
-53</pre>
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 52</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id config'>config</span><span class='rparen'>)</span>
@@ -341,12 +341,12 @@ the client
       <pre class="lines">
 
 
-57
 58
-59</pre>
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id client='>client=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -380,12 +380,12 @@ Reads the global Ripple configuration.
       <pre class="lines">
 
 
-68
 69
-70</pre>
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id config'>config</span>
   <span class='ivar'>@config</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -419,13 +419,13 @@ Sets the global Ripple configuration.
       <pre class="lines">
 
 
-62
 63
 64
-65</pre>
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id config='>config=</span><span class='lparen'>(</span><span class='id hash'>hash</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id client'>client</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -465,17 +465,17 @@ configuration with ERB before loading.
       <pre class="lines">
 
 
-74
 75
 76
 77
 78
 79
 80
-81</pre>
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id load_configuration'>load_configuration</span><span class='lparen'>(</span><span class='id config_file'>config_file</span><span class='comma'>,</span> <span class='id config_keys'>config_keys</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:ripple</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id config_file'>config_file</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id expand_path'>expand_path</span><span class='lparen'>(</span><span class='id config_file'>config_file</span><span class='rparen'>)</span>
@@ -495,9 +495,9 @@ configuration with ERB before loading.
 </div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:46:55 2010 by 
+  Generated on Mon Dec 13 16:31:07 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>

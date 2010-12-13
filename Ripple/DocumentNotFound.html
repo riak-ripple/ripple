@@ -217,7 +217,7 @@ A new instance of DocumentNotFound
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id keys'>keys</span><span class='comma'>,</span> <span class='id found'>found</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id keys'>keys</span><span class='period'>.</span><span class='id empty?'>empty?</span>
     <span class='kw'>super</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>document_not_found.no_key</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='kw'>elsif</span> <span class='id keys'>keys</span><span class='period'>.</span><span class='id one?'>one?</span>
+  <span class='kw'>elsif</span> <span class='id keys'>keys</span><span class='period'>.</span><span class='id size'>size</span> <span class='op'>==</span> <span class='int'>1</span>
     <span class='kw'>super</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>document_not_found.one_key</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:key</span> <span class='op'>=&gt;</span> <span class='id keys'>keys</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='id missing'>missing</span> <span class='op'>=</span> <span class='id keys'>keys</span> <span class='op'>-</span> <span class='id found'>found</span><span class='period'>.</span><span class='id compact'>compact</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:key</span><span class='rparen'>)</span>
@@ -235,9 +235,9 @@ A new instance of DocumentNotFound
 </div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:46:58 2010 by 
+  Generated on Mon Dec 13 16:31:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>

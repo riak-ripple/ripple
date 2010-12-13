@@ -105,13 +105,45 @@ library is available. Conforms to the Riak::Client::HTTPBackend interface.
   
   
 
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#configured%3F-class_method" title="configured? (class method)">+ (Boolean) <strong>configured?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
 
   
   
   
   
   
-  <h2>Method Summary</h2>
+  
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="HTTPBackend.html#default_headers-instance_method" title="Riak::Client::HTTPBackend#default_headers (method)">#default_headers</a></span>, <span class='object_link'><a href="HTTPBackend.html#delete-instance_method" title="Riak::Client::HTTPBackend#delete (method)">#delete</a></span>, <span class='object_link'><a href="HTTPBackend.html#get-instance_method" title="Riak::Client::HTTPBackend#get (method)">#get</a></span>, <span class='object_link'><a href="HTTPBackend.html#head-instance_method" title="Riak::Client::HTTPBackend#head (method)">#head</a></span>, <span class='object_link'><a href="HTTPBackend.html#initialize-instance_method" title="Riak::Client::HTTPBackend#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="HTTPBackend.html#path-instance_method" title="Riak::Client::HTTPBackend#path (method)">#path</a></span>, <span class='object_link'><a href="HTTPBackend.html#post-instance_method" title="Riak::Client::HTTPBackend#post (method)">#post</a></span>, <span class='object_link'><a href="HTTPBackend.html#put-instance_method" title="Riak::Client::HTTPBackend#put (method)">#put</a></span>, <span class='object_link'><a href="HTTPBackend.html#return_body%3F-instance_method" title="Riak::Client::HTTPBackend#return_body? (method)">#return_body?</a></span>, <span class='object_link'><a href="HTTPBackend.html#root_uri-instance_method" title="Riak::Client::HTTPBackend#root_uri (method)">#root_uri</a></span>, <span class='object_link'><a href="HTTPBackend.html#valid_response%3F-instance_method" title="Riak::Client::HTTPBackend#valid_response? (method)">#valid_response?</a></span>, <span class='object_link'><a href="HTTPBackend.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend#verify_path! (method)">#verify_path!</a></span>, <span class='object_link'><a href="HTTPBackend.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend#verify_path_and_body! (method)">#verify_path_and_body!</a></span></p>
@@ -123,7 +155,7 @@ library is available. Conforms to the Riak::Client::HTTPBackend interface.
   
   
   
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></span></h3>
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -133,12 +165,77 @@ library is available. Conforms to the Riak::Client::HTTPBackend interface.
 </div>
 
 
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="configured?-class_method">
+  
+    + (<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>configured?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+23
+24
+25
+26
+27
+28
+29
+30</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/net_http_backend.rb', line 23</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id configured?'>configured?</span>
+  <span class='kw'>begin</span>
+    <span class='id require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>net/http</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>true</span>
+  <span class='kw'>rescue</span> <span class='const'>LoadError</span><span class='comma'>,</span> <span class='const'>NameError</span>
+    <span class='kw'>false</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
 </div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:47:00 2010 by 
+  Generated on Mon Dec 13 16:31:11 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>

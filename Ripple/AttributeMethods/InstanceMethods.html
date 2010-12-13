@@ -146,13 +146,13 @@ Mass assign the document&#8217;s attributes.
       <pre class="lines">
 
 
-86
 87
 88
-89</pre>
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id method_missing'>method_missing</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id define_attribute_methods'>define_attribute_methods</span>
@@ -173,7 +173,7 @@ Mass assign the document&#8217;s attributes.
       <div class="method_details first">
   <p class="signature first" id="attributes-instance_method">
   
-    - (<tt>Hash</tt>) <strong>attributes</strong> 
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>attributes</strong> 
   
 
   
@@ -194,7 +194,7 @@ embedded documents.
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -215,15 +215,15 @@ all document attributes, by key
       <pre class="lines">
 
 
-56
 57
 58
 59
 60
-61</pre>
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id attributes'>attributes</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id properties'>properties</span><span class='period'>.</span><span class='id values'>values</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id hash'>hash</span><span class='comma'>,</span> <span class='id prop'>prop</span><span class='op'>|</span>
@@ -258,7 +258,7 @@ Mass assign the document&#8217;s attributes.
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>attrs</span>
@@ -294,7 +294,6 @@ the attributes to assign
       <pre class="lines">
 
 
-65
 66
 67
 68
@@ -304,14 +303,15 @@ the attributes to assign
 72
 73
 74
-75</pre>
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id attributes='>attributes=</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>attribute_hash</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id attrs'>attrs</span>
-  <span class='id attrs'>attrs</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span>
+  <span class='id sanitize_for_mass_assignment'>sanitize_for_mass_assignment</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='rparen'>)</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span>
     <span class='kw'>next</span> <span class='kw'>if</span> <span class='id k'>k</span><span class='period'>.</span><span class='id to_sym'>to_sym</span> <span class='op'>==</span> <span class='symbol'>:key</span>
     <span class='kw'>if</span> <span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id k'>k</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
       <span class='id __send__'>__send__</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id k'>k</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='id v'>v</span><span class='rparen'>)</span>
@@ -330,9 +330,9 @@ the attributes to assign
 </div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:46:58 2010 by 
+  Generated on Mon Dec 13 16:31:10 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>

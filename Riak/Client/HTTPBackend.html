@@ -71,7 +71,7 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></span></dd>
+      <dd class="r2"><span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></dd>
       
     
   
@@ -96,7 +96,7 @@ The parent class for all backends that connect to Riak via HTTP.
   
 </div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a></span>, <span class='object_link'><a href="NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a></span></p>
+  <p class="children"><span class='object_link'><a href="CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a></span>, <span class='object_link'><a href="ExconBackend.html" title="Riak::Client::ExconBackend (class)">ExconBackend</a></span>, <span class='object_link'><a href="NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a></span></p>
 </div>
 
 
@@ -497,7 +497,7 @@ Verifies that both a resource path and body are present in the arguments.
   
   
   
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Riak::Util::Translation</a></span></h3>
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -634,7 +634,7 @@ The Riak::Client that uses this backend
       <div class="method_details first">
   <p class="signature first" id="default_headers-instance_method">
   
-    - (<tt>Hash</tt>) <strong>default_headers</strong> 
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>default_headers</strong> 
   
 
   
@@ -654,7 +654,7 @@ client
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -704,7 +704,7 @@ headers that will be merged with user-specified headers on every request
     
       <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
     
-      <span class="overload">- (<tt>Hash</tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
     
   
 
@@ -742,7 +742,7 @@ Send the request with custom headers
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -764,7 +764,7 @@ custom headers to send with the request
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt>Hash</tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -780,7 +780,7 @@ Stream the response body through the supplied block
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -820,7 +820,7 @@ yields successive chunks of the response body as strings
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -844,7 +844,7 @@ response data, containing only the :headers and :code keys
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -861,7 +861,7 @@ the expected HTTP response code(s) from Riak
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Hash&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
         <span class='name'>resource</span>
@@ -883,7 +883,7 @@ that will be joined to the root URI
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -950,7 +950,7 @@ if the response code doesn&#8217;t match the expected response
     
       <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>get</strong>(expect, *resource, headers) </span>
     
-      <span class="overload">- (<tt>Hash</tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
     
   
 
@@ -988,7 +988,7 @@ Send the request with custom headers
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -1010,7 +1010,7 @@ custom headers to send with the request
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt>Hash</tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -1026,7 +1026,7 @@ Stream the response body through the supplied block
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -1066,7 +1066,7 @@ yields successive chunks of the response body as strings
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -1090,7 +1090,7 @@ response data, containing only the :headers and :code keys
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1107,7 +1107,7 @@ the expected HTTP response code(s) from Riak
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Hash&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
         <span class='name'>resource</span>
@@ -1129,7 +1129,7 @@ that will be joined to the root URI
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -1232,7 +1232,7 @@ Send the request with custom headers
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -1258,7 +1258,7 @@ custom headers to send with the request
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1275,7 +1275,7 @@ the expected HTTP response code(s) from Riak
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Hash&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
         <span class='name'>resource</span>
@@ -1297,7 +1297,7 @@ that will be joined to the root URI
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -1378,7 +1378,7 @@ Calculates an absolute URI from a relative path specification
   
     <li>
       
-        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Hash&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
         <span class='name'>segments</span>
@@ -1445,7 +1445,7 @@ an absolute URI for the resource
       <div class="method_details ">
   <p class="signature " id="perform-instance_method">
   
-    - (<tt>Hash</tt>) <strong>perform</strong>(method, uri, headers, expect, body = nil) {|chunk| ... }
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>perform</strong>(method, uri, headers, expect, body = nil) {|chunk| ... }
   
 
   
@@ -1507,7 +1507,7 @@ the HTTP URI to request
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -1524,7 +1524,7 @@ headers to send along with the request
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1584,7 +1584,7 @@ yielded as strings
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -1648,7 +1648,7 @@ if a subclass does not implement this method
     
       <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
     
-      <span class="overload">- (<tt>Hash</tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
     
   
 
@@ -1686,7 +1686,7 @@ Send the request with custom headers
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -1708,7 +1708,7 @@ custom headers to send with the request
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt>Hash</tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -1724,7 +1724,7 @@ Stream the response body through the supplied block
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -1764,7 +1764,7 @@ yields successive chunks of the response body as strings
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -1788,7 +1788,7 @@ response data, containing only the :headers and :code keys
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -1805,7 +1805,7 @@ the expected HTTP response code(s) from Riak
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
       
       
         <span class='name'>resource</span>
@@ -1844,7 +1844,7 @@ the request body to send to the server
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -1911,7 +1911,7 @@ if the response code doesn&#8217;t match the expected response
     
       <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
     
-      <span class="overload">- (<tt>Hash</tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
     
   
 
@@ -1949,7 +1949,7 @@ Send the request with custom headers
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -1971,7 +1971,7 @@ custom headers to send with the request
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt>Hash</tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -1987,7 +1987,7 @@ Stream the response body through the supplied block
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <span class='name'>headers</span>
@@ -2027,7 +2027,7 @@ yields successive chunks of the response body as strings
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -2051,7 +2051,7 @@ response data, containing only the :headers and :code keys
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>expect</span>
@@ -2068,7 +2068,7 @@ the expected HTTP response code(s) from Riak
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Hash&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
         <span class='name'>resource</span>
@@ -2107,7 +2107,7 @@ the request body to send to the server
   
     <li>
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -2363,7 +2363,7 @@ internally when implementing <span class='object_link'><a href="#perform-instanc
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Fixnum</tt>, <tt>Array&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Fixnum&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Fixnum&gt;</tt>)</span>
       
       
         <span class='name'>expected</span>
@@ -2459,7 +2459,7 @@ Verifies that the specified resource is valid
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>resource</span>
@@ -2540,7 +2540,7 @@ Verifies that both a resource path and body are present in the arguments
   
     <li>
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
       
       
         <span class='name'>args</span>
@@ -2618,9 +2618,9 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:47:00 2010 by 
+  Generated on Mon Dec 13 16:31:11 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>

@@ -142,7 +142,7 @@ Adds the :created_at and :updated_at timestamp properties to the document.
       <pre class="code"><span class="info file"># File 'ripple/lib/ripple/timestamps.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id timestamps!'>timestamps!</span>
-  <span class='id property'>property</span> <span class='symbol'>:created_at</span><span class='comma'>,</span> <span class='const'>Time</span><span class='comma'>,</span> <span class='symbol'>:default</span> <span class='op'>=&gt;</span> <span class='id proc'>proc</span> <span class='lbrace'>{</span> <span class='const'>Time</span><span class='period'>.</span><span class='id now'>now</span><span class='period'>.</span><span class='id utc'>utc</span> <span class='rbrace'>}</span>
+  <span class='id property'>property</span> <span class='symbol'>:created_at</span><span class='comma'>,</span> <span class='const'>Time</span><span class='comma'>,</span> <span class='symbol'>:default</span> <span class='op'>=&gt;</span> <span class='id proc'>proc</span> <span class='lbrace'>{</span> <span class='const'>Time</span><span class='period'>.</span><span class='id now'>now</span> <span class='rbrace'>}</span>
   <span class='id property'>property</span> <span class='symbol'>:updated_at</span><span class='comma'>,</span> <span class='const'>Time</span>
   <span class='id before_save'>before_save</span> <span class='symbol'>:touch</span>
 <span class='kw'>end</span></pre>
@@ -156,9 +156,9 @@ Adds the :created_at and :updated_at timestamp properties to the document.
 </div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:46:57 2010 by 
+  Generated on Mon Dec 13 16:31:09 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>

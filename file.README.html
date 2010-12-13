@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta name="Content-Type" content="text/html; charset=utf-8" />
-<title>Documentation by YARD 0.6.0</title>
+<title>Documentation by YARD 0.6.3</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -49,7 +49,7 @@
 	<li><code>riak-sessions</code> contains session stores for Rack and Rails 3 applications.</li>
 </ul>
 <h2>Dependencies</h2>
-<p><code>riak-client</code> requires ActiveSupport 2.3.5 or later, but the version 3 is recommended. I highly recommend the <a href="http://curb.rubyforge.org/">curb</a> gem for better <span class="caps">HTTP</span> client performance.</p>
+<p><code>riak-client</code> requires i18n and either json or yajl-ruby. For higher performance on <span class="caps">HTTP</span> requests, install the &#8216;curb&#8217; or &#8216;excon&#8217; gems. The cache store implementation requires ActiveSupport 3 or later.</p>
 <p><code>ripple</code> requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).</p>
 <p><code>riak-sessions</code> requires Rack (any version &gt; 1.0), and Rails 3.0 if you want the Rails-specific session store.</p>
 <p>Development dependencies are handled with bundler. Install bundler (<code>gem install bundler</code>) and run this command in each sub-project to get started:</p>
@@ -59,6 +59,9 @@
 
 <span class='comment'># Create a client interface
 </span><span class='id client'>client</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span>
+
+<span class='comment'># Create a client interface that uses Excon
+</span><span class='id client'>client</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:http_backend</span> <span class='op'>=&gt;</span> <span class='symbol'>:Excon</span><span class='rparen'>)</span>
 
 <span class='comment'># Retrieve a bucket
 </span><span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id client'>client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>doc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>  <span class='comment'># a Riak::Bucket
@@ -193,16 +196,40 @@
 </span><span class='id person'>person</span><span class='period'>.</span><span class='id addresses'>addresses</span> <span class='op'>&lt;&lt;</span> <span class='const'>Address</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:street</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>100 Main Street</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># Adds an embedded address
 </span><span class='id person'>person</span><span class='period'>.</span><span class='id account'>account</span><span class='period'>.</span><span class='id paid_until'>paid_until</span> <span class='op'>=</span> <span class='int'>3</span><span class='period'>.</span><span class='id months'>months</span><span class='period'>.</span><span class='id from_now'>from_now</span>
 </pre><h2>Configuration Example</h2>
-<p>When using Ripple with Rails 3, <code>config/ripple.yml</code> should contain your Riak connection information:</p>
+<p>When using Ripple with Rails 3, add ripple to your Gemfile and then run the <code>ripple</code> generator.  This will generate a test harness, some MapReduce functions and a configuration file. Example:</p>
 <pre class="code">
+$ rails g ripple
+      create  config/ripple.yml
+      create  app/mapreduce
+      create  app/mapreduce/contrib.js
+      create  app/mapreduce/ripple.js
+      create  test/ripple_test_helper.rb
+      insert  test/test_helper.rb
+      insert  test/test_helper.rb
+</pre><p><code>config/ripple.yml</code> should contain your Riak connection information, and settings for the test server. Example:</p>
+<pre class="code">
+# Configure Riak connections for the Ripple library.
 development:
   port: 8098
   host: localhost
 
+# The test environment has additional keys for configuring the
+# Riak::TestServer for your test/spec suite:
+#
+# * bin_dir specifies the path to the &quot;riak&quot; script that you use to
+#           start Riak (just the directory)
+# * js_source_dir specifies where your custom Javascript functions for
+#           MapReduce should be loaded from. Usually app/mapreduce.
+test:
+  port: 9000
+  host: localhost
+  bin_dir: /usr/local/bin   # Default for Homebrew.
+  js_source_dir: &lt;%= Rails.root + &quot;app/mapreduce&quot; %&gt;
+
 production:
   port: 8098
-  host: production.load-balancer.example.com
-</pre><p><code>require 'ripple/railtie'</code> from the top of your <code>config/application.rb</code> file to turn this on.</p>
+  host: localhost
+</pre><p><code>require 'ripple/railtie'</code> from your <code>config/application.rb</code> file to complete the integration.</p>
 <h2>How to Contribute</h2>
 <ul>
 	<li>Fork the project on <a href="http://github.com/seancribbs/ripple">Github</a>.  If you have already forked, use <code>git pull --rebase</code> to reapply your changes on top of the mainline. Example:
@@ -232,9 +259,9 @@ $ git pull --rebase seancribbs master</pre></li>
 <p>The &#8220;Poor Man&#8217;s Fibers&#8221; implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.</p></div></div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:46:55 2010 by 
+  Generated on Mon Dec 13 16:31:07 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>

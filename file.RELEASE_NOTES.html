@@ -42,8 +42,37 @@
     <iframe id="search_frame"></iframe>
     
     <div id="content"><div id='filecontents'><h1>Ripple Release Notes</h1>
+<h2>0.8.3 Patch/Minor Feature Release &#8211; 2010-12-13</h2>
+<p>Release 0.8.3 includes new generators for Rails 3 projects, a new <span class="caps">HTTP</span> backend based on Wesley Beary&#8217;s Excon library, and significant bugfixes for Document models.</p>
+<p><code>riak-client</code> is now also completely independent of ActiveSupport, and all three libraries have better support for JRuby.</p>
+<p>Full notes:</p>
+<ul>
+	<li>Fix edge case where NetHTTPBackend would not #to_i the response code.</li>
+	<li>Improve handling of Time properties, including ActiveSupport::TimeWithZone. [Duff O&#8217;Melia]</li>
+	<li>Don&#8217;t cast empty string for Numeric property types. [Marco Campana]</li>
+	<li>Add MapReduce built-ins generator.</li>
+	<li>Add generators to help with Riak::TestServer and initial Rails 3 setup. [Duff O&#8217;Melia, Sean Cribbs]</li>
+	<li>Improve handling of Document properties we don&#8217;t know about.</li>
+	<li>Refactored RequestHeaders so it can be used by multiple backends.</li>
+	<li>Add Excon <span class="caps">HTTP</span> backend.</li>
+	<li>Control mock <span class="caps">HTTP</span> server via DRb so as to avoid deadlocks.</li>
+	<li>Monkeypatch #present? seperately from #blank?. [Kyle Kingsbury]</li>
+	<li>Improved RObject#inspect output. [Jay Adkisson]</li>
+	<li>Fix Bucket#keys raising exceptions on rare occasions. [Kyle Kingsbury]</li>
+	<li>Add support for mass-assignment security on Document models.</li>
+	<li>Moved ActiveSupport version check into CacheStore.</li>
+	<li>Added example TestServer config files.</li>
+	<li>Allow document assignment even if the value is a proxy. [Duff O&#8217;Melia]</li>
+	<li>Remove &#8220;install curb&#8221; warnings.</li>
+	<li>Improve JRuby compatibility.</li>
+	<li>Resolve Hash-ordering differences between 1.9 and 1.8 in specs.</li>
+	<li>Fix 1.8.x issue with Open3 returning a nil waitthread in the TestServer.</li>
+	<li>Removed riak-client dependency on ActiveSupport. [Kyle Kingsbury]</li>
+	<li>Report a changed attribute only if its value changes. [Duff O&#8217;Melia]</li>
+	<li>Reloading a Ripple::Document now casts property values. [Duff O&#8217;Melia]</li>
+</ul>
 <h2>0.8.2 Patch/Minor Feature Release &#8211; 2010-10-22</h2>
-<p>Relese 0.8.2 includes significant additions to support features in Riak 0.13, including Riak Search and Luwak.</p>
+<p>Release 0.8.2 includes significant additions to support features in Riak 0.13, including Riak Search and Luwak.</p>
 <p>Simply <code>require 'riak/search'</code> to add Search-related features to riak-client.</p>
 <p>Full notes:</p>
 <ul>
@@ -191,9 +220,9 @@ It includes:</p>
 </ul></div></div>
     
     <div id="footer">
-  Generated on Fri Oct 22 10:46:55 2010 by 
+  Generated on Mon Dec 13 16:31:07 2010 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.0 (ruby-1.9.2).
+  0.6.3 (ruby-1.9.2).
 </div>
 
   </body>
