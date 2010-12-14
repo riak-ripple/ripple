@@ -52,9 +52,17 @@ module Riak
     #   @param [String,Bucket] bucket the bucket of the object
     #   @param [String] key the key of the object
     #   @param [String] keydata extra data to pass along with the object to the job
+    # @overload add(bucket, filters)
+    #   Run the job across all keys in the bucket, with the given
+    #   key-filters. This will replace any other inputs previously
+    #   added. (Requires Riak 0.14)
+    #   @param [String,Bucket] bucket the bucket to filter keys from
+    #   @param [Array<Array>] filters a list of key-filters to apply
+    #                                 to the key list
     # @return [MapReduce] self
     def add(*params)
-      params = params.dup.flatten
+      params = params.dup
+      params = params.first if Array === params.first
       case params.size
       when 1
         p = params.first
@@ -69,8 +77,12 @@ module Riak
       when 2..3
         bucket = params.shift
         bucket = bucket.name if Bucket === bucket
-        key = params.shift
-        @inputs << params.unshift(escape(key)).unshift(escape(bucket))
+        if Array === params.first
+          @inputs = {:bucket => escape(bucket), :filters => params.first }
+        else
+          key = params.shift
+          @inputs << params.unshift(escape(key)).unshift(escape(bucket))
+        end
       end
       self
     end

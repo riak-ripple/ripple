@@ -101,6 +101,11 @@ describe Riak::MapReduce do
       @mr.add("docs")
       @mr.inputs.should == "docs"
     end
+
+    it "should accept a list of key-filters along with a bucket" do
+      @mr.add("foo", [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]])
+      @mr.inputs.should == {:bucket => "foo", :filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}      
+    end
   end
 
   [:map, :reduce].each do |type|
