@@ -20,7 +20,13 @@ module Riak
       include Util::Translation
 
       # Known filters available in riak_kv_mapred_filters, mapped to
-      # their arities.
+      # their arities. These are turned into instance methods.
+      # Example:
+      #
+      #    FilterBuilder.new do
+      #      string_to_int
+      #      less_than 50
+      #    end
       FILTERS = {
         :int_to_string => 0,
         :string_to_int => 0,
@@ -34,7 +40,7 @@ module Riak
         :less_than => 1,
         :greater_than_eq => 1,
         :less_than_eq => 1,
-        :between => 2,
+        :between => [2,3],
         :matches => 1,
         :neq => 1,
         :eq => 1,
@@ -44,12 +50,24 @@ module Riak
         :ends_with => 1
       }
 
+      # Available logical operations for joining filter chains. These
+      # are turned into instance methods with leading underscores,
+      # with aliases to uppercase versions.
+      # Example:
+      #
+      #    FilterBuilder.new do
+      #      string_to_int
+      #      AND do
+      #        greater_than_eq 50
+      #        neq 100
+      #      end
+      #    end
       LOGICAL_OPERATIONS = %w{and or not}
 
       FILTERS.each do |f,arity|
         class_eval <<-CODE
           def #{f}(*args)
-            raise ArgumentError.new(t("filter_arity_mismatch", :filter => :#{f}, :expected => #{arity}, :received => args.size)) unless args.size == #{arity}
+            raise ArgumentError.new(t("filter_arity_mismatch", :filter => :#{f}, :expected => #{arity.inspect}, :received => args.size)) unless Array(#{arity.inspect}).include?(args.size)
             @filters << ([:#{f}] + args)
           end
         CODE
