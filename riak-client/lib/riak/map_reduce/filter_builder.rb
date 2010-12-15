@@ -45,7 +45,7 @@ module Riak
         :neq => 1,
         :eq => 1,
         :set_member => 1,
-        :similar_to => 1,
+        :similar_to => 2,
         :starts_with => 1,
         :ends_with => 1
       }
