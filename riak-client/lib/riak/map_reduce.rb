@@ -22,7 +22,9 @@ module Riak
     autoload :Phase,         "riak/map_reduce/phase"
     autoload :FilterBuilder, "riak/map_reduce/filter_builder"
 
-    # @return [Array<[bucket,key]>,String] The bucket/keys for input to the job, or the bucket (all keys).
+    # @return [Array<[bucket,key]>,String,Hash<:bucket,:filters>] The
+    #       bucket/keys for input to the job, or the bucket (all
+    #       keys), or a hash containing the bucket and key-filters.
     # @see #add
     attr_accessor :inputs
 
@@ -91,6 +93,16 @@ module Riak
     end
     alias :<< :add
     alias :include :add
+
+    # Adds a bucket and key-filters built by the given
+    # block. Equivalent to #add with a list of filters.
+    # @param [String] bucket the bucket to apply key-filters to
+    # @yield [] builder block - instance_eval'ed into a FilterBuilder
+    # @return [MapReduce] self
+    # @see MapReduce#add
+    def filter(bucket, &block)
+      add(bucket, FilterBuilder.new(&block).to_a)
+    end
 
     # Add a map phase to the job.
     # @overload map(function)
