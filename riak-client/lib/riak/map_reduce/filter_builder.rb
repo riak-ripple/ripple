@@ -47,10 +47,12 @@ module Riak
       LOGICAL_OPERATIONS = %w{and or not}
 
       FILTERS.each do |f,arity|
-        define_method(f) do |*args|
-          raise ArgumentError.new(t("filter_arity_mismatch", :filter => f, :expected => arity, :received => args.size)) unless args.size == arity
-          @filters << ([f] + args)
-        end
+        class_eval <<-CODE
+          def #{f}(*args)
+            raise ArgumentError.new(t("filter_arity_mismatch", :filter => :#{f}, :expected => #{arity}, :received => args.size)) unless args.size == #{arity}
+            @filters << ([:#{f}] + args)
+          end
+        CODE
       end
 
       LOGICAL_OPERATIONS.each do |op|
@@ -59,9 +61,12 @@ module Riak
             raise ArgumentError.new(t('filter_needs_block', :filter => '#{op}')) unless block_given?
             @filters << [:#{op}, self.class.new(&block).to_a]
           end
+          alias :#{op.to_s.upcase} :_#{op}
         CODE
       end
 
+      # Creates a new FilterBuilder. Pass a block that will be
+      # instance_eval'ed to construct the sequence of filters.
       def initialize(&block)
         @filters = []
         instance_eval(&block) if block_given?
@@ -72,7 +77,9 @@ module Riak
       def sequence(&block)
         @filters << self.class.new(&block).to_a
       end
+      alias :seq :sequence
 
+      # @return A list of filters for handing to the MapReduce inputs.
       def to_a
         @filters
       end
