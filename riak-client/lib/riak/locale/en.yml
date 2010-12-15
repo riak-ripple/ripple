@@ -18,7 +18,7 @@ en:
     content_type_undefined: "content_type is not defined!"
     empty_map_reduce_query: "Specify one or more query phases to your MapReduce."
     failed_request: "Expected %{expected} from Riak but received %{code}. %{body}"
-    filter_needs_block: Filter %{filter} expects a block."
+    filter_needs_block: "Filter %{filter} expects a block."
     filter_arity_mismatch: "Filter %{filter} expects %{expected} arguments but %{received} were given."
     hash_type: "invalid argument %{hash} is not a Hash"
     http_configuration: "The %{backend} HTTP backend cannot be used. Please check its requirements."
