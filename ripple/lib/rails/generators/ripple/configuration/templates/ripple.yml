@@ -1,0 +1,21 @@
+# Configure Riak connections for the Ripple library.
+development:
+  port: 8098
+  host: localhost
+
+# The test environment has additional keys for configuring the
+# Riak::TestServer for your test/spec suite:
+#
+# * bin_dir specifies the path to the "riak" script that you use to
+#           start Riak (just the directory)
+# * js_source_dir specifies where your custom Javascript functions for
+#           MapReduce should be loaded from. Usually app/mapreduce.
+test:
+  port: 9000
+  host: localhost
+  bin_dir: /usr/local/bin   # Default for Homebrew.
+  js_source_dir: <%%= Rails.root + "app/mapreduce" %>
+
+production:
+  port: 8098
+  host: localhost

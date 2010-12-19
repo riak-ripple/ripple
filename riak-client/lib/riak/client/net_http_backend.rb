@@ -20,10 +20,19 @@ module Riak
     # be preferred when the 'curb' library is available.
     # Conforms to the Riak::Client::HTTPBackend interface.
     class NetHTTPBackend < HTTPBackend
+      def self.configured?
+        begin
+          require 'net/http'
+          true
+        rescue LoadError, NameError
+          false
+        end
+      end
+
       private
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
         Net::HTTP.start(uri.host, uri.port) do |http|
-          request = Net::HTTP.const_get(method.to_s.camelize).new(uri.request_uri, headers)
+          request = Net::HTTP.const_get(method.to_s.capitalize).new(uri.request_uri, headers)
           case data
           when String
             request.body = data
@@ -40,7 +49,7 @@ module Riak
                   result[:body] = response.body
                 end
               else
-                raise FailedRequest.new(method, expect, response.code, response.to_hash, response.body)
+                raise FailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
               end
             end
           end

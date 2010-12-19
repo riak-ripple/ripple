@@ -12,6 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require File.expand_path("../../spec_helper", File.dirname(__FILE__))
+require 'riak/cache_store'
 
 describe Riak::CacheStore do
   before :all do
@@ -137,7 +138,7 @@ describe Riak::CacheStore do
   end
 
   it "should return the default value when fetching on miss" do
-    @cache.fetch('foo'){'baz'}.should == 'baz'
+    @cache.fetch('foo'){ 'baz' }.should == 'baz'
   end
 
   it "should return the default value when forcing a miss" do

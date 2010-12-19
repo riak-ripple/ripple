@@ -26,7 +26,7 @@ module Ripple
     def initialize(keys, found)
       if keys.empty?
         super(t("document_not_found.no_key"))
-      elsif keys.one?
+      elsif keys.size == 1
         super(t("document_not_found.one_key", :key => keys.first))
       else
         missing = keys - found.compact.map(&:key)
@@ -57,7 +57,7 @@ module Ripple
         def find(*args)
           args.flatten!
           return nil if args.empty? || args.all?(&:blank?)
-          return find_one(args.first) if args.one?
+          return find_one(args.first) if args.size == 1
           args.map {|key| find_one(key) }
         end
         
@@ -118,10 +118,9 @@ module Ripple
 
         def instantiate(robject)
           klass = robject.data['_type'].constantize rescue self
-          data = {'key' => robject.key}
-          data.reverse_merge!(robject.data) rescue data
-          klass.new(data).tap do |doc|
-            doc.key = data['key']
+          klass.new.tap do |doc|
+            doc.key = robject.key
+            robject.data.except("_type").each {|k,v| doc.send("#{k}=", v) } if robject.data
             doc.instance_variable_set(:@new, false)
             doc.instance_variable_set(:@robject, robject)
           end

@@ -42,7 +42,7 @@ module Ripple
 
       private
       def attribute=(attr_name, value)
-        attribute_will_change!(attr_name)
+        attribute_will_change!(attr_name) if @attributes[attr_name] != value
         super
       end
     end

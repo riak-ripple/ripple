@@ -171,7 +171,7 @@ module Riak
         resource = Array(resource).flatten
         raise ArgumentError, t("resource_path_short") unless resource.length > 1 || resource.include?(@client.mapred)
       end
-      
+
       # Checks the expected response codes against the actual response code. Use internally when
       # implementing {#perform}.
       # @param [String, Fixnum, Array<String,Fixnum>] expected the expected response code(s)
@@ -190,7 +190,7 @@ module Riak
       def return_body?(method, code, has_block)
         method != :head && !valid_response?([204,205,304], code) && !has_block
       end
-      
+
       # Executes requests according to the underlying HTTP client library semantics.
       # @abstract Subclasses must implement this internal method to perform HTTP requests
       #           according to the API of their HTTP libraries.
@@ -204,6 +204,37 @@ module Riak
       # @raise [NotImplementedError] if a subclass does not implement this method
       def perform(method, uri, headers, expect, body=nil)
         raise NotImplementedError
+      end
+
+      private
+      def response_headers
+        Thread.current[:response_headers] ||= Riak::Util::Headers.new
+      end
+
+      # @private
+      class RequestHeaders < Riak::Util::Headers
+        alias each each_capitalized
+
+        def initialize(hash)
+          initialize_http_header(hash)
+        end
+
+        def to_a
+          [].tap do |arr|
+            each_capitalized do |k,v|
+              arr << "#{k}: #{v}"
+            end
+          end
+        end
+
+        def to_hash
+          {}.tap do |hash|
+            each_capitalized do |k,v|
+              hash[k] ||= []
+              hash[k] << v
+            end
+          end
+        end
       end
     end
   end

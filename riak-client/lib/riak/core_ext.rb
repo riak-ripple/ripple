@@ -1,0 +1,6 @@
+require 'riak/core_ext/blank'
+require 'riak/core_ext/extract_options'
+require 'riak/core_ext/slice'
+require 'riak/core_ext/stringify_keys'
+require 'riak/core_ext/symbolize_keys'
+require 'riak/core_ext/to_param'

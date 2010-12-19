@@ -1,8 +1,9 @@
 require 'rubygems'
 require 'rake'
 require 'rake/clean'
-
 require 'yard'
+
+PROJECTS = %w{riak-client ripple riak-sessions}
 
 desc "Generate YARD documentation."
 YARD::Rake::YardocTask.new do |yard|
@@ -22,7 +23,7 @@ task :doc => :yard do
 end
 
 namespace :spec do
-  %w{riak-client ripple riak-sessions}.each do |dir|
+  PROJECTS.each do |dir|
     desc "Run specs for sub-project #{dir}."
     task dir do
       Dir.chdir(dir) do
@@ -33,7 +34,7 @@ namespace :spec do
 
   desc "Run integration specs for all sub-projects."
   task :integration do
-    %w{riak-client ripple}.each do |dir|      
+    %w{riak-client ripple}.each do |dir|
       Dir.chdir(dir) do
         system 'rake spec:integration'
       end
@@ -41,9 +42,18 @@ namespace :spec do
   end
 end
 
+desc "Regenerate all gemspecs."
+task :gemspecs do
+  PROJECTS.each do |dir|
+    Dir.chdir(dir) do
+      system "rake gemspec"
+    end
+  end
+end
+
 desc "Release all gems to Rubygems.org."
 task :release do
-  %w{riak-client ripple riak-sessions}.each do |dir|
+  PROJECTS.each do |dir|
     Dir.chdir(dir) do
       system "rake release"
     end

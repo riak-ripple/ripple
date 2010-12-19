@@ -22,14 +22,21 @@ end
 module Riak
   class Client
     # An HTTP backend for Riak::Client that uses the 'curb' library/gem.
-    # If the 'curb' library is present, this backend will be preferred to
-    # the backend based on Net::HTTP.
     # Conforms to the Riak::Client::HTTPBackend interface.
     class CurbBackend < HTTPBackend
+      def self.configured?
+        begin
+          require 'curb'
+          true
+        rescue LoadError
+          false
+        end
+      end
+
       private
       def perform(method, uri, headers, expect, data=nil)
         # Setup
-        curl.headers = create_request_headers(headers)
+        curl.headers = RequestHeaders.new(headers).to_a
         curl.url = uri.to_s
         response_headers.initialize_http_header(nil)
         if block_given?
@@ -53,7 +60,7 @@ module Riak
           # Hacks around limitations in curb's PUT semantics
           _headers, curl.headers = curl.headers, {}
           curl.put_data = data
-          curl.headers = create_request_headers(curl.headers) + _headers
+          curl.headers = RequestHeaders.new(curl.headers).to_a + _headers
           curl.http("PUT")
         else
           curl.send("http_#{method}")
@@ -77,20 +84,6 @@ module Riak
           c.on_header do |header_line|
             response_headers.parse(header_line)
             header_line.size
-          end
-        end
-      end
-
-      def response_headers
-        Thread.current[:response_headers] ||= Riak::Util::Headers.new
-      end
-
-      def create_request_headers(hash)
-        h = Riak::Util::Headers.new
-        hash.each {|k,v| h.add_field(k,v) }
-        [].tap do |arr|
-          h.each_capitalized do |k,v|
-            arr << "#{k}: #{v}"
           end
         end
       end

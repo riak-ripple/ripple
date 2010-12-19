@@ -18,7 +18,9 @@ module Ripple
   # during Rails initialization.
   class Railtie < Rails::Railtie
     initializer "ripple.configure_rails_initialization" do
-      Ripple.load_configuration Rails.root.join('config', 'ripple.yml'), [Rails.env]
+      if File.exist?(Rails.root + "config/ripple.yml")
+        Ripple.load_configuration Rails.root.join('config', 'ripple.yml'), [Rails.env]
+      end
     end
   end
 end

@@ -130,6 +130,13 @@ describe Ripple::AttributeMethods do
     @widget.changes.should == {"name" => ["widget", "foobar"]}
   end
 
+  it "should report that an attribute is changed only if its value actually changes" do
+    @widget.name = "widget"
+    @widget.changed?.should be_false
+    @widget.name_changed?.should be_false
+    @widget.changes.should be_blank
+  end
+
   it "should refresh the attribute methods when adding a new property" do
     Widget.should_receive(:undefine_attribute_methods)
     Widget.property :start_date, Date
@@ -137,7 +144,7 @@ describe Ripple::AttributeMethods do
   end
 
   it "should provide a hash representation of all of the attributes" do
-    @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false}
+    @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil}
   end
 
   it "should load attributes from mass assignment" do
@@ -176,5 +183,10 @@ describe Ripple::AttributeMethods do
   it "should raise an argument error when assigning a non hash to attributes" do
     @widget = Widget.new
     lambda { @widget.attributes = nil }.should raise_error(ArgumentError)
+  end
+
+  it "should protect attributes from mass assignment" do
+    @widget = Widget.new(:manufactured => true)
+    @widget.manufactured.should be_false
   end
 end

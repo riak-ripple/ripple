@@ -14,6 +14,7 @@
 
 require 'riak'
 require 'active_support/all'
+require 'active_support/json'
 require 'active_model'
 require 'ripple/i18n'
 require 'ripple/core_ext'

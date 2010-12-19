@@ -1,5 +1,52 @@
 h1. Ripple Release Notes
 
+h2. 0.8.3 Patch/Minor Feature Release - 2010-12-13
+
+Release 0.8.3 includes new generators for Rails 3 projects, a new HTTP backend based on Wesley Beary's Excon library, and significant bugfixes for Document models.
+
+@riak-client@ is now also completely independent of ActiveSupport, and all three libraries have better support for JRuby.
+
+Full notes:
+
+* Fix edge case where NetHTTPBackend would not #to_i the response code.
+* Improve handling of Time properties, including ActiveSupport::TimeWithZone. [Duff O'Melia]
+* Don't cast empty string for Numeric property types. [Marco Campana]
+* Add MapReduce built-ins generator.
+* Add generators to help with Riak::TestServer and initial Rails 3 setup. [Duff O'Melia, Sean Cribbs]
+* Improve handling of Document properties we don't know about.
+* Refactored RequestHeaders so it can be used by multiple backends.
+* Add Excon HTTP backend.
+* Control mock HTTP server via DRb so as to avoid deadlocks.
+* Monkeypatch #present? seperately from #blank?. [Kyle Kingsbury]
+* Improved RObject#inspect output. [Jay Adkisson]
+* Fix Bucket#keys raising exceptions on rare occasions. [Kyle Kingsbury]
+* Add support for mass-assignment security on Document models.
+* Moved ActiveSupport version check into CacheStore.
+* Added example TestServer config files.
+* Allow document assignment even if the value is a proxy. [Duff O'Melia]
+* Remove "install curb" warnings.
+* Improve JRuby compatibility.
+* Resolve Hash-ordering differences between 1.9 and 1.8 in specs.
+* Fix 1.8.x issue with Open3 returning a nil waitthread in the TestServer.
+* Removed riak-client dependency on ActiveSupport. [Kyle Kingsbury]
+* Report a changed attribute only if its value changes. [Duff O'Melia]
+* Reloading a Ripple::Document now casts property values. [Duff O'Melia]
+
+h2. 0.8.2 Patch/Minor Feature Release - 2010-10-22
+
+Release 0.8.2 includes significant additions to support features in Riak 0.13, including Riak Search and Luwak.
+
+Simply @require 'riak/search'@ to add Search-related features to riak-client.
+
+Full notes:
+
+* Fixed bug in embedded associations where associated validators would be added every time the association was instantiated. [Adam Hunter]
+* Update and loosen dependencies to Rails 3.0.1 and RSpec 2.
+* Add support for file-existence check in Luwak. [John Axel Eriksson]
+* Avoid clobbering an existing Boolean class or module.
+* Add Luwak support.
+* Add Search features. [Sean Cribbs, Rusty Klophaus]
+
 h2. 0.8.1 Patch/Minor Feature Release - 2010-10-11
 
 Release 0.8.1 includes several new features and bugfixes.

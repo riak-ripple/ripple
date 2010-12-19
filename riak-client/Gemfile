@@ -1,13 +1,22 @@
-# A sample Gemfile
 source :gemcutter
 
-gem 'activesupport', '~>2.3.5' #'~>3.0.0'
 gem 'i18n'
-
+gem 'builder'
 gem 'rspec', "~>2.0.0"
 gem 'fakeweb', ">=1.2"
 gem 'rack', '>=1.0'
-gem 'curb', '>=0.6'
-gem 'yajl-ruby'
 gem 'rake'
 gem 'bundler'
+gem 'excon', "~>0.3.4"
+
+if defined? JRUBY_VERSION
+  gem 'json'
+  gem 'jruby-openssl'
+else
+  gem 'curb', '>=0.6'
+  gem 'yajl-ruby'
+end
+
+group :integration do
+  gem 'activesupport', '~>3.0'
+end

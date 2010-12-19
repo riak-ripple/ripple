@@ -16,7 +16,7 @@ require 'rails/generators/ripple_generator'
 
 module Ripple
   module Generators
-    class ModelGenerator < Base
+    class ModelGenerator < NamedBase
       desc 'Creates a ripple model'
       argument :attributes, :type => :array, :default => [], :banner => 'field:type field:type'
       class_option :parent, :type => :string, :desc => "The parent class for the generated model"

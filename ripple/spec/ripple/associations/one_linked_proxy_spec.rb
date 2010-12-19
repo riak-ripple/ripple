@@ -15,7 +15,8 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Associations::OneLinkedProxy do
   require 'support/models/tasks'
-  
+  require 'support/models/family'
+
   before :each do
     @person = Person.new {|p| p.key = "riak-user" }
     @profile = Profile.new {|t| t.key = "one" }
@@ -28,7 +29,7 @@ describe Ripple::Associations::OneLinkedProxy do
   it "should be blank before the associated document is set" do
     @person.profile.should_not be_present
   end
-  
+
   it "should accept a single document" do
     lambda { @person.profile = @profile }.should_not raise_error
   end
@@ -48,8 +49,8 @@ describe Ripple::Associations::OneLinkedProxy do
     @profile.should_receive(:save).and_return(true)
     @person.profile = @profile
   end
-  
-  it "should link-walk to the associated document when accessing" do    
+
+  it "should link-walk to the associated document when accessing" do
     @person.robject.links << @profile.robject.to_link("profile")
     @person.robject.should_receive(:walk).with(Riak::WalkSpec.new(:bucket => "profiles", :tag => "profile")).and_return([[@profile.robject]])
     @person.profile.should be_present
@@ -59,11 +60,26 @@ describe Ripple::Associations::OneLinkedProxy do
     @person.robject.links.should be_empty
     @person.profile.should be_nil
   end
-  
+
   it "should replace associated document with a new one" do
     @person.profile = @profile
     @person.profile = @other_profile
     @person.profile.should == @other_profile
+  end
+
+  it "replaces the associated document with the target of the proxy" do
+    @other_person = Person.new {|p| p.key = "another-riak-user" }
+    @other_person.profile = @other_profile
+
+    @person.profile = @other_person.profile
+    @person.profile.should == @other_profile
+  end
+
+  it "refuses assigning a proxy if its target is the wrong type" do
+    parent = Parent.new
+    parent.child = Child.new
+
+    lambda { @person.profile = parent.child }.should raise_error
   end
 
   # it "should be able to build a new associated document" do

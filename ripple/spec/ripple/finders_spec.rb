@@ -71,6 +71,11 @@ describe Ripple::Document::Finders do
       lambda { Box.find!("square") }.should_not raise_error(Ripple::DocumentNotFound)
     end
 
+    it "should raise an exception when finding an existing document that has properties we don't know about" do
+      @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"non_existent_property":"whatever"}'})
+      lambda { Box.find("square") }.should raise_error
+    end
+
     it "should return the document when calling find!" do
       @http.should_receive(:get).with(200, "/riak/", "boxes", "square", {}, {}).and_return({:code => 200, :headers => {"content-type" => ["application/json"]}, :body => '{"shape":"square"}'})
       box = Box.find!("square")

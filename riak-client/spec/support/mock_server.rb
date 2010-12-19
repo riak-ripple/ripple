@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +19,8 @@ require 'rack'
 
 class MockServer
   attr_accessor :port
-  
+  attr_accessor :satisfied
+
   def initialize(pause = 1)
     self.port = 4000 + rand(61535)
     @block = nil
@@ -31,6 +33,15 @@ class MockServer
 
   def stop
     Thread.kill(@thread)
+  end
+
+  def expect(status, headers, method, path, query, body)
+    attach do |env|
+      @satisfied = (env["REQUEST_METHOD"] == method &&
+                    env["PATH_INFO"] == path &&
+                    env["QUERY_STRING"] == query)
+      [status, headers, Array(body)]
+    end
   end
 
   def attach(&block)
@@ -46,8 +57,10 @@ class MockServer
       raise "Specify a handler for the request using attach(block), the block should return a valid rack response and can test expectations" unless @block
       @block.call(env)
     rescue Exception => e
-      @parent_thread.raise e
-      [ 500, { 'Content-Type' => 'text/plain', 'Content-Length' => '13' }, [ 'Bad test code' ]]
+      @satisfied = false
+      # @parent_thread.raise e
+      body = "Bad test code\n#{e.inspect}\n#{e.backtrace}"
+      [ 500, { 'Content-Type' => 'text/plain', 'Content-Length' => body.length.to_s }, [ body ]]
     end
   end
 

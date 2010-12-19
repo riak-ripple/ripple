@@ -137,10 +137,10 @@ module Riak
 
     # Convert the job to JSON for submission over the HTTP interface.
     # @return [String] the JSON representation
-    def to_json(options={})
-      hash = {"inputs" => inputs.as_json, "query" => query.map(&:as_json)}
+    def to_json(*a)
+      hash = {"inputs" => inputs, "query" => query.map(&:as_json)}
       hash['timeout'] = @timeout.to_i if @timeout
-      ActiveSupport::JSON.encode(hash, options)
+      hash.to_json(*a)
     end
 
     # Executes this map-reduce job.
@@ -148,9 +148,10 @@ module Riak
     def run
       raise MapReduceError.new(t("empty_map_reduce_query")) if @query.empty?
       response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
-      if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
-        ActiveSupport::JSON.decode(response[:body])
-      else
+      begin
+        raise unless response[:headers]['content-type'].include?('application/json')
+        JSON.parse(response[:body])
+      rescue
         response
       end
     rescue FailedRequest => fr
@@ -220,8 +221,8 @@ module Riak
 
       # Converts the phase to JSON for use while invoking a job.
       # @return [String] a JSON representation of the phase
-      def to_json(options=nil)
-        ActiveSupport::JSON.encode(as_json, options)
+      def to_json(*a)
+        as_json.to_json(*a)
       end
 
       # Converts the phase to its JSON-compatible representation for job invocation.

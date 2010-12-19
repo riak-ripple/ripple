@@ -8,34 +8,35 @@ gemspec = Gem::Specification.new do |gem|
   gem.summary = %Q{riak-sessions is a session store backed by Riak, the distributed database by Basho.}
   gem.description = %Q{riak-sessions is a session store backed by Riak, the distributed database by Basho. It includes session implementations for both Rack and Rails 3.}
   gem.version = version
-  gem.email = "seancribbs@gmail.com"
+  gem.email = "sean@basho.com"
   gem.homepage = "http://seancribbs.github.com/ripple"
   gem.authors = ["Sean Cribbs"]
-  gem.add_development_dependency "rspec", "~>2.0.0.beta.18"
-  gem.add_development_dependency "rspec-rails", "~>2.0.0.beta.18"
+  gem.add_development_dependency "rspec", "~>2.0.0"
+  gem.add_development_dependency "rspec-rails", "~>2.0.0"
   gem.add_development_dependency "yajl-ruby"
   gem.add_development_dependency "rails", "~>3.0.0"
-  gem.add_development_dependency "curb", ">0.6"
   gem.add_development_dependency "rake"
   gem.add_dependency "riak-client", "~>#{version}"
   gem.add_dependency "rack", ">=1.0"
 
-  files = FileList["**/*"]
-  files.exclude /\.DS_Store/
-  files.exclude /\#/
-  files.exclude /~/
-  files.exclude /\.swp/
-  files.exclude '**/._*'
-  files.exclude '**/*.orig'
-  files.exclude '**/*.rej'
-  files.exclude /^pkg/
-  files.exclude 'riak-sessions.gemspec'
-  files.exclude 'Gemfile'
-  files.exclude 'Gemfile.lock'
-  
-  gem.files = files.to_a
+  gem.files =  %W{
+     Gemfile
+     lib/riak/session_store.rb
+     lib/riak-sessions.rb
+     lib/ripple/session_store.rb
+     Rakefile
+     riak-sessions.gemspec
+     spec/fixtures/session_autoload_test/session_autoload_test/foo.rb
+     spec/riak_session_store_spec.rb
+     spec/ripple_session_store_spec.rb
+     spec/spec_helper.rb
+     spec/support/ripple_session_support.rb
+     spec/support/rspec-rails-neuter.rb
+     spec/support/test_server.rb
+     spec/support/test_server.yml.example
+   }
 
-  gem.test_files = FileList["spec/**/*.rb"].to_a
+  gem.test_files = gem.files.grep(/_spec\.rb$/)
 end
 
 # Gem packaging tasks
