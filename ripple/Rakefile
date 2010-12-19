@@ -156,18 +156,18 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 
 desc "Run Unit Specs Only"
-Rspec::Core::RakeTask.new(:spec) do |spec|
+RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = "spec/ripple/**/*_spec.rb"
 end
 
 namespace :spec do
   desc "Run Integration Specs Only"
-  Rspec::Core::RakeTask.new(:integration) do |spec|
+  RSpec::Core::RakeTask.new(:integration) do |spec|
     spec.pattern = "spec/integration/**/*_spec.rb"
   end
 
   desc "Run All Specs"
-  Rspec::Core::RakeTask.new(:all) do |spec|
+  RSpec::Core::RakeTask.new(:all) do |spec|
     spec.pattern = "spec/**/*_spec.rb"
   end
 end

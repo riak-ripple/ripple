@@ -21,7 +21,7 @@ require 'rspec'
 
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
-Rspec.configure do |config|
+RSpec.configure do |config|
   config.mock_with :rspec
   config.after(:each) do
     $test_server.recycle if $test_server
