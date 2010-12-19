@@ -33,6 +33,8 @@ module Ripple
       include Query
       include Dirty
       include ActiveModel::MassAssignmentSecurity
+      
+      attr_protected :key
     end
 
     module ClassMethods
@@ -66,7 +68,6 @@ module Ripple
       def attributes=(attrs)
         raise ArgumentError, t('attribute_hash') unless Hash === attrs
         sanitize_for_mass_assignment(attrs).each do |k,v|
-          next if k.to_sym == :key
           if respond_to?("#{k}=")
             __send__("#{k}=",v)
           else
