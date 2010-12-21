@@ -39,7 +39,7 @@ module Ripple
   autoload :Timestamps
   autoload :Validations
   autoload :NestedAttributes
-  autoload :Observer
+  autoload :Observable
 
   # Exceptions
   autoload :PropertyTypeMismatch

@@ -14,7 +14,7 @@
 require 'ripple'
 
 module Ripple
-  module Observer
+  module Observable
     extend ActiveSupport::Concern
     include ActiveModel::Observing
 

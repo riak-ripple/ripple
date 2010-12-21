@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Observer do
+describe Ripple::Observable do
   require 'support/models/clock'
   require 'support/models/clock_observer'
 
