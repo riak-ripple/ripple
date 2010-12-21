@@ -57,6 +57,7 @@ module Ripple
       include Ripple::Timestamps
       include Ripple::Validations
       include Ripple::Associations
+      include Ripple::Observer
       include Ripple::Callbacks
       include Ripple::Conversion
       include Ripple::Document::Finders
