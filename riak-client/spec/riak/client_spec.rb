@@ -240,6 +240,18 @@ describe Riak::Client do
     @client.delete_file("greeting.txt")
   end
 
+  it "should list buckets" do
+    @client = Riak::Client.new
+    @http = mock(Riak::Client::HTTPBackend)
+    @client.stub!(:http).and_return(@http)
+    @http.should_receive(:get).with(200, "/riak/", {:buckets => true}, {}).and_return({:body => '{"buckets":["test", "test2"]}'})
+    buckets = @client.buckets
+    buckets.should have(2).items
+    buckets.should be_all {|b| b.is_a?(Riak::Bucket) }
+    buckets[0].name.should == "test"
+    buckets[1].name.should == "test2"
+  end
+  
   it "should return true if the file exists" do
     @client = Riak::Client.new
     @client.http.should_receive(:head).and_return(:code => 200)

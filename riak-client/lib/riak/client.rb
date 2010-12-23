@@ -145,6 +145,16 @@ module Riak
     end
     alias :[] :bucket
 
+    # Lists buckets which have keys stored in them. NOTE: This is an
+    # expensive operation and should be used only rarely.
+    # @return [Array<Bucket>] a list of buckets
+    def buckets
+      response = http.get(200, prefix, {:buckets => true}, {})
+      list = JSON.parse(response[:body])['buckets']
+      list.map {|name| Bucket.new(self, name) }
+    end
+    alias :list_buckets :buckets
+    
     # Stores a large file/IO object in Riak via the "Luwak" interface.
     # @overload store_file(filename, content_type, data)
     #   Stores the file at the given key/filename
