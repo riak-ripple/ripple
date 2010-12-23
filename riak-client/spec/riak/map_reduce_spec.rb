@@ -417,8 +417,8 @@ describe Riak::MapReduce::FilterBuilder do
   
   it "should add filters to the list" do
     subject.to_lower
-    subject.similar_to("ripple")
-    subject.to_a.should == [[:to_lower],[:similar_to, "ripple"]]
+    subject.similar_to("ripple", 3)
+    subject.to_a.should == [[:to_lower],[:similar_to, "ripple", 3]]
   end
   
   it "should add a logical operation with a block" do
