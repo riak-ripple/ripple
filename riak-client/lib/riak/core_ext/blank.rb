@@ -11,13 +11,25 @@ unless Object.new.respond_to? :blank?
     end
   end
 
+  class FalseClass
+    def blank?
+      true
+    end
+  end
+
+  class TrueClass
+    def blank?
+      false
+    end
+  end
+
   class Set
     alias :blank? :empty?
   end
 
   class String
     def blank?
-      not self =~ /[^\s]/
+      self !~ /[^\s]/
     end
   end
 
@@ -33,7 +45,7 @@ end
 unless Object.new.respond_to? :present?
   class Object
     def present?
-      not blank?
+      !blank?
     end
   end
 end
