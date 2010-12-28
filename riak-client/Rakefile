@@ -26,6 +26,10 @@ gemspec = Gem::Specification.new do |gem|
                   lib/riak/cache_store.rb
                   lib/riak/client/curb_backend.rb
                   lib/riak/client/excon_backend.rb
+                  lib/riak/client/http_backend/configuration.rb
+                  lib/riak/client/http_backend/object_methods.rb
+                  lib/riak/client/http_backend/request_headers.rb
+                  lib/riak/client/http_backend/transport_methods.rb
                   lib/riak/client/http_backend.rb
                   lib/riak/client/net_http_backend.rb
                   lib/riak/client.rb
@@ -42,6 +46,8 @@ gemspec = Gem::Specification.new do |gem|
                   lib/riak/link.rb
                   lib/riak/locale
                   lib/riak/locale/en.yml
+                  lib/riak/map_reduce/filter_builder.rb
+                  lib/riak/map_reduce/phase.rb
                   lib/riak/map_reduce.rb
                   lib/riak/map_reduce_error.rb
                   lib/riak/robject.rb
@@ -68,6 +74,7 @@ gemspec = Gem::Specification.new do |gem|
                   spec/riak/escape_spec.rb
                   spec/riak/excon_backend_spec.rb
                   spec/riak/headers_spec.rb
+                  spec/riak/http_backend/object_methods_spec.rb
                   spec/riak/http_backend_spec.rb
                   spec/riak/link_spec.rb
                   spec/riak/map_reduce_spec.rb
