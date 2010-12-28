@@ -14,21 +14,32 @@
 require 'riak'
 
 module Riak
-  module Util
-    # Methods for escaping URL segments.
-    module Escape
-      # CGI-escapes bucket or key names that may contain slashes for use in URLs.
-      # @param [String] bucket_or_key the bucket or key name
-      # @return [String] the escaped path segment
-      def escape(bucket_or_key)
-        CGI.escape(bucket_or_key.to_s).gsub("+", "%20")
-      end
+  class Client
+    class HTTPBackend
+      # @private
+      class RequestHeaders < Riak::Util::Headers
+        alias each each_capitalized
 
-      # CGI-unescapes bucket or key names
-      # @param [String] bucket_or_key the bucket or key name
-      # @return [String] the unescaped name
-      def unescape(bucket_or_key)
-        CGI.unescape(bucket_or_key.to_s)
+        def initialize(hash)
+          initialize_http_header(hash)
+        end
+
+        def to_a
+          [].tap do |arr|
+            each_capitalized do |k,v|
+              arr << "#{k}: #{v}"
+            end
+          end
+        end
+
+        def to_hash
+          {}.tap do |hash|
+            each_capitalized do |k,v|
+              hash[k] ||= []
+              hash[k] << v
+            end
+          end
+        end
       end
     end
   end

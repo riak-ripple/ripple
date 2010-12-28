@@ -171,16 +171,13 @@ module Riak
     end
 
     # Executes this map-reduce job.
-    # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true. If there is only one "keep" phase, only the results from that phase will be returned.
-    def run
+    # @return [Array<Array>] similar to link-walking, each element is
+    #   an array of results from a phase where "keep" is true. If there
+    #   is only one "keep" phase, only the results from that phase will
+    #   be returned.
+    def run(&block)
       raise MapReduceError.new(t("empty_map_reduce_query")) if @query.empty?
-      response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
-      begin
-        raise unless response[:headers]['content-type'].include?('application/json')
-        JSON.parse(response[:body])
-      rescue
-        response
-      end
+      @client.backend.mapred(self, &block)
     rescue FailedRequest => fr
       if fr.code == 500 && fr.headers['content-type'].include?("application/json")
         raise MapReduceError.new(fr.body)

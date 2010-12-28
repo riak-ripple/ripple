@@ -32,23 +32,7 @@ module Riak
     def initialize(client, name)
       raise ArgumentError, t("client_type", :client => client.inspect) unless Client === client
       raise ArgumentError, t("string_type", :string => name.inspect) unless String === name
-      @client, @name, @props = client, name, {}
-    end
-
-    # Load information for the bucket from a response given by the {Riak::Client::HTTPBackend}.
-    # Used mostly internally - use {Riak::Client#bucket} to get a {Bucket} instance.
-    # @param [Hash] response a response from {Riak::Client::HTTPBackend}
-    # @return [Bucket] self
-    # @see Client#bucket
-    def load(response={})
-      content_type = response[:headers]['content-type'].first rescue ""
-      unless content_type =~ /json$/
-        raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], t("loading_bucket", :name => name))
-      end
-      payload = JSON.parse(response[:body])
-      @keys = payload['keys'].map {|k| CGI.unescape(k) }  if payload['keys']
-      @props = payload['props'] if payload['props']
-      self
+      @client, @name = client, name
     end
 
     # Accesses or retrieves a list of keys in this bucket.
@@ -59,20 +43,14 @@ module Riak
     # @yield [Array<String>] a list of keys from the current chunk
     # @option options [Boolean] :reload (false) If present, will force reloading of the bucket's keys from Riak
     # @return [Array<String>] Keys in this bucket
-    def keys(options={})
+    def keys(options={}, &block)
       if block_given?
-        @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => 'stream'}, {}) do |chunk|
-          obj = JSON.parse(chunk) rescue nil
-          next unless obj and obj['keys']
-          yield obj['keys'].map {|k| CGI.unescape(k) } if obj['keys']
-        end
+        @client.backend.list_keys(self, &block)
       elsif @keys.nil? || options[:reload]
-        response = @client.http.get(200, @client.prefix, escape(name), {:props => false, :keys => true}, {})
-        load(response)
+        @keys = @client.backend.list_keys(self)
       end
       @keys
     end
-
 
     # Sets internal properties on the bucket
     # Note: this results in a request to the Riak server!
@@ -95,18 +73,18 @@ module Riak
     # @see #n_value, #allow_mult, #r, #w, #dw, #rw
     def props=(properties)
       raise ArgumentError, t("hash_type", :hash => properties.inspect) unless Hash === properties
-      body = {'props' => properties}.to_json
-      @client.http.put(204, @client.prefix, escape(name), body, {"Content-Type" => "application/json"})
-      @props.merge!(properties)
+      props.merge!(properties)
+      @client.backend.set_bucket_props(self, properties)
+      props
     end
-    alias properties= props=
+    alias :'properties=' :'props='
 
     # @return [Hash] Internal Riak bucket properties.
     # @see #props=
     def props
-      @props
+      @props ||= @client.backend.get_bucket_props(self)
     end
-    alias properties props
+    alias :properties :props
 
     # Retrieve an object from within the bucket.
     # @param [String] key the key of the object to retrieve
@@ -115,9 +93,7 @@ module Riak
     # @return [Riak::RObject] the object
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key, options={})
-      code = allow_mult ? [200,300] : 200
-      response = @client.http.get(code, @client.prefix, escape(name), escape(key), options, {})
-      RObject.new(self, key).load(response)
+      @client.backend.fetch_object(self, key, options[:r])
     end
     alias :[] :get
 
@@ -151,8 +127,12 @@ module Riak
     # @option options [Fixnum] :r - the read quorum value for the request (R)
     # @return [true, false] whether the key exists in this bucket
     def exists?(key, options={})
-      result = client.http.head([200,404], client.prefix, escape(name), escape(key), options, {})
-      result[:code] == 200
+      begin
+        get(key, options)
+        true
+      rescue Riak::FailedRequest
+        false
+      end
     end
     alias :exist? :exists?
 
@@ -161,7 +141,7 @@ module Riak
     # @param [Hash] options quorum options
     # @option options [Fixnum] :rw - the read/write quorum for the delete
     def delete(key, options={})
-      client.http.delete([204,404], client.prefix, escape(name), escape(key), options, {})
+      client.backend.delete_object(self, key, options[:rw])
     end
 
     # @return [true, false] whether the bucket allows divergent siblings
@@ -181,7 +161,7 @@ module Riak
       props['n_val']
     end
     alias :n_val :n_value
-    
+
     # Set the N value (number of replicas). *NOTE* This will result in a PUT request to Riak.
     # Setting this value after the bucket has objects stored in it may have unpredictable results.
     # @param [Fixnum] value the number of replicas the bucket should keep of each object
@@ -189,8 +169,8 @@ module Riak
       self.props = {'n_val' => value}
       value
     end
-    alias :n_val= :n_value=
-    
+    alias :'n_val=' :'n_value='
+
     [:r,:w,:dw,:rw].each do |q|
       class_eval <<-CODE
         def #{q}
@@ -202,11 +182,16 @@ module Riak
           value
         end
         CODE
-      end
+    end
 
-      # @return [String] a representation suitable for IRB and debugging output
-      def inspect
-        "#<Riak::Bucket #{client.http.path(client.prefix, escape(name)).to_s}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
-      end
+    # @return [String] a representation suitable for IRB and debugging output
+    def inspect
+      "#<Riak::Bucket {#{name}}#{" keys=[#{keys.join(',')}]" if defined?(@keys)}>"
+    end
+
+    # @return [true,false] whether the other is equivalent
+    def ==(other)
+      Bucket === other && other.client == client && other.name == name
     end
   end
+end

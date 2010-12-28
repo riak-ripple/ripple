@@ -16,8 +16,8 @@ require File.expand_path("../spec_helper", File.dirname(__FILE__))
 describe Riak::MapReduce do
   before :each do
     @client = Riak::Client.new
-    @http = mock("HTTPBackend")
-    @client.stub!(:http).and_return(@http)
+    @backend = mock("Backend")
+    @client.stub!(:backend).and_return(@backend)
     @mr = Riak::MapReduce.new(@client)
   end
 
@@ -104,7 +104,7 @@ describe Riak::MapReduce do
 
     it "should accept a list of key-filters along with a bucket" do
       @mr.add("foo", [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]])
-      @mr.inputs.should == {:bucket => "foo", :filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}      
+      @mr.inputs.should == {:bucket => "foo", :filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
     end
 
     it "should add a bucket and filter list via a builder block" do
@@ -237,24 +237,20 @@ describe Riak::MapReduce do
       lambda { @mr.run }.should raise_error(Riak::MapReduceError)
     end
 
-    it "should issue POST request to the mapred endpoint" do
-      @http.should_receive(:post).with(200, "/mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "[]"})
-      @mr.run
+    it "should request the submit the query to the backend" do
+      @backend.should_receive(:mapred).with(@mr).and_return([])
+      @mr.run.should == []
     end
 
-    it "should vivify JSON responses" do
-      @http.stub!(:post).and_return(:headers => {'content-type' => ["application/json"]}, :body => '[{"key":"value"}]')
-      @mr.run.should == [{"key" => "value"}]
-    end
-
-    it "should return the full response hash for non-JSON responses" do
-      response = {:code => 200, :headers => {'content-type' => ["text/plain"]}, :body => 'This is some text.'}
-      @http.stub!(:post).and_return(response)
-      @mr.run.should == response
+    it "should pass the given block to the backend for streaming" do
+      arr = []
+      @backend.should_receive(:mapred).with(@mr).and_yield("foo").and_yield("bar")
+      @mr.run {|v| arr << v }
+      arr.should == ["foo", "bar"]
     end
 
     it "should interpret failed requests with JSON content-types as map reduce errors" do
-      @http.stub!(:post).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["application/json"]}, '{"error":"syntax error"}'))
+      @backend.stub!(:mapred).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["application/json"]}, '{"error":"syntax error"}'))
       lambda { @mr.run }.should raise_error(Riak::MapReduceError)
       begin
         @mr.run
@@ -266,7 +262,7 @@ describe Riak::MapReduce do
     end
 
     it "should re-raise non-JSON error responses" do
-      @http.stub!(:post).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["text/plain"]}, 'Oops, you bwoke it.'))
+      @backend.stub!(:mapred).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["text/plain"]}, 'Oops, you bwoke it.'))
       lambda { @mr.run }.should raise_error(Riak::FailedRequest)
     end
   end
@@ -414,13 +410,13 @@ describe Riak::MapReduce::FilterBuilder do
       matches "foo"
     end.to_a.should == [[:matches, "foo"]]
   end
-  
+
   it "should add filters to the list" do
     subject.to_lower
     subject.similar_to("ripple", 3)
     subject.to_a.should == [[:to_lower],[:similar_to, "ripple", 3]]
   end
-  
+
   it "should add a logical operation with a block" do
     subject.OR do
       starts_with "foo"
@@ -428,11 +424,11 @@ describe Riak::MapReduce::FilterBuilder do
     end
     subject.to_a.should == [[:or, [[:starts_with, "foo"],[:ends_with, "bar"]]]]
   end
-  
+
   it "should raise an error on a filter arity mismatch" do
     lambda { subject.less_than }.should raise_error(ArgumentError)
   end
-  
+
   it "should raise an error when a block is not given to a logical operation" do
     lambda { subject._or }.should raise_error(ArgumentError)
   end

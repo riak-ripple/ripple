@@ -22,13 +22,17 @@ module Riak
     # @return [String] the relationship tag (or "rel") of the other resource to this one
     attr_accessor :tag
     alias_method :rel, :tag
-    alias_method :rel=, :tag=
+    alias_method :'rel=', :'tag='
 
     # @return [String] the bucket of the related resource
     attr_accessor :bucket
 
     # @return [String] the key of the related resource
     attr_accessor :key
+
+    %w{bucket key}.each do |m|
+      class_eval %{ def #{m}=(value); @url = nil; @#{m} = value; end }
+    end
 
     # @param [String] header_string the string value of the Link: HTTP header from a Riak response
     # @return [Array<Link>] an array of Riak::Link structs parsed from the header
@@ -56,12 +60,13 @@ module Riak
 
     # @return [String] the URL (relative or absolute) of the related resource
     def url
-      "/riak/#{escape(bucket)}" + (key.blank? ? "" : "/#{escape(key)}")
+      @url ||= "/riak/#{escape(bucket)}" + (key.blank? ? "" : "/#{escape(key)}")
     end
 
     def url=(value)
-      @bucket = CGI.unescape($1) if value =~ %r{^/[^/]+/([^/]+)/?}
-      @key = CGI.unescape($1) if value =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
+      @url = value
+      @bucket = unescape($1) if value =~ %r{^/[^/]+/([^/]+)/?}
+      @key = unescape($1) if value =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
     end
 
     def inspect; to_s; end

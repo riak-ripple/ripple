@@ -13,14 +13,15 @@
 #    limitations under the License.
 require 'riak'
 require 'set'
+require 'time'
 
 module Riak
   # Represents the data and metadata stored in a bucket/key pair in
-  # the Riak database, the base unit of data manipulation.  
+  # the Riak database, the base unit of data manipulation.
   class RObject
-    include Util
     include Util::Translation
     include Util::Escape
+    extend Util::Escape
 
     # @return [Bucket] the bucket in which this object is contained
     attr_accessor :bucket
@@ -57,7 +58,7 @@ module Riak
     # @return [Array<RObject>] An array of RObject instances
     def self.load_from_mapreduce(client, response)
       response.map do |item|
-        RObject.new(client[CGI.unescape(item['bucket'])], CGI.unescape(item['key'])).load_from_mapreduce(item)
+        RObject.new(client[unescape(item['bucket'])], unescape(item['key'])).load_from_mapreduce(item)
       end
     end
 
@@ -70,27 +71,6 @@ module Riak
       @bucket, @key = bucket, key
       @links, @meta = Set.new, {}
       yield self if block_given?
-    end
-
-    # Load object data from an HTTP response
-    # @param [Hash] response a response from {Riak::Client::HTTPBackend}
-    def load(response)
-      extract_header(response, "location", :key) {|v| URI.unescape(v.split("/").last) }
-      extract_header(response, "content-type", :content_type)
-      extract_header(response, "x-riak-vclock", :vclock)
-      extract_header(response, "link", :links) {|v| Set.new(Link.parse(v)) }
-      extract_header(response, "etag", :etag)
-      extract_header(response, "last-modified", :last_modified) {|v| Time.httpdate(v) }
-      @meta = response[:headers].inject({}) do |h,(k,v)|
-        if k =~ /x-riak-meta-(.*)/
-          h[$1] = v
-        end
-        h
-      end
-      @conflict = (response[:code].to_i == 300 && content_type =~ /multipart\/mixed/) rescue false
-      @siblings = nil
-      self.raw_data = response[:body] if response[:body].present?
-      self
     end
 
     # Load object data from a map/reduce response item.
@@ -115,7 +95,7 @@ module Riak
       self
     end
 
-    # @return [Object] the unmarshaled form of {#raw_data} stored in riak at this object's key 
+    # @return [Object] the unmarshaled form of {#raw_data} stored in riak at this object's key
     def data
       if @raw_data && !@data
         @data = deserialize(@raw_data)
@@ -147,37 +127,6 @@ module Riak
       @raw_data = new_raw_data
     end
 
-    # HTTP header hash that will be sent along when storing the object
-    # @return [Hash] hash of HTTP Headers
-    def store_headers
-      {}.tap do |hash|
-        hash["Content-Type"] = @content_type
-        hash["X-Riak-Vclock"] = @vclock if @vclock
-        if @prevent_stale_writes && @etag.present?
-          hash["If-Match"] = @etag
-        elsif @prevent_stale_writes
-          hash["If-None-Match"] = "*"
-        end
-        unless @links.blank?
-          hash["Link"] = @links.reject {|l| l.rel == "up" }.map(&:to_s).join(", ")
-        end
-        unless @meta.blank?
-          @meta.each do |k,v|
-            hash["X-Riak-Meta-#{k}"] = v.to_s
-          end
-        end
-      end
-    end
-
-    # HTTP header hash that will be sent along when reloading the object
-    # @return [Hash] hash of HTTP headers
-    def reload_headers
-      {}.tap do |h|
-        h['If-None-Match'] = @etag if @etag.present?
-        h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?
-      end
-    end
-
     # Store the object in Riak
     # @param [Hash] options query parameters
     # @option options [Fixnum] :r the "r" parameter (Read quorum for the implicit read performed when validating the store operation)
@@ -189,9 +138,8 @@ module Riak
     def store(options={})
       raise ArgumentError, t("content_type_undefined") unless @content_type.present?
       params = {:returnbody => true}.merge(options)
-      method, codes, path = @key.present? ? [:put, [200,204,300], "#{escape(@bucket.name)}/#{escape(@key)}"] : [:post, 201, escape(@bucket.name)]
-      response = @bucket.client.http.send(method, codes, @bucket.client.prefix, path, params, raw_data, store_headers)
-      load(response)
+      @bucket.client.backend.store_object(self, params[:returnbody], params[:w], params[:dw])
+      self
     end
 
     # Reload the object from Riak.  Will use conditional GETs when possible.
@@ -202,10 +150,11 @@ module Riak
     def reload(options={})
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
-      codes = @bucket.allow_mult ? [200,300,304] : [200,304]
-      response = @bucket.client.http.get(codes, @bucket.client.prefix, escape(@bucket.name), escape(@key), options, reload_headers)
-      load(response) unless response[:code] == 304
-      self
+      if force
+        bucket.client.backend.fetch_object(@bucket, @key, options[:r])
+      else
+        bucket.client.backend.reload_object(self, options[:r])
+      end
     end
 
     alias :fetch :reload
@@ -218,17 +167,14 @@ module Riak
       freeze
     end
 
+    attr_writer :siblings, :conflict
+
     # Returns sibling objects when in conflict.
     # @return [Array<RObject>] an array of conflicting sibling objects for this key
     # @return [self] this object when not in conflict
     def siblings
       return self unless conflict?
-      @siblings ||= Multipart.parse(data, Multipart.extract_boundary(content_type)).map do |part|
-        RObject.new(self.bucket, self.key) do |sibling|
-          sibling.load(part)
-          sibling.vclock = vclock
-        end
-      end
+      @siblings
     end
 
     # @return [true,false] Whether this object has conflicting sibling objects (divergent vclocks)
@@ -286,21 +232,14 @@ module Riak
              else
                @raw_data && "(#{@raw_data.size} bytes)"
              end
-      "#<#{self.class.name} #{url} [#{@content_type}]:#{body}>"
+      "#<#{self.class.name} {#{bucket.name}#{"," + @key if @key}} [#{@content_type}]:#{body}>"
     end
 
     # Walks links from this object to other objects in Riak.
     # @param [Array<Hash,WalkSpec>] link specifications for the query
     def walk(*params)
       specs = WalkSpec.normalize(*params)
-      response = @bucket.client.http.get(200, @bucket.client.prefix, escape(@bucket.name), escape(@key), specs.join("/"))
-      if boundary = Multipart.extract_boundary(response[:headers]['content-type'].first)
-        Multipart.parse(response[:body], boundary).map do |group|
-          map_walk_group(group)
-        end
-      else
-        []
-      end
+      @bucket.client.http.link_walk(self, specs)
     end
 
     # Converts the object to a link suitable for linking other objects
@@ -322,14 +261,14 @@ module Riak
     alias :vector_clock :vclock
     alias :vector_clock= :vclock=
 
-    protected
+      protected
     def load_map_reduce_value(hash)
       metadata = hash['metadata']
       extract_if_present(metadata, 'X-Riak-VTag', :etag)
       extract_if_present(metadata, 'content-type', :content_type)
       extract_if_present(metadata, 'X-Riak-Last-Modified', :last_modified) { |v| Time.httpdate( v ) }
       extract_if_present(metadata, 'Links', :links) do |links|
-        Set.new( links.map { |l| Link.new("#{@bucket.client.prefix}#{l[0]}/#{l[1]}", l[2]) } )
+        Set.new( links.map { |l| Link.new(*l) } )
       end
       extract_if_present(metadata, 'X-Riak-Meta', :meta) do |meta|
         Hash[
@@ -347,21 +286,6 @@ module Riak
         attribute ||= key
         value = block_given? ? yield(hash[key]) : hash[key]
         send("#{attribute}=", value)
-      end
-    end
-
-    def extract_header(response, name, attribute=nil, &block)
-      extract_if_present(response[:headers], name, attribute) do |value|
-        block ? block.call(value[0]) : value[0]
-      end
-    end
-
-    def map_walk_group(group)
-      group.map do |obj|
-        if obj[:headers] && obj[:body] && obj[:headers]['location']
-          bucket, key = $1, $2 if obj[:headers]['location'].first =~ %r{/.*/(.*)/(.*)$}
-          RObject.new(@bucket.client.bucket(bucket, :keys => false), key).load(obj)
-        end
       end
     end
   end

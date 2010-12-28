@@ -165,25 +165,22 @@ describe Riak::Client do
   describe "retrieving a bucket" do
     before :each do
       @client = Riak::Client.new
-      @http = mock(Riak::Client::HTTPBackend)
-      @client.stub!(:http).and_return(@http)
-      @payload = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
-      @http.stub!(:get).and_return(@payload)
+      @backend = mock("Backend")
+      @client.stub!(:backend).and_return(@backend)
     end
 
-    it "should send a GET request to the bucket name and return a Riak::Bucket" do
-      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => false}, {}).and_return(@payload)
+    it "should return a bucket object" do
       @client.bucket("foo").should be_kind_of(Riak::Bucket)
     end
 
-    it "should allow requesting bucket properties with the keys" do
-      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => true}, {}).and_return(@payload)
-      @client.bucket("foo", :keys => true)
+    it "should fetch bucket properties if asked" do
+      @backend.should_receive(:get_bucket_props) {|b| b.name.should == "foo"; {} }
+      @client.bucket("foo", :props => true)
     end
 
-    it "should escape bucket names with invalid characters" do
-      @http.should_receive(:get).with(200, "/riak/", "foo%2Fbar%20", {:keys => false}, {}).and_return(@payload)
-      @client.bucket("foo/bar ", :keys => false)
+    it "should fetch keys if asked" do
+      @backend.should_receive(:list_keys) {|b| b.name.should == "foo"; ["bar"] }
+      @client.bucket("foo", :keys => true)
     end
   end
 
@@ -242,9 +239,9 @@ describe Riak::Client do
 
   it "should list buckets" do
     @client = Riak::Client.new
-    @http = mock(Riak::Client::HTTPBackend)
-    @client.stub!(:http).and_return(@http)
-    @http.should_receive(:get).with(200, "/riak/", {:buckets => true}, {}).and_return({:body => '{"buckets":["test", "test2"]}'})
+    @backend = mock("Backend")
+    @client.stub!(:backend).and_return(@backend)
+    @backend.should_receive(:list_buckets).and_return(%w{test test2})
     buckets = @client.buckets
     buckets.should have(2).items
     buckets.should be_all {|b| b.is_a?(Riak::Bucket) }
