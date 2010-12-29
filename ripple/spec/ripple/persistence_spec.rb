@@ -21,7 +21,7 @@ describe Ripple::Document::Persistence do
     @client = Ripple.client
     @client.stub!(:http).and_return(@http)
     @bucket = Riak::Bucket.new(@client, "widgets")
-    @client.stub!(:[]).and_return(@bucket)
+    @client.stub!(:bucket).and_return(@bucket)
     @widget = Widget.new(:size => 1000)
   end
 

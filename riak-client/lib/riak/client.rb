@@ -142,7 +142,8 @@ module Riak
       unless (options.keys - [:keys, :props]).empty?
         raise ArgumentError, "invalid options"
       end
-      Bucket.new(self, name).tap do |b|
+      @bucket_cache ||= {}
+      (@bucket_cache[name] ||= Bucket.new(self, name)).tap do |b|
         b.props if options[:props]
         b.keys  if options[:keys]
       end
