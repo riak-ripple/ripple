@@ -49,7 +49,7 @@ module Riak
       def ping
         get(200, riak_kv_wm_ping, {}, {})
         true
-      rescue Riak::FailedRequest
+      rescue
         false
       end
 

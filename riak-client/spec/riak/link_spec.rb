@@ -32,11 +32,19 @@ describe Riak::Link do
       result[1].key.should == nil
       result[1].rel.should == "up"
     end
+
+    it "should keep the url intact if it does not point to a bucket or bucket/key" do
+      result = Riak::Link.parse('</mapred>; rel="riak_kv_wm_mapred"')
+      result[0].url.should == "/mapred"
+      result[0].bucket.should be_nil
+      result[0].key.should be_nil
+    end
   end
 
   it "should convert to a string appropriate for use in the Link header" do
     Riak::Link.new("/riak/foo", "up").to_s.should == '</riak/foo>; riaktag="up"'
     Riak::Link.new("/riak/foo/bar", "next").to_s.should == '</riak/foo/bar>; riaktag="next"'
+    Riak::Link.new("/riak", "riak_kv_wm_raw").to_s.should == '</riak>; riaktag="riak_kv_wm_raw"'
   end
 
   it "should convert to a walk spec when pointing to an object" do

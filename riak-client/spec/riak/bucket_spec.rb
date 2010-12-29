@@ -65,15 +65,29 @@ describe Riak::Bucket do
       @backend.should_receive(:get_bucket_props).with(@bucket).and_return({"name" => "foo"})
       @bucket.props = {"precommit" => []}
     end
-    
+
     it "should set the new properties on the bucket" do
       @bucket.instance_variable_set(:@props, {}) # Pretend they are there
       @backend.should_receive(:set_bucket_props).with(@bucket, { :name => "foo" })
       @bucket.props = { :name => "foo" }
     end
 
-    it "should raise an error if an invalid property is given" do
+    it "should raise an error if an invalid type is given" do
       lambda { @bucket.props = "blah" }.should raise_error(ArgumentError)
+    end
+  end
+
+  describe "fetching the bucket properties" do
+    it "should fetch properties on first access" do
+      @bucket.instance_variable_get(:@props).should be_nil
+      @backend.should_receive(:get_bucket_props).with(@bucket).and_return({"name" => "foo"})
+      @bucket.props.should == {"name" => "foo"}
+    end
+
+    it "should memoize fetched properties" do
+      @backend.should_receive(:get_bucket_props).once.with(@bucket).and_return({"name" => "foo"})
+      @bucket.props.should == {"name" => "foo"}
+      @bucket.props.should == {"name" => "foo"}
     end
   end
 
@@ -115,6 +129,12 @@ describe Riak::Bucket do
     it "should bubble up non-ok non-missing errors" do
       @backend.should_receive(:fetch_object).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, "File not found"))
       lambda { @bucket.get_or_new('db') }.should raise_error(Riak::FailedRequest)
+    end
+
+    it "should pass along the given R quorum parameter" do
+      @object = mock("RObject")
+      @backend.should_receive(:fetch_object).with(@bucket,"db", "all").and_return(@object)
+      @bucket.get_or_new('db', :r => "all").should == @object
     end
   end
 
@@ -165,7 +185,6 @@ describe Riak::Bucket do
     end
   end
 
-
   describe "checking whether a key exists" do
     it "should return true if the object does exist" do
       @backend.should_receive(:fetch_object).and_return(mock)
@@ -178,8 +197,15 @@ describe Riak::Bucket do
     end
   end
 
-  it "should delete a key from within the bucket" do
-    @backend.should_receive(:delete_object).with(@bucket, "bar", nil)
-    @bucket.delete('bar')
+  describe "deleting an object" do
+    it "should delete a key from within the bucket" do
+      @backend.should_receive(:delete_object).with(@bucket, "bar", nil)
+      @bucket.delete('bar')
+    end
+
+    it "should use the specified RW quorum" do
+      @backend.should_receive(:delete_object).with(@bucket, "bar", "all")
+      @bucket.delete('bar', :rw => "all")
+    end
   end
 end

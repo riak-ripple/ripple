@@ -103,7 +103,6 @@ describe Riak::RObject do
         @payload = Marshal.dump({"foo" => "bar"})
       end
 
-
       it "should dump via Marshal" do
         @object.serialize({"foo" => "bar"}).should == @payload
       end

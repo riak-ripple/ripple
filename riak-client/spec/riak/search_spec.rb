@@ -24,7 +24,7 @@ describe "Search mixins" do
       @http = mock(Riak::Client::HTTPBackend)
       @client.stub!(:http).and_return(@http)
     end
-    
+
     describe "searching" do
       it "should exclude the index from the URL when not specified" do
         @http.should_receive(:get).with(200, "/solr", "select", hash_including("q" => "foo"), {}).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => "{}"})
@@ -78,6 +78,7 @@ describe "Search mixins" do
         @client.index({'id' => 1, 'field' => "value"}, {'id' => 2, 'foo' => "bar"})
       end
     end
+
     describe "removing documents" do
       it "should exclude the index from the URL when not specified" do
         @http.should_receive(:post).with(200, "/solr","update", anything, anything).and_return({:code => 200, :headers => {'content-type' => ['text/html']}, :body => ""})
@@ -123,7 +124,7 @@ describe "Search mixins" do
     def load_without_index_hook
       @bucket.instance_variable_set(:@props, {"precommit" => []})
     end
-    
+
     def load_with_index_hook
       @bucket.instance_variable_set(:@props, {"precommit" => [{"mod" => "riak_search_kv_hook", "fun" => "precommit"}]})
     end
