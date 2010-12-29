@@ -20,8 +20,8 @@ describe Ripple::Timestamps do
   before :each do
     response = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
     @client = Ripple.client
-    @http = mock("HTTP Backend", :get => response, :put => response, :post => response, :delete => response)
-    @client.stub!(:http).and_return(@http)
+    @backend = mock("Backend", :store_object => true)
+    @client.stub!(:backend).and_return(@backend)
     @clock = Clock.new
   end
   
@@ -51,6 +51,5 @@ describe Ripple::Timestamps do
     start = @clock.updated_at
     @clock.save
     @clock.updated_at.should > start
-  end
-  
+  end  
 end

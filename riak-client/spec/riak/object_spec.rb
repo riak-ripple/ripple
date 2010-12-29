@@ -330,8 +330,12 @@ describe Riak::RObject do
       @object.reload :r => 2
     end
     
-    it "should fetch anew if the key is present and the :force option is given" do
-      @backend.should_receive(:fetch_object).with(@object.bucket, @object.key, nil).and_return(@object)
+    it "should disable matching conditions if the key is present and the :force option is given" do
+      @backend.should_receive(:reload_object) do |obj, _|
+        obj.etag.should be_nil
+        obj.last_modified.should be_nil
+        obj
+      end
       @object.reload :force => true
     end
   end

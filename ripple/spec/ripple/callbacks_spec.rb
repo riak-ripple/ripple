@@ -35,8 +35,8 @@ describe Ripple::Callbacks do
     before :each do
       response = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
       @client = Ripple.client
-      @http = mock("HTTP Backend", :get => response, :put => response, :post => response, :delete => response)
-      @client.stub!(:http).and_return(@http)
+      @backend = mock("Backend", :store_object => true)
+      @client.stub!(:backend).and_return(@backend)
       $pinger = mock("callback verifier")
     end
 
@@ -76,7 +76,7 @@ describe Ripple::Callbacks do
       @box = Box.new
       @box.destroy
     end
-    
+
     describe "validation callbacks" do
       it "should call validation callbacks" do
         Box.before_validation { $pinger.ping }
@@ -85,7 +85,7 @@ describe Ripple::Callbacks do
         @box = Box.new
         @box.valid?
       end
-      
+
       it "should call validation callbacks only if the document is new" do
         Box.before_validation(:on => :create) { $pinger.ping }
         Box.after_validation(:on => :create) { $pinger.ping }
@@ -101,7 +101,7 @@ describe Ripple::Callbacks do
         @box = Box.new
         @box.valid?
       end
-      
+
       it "should call validation callbacks only if the document is not new" do
         Box.before_validation(:on => :update) { $pinger.ping }
         Box.after_validation(:on => :update) { $pinger.ping }

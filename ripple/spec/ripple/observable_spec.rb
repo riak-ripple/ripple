@@ -18,12 +18,11 @@ describe Ripple::Observable do
   require 'support/models/clock_observer'
 
   before :each do
-      response  = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
-      @client   = Ripple.client
-      @http     = mock("HTTP Backend", :get => response, :put => response, :post => response, :delete => response)
-      @client.stub!(:http).and_return(@http)
-      @clock    = Clock.new
-      @observer = ClockObserver.instance
+    @client   = Ripple.client
+    @backend = mock("Backend", :store_object => true)
+    @client.stub!(:backend).and_return(@backend)
+    @clock    = Clock.new
+    @observer = ClockObserver.instance
   end
 
   context "given a document is created" do

@@ -145,16 +145,15 @@ module Riak
     # Reload the object from Riak.  Will use conditional GETs when possible.
     # @param [Hash] options query parameters
     # @option options [Fixnum] :r the "r" parameter (Read quorum)
-    # @option options [Boolean] :force will force a reload request if the vclock is not present, useful for reloading the object after a store (not passed in the query params)
+    # @option options [Boolean] :force will force a reload request if
+    #     the vclock is not present, useful for reloading the object after
+    #     a store (not passed in the query params)
     # @return [Riak::RObject] self
     def reload(options={})
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
-      if force
-        bucket.client.backend.fetch_object(@bucket, @key, options[:r])
-      else
-        bucket.client.backend.reload_object(self, options[:r])
-      end
+      self.etag = self.last_modified = nil if force
+      bucket.client.backend.reload_object(self, options[:r])
     end
 
     alias :fetch :reload

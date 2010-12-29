@@ -33,5 +33,4 @@ describe Ripple::EmbeddedDocument::Finders do
   it "should use self if being called from a class including Ripple::EmbeddedDocument and _type is not present" do
     Address.instantiate({}).class.should == Address
   end
-
 end
