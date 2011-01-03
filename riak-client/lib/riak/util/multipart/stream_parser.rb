@@ -63,7 +63,7 @@ module Riak
         end
 
         def buffering
-          if @buffer =~ @re
+          while @buffer =~ @re
             @block.call parse_multipart_section($~.pre_match)
             @buffer = $~.post_match
           end

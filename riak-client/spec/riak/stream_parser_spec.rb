@@ -53,4 +53,14 @@ describe Riak::Util::Multipart::StreamParser do
       end
     end
   end
+
+  it "should yield successive complete bodies to the block, even when multiple bodies are accepted in a single chunk" do
+    block.should_receive(:ping).twice.and_return(true)
+    parser = klass.new do |result|
+      block.ping
+      result[:headers]['content-type'].should include("application/json")
+      lambda { JSON.parse(result[:body]) }.should_not raise_error
+    end
+    parser.accept File.read("spec/fixtures/multipart-mapreduce.txt")
+  end
 end

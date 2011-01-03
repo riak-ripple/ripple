@@ -236,7 +236,7 @@ describe Riak::Client::HTTPBackend do
       @backend.mapred(@mr) do |phase, data|
         block.ping
         phase.should == 0
-        phase.data.should have(1).item
+        data.should have(1).item
       end
     end
   end

@@ -164,20 +164,20 @@ module Riak
       # @return [Array<Object>] the list of results, if no block was
       #        given
       def mapred(mr)
-        response = post(200, riak_kv_wm_mapred, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
-        data = begin
-                 JSON.parse(response[:body])
-               rescue
-                 response
-               end
-        # This fakes streaming until the streaming MIME parser works.
         if block_given?
-          data = [data] if mr.query.count {|p| p.keep } == 1
-          data.each_with_index do |phase, idx|
-            phase.each {|obj| yield idx, obj }
+          parser = Riak::Util::Multipart::StreamParser.new do |response|
+            result = JSON.parse(response[:body])
+            yield result['phase'], result['data']
           end
+          post(200, riak_kv_wm_mapred, {:chunked => true}, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"}, &parser)
+          nil
         else
-          data
+          response = post(200, riak_kv_wm_mapred, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
+          begin
+            JSON.parse(response[:body])
+          rescue
+            response
+          end
         end
       end
 
