@@ -171,10 +171,19 @@ module Riak
     end
 
     # Executes this map-reduce job.
-    # @return [Array<Array>] similar to link-walking, each element is
-    #   an array of results from a phase where "keep" is true. If there
-    #   is only one "keep" phase, only the results from that phase will
-    #   be returned.
+    # @overload run
+    #   Return the entire collection of results.
+    #   @return [Array<Array>] similar to link-walking, each element is
+    #     an array of results from a phase where "keep" is true. If there
+    #     is only one "keep" phase, only the results from that phase will
+    #     be returned.
+    # @overload run
+    #   Stream the results through the given block without accumulating.
+    #   @yield [phase, data] A block to stream results through
+    #   @yieldparam [Fixnum] phase the phase from which the results were
+    #          generated
+    #   @yieldparam [Array] data a list of results from the phase
+    #   @return [nil] nothing
     def run(&block)
       raise MapReduceError.new(t("empty_map_reduce_query")) if @query.empty?
       @client.backend.mapred(self, &block)

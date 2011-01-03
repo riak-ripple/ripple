@@ -227,6 +227,18 @@ describe Riak::Client::HTTPBackend do
       @backend.stub!(:post).and_return(response)
       @backend.mapred(@mr).should == response
     end
+
+    it "should stream results through the block" do
+      data = File.read("spec/fixtures/multipart-mapreduce.txt")
+      @backend.should_receive(:post).with(200, "/mapred", {:chunked => true}, @mr.to_json, hash_including("Content-Type" => "application/json")).and_yield(data)
+      block = mock
+      block.should_receive(:ping).twice.and_return(true)
+      @backend.mapred(@mr) do |phase, data|
+        block.ping
+        phase.should == 0
+        phase.data.should have(1).item
+      end
+    end
   end
 
   context "getting statistics" do
