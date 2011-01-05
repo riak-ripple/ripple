@@ -44,7 +44,7 @@ module Riak
         :matches => 1,
         :neq => 1,
         :eq => 1,
-        :set_member => 1,
+        :set_member => -1,
         :similar_to => 2,
         :starts_with => 1,
         :ends_with => 1
@@ -58,8 +58,8 @@ module Riak
       #    FilterBuilder.new do
       #      string_to_int
       #      AND do
-      #        greater_than_eq 50
-      #        neq 100
+      #        seq { greater_than_eq 50 }
+      #        seq { neq 100 }
       #      end
       #    end
       LOGICAL_OPERATIONS = %w{and or not}
@@ -67,7 +67,7 @@ module Riak
       FILTERS.each do |f,arity|
         class_eval <<-CODE
           def #{f}(*args)
-            raise ArgumentError.new(t("filter_arity_mismatch", :filter => :#{f}, :expected => #{arity.inspect}, :received => args.size)) unless Array(#{arity.inspect}).include?(args.size)
+            raise ArgumentError.new(t("filter_arity_mismatch", :filter => :#{f}, :expected => #{arity.inspect}, :received => args.size)) unless #{arity.inspect} == -1 || Array(#{arity.inspect}).include?(args.size)
             @filters << ([:#{f}] + args)
           end
         CODE
