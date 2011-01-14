@@ -104,7 +104,7 @@ describe Riak::MapReduce do
 
     it "should accept a list of key-filters along with a bucket" do
       @mr.add("foo", [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]])
-      @mr.inputs.should == {:bucket => "foo", :filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
+      @mr.inputs.should == {:bucket => "foo", :key_filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
     end
 
     it "should add a bucket and filter list via a builder block" do
@@ -113,7 +113,7 @@ describe Riak::MapReduce do
         string_to_int
         between 2009, 2010
       end
-      @mr.inputs.should == {:bucket => "foo", :filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
+      @mr.inputs.should == {:bucket => "foo", :key_filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
     end
   end
 
