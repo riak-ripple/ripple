@@ -83,7 +83,7 @@ module Riak
         bucket = params.shift
         bucket = bucket.name if Bucket === bucket
         if Array === params.first
-          @inputs = {:bucket => escape(bucket), :filters => params.first }
+          @inputs = {:bucket => escape(bucket), :key_filters => params.first }
         else
           key = params.shift
           @inputs << params.unshift(escape(key)).unshift(escape(bucket))
