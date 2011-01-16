@@ -17,17 +17,21 @@ describe Ripple::Document::Persistence do
   require 'support/models/widget'
 
   before :each do
-    @http = mock("HTTP Backend")
+    @backend = mock("Backend")
     @client = Ripple.client
-    @client.stub!(:http).and_return(@http)
-    @bucket = Riak::Bucket.new(@client, "widgets")
-    @client.stub!(:[]).and_return(@bucket)
+    @client.stub!(:backend).and_return(@backend)
+    @bucket = Ripple.client.bucket("widgets")
     @widget = Widget.new(:size => 1000)
   end
 
   it "should save a new object to Riak" do
     json = @widget.attributes.merge("_type" => "Widget").to_json
-    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @backend.should_receive(:store_object) do |obj, _, _, _|
+      obj.raw_data.should == json
+      obj.key.should be_nil
+      # Simulate loading the response with the key
+      obj.key = "new_widget"
+    end
     @widget.save
     @widget.key.should == "new_widget"
     @widget.should_not be_a_new_record
@@ -36,7 +40,12 @@ describe Ripple::Document::Persistence do
 
   it "should modify attributes and save a new object" do
     json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
-    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @backend.should_receive(:store_object) do |obj, _, _, _|
+      obj.raw_data.should == json
+      obj.key.should be_nil
+      # Simulate loading the response with the key
+      obj.key = "new_widget"
+    end
     @widget.update_attributes(:size => 5)
     @widget.key.should == "new_widget"
     @widget.should_not be_a_new_record
@@ -45,7 +54,12 @@ describe Ripple::Document::Persistence do
 
   it "should modify a single attribute and save a new object" do
     json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
-    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @backend.should_receive(:store_object) do |obj, _, _, _|
+      obj.raw_data.should == json
+      obj.key.should be_nil
+      # Simulate loading the response with the key
+      obj.key = "new_widget"
+    end
     @widget.update_attribute(:size, 5)
     @widget.key.should == "new_widget"
     @widget.should_not be_a_new_record
@@ -55,7 +69,12 @@ describe Ripple::Document::Persistence do
 
   it "should instantiate and save a new object to riak" do
     json = @widget.attributes.merge(:size => 10, :shipped_at => "Sat, 01 Jan 2000 20:15:01 -0000", :_type => 'Widget').to_json
-    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @backend.should_receive(:store_object) do |obj, _, _, _|
+      obj.raw_data.should == json
+      obj.key.should be_nil
+      # Simulate loading the response with the key
+      obj.key = "new_widget"
+    end
     @widget = Widget.create(:size => 10, :shipped_at => Time.utc(2000,"jan",1,20,15,1))
     @widget.size.should == 10
     @widget.shipped_at.should == Time.utc(2000,"jan",1,20,15,1)
@@ -64,7 +83,12 @@ describe Ripple::Document::Persistence do
 
   it "should instantiate and save a new object to riak and allow its attributes to be set via a block" do
     json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
-    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @backend.should_receive(:store_object) do |obj, _, _, _|
+      obj.raw_data.should == json
+      obj.key.should be_nil
+      # Simulate loading the response with the key
+      obj.key = "new_widget"
+    end
     @widget = Widget.create do |widget|
       widget.size = 10
     end
@@ -74,9 +98,17 @@ describe Ripple::Document::Persistence do
 
   it "should reload a saved object" do
     json = @widget.attributes.merge(:_type => "Widget").to_json
-    @http.should_receive(:post).with(201, "/riak/", "widgets", an_instance_of(Hash), json, hash_including("Content-Type" => "application/json")).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @backend.should_receive(:store_object) do |obj, _, _, _|
+      obj.raw_data.should == json
+      obj.key.should be_nil
+      # Simulate loading the response with the key
+      obj.key = "new_widget"
+    end
     @widget.save
-    @http.should_receive(:get).and_return(:code => 200, :headers => {'content-type' => ["application/json"]}, :body => '{"name":"spring","size":10,"shipped_at":"Sat, 01 Jan 2000 20:15:01 -0000","_type":"Widget"}')
+    @backend.should_receive(:reload_object) do |obj, _|
+      obj.key.should == "new_widget"
+      obj.raw_data = '{"name":"spring","size":10,"shipped_at":"Sat, 01 Jan 2000 20:15:01 -0000","_type":"Widget"}'
+    end
     @widget.reload
     @widget.changes.should be_blank
     @widget.name.should == "spring"
@@ -85,9 +117,11 @@ describe Ripple::Document::Persistence do
   end
 
   it "should destroy a saved object" do
-    @http.should_receive(:post).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+    @backend.should_receive(:store_object).and_return(true)
+    @widget.key = "foo"
     @widget.save
-    @http.should_receive(:delete).and_return(:code => 204, :headers => {})
+    @widget.should_not be_new
+    @backend.should_receive(:delete_object).and_return(true)
     @widget.destroy.should be_true
     @widget.should be_frozen
   end
@@ -99,7 +133,7 @@ describe Ripple::Document::Persistence do
   end
 
   it "should freeze an unsaved object when destroying" do
-    @http.should_not_receive(:delete)
+    @backend.should_not_receive(:delete_object)
     @widget.destroy.should be_true
     @widget.should be_frozen
   end
@@ -115,11 +149,13 @@ describe Ripple::Document::Persistence do
 
     it "should store the _type field as the class name" do
       json = @cog.attributes.merge("_type" => "Cog").to_json
-      @http.should_receive(:post).and_return(:code => 201, :headers => {'location' => ["/riak/widgets/new_widget"]})
+      @backend.should_receive(:store_object) do |obj, _, _, _|
+        obj.raw_data.should == json
+        obj.key = "new_widget"
+      end
       @cog.save
       @cog.should_not be_new_record
     end
-
   end
 
   describe "modifying the default quorum values" do

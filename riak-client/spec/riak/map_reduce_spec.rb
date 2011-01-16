@@ -16,8 +16,8 @@ require File.expand_path("../spec_helper", File.dirname(__FILE__))
 describe Riak::MapReduce do
   before :each do
     @client = Riak::Client.new
-    @http = mock("HTTPBackend")
-    @client.stub!(:http).and_return(@http)
+    @backend = mock("Backend")
+    @client.stub!(:backend).and_return(@backend)
     @mr = Riak::MapReduce.new(@client)
   end
 
@@ -100,6 +100,20 @@ describe Riak::MapReduce do
       @mr.inputs.should == "%5Bfoo%5D"
       @mr.add("docs")
       @mr.inputs.should == "docs"
+    end
+
+    it "should accept a list of key-filters along with a bucket" do
+      @mr.add("foo", [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]])
+      @mr.inputs.should == {:bucket => "foo", :key_filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
+    end
+
+    it "should add a bucket and filter list via a builder block" do
+      @mr.filter("foo") do
+        tokenize "-", 3
+        string_to_int
+        between 2009, 2010
+      end
+      @mr.inputs.should == {:bucket => "foo", :key_filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
     end
   end
 
@@ -223,24 +237,20 @@ describe Riak::MapReduce do
       lambda { @mr.run }.should raise_error(Riak::MapReduceError)
     end
 
-    it "should issue POST request to the mapred endpoint" do
-      @http.should_receive(:post).with(200, "/mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "[]"})
-      @mr.run
+    it "should submit the query to the backend" do
+      @backend.should_receive(:mapred).with(@mr).and_return([])
+      @mr.run.should == []
     end
 
-    it "should vivify JSON responses" do
-      @http.stub!(:post).and_return(:headers => {'content-type' => ["application/json"]}, :body => '[{"key":"value"}]')
-      @mr.run.should == [{"key" => "value"}]
-    end
-
-    it "should return the full response hash for non-JSON responses" do
-      response = {:code => 200, :headers => {'content-type' => ["text/plain"]}, :body => 'This is some text.'}
-      @http.stub!(:post).and_return(response)
-      @mr.run.should == response
+    it "should pass the given block to the backend for streaming" do
+      arr = []
+      @backend.should_receive(:mapred).with(@mr).and_yield("foo").and_yield("bar")
+      @mr.run {|v| arr << v }
+      arr.should == ["foo", "bar"]
     end
 
     it "should interpret failed requests with JSON content-types as map reduce errors" do
-      @http.stub!(:post).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["application/json"]}, '{"error":"syntax error"}'))
+      @backend.stub!(:mapred).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["application/json"]}, '{"error":"syntax error"}'))
       lambda { @mr.run }.should raise_error(Riak::MapReduceError)
       begin
         @mr.run
@@ -252,143 +262,8 @@ describe Riak::MapReduce do
     end
 
     it "should re-raise non-JSON error responses" do
-      @http.stub!(:post).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["text/plain"]}, 'Oops, you bwoke it.'))
+      @backend.stub!(:mapred).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["text/plain"]}, 'Oops, you bwoke it.'))
       lambda { @mr.run }.should raise_error(Riak::FailedRequest)
-    end
-  end
-end
-
-describe Riak::MapReduce::Phase do
-  before :each do
-    @fun = "function(v,_,_){ return v['values'][0]['data']; }"
-  end
-
-  it "should initialize with a type and a function" do
-    phase = Riak::MapReduce::Phase.new(:type => :map, :function => @fun, :language => "javascript")
-    phase.type.should == :map
-    phase.function.should == @fun
-    phase.language.should == "javascript"
-  end
-
-  it "should initialize with a type and an MF" do
-    phase = Riak::MapReduce::Phase.new(:type => :map, :function => ["module", "function"], :language => "erlang")
-    phase.type.should == :map
-    phase.function.should == ["module", "function"]
-    phase.language.should == "erlang"
-  end
-
-  it "should initialize with a type and a bucket/key" do
-    phase = Riak::MapReduce::Phase.new(:type => :map, :function => {:bucket => "funs", :key => "awesome_map"}, :language => "javascript")
-    phase.type.should == :map
-    phase.function.should == {:bucket => "funs", :key => "awesome_map"}
-    phase.language.should == "javascript"
-  end
-
-  it "should assume the language is erlang when the function is an array" do
-    phase = Riak::MapReduce::Phase.new(:type => :map, :function => ["module", "function"])
-    phase.language.should == "erlang"
-  end
-
-  it "should assume the language is javascript when the function is a string" do
-    phase = Riak::MapReduce::Phase.new(:type => :map, :function => @fun)
-    phase.language.should == "javascript"
-  end
-
-  it "should assume the language is javascript when the function is a hash" do
-    phase = Riak::MapReduce::Phase.new(:type => :map, :function => {:bucket => "jobs", :key => "awesome_map"})
-    phase.language.should == "javascript"
-  end
-
-  it "should accept a WalkSpec for the function when a link phase" do
-    phase = Riak::MapReduce::Phase.new(:type => :link, :function => Riak::WalkSpec.new({}))
-    phase.function.should be_kind_of(Riak::WalkSpec)
-  end
-
-  it "should raise an error if a WalkSpec is given for a phase type other than :link" do
-    lambda { Riak::MapReduce::Phase.new(:type => :map, :function => Riak::WalkSpec.new({})) }.should raise_error(ArgumentError)
-  end
-
-  describe "converting to JSON for the job" do
-    before :each do
-      @phase = Riak::MapReduce::Phase.new(:type => :map, :function => "")
-    end
-
-    [:map, :reduce].each do |type|
-      describe "when a #{type} phase" do
-        before :each do
-          @phase.type = type
-        end
-
-        it "should be an object with a single key of '#{type}'" do
-          @phase.to_json.should =~ /^\{"#{type}":/
-        end
-
-        it "should include the language" do
-          @phase.to_json.should =~ /"language":/
-        end
-
-        it "should include the keep value" do
-          @phase.to_json.should =~ /"keep":false/
-          @phase.keep = true
-          @phase.to_json.should =~ /"keep":true/
-        end
-
-        it "should include the function source when the function is a source string" do
-          @phase.function = "function(v,_,_){ return v; }"
-          @phase.to_json.should include(@phase.function)
-          @phase.to_json.should =~ /"source":/
-        end
-
-        it "should include the function name when the function is not a lambda" do
-          @phase.function = "Riak.mapValues"
-          @phase.to_json.should include('"name":"Riak.mapValues"')
-          @phase.to_json.should_not include('"source"')
-        end
-
-        it "should include the bucket and key when referring to a stored function" do
-          @phase.function = {:bucket => "design", :key => "wordcount_map"}
-          @phase.to_json.should include('"bucket":"design"')
-          @phase.to_json.should include('"key":"wordcount_map"')
-        end
-
-        it "should include the module and function when invoking an Erlang function" do
-          @phase.function = ["riak_mapreduce", "mapreduce_fun"]
-          @phase.to_json.should include('"module":"riak_mapreduce"')
-          @phase.to_json.should include('"function":"mapreduce_fun"')
-        end
-      end
-    end
-
-    describe "when a link phase" do
-      before :each do
-        @phase.type = :link
-        @phase.function = {}
-      end
-
-      it "should be an object of a single key 'link'" do
-        @phase.to_json.should =~ /^\{"link":/
-      end
-
-      it "should include the bucket" do
-        @phase.to_json.should =~ /"bucket":"_"/
-        @phase.function[:bucket] = "foo"
-        @phase.to_json.should =~ /"bucket":"foo"/
-      end
-
-      it "should include the tag" do
-        @phase.to_json.should =~ /"tag":"_"/
-        @phase.function[:tag] = "parent"
-        @phase.to_json.should =~ /"tag":"parent"/
-      end
-
-      it "should include the keep value" do
-        @phase.to_json.should =~ /"keep":false/
-        @phase.keep = true
-        @phase.to_json.should =~ /"keep":true/
-        @phase.keep = false
-        @phase.function[:keep] = true
-        @phase.to_json.should =~ /"keep":true/
-      end
     end
   end
 end

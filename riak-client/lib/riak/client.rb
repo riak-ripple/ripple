@@ -130,20 +130,34 @@ module Riak
                 end
     end
 
+    alias :backend :http
+
     # Retrieves a bucket from Riak.
     # @param [String] bucket the bucket to retrieve
     # @param [Hash] options options for retrieving the bucket
-    # @option options [Boolean] :keys (true) whether to retrieve the bucket keys
-    # @option options [Boolean] :props (true) whether to retreive the bucket properties
+    # @option options [Boolean] :keys (false whether to retrieve the bucket keys
+    # @option options [Boolean] :props (false) whether to retreive the bucket properties
     # @return [Bucket] the requested bucket
     def bucket(name, options={})
       unless (options.keys - [:keys, :props]).empty?
         raise ArgumentError, "invalid options"
       end
-      response = http.get(200, prefix, escape(name), {:keys => false}.merge(options), {})
-      Bucket.new(self, name).load(response)
+      @bucket_cache ||= {}
+      (@bucket_cache[name] ||= Bucket.new(self, name)).tap do |b|
+        b.props if options[:props]
+        b.keys  if options[:keys]
+      end
     end
     alias :[] :bucket
+
+    # Lists buckets which have keys stored in them.
+    # @note This is an expensive operation and should be used only
+    #       in development.
+    # @return [Array<Bucket>] a list of buckets
+    def buckets
+      backend.list_buckets.map {|name| Bucket.new(self, name) }
+    end
+    alias :list_buckets :buckets
 
     # Stores a large file/IO object in Riak via the "Luwak" interface.
     # @overload store_file(filename, content_type, data)

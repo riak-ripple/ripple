@@ -13,11 +13,27 @@
 #    limitations under the License.
 require 'riak'
 
+
 module Riak
   class Client
-    # The parent class for all backends that connect to Riak via HTTP.
+    # The parent class for all backends that connect to Riak via
+    # HTTP. This class implements all of the universal backend API
+    # methods on behalf of subclasses, which need only implement the
+    # {TransportMethods#perform} method for library-specific
+    # semantics.
     class HTTPBackend
+      autoload :RequestHeaders,   "riak/client/http_backend/request_headers"
+      autoload :TransportMethods, "riak/client/http_backend/transport_methods"
+      autoload :ObjectMethods,    "riak/client/http_backend/object_methods"
+      autoload :Configuration,    "riak/client/http_backend/configuration"
+
+      include TransportMethods
+      include ObjectMethods
+      include Configuration
+
+      include Util::Escape
       include Util::Translation
+
       # The Riak::Client that uses this backend
       attr_reader :client
 
@@ -28,212 +44,169 @@ module Riak
         @client = client
       end
 
-      # Default header hash sent with every request, based on settings in the client
-      # @return [Hash] headers that will be merged with user-specified headers on every request
-      def default_headers
-        {
-          "Accept" => "multipart/mixed, application/json;q=0.7, */*;q=0.5",
-          "X-Riak-ClientId" => @client.client_id
-        }
+      # Pings the server
+      # @return [true,false] whether the server is available
+      def ping
+        get(200, riak_kv_wm_ping, {}, {})
+        true
+      rescue
+        false
       end
 
-      # Performs a HEAD request to the specified resource on the Riak server.
-      # @param [Fixnum, Array] expect the expected HTTP response code(s) from Riak
-      # @param [String, Array<String,Hash>] resource a relative path or array of path segments and optional query params Hash that will be joined to the root URI
-      # @overload head(expect, *resource)
-      # @overload head(expect, *resource, headers)
-      #   Send the request with custom headers
-      #   @param [Hash] headers custom headers to send with the request
-      # @return [Hash] response data, containing only the :headers and :code keys
-      # @raise [FailedRequest] if the response code doesn't match the expected response
-      def head(expect, *resource)
-        headers = default_headers.merge(resource.extract_options!)
-        verify_path!(resource)
-        perform(:head, path(*resource), headers, expect)
+      # Fetches an object by bucket/key
+      # @param [Bucket, String] bucket the bucket where the object is
+      #        stored
+      # @param [String] key the key of the object
+      # @param [Fixnum, String, Symbol] r the read quorum for the
+      #         request - how many nodes should concur on the read
+      # @return [RObject] the fetched object
+      def fetch_object(bucket, key, r=nil)
+        bucket = Bucket.new(client, bucket) if String === bucket
+        options = r ? {:r => r} : {}
+        response = get([200,300],riak_kv_wm_raw, escape(bucket.name), escape(key), options, {})
+        load_object(RObject.new(bucket, key), response)
       end
 
-      # Performs a GET request to the specified resource on the Riak server.
-      # @param [Fixnum, Array] expect the expected HTTP response code(s) from Riak
-      # @param [String, Array<String,Hash>] resource a relative path or array of path segments and optional query params Hash that will be joined to the root URI
-      # @overload get(expect, *resource)
-      # @overload get(expect, *resource, headers)
-      #   Send the request with custom headers
-      #   @param [Hash] headers custom headers to send with the request
-      # @overload get(expect, *resource, headers={})
-      #   Stream the response body through the supplied block
-      #   @param [Hash] headers custom headers to send with the request
-      #   @yield [chunk] yields successive chunks of the response body as strings
-      #   @return [Hash] response data, containing only the :headers and :code keys
-      # @return [Hash] response data, containing :headers, :body, and :code keys
-      # @raise [FailedRequest] if the response code doesn't match the expected response
-      def get(expect, *resource, &block)
-        headers = default_headers.merge(resource.extract_options!)
-        verify_path!(resource)
-        perform(:get, path(*resource), headers, expect, &block)
-      end
-
-      # Performs a PUT request to the specified resource on the Riak server.
-      # @param [Fixnum, Array] expect the expected HTTP response code(s) from Riak
-      # @param [String, Array<String,Hash>] resource a relative path or array of path segments and optional query params Hash that will be joined to the root URI
-      # @param [String] body the request body to send to the server
-      # @overload put(expect, *resource, body)
-      # @overload put(expect, *resource, body, headers)
-      #   Send the request with custom headers
-      #   @param [Hash] headers custom headers to send with the request
-      # @overload put(expect, *resource, body, headers={})
-      #   Stream the response body through the supplied block
-      #   @param [Hash] headers custom headers to send with the request
-      #   @yield [chunk] yields successive chunks of the response body as strings
-      #   @return [Hash] response data, containing only the :headers and :code keys
-      # @return [Hash] response data, containing :headers, :code, and :body keys
-      # @raise [FailedRequest] if the response code doesn't match the expected response
-      def put(expect, *resource, &block)
-        headers = default_headers.merge(resource.extract_options!)
-        uri, data = verify_path_and_body!(resource)
-        perform(:put, path(*uri), headers, expect, data, &block)
-      end
-
-      # Performs a POST request to the specified resource on the Riak server.
-      # @param [Fixnum, Array] expect the expected HTTP response code(s) from Riak
-      # @param [String, Array<String>] resource a relative path or array of path segments that will be joined to the root URI
-      # @param [String] body the request body to send to the server
-      # @overload post(expect, *resource, body)
-      # @overload post(expect, *resource, body, headers)
-      #   Send the request with custom headers
-      #   @param [Hash] headers custom headers to send with the request
-      # @overload post(expect, *resource, body, headers={})
-      #   Stream the response body through the supplied block
-      #   @param [Hash] headers custom headers to send with the request
-      #   @yield [chunk] yields successive chunks of the response body as strings
-      #   @return [Hash] response data, containing only the :headers and :code keys
-      # @return [Hash] response data, containing :headers, :code and :body keys
-      # @raise [FailedRequest] if the response code doesn't match the expected response
-      def post(expect, *resource, &block)
-        headers = default_headers.merge(resource.extract_options!)
-        uri, data = verify_path_and_body!(resource)
-        perform(:post, path(*uri), headers, expect, data, &block)
-      end
-
-      # Performs a DELETE request to the specified resource on the Riak server.
-      # @param [Fixnum, Array] expect the expected HTTP response code(s) from Riak
-      # @param [String, Array<String,Hash>] resource a relative path or array of path segments and optional query params Hash that will be joined to the root URI
-      # @overload delete(expect, *resource)
-      # @overload delete(expect, *resource, headers)
-      #   Send the request with custom headers
-      #   @param [Hash] headers custom headers to send with the request
-      # @overload delete(expect, *resource, headers={})
-      #   Stream the response body through the supplied block
-      #   @param [Hash] headers custom headers to send with the request
-      #   @yield [chunk] yields successive chunks of the response body as strings
-      #   @return [Hash] response data, containing only the :headers and :code keys
-      # @return [Hash] response data, containing :headers, :code and :body keys
-      # @raise [FailedRequest] if the response code doesn't match the expected response
-      def delete(expect, *resource, &block)
-        headers = default_headers.merge(resource.extract_options!)
-        verify_path!(resource)
-        perform(:delete, path(*resource), headers, expect, &block)
-      end
-
-      # @return [URI] The calculated root URI for the Riak HTTP endpoint
-      def root_uri
-        URI.parse("http://#{@client.host}:#{@client.port}")
-      end
-
-      # Calculates an absolute URI from a relative path specification
-      # @param [Array<String,Hash>] segments a relative path or sequence of path segments and optional query params Hash that will be joined to the root URI
-      # @return [URI] an absolute URI for the resource
-      def path(*segments)
-        query = segments.extract_options!.to_param
-        root_uri.merge(segments.join("/").gsub(/\/+/, "/").sub(/^\//, '')).tap do |uri|
-          uri.query = query if query.present?
+      # Reloads the data for a given RObject, a special case of {#fetch}.
+      def reload_object(robject, r = nil)
+        options = r ? {:r => r} : {}
+        response = get([200,300,304], riak_kv_wm_raw, escape(robject.bucket.name), escape(robject.key), options, reload_headers(robject))
+        if response[:code].to_i == 304
+          robject
+        else
+          load_object(robject, response)
         end
       end
 
-      # Verifies that both a resource path and body are present in the arguments
-      # @param [Array] args the arguments to verify
-      # @raise [ArgumentError] if the body or resource is missing, or if the body is not a String
-      def verify_path_and_body!(args)
-        body = args.pop
-        begin
-          verify_path!(args)
-        rescue ArgumentError
-          raise ArgumentError, t("path_and_body_required")
+      # Stores an object
+      # @param [RObject] robject the object to store
+      # @param [true,false] returnbody (false) whether to update the object
+      #        after write with the new value
+      # @param [Fixnum, String, Symbol] w the write quorum
+      # @param [Fixnum, String, Symbol] dw the durable write quorum
+      def store_object(robject, returnbody=false, w=nil, dw=nil)
+        query = {}.tap do |q|
+          q[:returnbody] = returnbody unless returnbody.nil?
+          q[:w] = w unless w.nil?
+          q[:dw] = dw unless dw.nil?
         end
-
-        raise ArgumentError, t("request_body_type") unless String === body || IO === body
-        [args, body]
+        method, codes, path = if robject.key.present?
+                                [:put, [200,204,300], "#{escape(robject.bucket.name)}/#{escape(robject.key)}"]
+                              else
+                                [:post, 201, escape(robject.bucket.name)]
+                              end
+        response = send(method, codes, riak_kv_wm_raw, path, query, robject.raw_data, store_headers(robject))
+        load_object(robject, response) if returnbody
       end
 
-      # Verifies that the specified resource is valid
-      # @param [String, Array] resource the resource specification
-      # @raise [ArgumentError] if the resource path is too short
-      def verify_path!(resource)
-        resource = Array(resource).flatten
-        raise ArgumentError, t("resource_path_short") unless resource.length > 1 || resource.include?(@client.mapred)
+      # Deletes an object
+      # @param [Bucket, String] bucket the bucket where the object
+      #        lives
+      # @param [String] key the key where the object lives
+      # @param [Fixnum, String, Symbol] rw the read/write quorum for
+      #        the request
+      def delete_object(bucket, key, rw=nil)
+        bucket = bucket.name if Bucket === bucket
+        options = rw ? {:rw => rw} : {}
+        delete([204, 404], riak_kv_wm_raw, escape(bucket), escape(key), options, {})
       end
 
-      # Checks the expected response codes against the actual response code. Use internally when
-      # implementing {#perform}.
-      # @param [String, Fixnum, Array<String,Fixnum>] expected the expected response code(s)
-      # @param [String, Fixnum] actual the received response code
-      # @return [Boolean] whether the actual response code is acceptable given the expectations
-      def valid_response?(expected, actual)
-        Array(expected).map(&:to_i).include?(actual.to_i)
+      # Fetches bucket properties
+      # @param [Bucket, String] bucket the bucket properties to fetch
+      # @return [Hash] bucket properties
+      def get_bucket_props(bucket)
+        bucket = bucket.name if Bucket === bucket
+        response = get(200, riak_kv_wm_raw, escape(bucket), {:keys => false, :props => true}, {})
+        JSON.parse(response[:body])['props']
       end
 
-      # Checks whether a combination of the HTTP method, response code, and block should
-      # result in returning the :body in the response hash. Use internally when implementing {#perform}.
-      # @param [Symbol] method the HTTP method
-      # @param [String, Fixnum] code the received response code
-      # @param [Boolean] has_block whether a streaming block was passed to {#perform}. Pass block_given? to this parameter.
-      # @return [Boolean] whether to return the body in the response hash
-      def return_body?(method, code, has_block)
-        method != :head && !valid_response?([204,205,304], code) && !has_block
+      # Sets bucket properties
+      # @param [Bucket, String] bucket the bucket to set properties on
+      # @param [Hash] properties the properties to set
+      def set_bucket_props(bucket, props)
+        bucket = bucket.name if Bucket === bucket
+        body = {'props' => props}.to_json
+        put(204, riak_kv_wm_raw, escape(bucket), body, {"Content-Type" => "application/json"})
       end
 
-      # Executes requests according to the underlying HTTP client library semantics.
-      # @abstract Subclasses must implement this internal method to perform HTTP requests
-      #           according to the API of their HTTP libraries.
-      # @param [Symbol] method one of :head, :get, :post, :put, :delete
-      # @param [URI] uri the HTTP URI to request
-      # @param [Hash] headers headers to send along with the request
-      # @param [Fixnum, Array] expect the expected response code(s)
-      # @param [String, IO] body the PUT or POST request body
-      # @return [Hash] response data, containing :headers, :code and :body keys. Only :headers and :code should be present when the body is streamed or the method is :head.
-      # @yield [chunk] if the method is not :head, successive chunks of the response body will be yielded as strings
-      # @raise [NotImplementedError] if a subclass does not implement this method
-      def perform(method, uri, headers, expect, body=nil)
-        raise NotImplementedError
-      end
-
-      private
-      def response_headers
-        Thread.current[:response_headers] ||= Riak::Util::Headers.new
-      end
-
-      # @private
-      class RequestHeaders < Riak::Util::Headers
-        alias each each_capitalized
-
-        def initialize(hash)
-          initialize_http_header(hash)
+      # List keys in a bucket
+      # @param [Bucket, String] bucket the bucket to fetch the keys
+      #        for
+      # @yield [Array<String>] a list of keys from the current
+      #        streamed chunk
+      # @return [Array<String>] the list of keys, if no block was given
+      def list_keys(bucket, &block)
+        bucket = bucket.name if Bucket === bucket
+        if block_given?
+          get(200, riak_kv_wm_raw, escape(bucket), {:props => false, :keys => 'stream'}, {}) do |chunk|
+            obj = JSON.parse(chunk) rescue nil
+            next unless obj && obj['keys']
+            yield obj['keys'].map {|k| unescape(k) }
+          end
+        else
+          response = get(200, riak_kv_wm_raw, escape(bucket), {:props => false, :keys => true}, {})
+          obj = JSON.parse(response[:body])
+          obj && obj['keys'].map {|k| unescape(k) }
         end
+      end
 
-        def to_a
-          [].tap do |arr|
-            each_capitalized do |k,v|
-              arr << "#{k}: #{v}"
-            end
+      # Lists known buckets
+      # @return [Array<String>] the list of buckets
+      def list_buckets
+        response = get(200, riak_kv_wm_raw, {:buckets => true}, {})
+        JSON.parse(response[:body])['buckets']
+      end
+
+      # Performs a MapReduce query.
+      # @param [MapReduce] mr the query to perform
+      # @yield [Fixnum, Object] the phase number and single result
+      #        from the phase
+      # @return [Array<Object>] the list of results, if no block was
+      #        given
+      def mapred(mr)
+        if block_given?
+          parser = Riak::Util::Multipart::StreamParser.new do |response|
+            result = JSON.parse(response[:body])
+            yield result['phase'], result['data']
+          end
+          post(200, riak_kv_wm_mapred, {:chunked => true}, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"}, &parser)
+          nil
+        else
+          response = post(200, riak_kv_wm_mapred, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
+          begin
+            JSON.parse(response[:body])
+          rescue
+            response
           end
         end
+      end
 
-        def to_hash
-          {}.tap do |hash|
-            each_capitalized do |k,v|
-              hash[k] ||= []
-              hash[k] << v
+      # Gets health statistics
+      # @return [Hash] information about the server, including stats
+      def stats
+        response = get(200, riak_kv_wm_stats, {}, {})
+        JSON.parse(response[:body])
+      end
+
+      # Performs a link-walking query
+      # @param [RObject] robject the object to start at
+      # @param [Array<WalkSpec>] walk_specs a list of walk
+      #        specifications to process
+      # @return [Array<Array<RObject>>] a list of the matched objects,
+      #         grouped by phase
+      def link_walk(robject, walk_specs)
+        response = get(200, riak_kv_wm_link_walker, escape(robject.bucket.name), escape(robject.key), walk_specs.join("/"))
+        if boundary = Util::Multipart.extract_boundary(response[:headers]['content-type'].first)
+          Util::Multipart.parse(response[:body], boundary).map do |group|
+            group.map do |obj|
+              if obj[:headers] && obj[:body] && obj[:headers]['location']
+                bucket, key = $1, $2 if obj[:headers]['location'].first =~ %r{/.*/(.*)/(.*)$}
+                load_object(RObject.new(client.bucket(bucket), key), obj)
+              end
             end
           end
+        else
+          []
         end
       end
     end

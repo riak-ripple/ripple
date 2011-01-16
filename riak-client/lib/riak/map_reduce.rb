@@ -19,7 +19,12 @@ module Riak
     include Util::Translation
     include Util::Escape
 
-    # @return [Array<[bucket,key]>,String] The bucket/keys for input to the job, or the bucket (all keys).
+    autoload :Phase,         "riak/map_reduce/phase"
+    autoload :FilterBuilder, "riak/map_reduce/filter_builder"
+
+    # @return [Array<[bucket,key]>,String,Hash<:bucket,:filters>] The
+    #       bucket/keys for input to the job, or the bucket (all
+    #       keys), or a hash containing the bucket and key-filters.
     # @see #add
     attr_accessor :inputs
 
@@ -52,9 +57,17 @@ module Riak
     #   @param [String,Bucket] bucket the bucket of the object
     #   @param [String] key the key of the object
     #   @param [String] keydata extra data to pass along with the object to the job
+    # @overload add(bucket, filters)
+    #   Run the job across all keys in the bucket, with the given
+    #   key-filters. This will replace any other inputs previously
+    #   added. (Requires Riak 0.14)
+    #   @param [String,Bucket] bucket the bucket to filter keys from
+    #   @param [Array<Array>] filters a list of key-filters to apply
+    #                                 to the key list
     # @return [MapReduce] self
     def add(*params)
-      params = params.dup.flatten
+      params = params.dup
+      params = params.first if Array === params.first
       case params.size
       when 1
         p = params.first
@@ -69,13 +82,27 @@ module Riak
       when 2..3
         bucket = params.shift
         bucket = bucket.name if Bucket === bucket
-        key = params.shift
-        @inputs << params.unshift(escape(key)).unshift(escape(bucket))
+        if Array === params.first
+          @inputs = {:bucket => escape(bucket), :key_filters => params.first }
+        else
+          key = params.shift
+          @inputs << params.unshift(escape(key)).unshift(escape(bucket))
+        end
       end
       self
     end
     alias :<< :add
     alias :include :add
+
+    # Adds a bucket and key-filters built by the given
+    # block. Equivalent to #add with a list of filters.
+    # @param [String] bucket the bucket to apply key-filters to
+    # @yield [] builder block - instance_eval'ed into a FilterBuilder
+    # @return [MapReduce] self
+    # @see MapReduce#add
+    def filter(bucket, &block)
+      add(bucket, FilterBuilder.new(&block).to_a)
+    end
 
     # Add a map phase to the job.
     # @overload map(function)
@@ -144,111 +171,27 @@ module Riak
     end
 
     # Executes this map-reduce job.
-    # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true. If there is only one "keep" phase, only the results from that phase will be returned.
-    def run
+    # @overload run
+    #   Return the entire collection of results.
+    #   @return [Array<Array>] similar to link-walking, each element is
+    #     an array of results from a phase where "keep" is true. If there
+    #     is only one "keep" phase, only the results from that phase will
+    #     be returned.
+    # @overload run
+    #   Stream the results through the given block without accumulating.
+    #   @yield [phase, data] A block to stream results through
+    #   @yieldparam [Fixnum] phase the phase from which the results were
+    #          generated
+    #   @yieldparam [Array] data a list of results from the phase
+    #   @return [nil] nothing
+    def run(&block)
       raise MapReduceError.new(t("empty_map_reduce_query")) if @query.empty?
-      response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
-      begin
-        raise unless response[:headers]['content-type'].include?('application/json')
-        JSON.parse(response[:body])
-      rescue
-        response
-      end
+      @client.backend.mapred(self, &block)
     rescue FailedRequest => fr
       if fr.code == 500 && fr.headers['content-type'].include?("application/json")
         raise MapReduceError.new(fr.body)
       else
         raise fr
-      end
-    end
-
-    # Represents an individual phase in a map-reduce pipeline. Generally you'll want to call
-    # methods of MapReduce instead of using this directly.
-    class Phase
-      include Util::Translation
-      # @return [Symbol] the type of phase - :map, :reduce, or :link
-      attr_accessor :type
-
-      # @return [String, Array<String, String>, Hash, WalkSpec] For :map and :reduce types, the Javascript function to run (as a string or hash with bucket/key), or the module + function in Erlang to run. For a :link type, a {Riak::WalkSpec} or an equivalent hash.
-      attr_accessor :function
-
-      # @return [String] the language of the phase's function - "javascript" or "erlang". Meaningless for :link type phases.
-      attr_accessor :language
-
-      # @return [Boolean] whether results of this phase will be returned
-      attr_accessor :keep
-
-      # @return [Array] any extra static arguments to pass to the phase
-      attr_accessor :arg
-
-      # Creates a phase in the map-reduce pipeline
-      # @param [Hash] options options for the phase
-      # @option options [Symbol] :type one of :map, :reduce, :link
-      # @option options [String] :language ("javascript") "erlang" or "javascript"
-      # @option options [String, Array, Hash] :function In the case of Javascript, a literal function in a string, or a hash with :bucket and :key. In the case of Erlang, an Array of [module, function].  For a :link phase, a hash including any of :bucket, :tag or a WalkSpec.
-      # @option options [Boolean] :keep (false) whether to return the results of this phase
-      # @option options [Array] :arg (nil) any extra static arguments to pass to the phase
-      def initialize(options={})
-        self.type = options[:type]
-        self.language = options[:language] || "javascript"
-        self.function = options[:function]
-        self.keep = options[:keep] || false
-        self.arg = options[:arg]
-      end
-
-      def type=(value)
-        raise ArgumentError, t("invalid_phase_type") unless value.to_s =~ /^(map|reduce|link)$/i
-        @type = value.to_s.downcase.to_sym
-      end
-
-      def function=(value)
-        case value
-        when Array
-          raise ArgumentError, t("module_function_pair_required") unless value.size == 2
-          @language = "erlang"
-        when Hash
-          raise ArgumentError, t("stored_function_invalid") unless type == :link || value.has_key?(:bucket) && value.has_key?(:key)
-          @language = "javascript"
-        when String
-          @language = "javascript"
-        when WalkSpec
-          raise ArgumentError, t("walk_spec_invalid_unless_link") unless type == :link
-        else
-          raise ArgumentError, t("invalid_function_value", :value => value.inspect)
-        end
-        @function = value
-      end
-
-      # Converts the phase to JSON for use while invoking a job.
-      # @return [String] a JSON representation of the phase
-      def to_json(*a)
-        as_json.to_json(*a)
-      end
-
-      # Converts the phase to its JSON-compatible representation for job invocation.
-      # @return [Hash] a Hash-equivalent of the phase
-      def as_json(options=nil)
-        obj = case type
-              when :map, :reduce
-                defaults = {"language" => language, "keep" => keep}
-                case function
-                when Hash
-                  defaults.merge(function)
-                when String
-                  if function =~ /\s*function/
-                    defaults.merge("source" => function)
-                  else
-                    defaults.merge("name" => function)
-                  end
-                when Array
-                  defaults.merge("module" => function[0], "function" => function[1])
-                end
-              when :link
-                spec = WalkSpec.normalize(function).first
-                {"bucket" => spec.bucket, "tag" => spec.tag, "keep" => spec.keep || keep}
-              end
-        obj["arg"] = arg if arg
-        { type => obj }
       end
     end
   end

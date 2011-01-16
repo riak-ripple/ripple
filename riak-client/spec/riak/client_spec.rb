@@ -112,7 +112,7 @@ describe Riak::Client do
       end
     end
 
-    it "should allow setting the prefix (although we prefer the raw interface)" do
+    it "should allow setting the prefix" do
       @client.should respond_to(:prefix=)
       @client.prefix = "/another-prefix"
       @client.prefix.should == "/another-prefix"
@@ -165,108 +165,127 @@ describe Riak::Client do
   describe "retrieving a bucket" do
     before :each do
       @client = Riak::Client.new
-      @http = mock(Riak::Client::HTTPBackend)
-      @client.stub!(:http).and_return(@http)
-      @payload = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
-      @http.stub!(:get).and_return(@payload)
+      @backend = mock("Backend")
+      @client.stub!(:backend).and_return(@backend)
     end
 
-    it "should send a GET request to the bucket name and return a Riak::Bucket" do
-      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => false}, {}).and_return(@payload)
+    it "should return a bucket object" do
       @client.bucket("foo").should be_kind_of(Riak::Bucket)
     end
 
-    it "should allow requesting bucket properties with the keys" do
-      @http.should_receive(:get).with(200, "/riak/", "foo", {:keys => true}, {}).and_return(@payload)
+    it "should fetch bucket properties if asked" do
+      @backend.should_receive(:get_bucket_props) {|b| b.name.should == "foo"; {} }
+      @client.bucket("foo", :props => true)
+    end
+
+    it "should fetch keys if asked" do
+      @backend.should_receive(:list_keys) {|b| b.name.should == "foo"; ["bar"] }
       @client.bucket("foo", :keys => true)
     end
 
-    it "should escape bucket names with invalid characters" do
-      @http.should_receive(:get).with(200, "/riak/", "foo%2Fbar%20", {:keys => false}, {}).and_return(@payload)
-      @client.bucket("foo/bar ", :keys => false)
+
+    it "should memoize bucket parameters" do
+      @bucket = mock("Bucket")
+      Riak::Bucket.should_receive(:new).with(@client, "baz").once.and_return(@bucket)
+      @client.bucket("baz").should == @bucket
+      @client.bucket("baz").should == @bucket
     end
   end
 
-  describe "storing a file" do
-    before :each do
+  it "should list buckets" do
+    @client = Riak::Client.new
+    @backend = mock("Backend")
+    @client.stub!(:backend).and_return(@backend)
+    @backend.should_receive(:list_buckets).and_return(%w{test test2})
+    buckets = @client.buckets
+    buckets.should have(2).items
+    buckets.should be_all {|b| b.is_a?(Riak::Bucket) }
+    buckets[0].name.should == "test"
+    buckets[1].name.should == "test2"
+  end
+
+  describe "Luwak (large-files) support" do
+    describe "storing a file" do
+      before :each do
+        @client = Riak::Client.new
+        @http = mock(Riak::Client::HTTPBackend)
+        @client.stub!(:http).and_return(@http)
+      end
+
+      it "should store the file in Luwak and return the key/filename when no filename is given" do
+        @http.should_receive(:post).with(201, "/luwak", anything, {"Content-Type" => "text/plain"}).and_return(:code => 201, :headers => {"location" => ["/luwak/123456789"]})
+        @client.store_file("text/plain", "Hello, world").should == "123456789"
+      end
+
+      it "should store the file in Luwak and return the key/filename when the filename is given" do
+        @http.should_receive(:put).with(204, "/luwak", "greeting.txt", anything, {"Content-Type" => "text/plain"}).and_return(:code => 204, :headers => {})
+        @client.store_file("greeting.txt", "text/plain", "Hello, world").should == "greeting.txt"
+      end
+    end
+
+    describe "retrieving a file" do
+      before :each do
+        @client = Riak::Client.new
+        @http = mock(Riak::Client::HTTPBackend)
+        @client.stub!(:http).and_return(@http)
+        @http.should_receive(:get).with(200, "/luwak", "greeting.txt").and_yield("Hello,").and_yield(" world!").and_return({:code => 200, :headers => {"content-type" => ["text/plain"]}})
+      end
+
+      it "should stream the data to a temporary file" do
+        file = @client.get_file("greeting.txt")
+        file.open {|f| f.read.should == "Hello, world!" }
+      end
+
+      it "should stream the data through the given block, returning nil" do
+        string = ""
+        result = @client.get_file("greeting.txt"){|chunk| string << chunk }
+        result.should be_nil
+        string.should == "Hello, world!"
+      end
+
+      it "should expose the original key and content-type on the temporary file" do
+        file = @client.get_file("greeting.txt")
+        file.content_type.should == "text/plain"
+        file.original_filename.should == "greeting.txt"
+      end
+    end
+
+    it "should delete a file" do
       @client = Riak::Client.new
       @http = mock(Riak::Client::HTTPBackend)
       @client.stub!(:http).and_return(@http)
+      @http.should_receive(:delete).with([204,404], "/luwak", "greeting.txt")
+      @client.delete_file("greeting.txt")
     end
 
-    it "should store the file in Luwak and return the key/filename when no filename is given" do
-      @http.should_receive(:post).with(201, "/luwak", anything, {"Content-Type" => "text/plain"}).and_return(:code => 201, :headers => {"location" => ["/luwak/123456789"]})
-      @client.store_file("text/plain", "Hello, world").should == "123456789"
+    it "should return true if the file exists" do
+      @client = Riak::Client.new
+      @client.http.should_receive(:head).and_return(:code => 200)
+      @client.file_exists?("foo").should be_true
     end
 
-    it "should store the file in Luwak and return the key/filename when the filename is given" do
-      @http.should_receive(:put).with(204, "/luwak", "greeting.txt", anything, {"Content-Type" => "text/plain"}).and_return(:code => 204, :headers => {})
-      @client.store_file("greeting.txt", "text/plain", "Hello, world").should == "greeting.txt"
+    it "should return false if the file doesn't exist" do
+      @client = Riak::Client.new
+      @client.http.should_receive(:head).and_return(:code => 404)
+      @client.file_exists?("foo").should be_false
     end
-  end
 
-  describe "retrieving a file" do
-    before :each do
+    it "should escape the filename when storing, retrieving or deleting files" do
       @client = Riak::Client.new
       @http = mock(Riak::Client::HTTPBackend)
       @client.stub!(:http).and_return(@http)
-      @http.should_receive(:get).with(200, "/luwak", "greeting.txt").and_yield("Hello,").and_yield(" world!").and_return({:code => 200, :headers => {"content-type" => ["text/plain"]}})
+      # Delete escapes keys
+      @http.should_receive(:delete).with([204,404], "/luwak", "docs%2FA%20Big%20PDF.pdf")
+      @client.delete_file("docs/A Big PDF.pdf")
+      # Get escapes keys
+      @http.should_receive(:get).with(200, "/luwak", "docs%2FA%20Big%20PDF.pdf").and_yield("foo").and_return(:headers => {"content-type" => ["text/plain"]}, :code => 200)
+      @client.get_file("docs/A Big PDF.pdf")
+      # Streamed get escapes keys
+      @http.should_receive(:get).with(200, "/luwak", "docs%2FA%20Big%20PDF.pdf").and_yield("foo").and_return(:headers => {"content-type" => ["text/plain"]}, :code => 200)
+      @client.get_file("docs/A Big PDF.pdf"){|chunk| chunk }
+      # Put escapes keys
+      @http.should_receive(:put).with(204, "/luwak", "docs%2FA%20Big%20PDF.pdf", "foo", {"Content-Type" => "text/plain"})
+      @client.store_file("docs/A Big PDF.pdf", "text/plain", "foo")
     end
-
-    it "should stream the data to a temporary file" do
-      file = @client.get_file("greeting.txt")
-      file.open {|f| f.read.should == "Hello, world!" }
-    end
-
-    it "should stream the data through the given block, returning nil" do
-      string = ""
-      result = @client.get_file("greeting.txt"){|chunk| string << chunk }
-      result.should be_nil
-      string.should == "Hello, world!"
-    end
-
-    it "should expose the original key and content-type on the temporary file" do
-      file = @client.get_file("greeting.txt")
-      file.content_type.should == "text/plain"
-      file.original_filename.should == "greeting.txt"
-    end
-  end
-
-  it "should delete a file" do
-    @client = Riak::Client.new
-    @http = mock(Riak::Client::HTTPBackend)
-    @client.stub!(:http).and_return(@http)
-    @http.should_receive(:delete).with([204,404], "/luwak", "greeting.txt")
-    @client.delete_file("greeting.txt")
-  end
-
-  it "should return true if the file exists" do
-    @client = Riak::Client.new
-    @client.http.should_receive(:head).and_return(:code => 200)
-    @client.file_exists?("foo").should be_true
-  end
-
-  it "should return false if the file doesn't exist" do
-    @client = Riak::Client.new
-    @client.http.should_receive(:head).and_return(:code => 404)
-    @client.file_exists?("foo").should be_false
-  end
-
-  it "should escape the filename when storing, retrieving or deleting files" do
-    @client = Riak::Client.new
-    @http = mock(Riak::Client::HTTPBackend)
-    @client.stub!(:http).and_return(@http)
-    # Delete escapes keys
-    @http.should_receive(:delete).with([204,404], "/luwak", "docs%2FA%20Big%20PDF.pdf")
-    @client.delete_file("docs/A Big PDF.pdf")
-    # Get escapes keys
-    @http.should_receive(:get).with(200, "/luwak", "docs%2FA%20Big%20PDF.pdf").and_yield("foo").and_return(:headers => {"content-type" => ["text/plain"]}, :code => 200)
-    @client.get_file("docs/A Big PDF.pdf")
-    # Streamed get escapes keys
-    @http.should_receive(:get).with(200, "/luwak", "docs%2FA%20Big%20PDF.pdf").and_yield("foo").and_return(:headers => {"content-type" => ["text/plain"]}, :code => 200)
-    @client.get_file("docs/A Big PDF.pdf"){|chunk| chunk }
-    # Put escapes keys
-    @http.should_receive(:put).with(204, "/luwak", "docs%2FA%20Big%20PDF.pdf", "foo", {"Content-Type" => "text/plain"})
-    @client.store_file("docs/A Big PDF.pdf", "text/plain", "foo")
   end
 end

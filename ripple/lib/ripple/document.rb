@@ -58,6 +58,7 @@ module Ripple
       include Ripple::Validations
       include Ripple::Associations
       include Ripple::Callbacks
+      include Ripple::Observable
       include Ripple::Conversion
       include Ripple::Document::Finders
       include Ripple::Inspection

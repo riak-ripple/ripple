@@ -24,6 +24,7 @@ describe "Search mixins" do
       @http = mock(Riak::Client::HTTPBackend)
       @client.stub!(:http).and_return(@http)
     end
+
     describe "searching" do
       it "should exclude the index from the URL when not specified" do
         @http.should_receive(:get).with(200, "/solr", "select", hash_including("q" => "foo"), {}).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => "{}"})
@@ -77,6 +78,7 @@ describe "Search mixins" do
         @client.index({'id' => 1, 'field' => "value"}, {'id' => 2, 'foo' => "bar"})
       end
     end
+
     describe "removing documents" do
       it "should exclude the index from the URL when not specified" do
         @http.should_receive(:post).with(200, "/solr","update", anything, anything).and_return({:code => 200, :headers => {'content-type' => ['text/html']}, :body => ""})
@@ -119,32 +121,19 @@ describe "Search mixins" do
       @bucket = Riak::Bucket.new(@client, "foo")
     end
 
-    def do_load(overrides={})
-      @bucket.load({
-                     :body => '{"props":{"name":"foo","n_val":3,"allow_mult":false,"last_write_wins":false,"precommit":[],"postcommit":[],"chash_keyfun":{"mod":"riak_core_util","fun":"chash_std_keyfun"},"linkfun":{"mod":"riak_kv_wm_link_walker","fun":"mapreduce_linkfun"},"old_vclock":86400,"young_vclock":20,"big_vclock":50,"small_vclock":10,"r":"quorum","w":"quorum","dw":"quorum","rw":"quorum"},"keys":["bar"]}',
-                     :headers => {
-                       "vary" => ["Accept-Encoding"],
-                       "server" => ["MochiWeb/1.1 WebMachine/1.5.1 (hack the charles gibson)"],
-                       "link" => ['</riak/foo/bar>; riaktag="contained"'],
-                       "date" => ["Tue, 12 Jan 2010 15:30:43 GMT"],
-                       "content-type" => ["application/json"],
-                       "content-length" => ["257"]
-                     }
-                   }.merge(overrides))
+    def load_without_index_hook
+      @bucket.instance_variable_set(:@props, {"precommit" => []})
     end
-    alias :load_without_index_hook :do_load
 
     def load_with_index_hook
-      do_load(:body => '{"props":{"precommit":[{"mod":"riak_search_kv_hook","fun":"precommit"}]}}')
+      @bucket.instance_variable_set(:@props, {"precommit" => [{"mod" => "riak_search_kv_hook", "fun" => "precommit"}]})
     end
 
     it "should detect whether the indexing hook is installed" do
       load_without_index_hook
-      @bucket.props['precommit'].should be_empty
       @bucket.is_indexed?.should be_false
 
       load_with_index_hook
-      @bucket.props['precommit'].should_not be_empty
       @bucket.is_indexed?.should be_true
     end
 
