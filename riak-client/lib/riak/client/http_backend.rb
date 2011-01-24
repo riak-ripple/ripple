@@ -200,8 +200,8 @@ module Riak
           Util::Multipart.parse(response[:body], boundary).map do |group|
             group.map do |obj|
               if obj[:headers] && obj[:body] && obj[:headers]['location']
-                bucket, key = $1, $2 if obj[:headers]['location'].first =~ %r{/.*/(.*)/(.*)$}
-                load_object(RObject.new(client.bucket(bucket), key), obj)
+                bucket = $1 if obj[:headers]['location'].first =~ %r{/.*/(.*)/.*$}
+                load_object(RObject.new(client.bucket(bucket), nil), obj)
               end
             end
           end
