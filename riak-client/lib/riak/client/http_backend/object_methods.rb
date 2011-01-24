@@ -54,7 +54,7 @@ module Riak
         # Load object data from an HTTP response
         # @param [Hash] response a response from {Riak::Client::HTTPBackend}
         def load_object(robject, response)
-          extract_header(robject, response, "location", :key) {|v| URI.unescape(v.split("/").last) }
+          extract_header(robject, response, "location", :key) {|v| URI.unescape(v.match(%r{.*/(.*?)(\?.*)?$})[1]) }
           extract_header(robject, response, "content-type", :content_type)
           extract_header(robject, response, "x-riak-vclock", :vclock)
           extract_header(robject, response, "link", :links) {|v| Set.new(Link.parse(v)) }
