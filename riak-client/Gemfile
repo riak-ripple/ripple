@@ -2,7 +2,7 @@ source :gemcutter
 
 gem 'i18n'
 gem 'builder'
-gem 'rspec', "~>2.0.0"
+gem 'rspec', "~>2.4.0"
 gem 'fakeweb', ">=1.2"
 gem 'rack', '>=1.0'
 gem 'rake'

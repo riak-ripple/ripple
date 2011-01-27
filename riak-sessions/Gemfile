@@ -4,8 +4,8 @@ gem 'bundler'
 gem 'riak-client', :path => "../riak-client"
 gem 'rack'
 gem 'rails', '~>3.0.0'
-gem 'rspec', '~>2.0.0'
-gem 'rspec-rails', '~>2.0.0'
+gem 'rspec', '~>2.4.0'
+gem 'rspec-rails', '~>2.4.0'
 gem 'rake'
 
 if defined? JRUBY_VERSION

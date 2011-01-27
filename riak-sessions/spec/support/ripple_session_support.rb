@@ -12,7 +12,9 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+require 'action_mailer' # Bah, fails on MailerExampleGroup
 require 'support/rspec-rails-neuter'
+require 'rspec/rails/example/rails_example_group'
 require 'rspec/rails/example/request_example_group'
 
 class RoutedRackApp
