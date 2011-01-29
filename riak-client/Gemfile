@@ -8,6 +8,9 @@ gem 'rack', '>=1.0'
 gem 'rake'
 gem 'bundler'
 gem 'excon', "~>0.3.4"
+# Needs fix for repeated submessages, in the meantime use my fork
+# (version 0.1.5)
+gem 'beefcake', '~>0.1.5', :git => "git://github.com/seancribbs/beefcake.git"
 
 if defined? JRUBY_VERSION
   gem 'json'

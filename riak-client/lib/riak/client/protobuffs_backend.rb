@@ -45,32 +45,43 @@ module Riak
       MapRedResp          = 24
 
       def self.simple(method, code)
-        class_eval "
-          def #{method}                            # def ping
-            socket.write([1,#{code}].pack('NC'))   #   socket.write([1,PingReq].pack('NC'))
-            decode_response                        #   decode_response
-          end"                                     # end
-       end
+        define_method method do
+          socket.write([1,code].pack('NC'))
+          decode_response
+        end
+      end
 
+      attr_accessor :client
+      def initialize(client)
+        @client = client
+      end
 
-    attr_accessor :client
-    def initialize(client)
-      @client = client
-    end
+      simple :ping,          PingReq
+      simple :get_client_id, GetClientIdReq
+      simple :server_info,   GetServerInfoReq
+      simple :list_buckets,  ListBucketsReq
 
-    simple :ping,          PingReq
-    simple :get_client_id, GetClientIdReq
-    simple :server_info,   GetServerInfoReq
-    simple :list_buckets,  ListBucketsReq
+      private
+      # Implemented by subclasses
+      def decode_response
+        raise NotImplementedError
+      end
 
-    private
-    # Implemented by subclasses
-    def decode_response
-      raise NotImplementedError
-    end
+      def socket
+        Thread.current[:riakpbc_socket] ||= TCPSocket.new(@client.host, @client.pb_port)
+      end
 
-    def socket
-      Thread.current[:riakpbc_socket] ||= TCPSocket.new(@client.host, @client.pb_port)
+      UINTMAX = 0xffffffff
+      QUORUMS = {
+        "one" => UINTMAX - 1,
+        "quorum" => UINTMAX - 2,
+        "all" => UINTMAX - 3,
+        "default" => UINTMAX - 4
+      }
+
+      def normalize_quorum_value(q)
+        QUORUMS[q.to_s] || q.to_i
+      end
     end
   end
 end
