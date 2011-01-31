@@ -70,6 +70,10 @@ module Ripple
         # Saves the document in Riak.
         # @return [true,false] whether the document succeeded in saving
         def save(*args)
+          really_save(*args)
+        end
+
+        def really_save(*args)
           robject.key = key if robject.key != key
           robject.data = attributes_for_persistence
           robject.store(self.class.quorums.slice(:w,:dw))
