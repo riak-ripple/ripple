@@ -84,7 +84,7 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
     end
 
     it "should parse and escape the location header into the key when present" do
-      @backend.load_object(@object, {:headers => {"content-type" => ["application/json"], "location" => ["/riak/foo/%5Bbaz%5D"]}})
+      @backend.load_object(@object, {:headers => {"content-type" => ["application/json"], "location" => ["/riak/foo/%5Bbaz%5D?vtag=1234"]}})
       @object.key.should == "[baz]"
     end
 
