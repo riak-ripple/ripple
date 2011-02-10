@@ -68,7 +68,7 @@ describe Ripple::Document::Persistence do
   end
 
   it "should instantiate and save a new object to riak" do
-    json = @widget.attributes.merge(:size => 10, :shipped_at => "Sat, 01 Jan 2000 20:15:01 -0000", :_type => 'Widget').to_json
+    json = @widget.attributes.merge(:size => 10, :shipped_at => "2000-01-01T20:15:01Z", :_type => 'Widget').to_json
     @backend.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
       obj.key.should be_nil

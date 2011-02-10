@@ -97,7 +97,7 @@ FalseClass.module_eval(&boolean_cast)
 # @private
 class Time
   def as_json(options={})
-    self.utc.rfc822
+    self.utc.iso8601
   end
 
   def self.ripple_cast(value)
@@ -109,7 +109,7 @@ end
 # @private
 class Date
   def as_json(options={})
-    self.to_s(:rfc822)
+    self.to_s(:iso8601)
   end
 
   def self.ripple_cast(value)
@@ -121,7 +121,7 @@ end
 # @private
 class DateTime
   def as_json(options={})
-    self.utc.to_s(:rfc822)
+    self.utc.to_s(:iso8601)
   end
 
   def self.ripple_cast(value)
@@ -134,7 +134,7 @@ end
 module ActiveSupport
   class TimeWithZone
     def as_json(options={})
-      self.utc.rfc822
+      self.utc.iso8601
     end
   end
 end

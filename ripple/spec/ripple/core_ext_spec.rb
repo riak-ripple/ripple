@@ -14,14 +14,14 @@
 require File.expand_path("../../spec_helper", __FILE__)
 
 describe Time do
-  it "serializes to JSON in UTC, RFC 822 format" do
-    Time.utc(2010,3,16,12).as_json.should == "Tue, 16 Mar 2010 12:00:00 -0000"
+  it "serializes to JSON in UTC, ISO 8601 format" do
+    Time.utc(2010,3,16,12).as_json.should == "2010-03-16T12:00:00Z"
   end
 end
 
 describe Date do
-  it "serializes to JSON RFC 822 format" do
-    Date.civil(2010,3,16).as_json.should == "16 Mar 2010"
+  it "serializes to JSON ISO 8601 format" do
+    Date.civil(2010,3,16).as_json.should == "2010-03-16"
   end
 end
 
@@ -30,16 +30,33 @@ describe DateTime do
     Time.zone = :utc
   end
 
-  it "serializes to JSON in UTC, RFC 822 format" do
-    DateTime.civil(2010,3,16,12).as_json.should == "Tue, 16 Mar 2010 12:00:00 +0000"
+  it "serializes to JSON in UTC, ISO 8601 format" do
+    DateTime.civil(2010,3,16,12).as_json.should == "2010-03-16T12:00:00+00:00"
   end
 end
 
 describe ActiveSupport::TimeWithZone do
-  it "serializes to JSON in UTC, RFC 822 format" do
+  it "serializes to JSON in UTC, ISO 8601 format" do
     time = Time.utc(2010,3,16,12)
     zone = ActiveSupport::TimeZone['Alaska']
-    ActiveSupport::TimeWithZone.new(time, zone).as_json.should == "Tue, 16 Mar 2010 12:00:00 -0000"
+    ActiveSupport::TimeWithZone.new(time, zone).as_json.should == "2010-03-16T12:00:00Z"
+  end
+end
+
+describe String do
+  it "can parse RFC 822 and ISO 8601 times" do
+    'Tue, 16 Mar 2010 12:00:00 -0000'.to_time.should == Time.utc(2010,3,16,12)
+    '2010-03-16T12:00:00Z'.to_time.should == Time.utc(2010,3,16,12)
+  end
+
+  it "can parse RFC 822 and ISO 8601 dates" do
+    '16 Mar 2010'.to_date.should == Date.civil(2010,3,16)
+    '2010-3-16'.to_date.should == Date.civil(2010,3,16)
+  end
+
+  it "can parse RFC 822 and ISO 8601 datetimes" do
+    'Tue, 16 Mar 2010 12:00:00 +0000'.to_datetime.should == DateTime.civil(2010,3,16,12)
+    '2010-03-16T12:00:00+00:00'.to_datetime.should == DateTime.civil(2010,3,16,12)
   end
 end
 
