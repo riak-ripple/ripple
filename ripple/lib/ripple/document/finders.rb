@@ -14,7 +14,7 @@
 require 'ripple'
 
 module Ripple
-  
+
   # Raised by <tt>find!</tt> when a document cannot be found with the given key.
   #   begin
   #     Example.find!('badkey')
@@ -34,7 +34,7 @@ module Ripple
       end
     end
   end
-  
+
   module Document
     module Finders
       extend ActiveSupport::Concern
@@ -60,7 +60,7 @@ module Ripple
           return find_one(args.first) if args.size == 1
           args.map {|key| find_one(key) }
         end
-        
+
         # Retrieve single or multiple documents from Riak
         # but raise Ripple::DocumentNotFound if a key can
         # not be found in the bucket.
@@ -69,15 +69,15 @@ module Ripple
           raise DocumentNotFound.new(args, found) if !found || Array(found).include?(nil)
           found
         end
-        
+
         # Find the first object using the first key in the
-        # bucket's keys using find. You should not expect to 
+        # bucket's keys using find. You should not expect to
         # actually get the first object you added to the bucket.
         # This is just a convenience method.
         def first
           find(bucket.keys.first)
         end
-        
+
         # Find the first object using the first key in the
         # bucket's keys using find!
         def first!
@@ -120,7 +120,7 @@ module Ripple
           klass = robject.data['_type'].constantize rescue self
           klass.new.tap do |doc|
             doc.key = robject.key
-            robject.data.except("_type").each {|k,v| doc.send("#{k}=", v) } if robject.data
+            doc.__send__(:attributes=, robject.data.except("_type"), false) if robject.data
             doc.instance_variable_set(:@new, false)
             doc.instance_variable_set(:@robject, robject)
           end

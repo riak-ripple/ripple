@@ -89,7 +89,7 @@ module Ripple
         def reload
           return self if new?
           robject.reload(:force => true)
-          @robject.data.except("_type").each { |key, value| send("#{key}=", value) }
+          self.__send__(:attributes=, @robject.data.except("_type"), false)
           self
         end
 
