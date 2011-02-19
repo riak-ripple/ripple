@@ -18,6 +18,7 @@ require 'active_support/json'
 require 'active_model'
 require 'ripple/i18n'
 require 'ripple/core_ext'
+require 'ripple/translation'
 
 # Contains the classes and modules related to the ODM built on top of
 # the basic Riak client.
@@ -46,12 +47,11 @@ module Ripple
 
   # Utilities
   autoload :Inspection
-  autoload :Translation
 
   class << self
     # @return [Riak::Client] The client for the current thread.
     def client
-      Thread.current[:ripple_client] ||= Riak::Client.new(config)
+      Thread.current[:ripple_client] ||= Riak::Client.new(client_config)
     end
 
     # Sets the client for the current thread.
@@ -71,6 +71,21 @@ module Ripple
       @config ||= {}
     end
 
+    # The format in which date/time objects will be serialized to
+    # strings in JSON.  Defaults to :iso8601, and can be set in
+    # Ripple.config.
+    # @return [Symbol] the date format
+    def date_format
+      (config[:date_format] ||= :iso8601).to_sym
+    end
+
+    # Sets the format for date/time objects that are serialized to
+    # JSON.
+    # @param [Symbol] format the date format
+    def date_format=(format)
+      config[:date_format] = format.to_sym
+    end
+
     # Loads the Ripple configuration from a given YAML file.
     # Evaluates the configuration with ERB before loading.
     def load_configuration(config_file, config_keys = [:ripple])
@@ -82,6 +97,11 @@ module Ripple
       raise Ripple::MissingConfiguration.new(config_file)
     end
     alias_method :load_config, :load_configuration
+
+    private
+    def client_config
+      config.slice(:host, :port, :prefix, :mapred, :client_id, :http_backend, :solr)
+    end
   end
 
   # Exception raised when the path passed to
