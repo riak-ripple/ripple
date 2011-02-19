@@ -28,15 +28,15 @@ module Riak
   # For configuration options, see #initialize.
   class SessionStore < Rack::Session::Abstract::ID
     DEFAULT_OPTIONS = Rack::Session::Abstract::ID::DEFAULT_OPTIONS.merge \
-      :host => "127.0.0.1",
-      :port => 8098,
-      :bucket => "_sessions",
-      :r => 1,
-      :w => 1,
-      :dw => 0,
-      :rw => 1,
-      :n_val => 2,
-      :last_write_wins => false
+    :host => "127.0.0.1",
+    :port => 8098,
+    :bucket => "_sessions",
+    :r => 1,
+    :w => 1,
+    :dw => 0,
+    :rw => 1,
+    :n_val => 2,
+    :last_write_wins => false
 
 
     attr_reader :bucket
@@ -68,13 +68,16 @@ module Riak
 
     private
     def get_session(env, session_id)
-      unless session_id && robject = (bucket.get(session_id) rescue nil)
-        session_id, robject = generate_sid, bucket.new
-        robject.key = session_id
-        robject.data = {}
-        robject.store
+      if session_id && robject = (bucket.get(session_id) rescue nil)
+        if stale?(robject)
+          bucket.delete(session_id)
+          fresh_session
+        else
+          [session_id, robject.data]
+        end
+      else
+        fresh_session
       end
-      [session_id, robject.data]
     end
 
     def set_session(env, session_id, session, options)
@@ -84,12 +87,34 @@ module Riak
         session_id = generate_sid
       end
       robject = bucket.get_or_new(session_id)
+      robject.meta['expire-after'] = (Time.now + options[:expire_after]).httpdate if options[:expire_after]
       robject.data = session
       robject.store
       session_id
     rescue Riak::FailedRequest
       env['rack.errors'].puts $!.inspect
       false
+    end
+
+    def destroy_session(env, sid, options)
+      bucket.delete(sid)
+      generate_sid unless options[:drop]
+    end
+
+    def stale?(robject)
+      if robject.meta['expire-after'] && threshold = (Time.httpdate(robject.meta['expire-after'].first) rescue nil)
+        threshold < Time.now
+      else
+        false
+      end
+    end
+
+    def fresh_session
+      session_id, robject = generate_sid, bucket.new
+      robject.key = session_id
+      robject.data = {}
+      robject.store
+      [session_id, robject.data]
     end
   end
 end
