@@ -97,9 +97,9 @@ describe Ripple::Document::Persistence do
   end
 
   it "should save the attributes not having a corresponding property" do
-    json = @widget.attributes.merge("_type" => "Widget", "unknown_property" => "a_value").to_json
+    attrs = @widget.attributes.merge("_type" => "Widget", "unknown_property" => "a_value")
     @backend.should_receive(:store_object) do |obj, _, _, _|
-      obj.raw_data.should == json
+      obj.data.should == attrs
       obj.key.should be_nil
       # Simulate loading the response with the key
       obj.key = "new_widget"
