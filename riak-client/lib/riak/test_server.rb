@@ -65,6 +65,7 @@ module Riak
       @vm_args    = options[:vm_args]
       # For synchronizing start/stop/recycle
       @mutex = Mutex.new
+      cleanup # Should prevent some errors related to unclean startup
     end
 
     # Sets up the proper scripts, configuration and directories for
