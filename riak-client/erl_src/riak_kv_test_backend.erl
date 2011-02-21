@@ -20,7 +20,8 @@
 %%
 %% -------------------------------------------------------------------
 
-% @doc riak_kv_test_backend is a Riak storage backend using ets that exposes a reset function for efficiently clearing stored data.
+% @doc riak_kv_test_backend is a Riak storage backend using ets that
+%      exposes a reset function for efficiently clearing stored data.
 
 -module(riak_kv_test_backend).
 -behavior(riak_kv_backend).
@@ -34,6 +35,7 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
+
 % @type state() = term().
 -record(state, {t, p}).
 
@@ -42,7 +44,7 @@
 start(Partition, _Config) ->
     gen_server:start_link(?MODULE, [Partition], []).
 
-% @spec reset() -> ok
+% @spec reset() -> ok | {error, timeout}
 reset() ->
     Pids = lists:foldl(fun(Item, Acc) ->
                                case lists:prefix("test_backend", atom_to_list(Item)) of
@@ -59,7 +61,7 @@ receive_reset(Pids) ->
         {reset, Pid} ->
             receive_reset(lists:delete(Pid, Pids))
     after 1000 ->
-            timeout
+            {error, timeout}
     end.
 
 %% @private
@@ -71,10 +73,9 @@ init([Partition]) ->
 
 %% @private
 handle_cast({reset,From}, State) ->
-    ets:delete(State#state.t),
-    NewState = State#state{t=ets:new(State#state.p,[])},
+    ets:delete_all_objects(State#state.t),
     From ! {reset, self()},
-    {noreply, NewState};
+    {noreply, State};
 handle_cast(_, State) -> {noreply, State}.
 
 %% @private
@@ -94,10 +95,7 @@ handle_call(drop, _From, State) ->
 handle_call({fold, Fun0, Acc}, _From, State) ->
     Fun = fun({{B,K}, V}, AccIn) -> Fun0({B,K}, V, AccIn) end,
     Reply = ets:foldl(Fun, Acc, State#state.t),
-    {reply, Reply, State};
-handle_call(reset, _From, State) ->
-    ets:delete(State#state.t),
-    {reply, ok, State#state{t=ets:new(State#state.p,[])}}.
+    {reply, Reply, State}.
 
 % @spec stop(state()) -> ok | {error, Reason :: term()}
 stop(SrvRef) -> gen_server:call(SrvRef,stop).
