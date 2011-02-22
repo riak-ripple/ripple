@@ -8,7 +8,11 @@ module Ripple
     def test_server_config
       {
         :app_config => {
-          :riak_kv => { :js_source_dir => Ripple.config.delete(:js_source_dir) },
+          :riak_kv => {
+            :js_source_dir => Ripple.config.delete(:js_source_dir),
+            :map_cache_size => 0, # 0.14
+            :vnode_cache_entries => 0 # 0.13
+          },
           :riak_core => { :web_port => Ripple.config[:port] || 8098 }
         },
         :bin_dir => Ripple.config.delete(:bin_dir),
