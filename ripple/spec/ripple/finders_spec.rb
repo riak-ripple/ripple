@@ -75,9 +75,11 @@ describe Ripple::Document::Finders do
       lambda { Box.find!("square") }.should_not raise_error(Ripple::DocumentNotFound)
     end
 
-    it "should raise an exception when finding an existing document that has properties we don't know about" do
-      @plain.raw_data = '{"non_existent_property":"whatever"}'
-      lambda { Box.find("square") }.should raise_error
+    it "should put properties we don't know about into the attributes" do
+      @plain.raw_data = '{"non_existent_property":"some_value"}'
+      box = Box.find("square")
+      box[:non_existent_property].should == "some_value"
+      box.should_not respond_to(:non_existent_property)
     end
 
     it "should return the document when calling find!" do

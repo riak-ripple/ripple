@@ -43,9 +43,9 @@ if $test_server
           config[0..0].should == '['
         end
 
-        it "should set the backend to use the cache backend" do
+        it "should set the backend to use the test backend" do
           File.readlines(@app_config).should be_any do |line|
-            line =~ /\{storage_backend\s*,\s*(.*)\}/ && $1 == "riak_kv_cache_backend"
+            line =~ /\{storage_backend\s*,\s*(.*)\}/ && $1 == "riak_kv_test_backend"
           end
         end
 

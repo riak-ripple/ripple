@@ -65,20 +65,20 @@ describe Riak::SessionStore do
     cookie.should_not match(/#{bad_cookie}/)
   end
   
-  # it "maintains freshness" do
-  #   pool = Riak::SessionStore.new(incrementor, :expire_after => 3)
-  #   res = Rack::MockRequest.new(pool).get('/')
-  #   res.body.should include '"counter"=>1'
-  #   cookie = res["Set-Cookie"]
-  #   res = Rack::MockRequest.new(pool).get('/', "HTTP_COOKIE" => cookie)
-  #   res["Set-Cookie"].should == cookie
-  #   res.body.should include '"counter"=>2'
-  #   puts 'Sleeping to expire session' if $DEBUG
-  #   sleep 4
-  #   res = Rack::MockRequest.new(pool).get('/', "HTTP_COOKIE" => cookie)
-  #   res["Set-Cookie"].should_not == cookie
-  #   res.body.should include '"counter"=>1'
-  # end
+  it "maintains freshness" do
+    pool = Riak::SessionStore.new(incrementor, :expire_after => 3)
+    res = Rack::MockRequest.new(pool).get('/')
+    res.body.should include '"counter"=>1'
+    cookie = res["Set-Cookie"]
+    res = Rack::MockRequest.new(pool).get('/', "HTTP_COOKIE" => cookie)
+    res["Set-Cookie"].should == cookie
+    res.body.should include '"counter"=>2'
+    puts 'Sleeping to expire session' if $DEBUG
+    sleep 4
+    res = Rack::MockRequest.new(pool).get('/', "HTTP_COOKIE" => cookie)
+    res["Set-Cookie"].should_not == cookie
+    res.body.should include '"counter"=>1'
+  end
 
   it "deletes cookies with :drop option" do
     pool = Riak::SessionStore.new(incrementor)

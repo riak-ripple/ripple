@@ -185,8 +185,20 @@ describe Ripple::AttributeMethods do
     lambda { @widget.attributes = nil }.should raise_error(ArgumentError)
   end
 
-  it "should protect attributes from mass assignment" do
+  it "should protect attributes from mass assignment when initialized" do
     @widget = Widget.new(:manufactured => true)
     @widget.manufactured.should be_false
+  end
+
+  it "should protect attributes from mass assignment by default" do
+    @widget = Widget.new
+    @widget.attributes = { :manufactured => true }
+    @widget.manufactured.should be_false
+  end
+
+  it "should allow protected attributes to be mass assigned" do
+    @widget = Widget.new
+    @widget.send(:attributes=, { :manufactured => true }, false)
+    @widget.manufactured.should be_true
   end
 end

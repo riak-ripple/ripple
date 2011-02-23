@@ -77,6 +77,15 @@ describe Ripple::Callbacks do
       @box.destroy
     end
 
+    it "should call save and validate callbacks in the correct order" do
+      Box.before_validation { $pinger.ping(:v) }
+      Box.before_save { $pinger.ping(:s) }
+      $pinger.should_receive(:ping).with(:v).ordered
+      $pinger.should_receive(:ping).with(:s).ordered
+      @box = Box.new
+      @box.save
+    end
+
     describe "validation callbacks" do
       it "should call validation callbacks" do
         Box.before_validation { $pinger.ping }

@@ -57,17 +57,18 @@ module Ripple
       # nor embedded documents.
       # @return [Hash] all document attributes, by key
       def attributes
-        self.class.properties.values.inject({}) do |hash, prop|
+        self.class.properties.values.inject(@attributes.with_indifferent_access) do |hash, prop|
           hash[prop.key] = attribute(prop.key)
           hash
-        end.with_indifferent_access
+        end
       end
 
       # Mass assign the document's attributes.
       # @param [Hash] attrs the attributes to assign
-      def attributes=(attrs)
+      def attributes=(attrs, guard_protected_attrs = true)
         raise ArgumentError, t('attribute_hash') unless Hash === attrs
-        sanitize_for_mass_assignment(attrs).each do |k,v|
+        (guard_protected_attrs ? sanitize_for_mass_assignment(attrs) : attrs).each do |k,v|
+          next if k.to_sym == :key
           if respond_to?("#{k}=")
             __send__("#{k}=",v)
           else
