@@ -111,6 +111,12 @@ describe Ripple::Document::Persistence do
     @widget.changes.should be_blank
   end
 
+  it "should allow unexpected exceptions to be raised" do
+    robject = mock("robject", :key => @widget.key, "data=" => true)
+    robject.should_receive(:store).and_raise(Riak::FailedRequest.new(:post, 200, 404, {}, "404 not found"))
+    @widget.stub!(:robject).and_return(robject)
+    lambda { @widget.save }.should raise_error(Riak::FailedRequest)
+  end
 
   it "should reload a saved object" do
     json = @widget.attributes.merge(:_type => "Widget").to_json

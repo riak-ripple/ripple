@@ -41,20 +41,20 @@ describe Ripple::Validations do
     @box.should_receive(:valid?).and_return(false)
     @box.save.should be_false
   end
-  
+
   it "should allow skipping validations by passing save :validate => false" do
     Ripple.client.http.stub!(:perform).and_return(mock_response)
     @box.should_not_receive(:valid?)
     @box.save(:validate => false).should be_true
   end
-  
+
   describe "when using save! on an invalid record" do
     before(:each) { @box.stub!(:valid?).and_return(false) }
-    
+
     it "should raise DocumentInvalid" do
       lambda { @box.save! }.should raise_error(Ripple::DocumentInvalid)
     end
-  
+
     it "should raise an exception that has the invalid document" do
       begin
         @box.save!
@@ -63,26 +63,34 @@ describe Ripple::Validations do
       end
     end
   end
-  
+
   it "should not raise an error when save! is called and the document is valid" do
     @box.stub!(:save).and_return(true)
     @box.stub!(:valid?).and_return(true)
     lambda { @box.save! }.should_not raise_error(Ripple::DocumentInvalid)
   end
-  
+
   it "should return true from save! when no exception is raised" do
     @box.stub!(:save).and_return(true)
     @box.stub!(:valid?).and_return(true)
     @box.save!.should be_true
   end
-  
+
+  it "should allow unexpected exceptions to be raised" do
+    robject = mock("robject", :key => @box.key, "data=" => true)
+    robject.should_receive(:store).and_raise(Riak::FailedRequest.new(:post, 200, 404, {}, "404 not found"))
+    @box.stub!(:robject).and_return(robject)
+    @box.stub!(:valid?).and_return(true)
+    lambda { @box.save! }.should raise_error(Riak::FailedRequest)
+  end
+
   it "should not raise an error when creating a box with create! succeeds" do
     @box.stub!(:new?).and_return(false)
     Box.stub(:create).and_return(@box)
     lambda { @new_box = Box.create! }.should_not raise_error(Ripple::DocumentInvalid)
     @new_box.should == @box
   end
-  
+
   it "should raise an error when creating a box with create! fails" do
     @box.stub!(:new?).and_return(true)
     Box.stub(:create).and_return(@box)
@@ -102,8 +110,8 @@ describe Ripple::Validations do
     @box.should be_valid
     Box.properties.delete :size
   end
-  
+
   after :each do
     Box.reset_callbacks(:validate)
-  end  
+  end
 end
