@@ -80,8 +80,6 @@ module Ripple
           self.key = robject.key
           @new = false
           true
-        rescue Riak::FailedRequest
-          false
         end
 
         # Reloads the document from Riak

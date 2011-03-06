@@ -33,7 +33,10 @@ module Riak
         :js_vm_count => 8,
         :js_max_vm_mem => 8,
         :js_thread_stack => 16,
-        :riak_kv_stat => true
+        :riak_kv_stat => true,
+        # Turn off map caching
+        :map_cache_size => 0,     # 0.14
+        :vnode_cache_entries => 0 # 0.13
       },
       :luwak => {
         :enabled => false
@@ -65,6 +68,7 @@ module Riak
       @vm_args    = options[:vm_args]
       # For synchronizing start/stop/recycle
       @mutex = Mutex.new
+      cleanup # Should prevent some errors related to unclean startup
     end
 
     # Sets up the proper scripts, configuration and directories for

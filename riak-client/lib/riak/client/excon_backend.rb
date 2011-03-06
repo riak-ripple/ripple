@@ -12,6 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+require 'riak/client/pump'
 
 module Riak
   class Client
@@ -21,11 +22,6 @@ module Riak
     class ExconBackend < HTTPBackend
       def self.configured?
         begin
-          begin
-            require 'fiber'
-          rescue LoadError
-            require 'riak/util/fiber1.8'
-          end
           require 'excon'
           Excon::VERSION >= "0.3.4"
         rescue LoadError
@@ -43,16 +39,9 @@ module Riak
         params[:query] = uri.query if uri.query
         params[:body] = data if [:put,:post].include?(method)
         params[:idempotent] = (method != :post)
-        if block_given?
-          passed_block = block
-          Fiber.new {
-            f = Fiber.current
-            block = lambda {|chunk| f.resume(chunk) }
-            loop do
-              passed_block.call Fiber.yield
-            end
-          }.resume
-        end
+
+        block = Pump.new(block) if block_given?
+
         response = connection.request(params, &block)
         if valid_response?(expect, response.status)
           response_headers.initialize_http_header(response.headers)
