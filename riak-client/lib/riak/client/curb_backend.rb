@@ -12,12 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
-
-begin
-  require 'fiber'
-rescue LoadError
-  require 'riak/util/fiber1.8'
-end
+require 'riak/client/pump'
 
 module Riak
   class Client
@@ -34,20 +29,14 @@ module Riak
       end
 
       private
-      def perform(method, uri, headers, expect, data=nil)
+      def perform(method, uri, headers, expect, data=nil, &block)
         # Setup
         curl.headers = RequestHeaders.new(headers).to_a
         curl.url = uri.to_s
         response_headers.initialize_http_header(nil)
         if block_given?
-          _curl = curl
-          Fiber.new {
-            f = Fiber.current
-            _curl.on_body {|chunk| f.resume(chunk); chunk.size }
-            loop do
-              yield Fiber.yield
-            end
-          }.resume
+          pump = Pump.new(block, lambda {|chunk| chunk.size })
+          curl.on_body(&pump)
         else
           curl.on_body
         end

@@ -21,6 +21,7 @@ module Riak
     include Util::Translation
     include Util::Escape
 
+    autoload :Pump,           "riak/client/pump"
     autoload :HTTPBackend,    "riak/client/http_backend"
     autoload :NetHTTPBackend, "riak/client/net_http_backend"
     autoload :CurbBackend,    "riak/client/curb_backend"
