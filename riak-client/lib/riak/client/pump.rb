@@ -20,7 +20,8 @@ end
 
 module Riak
   class Client
-    class Pump
+    # @private
+    class Pump      
       def initialize(block, result_block=nil)
         @result_block = result_block
         @fiber = Fiber.new do
@@ -31,13 +32,13 @@ module Riak
         @fiber.resume
       end
 
-      def call(*input)
+      def pump(*input)
         @fiber.resume *input
         @result_block.call(*input) if @result_block
       end
 
       def to_proc
-        lambda {|*args| call(*args) }
+        lambda {|*args| pump(*args) }
       end
     end
   end
