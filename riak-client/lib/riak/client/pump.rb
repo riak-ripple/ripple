@@ -38,7 +38,7 @@ module Riak
       end
 
       def to_proc
-        lambda {|*args| pump(*args) }
+        method(:pump).to_proc
       end
     end
   end
