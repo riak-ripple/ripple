@@ -35,8 +35,7 @@ module Riak
         curl.url = uri.to_s
         response_headers.initialize_http_header(nil)
         if block_given?
-          pump = Pump.new(block, lambda {|chunk| chunk.size })
-          curl.on_body(&pump)
+          curl.on_body(&Pump.new(block))
         else
           curl.on_body
         end

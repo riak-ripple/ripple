@@ -22,8 +22,7 @@ module Riak
   class Client
     # @private
     class Pump      
-      def initialize(block, result_block=nil)
-        @result_block = result_block
+      def initialize(block)
         @fiber = Fiber.new do
           loop do
             block.call *Fiber.yield
@@ -34,7 +33,7 @@ module Riak
 
       def pump(*input)
         @fiber.resume *input
-        @result_block.call(*input) if @result_block
+        input.first.size if input.size == 1 # For curb
       end
 
       def to_proc
