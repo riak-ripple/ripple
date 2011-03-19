@@ -1,4 +1,4 @@
-source :gemcutter
+source :rubygems
 
 gem 'i18n'
 gem 'builder'
@@ -9,12 +9,14 @@ gem 'rake'
 gem 'bundler'
 gem 'excon', "~>0.3.4"
 
-if defined? JRUBY_VERSION
-  gem 'json'
-  gem 'jruby-openssl'
-else
+platforms :mri do
   gem 'curb', '>=0.6'
   gem 'yajl-ruby'
+end
+
+platforms :jruby do
+  gem 'json'
+  gem 'jruby-openssl'
 end
 
 group :integration do

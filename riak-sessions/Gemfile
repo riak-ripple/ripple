@@ -1,4 +1,4 @@
-source "http://rubygems.org/"
+source :rubygems
 
 gem 'bundler'
 gem 'riak-client', :path => "../riak-client"
@@ -8,10 +8,11 @@ gem 'rspec', '~>2.4.0'
 gem 'rspec-rails', '~>2.4.0'
 gem 'rake'
 
-if defined? JRUBY_VERSION
+platforms :mri do
+  gem 'yajl-ruby'
+end
+
+platforms :jruby do
   gem 'json'
   gem 'jruby-openssl'
-else
-  gem 'curb', '>0.6'
-  gem 'yajl-ruby'
 end
