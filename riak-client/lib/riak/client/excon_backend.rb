@@ -23,7 +23,7 @@ module Riak
       def self.configured?
         begin
           require 'excon'
-          Excon::VERSION >= "0.3.4"
+          Excon::VERSION >= "0.5.7"
         rescue LoadError
           false
         end
