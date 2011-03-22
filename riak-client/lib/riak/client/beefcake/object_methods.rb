@@ -12,8 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
-require 'base64'
-require 'digest/sha1'
+
 module Riak
   class Client
     class BeefcakeProtobuffsBackend
@@ -26,7 +25,7 @@ module Riak
           pbuf.content = RpbContent.new(:value => robject.raw_data,
                                         :content_type => robject.content_type,
                                         :links => robject.links.map {|l| encode_link(l) }.compact)
-          
+
           pbuf.content.usermeta = robject.meta.map {|k,v| encode_meta(k,v)} if robject.meta.any?
           pbuf.content.vtag = robject.etag if robject.etag.present?
           if robject.raw_data.respond_to?(:encoding) # 1.9 support
@@ -67,25 +66,20 @@ module Riak
           end
           robject
         end
-        
-        # This doesn't give us exactly the keygen that Riak uses, but close.
-        def generate_key
-          Base64.encode64(Digest::SHA1.digest(Socket.gethostname + Time.now.iso8601(3))).tr("+/","-_").sub(/=+\n$/,'')
-        end
-        
+
         def decode_link(pbuf)
           Riak::Link.new(pbuf.bucket, pbuf.key, pbuf.tag)
         end
-        
+
         def encode_link(link)
           return nil unless link.key.present?
           RpbLink.new(:bucket => link.bucket.to_s, :key => link.key.to_s, :tag => link.tag.to_s)
-        end        
+        end
 
         def decode_meta(pbuf, hash)
           hash[pbuf.key] = pbuf.value
         end
-        
+
         def encode_meta(key,value)
           return nil unless value.present?
           RpbPair.new(:key.to_s, :value => value.to_s)

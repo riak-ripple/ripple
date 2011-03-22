@@ -102,7 +102,7 @@ module Riak
       # Optional since it has the same structure as GetResp
       # class RpbPutResp
       #   include Beefcake::Message
-      #   repeated :content, Content, 1
+      #   repeated :content, RpbContent, 1
       #   optional :vclock,  :bytes,  2
       # end
 

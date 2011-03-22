@@ -13,40 +13,46 @@
 #    limitations under the License.
 require 'riak'
 require 'socket'
+require 'base64'
+require 'digest/sha1'
 
 module Riak
   class Client
     class ProtobuffsBackend
+      include Util::Translation
+      
       # Message Codes Enum
-      ErrorResp           =  0
-      PingReq             =  1
-      PingResp            =  2
-      GetClientIdReq      =  3
-      GetClientIdResp     =  4
-      SetClientIdReq      =  5
-      SetClientIdResp     =  6
-      GetServerInfoReq    =  7
-      GetServerInfoResp   =  8
-      GetReq              =  9
-      GetResp             = 10
-      PutReq              = 11
-      PutResp             = 12
-      DelReq              = 13
-      DelResp             = 14
-      ListBucketsReq      = 15
-      ListBucketsResp     = 16
-      ListKeysReq         = 17
-      ListKeysResp        = 18
-      GetBucketReq        = 19
-      GetBucketResp       = 20
-      SetBucketReq        = 21
-      SetBucketResp       = 22
-      MapRedReq           = 23
-      MapRedResp          = 24
+      MESSAGE_CODES = %W[
+          ErrorResp
+          PingReq
+          PingResp
+          GetClientIdReq
+          GetClientIdResp
+          SetClientIdReq
+          SetClientIdResp
+          GetServerInfoReq
+          GetServerInfoResp
+          GetReq
+          GetResp
+          PutReq
+          PutResp
+          DelReq
+          DelResp
+          ListBucketsReq
+          ListBucketsResp
+          ListKeysReq
+          ListKeysResp
+          GetBucketReq
+          GetBucketResp
+          SetBucketReq
+          SetBucketResp
+          MapRedReq
+          MapRedResp
+       ].map {|s| s.intern }.freeze
 
       def self.simple(method, code)
         define_method method do
-          socket.write([1,code].pack('NC'))
+          socket.write([1, MESSAGE_CODES.index(code)].pack('NC'))
           decode_response
         end
       end
@@ -56,10 +62,10 @@ module Riak
         @client = client
       end
 
-      simple :ping,          PingReq
-      simple :get_client_id, GetClientIdReq
-      simple :server_info,   GetServerInfoReq
-      simple :list_buckets,  ListBucketsReq
+      simple :ping,          :PingReq
+      simple :get_client_id, :GetClientIdReq
+      simple :server_info,   :GetServerInfoReq
+      simple :list_buckets,  :ListBucketsReq
 
       private
       # Implemented by subclasses
@@ -71,16 +77,26 @@ module Riak
         Thread.current[:riakpbc_socket] ||= TCPSocket.new(@client.host, @client.pb_port)
       end
 
+      def reset_socket
+        socket.close
+        Thread.current[:riakpbc_socket] = nil
+      end
+
       UINTMAX = 0xffffffff
       QUORUMS = {
         "one" => UINTMAX - 1,
         "quorum" => UINTMAX - 2,
         "all" => UINTMAX - 3,
         "default" => UINTMAX - 4
-      }
+      }.freeze
 
       def normalize_quorum_value(q)
         QUORUMS[q.to_s] || q.to_i
+      end
+
+      # This doesn't give us exactly the keygen that Riak uses, but close.
+      def generate_key
+        Base64.encode64(Digest::SHA1.digest(Socket.gethostname + Time.now.iso8601(3))).tr("+/","-_").sub(/=+\n$/,'')
       end
     end
   end

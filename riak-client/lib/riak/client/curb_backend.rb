@@ -62,7 +62,7 @@ module Riak
           end
           result
         else
-          raise FailedRequest.new(method, expect, curl.response_code, response_headers.to_hash, curl.body_str)
+          raise HTTPFailedRequest.new(method, expect, curl.response_code, response_headers.to_hash, curl.body_str)
         end
       end
 
