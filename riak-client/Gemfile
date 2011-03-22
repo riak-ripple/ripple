@@ -8,6 +8,7 @@ gem 'rack', '>=1.0'
 gem 'rake'
 gem 'bundler'
 gem 'excon', "~>0.5.7"
+gem 'beefcake', '~>0.2.0'
 
 platforms :mri do
   gem 'curb', '>=0.6'
