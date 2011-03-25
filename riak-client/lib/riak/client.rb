@@ -48,6 +48,12 @@ module Riak
     # @return [String] The internal client ID used by Riak to route responses
     attr_reader :client_id
 
+    # @return [Hash] The SSL options that get built when using SSL
+    attr_reader :ssl_options
+
+    # @return [Hash] The writer that will build valid SSL options from the provided config
+    attr_writer :ssl
+
     # @return [String] The URL path prefix to the "raw" HTTP endpoint
     attr_accessor :prefix
 
@@ -70,7 +76,7 @@ module Riak
     # @option options [String, Symbol] :http_backend (:NetHTTP) which  HTTP backend to use
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
-      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend]).empty?
+      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :ssl]).empty?
         raise ArgumentError, "invalid options"
       end
       self.protocol     = options[:protocol]     || "http"
@@ -81,6 +87,7 @@ module Riak
       self.mapred       = options[:mapred]       || "/mapred"
       self.luwak        = options[:luwak]        || "/luwak"
       self.http_backend = options[:http_backend] || :NetHTTP
+      self.ssl          = options[:ssl]
       raise ArgumentError, t("missing_host_and_port") unless @host && @port
     end
 
@@ -128,6 +135,15 @@ module Riak
     def http_backend=(value)
       @http = nil
       @http_backend = value
+    end
+
+    def ssl=(value)
+      @ssl_options = Hash === value ? value : {}
+      value ? ssl_enable : ssl_disable
+    end
+
+    def ssl_enabled?
+      protocol === 'https'
     end
 
     # Automatically detects and returns an appropriate HTTP backend.
@@ -253,6 +269,21 @@ module Riak
 
     def b64encode(n)
       Base64.encode64([n].pack("N")).chomp
+    end
+
+    def ssl_enable
+      self.protocol = 'https'
+      @ssl_options[:pem] = File.read(@ssl_options[:pem_file]) if @ssl_options[:pem_file]
+      @ssl_options[:verify_mode] ||= "peer" if (@ssl_options.keys.map{|k|k.to_s} & %w[pem pem_file ca_file ca_path]).any?
+      @ssl_options[:verify_mode] ||= "none"
+      raise ArgumentError.new unless %w[none peer].include?(@ssl_options[:verify_mode])
+
+      @ssl_options
+    end
+
+    def ssl_disable
+      self.protocol = 'http'
+      @ssl_options  = nil
     end
 
     # @private

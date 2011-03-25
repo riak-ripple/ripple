@@ -300,10 +300,133 @@ describe Riak::Client do
       @client.get_file("docs/A Big PDF.pdf")
       # Streamed get escapes keys
       @http.should_receive(:get).with(200, "/luwak", "docs%2FA%20Big%20PDF.pdf").and_yield("foo").and_return(:headers => {"content-type" => ["text/plain"]}, :code => 200)
-      @client.get_file("docs/A Big PDF.pdf"){|chunk| chunk }
+      @client.get_file("docs/A Big PDF.pdf"){|chunk| chunk}
       # Put escapes keys
       @http.should_receive(:put).with(204, "/luwak", "docs%2FA%20Big%20PDF.pdf", "foo", {"Content-Type" => "text/plain"})
       @client.store_file("docs/A Big PDF.pdf", "text/plain", "foo")
+    end
+  end
+
+  describe "ssl", :ssl => true do
+    before :each do
+      @client = Riak::Client.new
+    end
+
+    it "should allow passing ssl options into the initializer" do
+      lambda { client = Riak::Client.new(:ssl => {:verify_mode => "peer"}) }.should_not raise_error
+    end
+
+    it "should not have ssl options by default" do
+      @client.ssl_options.should be_nil
+    end
+
+    # The api should have an ssl= method for setting up all of the ssl
+    # options.  Once the ssl options have been assigned via `ssl=` they should
+    # be read back out using the read only `ssl_options`.  This is to provide
+    # a seperate api for setting ssl options via client configuration and
+    # reading them inside of a http backend.
+    it "should not allow reading ssl options via ssl" do
+      @client.should_not respond_to(:ssl)
+    end
+
+    it "should now allow writing ssl options via ssl_options=" do
+      @client.should_not respond_to(:ssl_options=)
+    end
+
+    it "should allow setting ssl to true" do
+      @client.ssl = true
+      @client.ssl_options[:verify_mode].should eq('none')
+    end
+
+    it "should allow setting ssl options as a hash" do
+      @client.ssl = {:verify_mode => "peer"}
+      @client.ssl_options[:verify_mode].should eq('peer')
+    end
+
+    it "should set the protocol to https when setting ssl to true" do
+      @client.ssl = true
+      @client.protocol.should eq("https")
+    end
+
+    it "should set the protocol to http when setting ssl to false" do
+      @client.protocol = 'https'
+      @client.ssl = false
+      @client.protocol.should eq('http')
+    end
+
+    it "should should clear ssl options when setting ssl to false" do
+      @client.ssl = true
+      @client.ssl_options.should_not be_nil
+      @client.ssl = false
+      @client.ssl_options.should be_nil
+    end
+
+    it "should set the protocol to https when setting ssl options" do
+      @client.ssl = {:verify_mode => "peer"}
+      @client.protocol.should eq("https")
+    end
+
+    it "should allow setting the verify_mode to none" do
+      @client.ssl = {:verify_mode => "none"}
+      @client.ssl_options[:verify_mode].should eq("none")
+    end
+
+    it "should allow setting the verify_mode to peer" do
+      @client.ssl = {:verify_mode => "peer"}
+      @client.ssl_options[:verify_mode].should eq("peer")
+    end
+
+    it "should not allow setting the verify_mode to anything else" do
+      lambda {@client.ssl = {:verify_mode => :your_mom}}.should raise_error(ArgumentError)
+    end
+
+    it "should default verify_mode to none" do
+      @client.ssl = true
+      @client.ssl_options[:verify_mode].should eq("none")
+    end
+
+    it "should let the backend know if ssl is enabled" do
+      @client.should_not be_ssl_enabled
+      @client.ssl = true
+      @client.should be_ssl_enabled
+    end
+
+    it "should allow setting the pem" do
+      @client.ssl = {:pem => 'i-am-a-pem'}
+      @client.ssl_options[:pem].should eq('i-am-a-pem')
+    end
+    
+    it "should set them pem from the contents of pem_file" do
+      filepath = File.expand_path(File.join(File.dirname(__FILE__), '../fixtures/test.pem'))
+      @client.ssl = {:pem_file => filepath}
+      @client.ssl_options[:pem].should eq("i-am-a-pem\n")
+    end
+
+    it "should allow setting the pem_password" do
+      @client.ssl = {:pem_password => 'pem-pass'}
+      @client.ssl_options[:pem_password].should eq('pem-pass')
+    end
+
+    it "should allow setting the ca_file" do
+      @client.ssl = {:ca_file => '/path/to/ca.crt'}
+      @client.ssl_options[:ca_file].should eq('/path/to/ca.crt')
+    end
+
+    it "should allow setting the ca_path" do
+      @client.ssl = {:ca_path => '/path/to/certs/'}
+      @client.ssl_options[:ca_path].should eq('/path/to/certs/')
+    end
+
+    %w[pem ca_file ca_path].each do |option|
+      it "should default the verify_mode to peer when setting the #{option}" do
+        @client.ssl = {option.to_sym => 'test-data'}
+        @client.ssl_options[:verify_mode].should eq("peer")
+      end
+
+      it "should allow setting the verify mode when setting the #{option}" do
+        @client.ssl = {option.to_sym => 'test-data', :verify_mode => "none"}
+        @client.ssl_options[:verify_mode].should eq("none")
+      end
     end
   end
 end
