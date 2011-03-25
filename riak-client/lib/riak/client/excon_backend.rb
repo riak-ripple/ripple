@@ -17,13 +17,13 @@ require 'riak/client/pump'
 module Riak
   class Client
     # An HTTP backend for Riak::Client that uses Wesley Beary's Excon
-    # HTTP library. Comforms to the Riak::Client::HTTPBackend
+    # HTTP library. Conforms to the Riak::Client::HTTPBackend
     # interface.
     class ExconBackend < HTTPBackend
       def self.configured?
         begin
           require 'excon'
-          Excon::VERSION >= "0.3.4"
+          Excon::VERSION >= "0.5.7"
         rescue LoadError
           false
         end

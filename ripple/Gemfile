@@ -1,4 +1,4 @@
-source :gemcutter
+source :rubygems
 
 gem 'bundler'
 gem 'riak-client', :path => "../riak-client"
@@ -7,10 +7,11 @@ gem 'rspec', '~>2.4.0'
 gem 'tzinfo'
 gem 'rake'
 
-if defined? JRUBY_VERSION
+platforms :mri do
+  gem 'yajl-ruby'
+end
+
+platforms :jruby do
   gem 'json'
   gem 'jruby-openssl'
-else
-  gem 'yajl-ruby'
-  gem 'curb', '>0.6'
 end
