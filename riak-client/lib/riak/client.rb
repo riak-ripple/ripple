@@ -48,10 +48,10 @@ module Riak
     # @return [String] The internal client ID used by Riak to route responses
     attr_reader :client_id
 
-    # @return [Hash] The SSL options that get built when using SSL
+    # @return [Hash|nil] The SSL options that get built when using SSL
     attr_reader :ssl_options
 
-    # @return [Hash] The writer that will build valid SSL options from the provided config
+    # @return [Hash|nil] The writer that will build valid SSL options from the provided config
     attr_writer :ssl
 
     # @return [String] The URL path prefix to the "raw" HTTP endpoint
@@ -79,6 +79,7 @@ module Riak
       unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :ssl]).empty?
         raise ArgumentError, "invalid options"
       end
+      self.ssl          = options[:ssl]
       self.protocol     = options[:protocol]     || "http"
       self.host         = options[:host]         || "127.0.0.1"
       self.port         = options[:port]         || 8098
@@ -87,7 +88,6 @@ module Riak
       self.mapred       = options[:mapred]       || "/mapred"
       self.luwak        = options[:luwak]        || "/luwak"
       self.http_backend = options[:http_backend] || :NetHTTP
-      self.ssl          = options[:ssl]
       raise ArgumentError, t("missing_host_and_port") unless @host && @port
     end
 
@@ -106,6 +106,10 @@ module Riak
                    end
     end
 
+    # Set the protocol of the Riak endpoint.  Value must be in the
+    # Riak::Client::PROTOCOLS array.
+    # @raise [ArgumentError] if the protocol is not in PROTOCOLS
+    # @return [String] the protocol being assigned
     def protocol=(value)
       unless PROTOCOLS.include?(value)
         raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', ')) 
@@ -137,11 +141,13 @@ module Riak
       @http_backend = value
     end
 
+    # Enables or disables SSL on the client to be utilized by the HTTP Backends
     def ssl=(value)
       @ssl_options = Hash === value ? value : {}
       value ? ssl_enable : ssl_disable
     end
 
+    # Checks if the current protocol is https
     def ssl_enabled?
       protocol === 'https'
     end
