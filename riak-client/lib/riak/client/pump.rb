@@ -25,15 +25,15 @@ module Riak
       def initialize(block)
         @fiber = Fiber.new do
           loop do
-            block.call *Fiber.yield
+            block.call Fiber.yield
           end
         end
         @fiber.resume
       end
 
-      def pump(*input)
-        @fiber.resume *input
-        input.first.size if input.size == 1 # For curb
+      def pump(input)
+        @fiber.resume input
+        input.size if input.respond_to?(:size) # for curb
       end
 
       def to_proc

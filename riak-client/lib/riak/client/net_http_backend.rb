@@ -48,7 +48,7 @@ module Riak
               if return_body?(method, response.code, block_given?)
                 result[:body] = response.body
               else
-                raise HTTPFailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
+                raise Riak::HTTPFailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
               end
             end
           end

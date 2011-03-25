@@ -14,6 +14,7 @@
 require 'riak'
 require 'tempfile'
 require 'delegate'
+require 'riak/failed_request'
 
 module Riak
   # A client connection to Riak.

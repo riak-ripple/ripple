@@ -39,7 +39,7 @@ describe Riak::Client::HTTPBackend::Configuration do
       @backend.send(resource).should == @client.send(alternate)
     end
     it "should fallback to client.#{alternate} if request fails" do
-      @backend.should_receive(:get).with(200, "/", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, ""))
+      @backend.should_receive(:get).with(200, "/", {}, {}).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 404, {}, ""))
       @backend.send(resource).should == @client.send(alternate)
     end
   end
@@ -57,7 +57,7 @@ describe Riak::Client::HTTPBackend::Configuration do
       @backend.send(resource).should == default
     end
     it "should fallback to #{default.inspect} if request fails" do
-      @backend.should_receive(:get).with(200, "/", {}, {}).and_raise(Riak::FailedRequest.new(:get, 200, 404, {}, ""))
+      @backend.should_receive(:get).with(200, "/", {}, {}).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 404, {}, ""))
       @backend.send(resource).should == default
     end
   end
