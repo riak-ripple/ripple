@@ -120,4 +120,10 @@ describe Riak::Client::HTTPBackend::TransportMethods do
   it "should force subclasses to implement the perform method" do
     lambda { @backend.send(:perform, :get, "/foo", {}, 200) }.should raise_error(NotImplementedError)
   end
+
+  it "should allow using the https protocol" do
+    @client  = Riak::Client.new(:protocol => 'https')
+    @backend = Riak::Client::HTTPBackend.new(@client)
+    @backend.root_uri.to_s.should eq("https://127.0.0.1:8098")
+  end
 end

@@ -143,7 +143,7 @@ module Riak
 
         # @return [URI] The calculated root URI for the Riak HTTP endpoint
         def root_uri
-          URI.parse("http://#{client.host}:#{client.port}")
+          URI.parse("#{client.protocol}://#{client.host}:#{client.port}")
         end
 
         # Calculates an absolute URI from a relative path specification

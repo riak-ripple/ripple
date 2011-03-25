@@ -30,8 +30,14 @@ module Riak
     # When using integer client IDs, the exclusive upper-bound of valid values.
     MAX_CLIENT_ID = 4294967296
 
+    # Array of valid protocols
+    PROTOCOLS = %w[http https]
+    
     # Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
     HOST_REGEX = /^(?:(?:(?:[a-zA-Z\d](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.)*(?:[a-zA-Z](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\])$/n
+
+    # @return [String] The protocol to use for the Riak endpoint
+    attr_reader :protocol
 
     # @return [String] The host or IP address for the Riak endpoint
     attr_reader :host
@@ -64,9 +70,10 @@ module Riak
     # @option options [String, Symbol] :http_backend (:NetHTTP) which  HTTP backend to use
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
-      unless (options.keys - [:host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend]).empty?
+      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend]).empty?
         raise ArgumentError, "invalid options"
       end
+      self.protocol     = options[:protocol]     || "http"
       self.host         = options[:host]         || "127.0.0.1"
       self.port         = options[:port]         || 8098
       self.client_id    = options[:client_id]    || make_client_id
@@ -90,6 +97,13 @@ module Riak
                    else
                      raise ArgumentError, t("invalid_client_id", :max_id => MAX_CLIENT_ID)
                    end
+    end
+
+    def protocol=(value)
+      unless PROTOCOLS.include?(value)
+        raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', ')) 
+      end
+      @protocol = value
     end
 
     # Set the hostname of the Riak endpoint. Must be an IPv4, IPv6, or valid hostname

@@ -21,6 +21,11 @@ describe Riak::Client do
       client.port.should == 8098
     end
 
+    it "should accept a protocol" do
+      client = Riak::Client.new :protocol => 'https'
+      client.protocol.should eq('https')
+    end
+
     it "should accept a host" do
       client = Riak::Client.new :host => "riak.basho.com"
       client.host.should == "riak.basho.com"
@@ -76,6 +81,19 @@ describe Riak::Client do
   describe "reconfiguring" do
     before :each do
       @client = Riak::Client.new
+    end
+
+    describe "setting the protocol" do
+      it "should allow setting the protocol" do
+        @client.should respond_to(:protocol=)
+        @client.protocol = "https"
+        @client.protocol.should eq("https")
+      end
+
+      it "should require a valid protocol to be set" do
+        lambda { @client.protocol = 'invalid-protocol' }.should(
+          raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
+      end
     end
 
     describe "setting the host" do
