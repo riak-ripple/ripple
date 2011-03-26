@@ -36,6 +36,11 @@ describe Riak::Client do
       client.port.should == 9000
     end
 
+    it "should accept basic_auth" do
+      client = Riak::Client.new :basic_auth => "user:pass"
+      client.basic_auth.should eq("user:pass")
+    end
+
     it "should accept a client ID" do
       client = Riak::Client.new :client_id => "AAAAAA=="
       client.client_id.should == "AAAAAA=="
@@ -127,6 +132,18 @@ describe Riak::Client do
         [0,1,65535,8098].each do |valid|
           lambda { @client.port = valid }.should_not raise_error
         end
+      end
+    end
+
+    describe "setting http auth" do
+      it "should allow setting basic_auth" do
+        @client.should respond_to(:basic_auth=)
+        @client.basic_auth = "user:pass"
+        @client.basic_auth.should eq("user:pass")
+      end 
+
+      it "should require that basic auth splits into two even parts" do
+        lambda { @client.basic_auth ="user" }.should raise_error(ArgumentError, "basic auth must be set using 'user:pass'")
       end
     end
 
@@ -318,6 +335,11 @@ describe Riak::Client do
 
     it "should not have ssl options by default" do
       @client.ssl_options.should be_nil
+    end
+
+    it "should have a blank hash for ssl options if the protocol is set to https" do
+      @client.protocol = 'https'
+      @client.ssl_options.should be_a(Hash)
     end
 
     # The api should have an ssl= method for setting up all of the ssl

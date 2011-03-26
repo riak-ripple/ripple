@@ -45,6 +45,9 @@ module Riak
     # @return [Fixnum] The port of the Riak HTTP endpoint
     attr_reader :port
 
+    # @return [String] The user:pass for http basic authentication
+    attr_reader :basic_auth
+
     # @return [String] The internal client ID used by Riak to route responses
     attr_reader :client_id
 
@@ -76,7 +79,7 @@ module Riak
     # @option options [String, Symbol] :http_backend (:NetHTTP) which  HTTP backend to use
     # @raise [ArgumentError] raised if any options are invalid
     def initialize(options={})
-      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :ssl]).empty?
+      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :ssl, :basic_auth]).empty?
         raise ArgumentError, "invalid options"
       end
       self.ssl          = options[:ssl]
@@ -88,6 +91,7 @@ module Riak
       self.mapred       = options[:mapred]       || "/mapred"
       self.luwak        = options[:luwak]        || "/luwak"
       self.http_backend = options[:http_backend] || :NetHTTP
+      self.basic_auth   = options[:basic_auth] if options[:basic_auth]
       raise ArgumentError, t("missing_host_and_port") unless @host && @port
     end
 
@@ -114,6 +118,7 @@ module Riak
       unless PROTOCOLS.include?(value)
         raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', ')) 
       end
+      @ssl_options ||= {} if value === 'https'
       @protocol = value
     end
 
@@ -133,6 +138,11 @@ module Riak
     def port=(value)
       raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
       @port = value
+    end
+
+    def basic_auth=(value)
+      raise ArgumentError, t("invalid_basic_auth") unless value.to_s.split(':').length === 2
+      @basic_auth = value
     end
 
     # Sets the desired HTTP backend
