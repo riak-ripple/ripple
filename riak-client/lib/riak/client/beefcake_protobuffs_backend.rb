@@ -58,7 +58,7 @@ module Riak
       def store_object(robject, returnbody=false, w=nil, dw=nil)
         if robject.prevent_stale_writes
           other = fetch_object(robject.bucket, robject.key)
-          raise Riak::FailedRequest(:pb, :not_stale, :stale, "stale write prevented") unless other.vclock == robject.vclock
+          raise Riak::ProtobuffsFailedRequest(:stale_object, t("stale_write_prevented")) unless other.vclock == robject.vclock
         end
         req = dump_object(robject)
         req.w = normalize_quorum_value(w) if w
@@ -142,7 +142,7 @@ module Riak
           case MESSAGE_CODES[msgcode]
           when :ErrorResp
             res = RpbErrorResp.decode(message)
-            raise Riak::ProtobufsFailedRequest.new(res.errcode, res.errmsg)
+            raise Riak::ProtobuffsFailedRequest.new(res.errcode, res.errmsg)
           when :GetClientIdResp
             res = RpbGetClientIdResp.decode(message)
             res.client_id

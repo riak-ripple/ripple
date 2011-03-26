@@ -77,7 +77,7 @@ module Riak
       begin
         bucket.get(key).data
       rescue Riak::FailedRequest => fr
-        raise fr unless fr.code.to_i == 404
+        raise fr unless fr.not_found?
         nil
       end
     end

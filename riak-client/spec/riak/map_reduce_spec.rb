@@ -255,7 +255,7 @@ describe Riak::MapReduce do
       begin
         @mr.run
       rescue Riak::MapReduceError => mre
-        mre.message.should == '{"error":"syntax error"}'
+        mre.message.should include('{"error":"syntax error"}')
       else
         fail "No exception raised!"
       end

@@ -188,7 +188,7 @@ module Riak
       raise MapReduceError.new(t("empty_map_reduce_query")) if @query.empty?
       @client.backend.mapred(self, &block)
     rescue FailedRequest => fr
-      if fr.code == 500 && fr.headers['content-type'].include?("application/json")
+      if fr.server_error? && fr.is_json?
         raise MapReduceError.new(fr.body)
       else
         raise fr

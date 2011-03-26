@@ -43,6 +43,10 @@ module Riak
       super t("http_failed_request", :expected => @expected.inspect, :code => @code, :body => @body)
     end
 
+    def is_json?
+      headers['content-type'].include?('application/json')
+    end
+    
     # @return [true,false] whether the error represents a "not found" response
     def not_found?
       @code.to_i == 404
@@ -59,10 +63,21 @@ module Riak
   class ProtobuffsFailedRequest < FailedRequest
     def initialize(code, message)
       super t('protobuffs_failed_request', :code => code, :body => message)
+      @original_message = message
       @not_found = code == :not_found
       @server_error = code == :server_error
     end
 
+    # @return [true, false] whether the error response is in JSON
+    def is_json?
+      begin
+        JSON.parse(original_message)
+        true
+      rescue
+        false
+      end
+    end
+    
     # @return [true,false] whether the error represents a "not found" response
     def not_found?
       @not_found
