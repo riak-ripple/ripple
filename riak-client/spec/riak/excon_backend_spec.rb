@@ -23,14 +23,14 @@ else
 
   describe Riak::Client::ExconBackend do
     def setup_http_mock(method, uri, options={})
-      method = method.to_s.upcase
-      uri = URI.parse(uri)
-      path = uri.path || "/"
-      query = uri.query || ""
-      status = options[:status] ? Array(options[:status]).first.to_i : 200
-      body = options[:body] || []
+      method  = method.to_s.upcase
+      uri     = URI.parse(uri)
+      path    = uri.path          || "/"
+      query   = uri.query         || ""
+      body    = options[:body]    || []
       headers = options[:headers] || {}
-      headers['Content-Type'] ||= "text/plain"
+      headers['Content-Type']     ||= "text/plain"
+      status  = options[:status] ? Array(options[:status]).first.to_i : 200
       @_mock_set = [status, headers, method, path, query, body]
       $mock_server.expect(*@_mock_set)
     end
@@ -73,4 +73,5 @@ else
       end.should_not raise_error
     end
   end
+
 end

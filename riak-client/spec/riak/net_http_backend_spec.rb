@@ -25,4 +25,5 @@ describe Riak::Client::NetHTTPBackend do
   end
 
   it_should_behave_like "HTTP backend"
+
 end
