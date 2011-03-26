@@ -42,6 +42,7 @@ module Riak
       end
 
       def fetch_object(bucket, key, r=nil)
+        bucket = Bucket === bucket ? bucket.name : bucket
         req = RpbGetReq.new(:bucket => bucket, :key => key)
         req.r = normalize_quorum_value(r) if r
         write_protobuff(:GetReq, req)
@@ -49,7 +50,7 @@ module Riak
       end
 
       def reload_object(robject, r=nil)
-        req = RpbGetReq.new(:bucket => bucket, :key => key)
+        req = RpbGetReq.new(:bucket => robject.bucket.name, :key => robject.key)
         req.r = normalize_quorum_value(r) if r
         write_protobuff(:GetReq, req)
         decode_response(robject)
@@ -69,6 +70,7 @@ module Riak
       end
 
       def delete_object(bucket, key, rw=nil)
+        bucket = Bucket === bucket ? bucket.name : bucket
         req = RpbDelReq.new(:bucket => bucket, :key => key)
         req.rw = normalize_quorum_value(rw) if rw
         write_protobuff(:DelReq, req)
@@ -107,14 +109,20 @@ module Riak
       def mapred(mr, &block)
         req = RpbMapRedReq.new(:request => mr.to_json, :content_type => "application/json")
         write_protobuff(:MapRedReq, req)
-        results = Hash.new([])
-        block = block_given? ? Pump.new(block).to_proc : lambda {|phase, data| results[phase].concat data }
-        res = decode_response
-        while !res.done
-          block.call res.phase, JSON.parse(res.response)
-          res = decode_response
+        results = []
+        pump = Pump.new(lambda do |msg|
+          block.call msg.phase, JSON.parse(msg.response)
+        end) if block_given?
+        while msg = decode_response
+          break if msg.done
+          if pump
+            pump.pump msg
+          else
+            results[msg.phase] ||= []
+            results[msg.phase] += JSON.parse(msg.response)
+          end
         end
-        block_given? || results
+        block_given? || results.size == 1 ? results.first : results
       end
 
       private
@@ -125,7 +133,9 @@ module Riak
       end
 
       def decode_response(*args)
-        msglen, msgcode = socket.read(5).unpack("NC")
+        header = socket.read(5)
+        raise SocketError, "Unexpected EOF on PBC socket" if header.nil?
+        msglen, msgcode = header.unpack("NC")
         if msglen == 1
           case MESSAGE_CODES[msgcode]
           when :PingResp, :SetClientIdResp, :PutResp, :DelResp, :SetBucketResp
@@ -166,7 +176,7 @@ module Riak
         end
       rescue SocketError => e
         reset_socket
-        raise Riak::ProtobufsFailedRequest.new(:server_error, e.message)
+        raise Riak::ProtobuffsFailedRequest.new(:server_error, e.message)
       end
     end
   end

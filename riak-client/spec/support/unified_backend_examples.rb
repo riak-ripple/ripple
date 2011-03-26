@@ -150,8 +150,8 @@ shared_examples_for "Unified backend API" do
   # set_bucket_props
   context "setting bucket properties" do
     it "should store properties for the bucket" do
-      @backend.set_bucket_props("test", {"rw" => "quorum"})
-      @backend.get_bucket_props("test")['rw'].should == "quorum"
+      @backend.set_bucket_props("test", {"n_val" => 3})
+      @backend.get_bucket_props("test")["n_val"].should == 3
     end
   end
 

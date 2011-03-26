@@ -110,7 +110,7 @@ module Riak
         include Beefcake::Message
         required :bucket, :bytes,  1
         required :key,    :bytes,  2
-        required :rw,     :uint32, 3
+        optional :rw,     :uint32, 3
       end
 
       class RpbListBucketsResp
@@ -141,14 +141,14 @@ module Riak
 
       class RpbSetBucketReq
         include Beefcake::Message
-        required :bucket, :bytes,      1
+        required :bucket, :bytes,         1
         required :props,  RpbBucketProps, 2
       end
 
       class RpbMapRedReq
         include Beefcake::Message
-        required :request, :bytes,        1
-        required :bytes,   :content_type, 2
+        required :request,      :bytes, 1
+        required :content_type, :bytes, 2
       end
 
       class RpbMapRedResp

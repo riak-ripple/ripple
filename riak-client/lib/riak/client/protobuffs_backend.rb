@@ -74,7 +74,7 @@ module Riak
       end
 
       def socket
-        Thread.current[:riakpbc_socket] ||= TCPSocket.new(@client.host, @client.pb_port)
+        Thread.current[:riakpbc_socket] ||= TCPSocket.new(@client.host, @client.port)
       end
 
       def reset_socket
