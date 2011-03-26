@@ -29,29 +29,44 @@ module Riak
 
       private
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
-        Net::HTTP.start(uri.host, uri.port) do |http|
-          request = Net::HTTP.const_get(method.to_s.capitalize).new(uri.request_uri, headers)
-          case data
-          when String
-            request.body = data
-          when IO
-            request.body_stream = data
-          end
+        http = Net::HTTP.new(uri.host, uri.port)
+        configure_ssl(http) if @client.ssl_enabled?
 
-          {}.tap do |result|
-            http.request(request) do |response|
-              if valid_response?(expect, response.code)
-                result.merge!({:headers => response.to_hash, :code => response.code.to_i})
-                response.read_body {|chunk| yield chunk } if block_given?
-                if return_body?(method, response.code, block_given?)
-                  result[:body] = response.body
-                end
-              else
-                raise FailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
+        request = Net::HTTP.const_get(method.to_s.capitalize).new(uri.request_uri, headers)
+        case data
+        when String
+          request.body = data
+        when IO
+          request.body_stream = data
+        end
+
+        {}.tap do |result|
+          http.request(request) do |response|
+            if valid_response?(expect, response.code)
+              result.merge!({:headers => response.to_hash, :code => response.code.to_i})
+              response.read_body {|chunk| yield chunk } if block_given?
+              if return_body?(method, response.code, block_given?)
+                result[:body] = response.body
               end
+            else
+              raise FailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
             end
           end
         end
+      end
+
+      def configure_ssl(http)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL.const_get("VERIFY_#{@client.ssl_options[:verify_mode].upcase}")
+
+        if @client.ssl_options[:pem]
+          http.cert = OpenSSL::X510::Certificate.new(@client.ssl_options[:pem])
+          http.key  = OpenSSL::PKey::RSA.new(@client.ssl_options[:pem], @client.ssl_options[:pem_password])
+        end
+
+        http.ca_file = @client.ssl_options[:ca_file] if @client.ssl_options[:ca_file]
+        
+        http.ca_path = @client.ssl_options[:ca_path] if @client.ssl_options[:ca_path]
       end
     end
   end

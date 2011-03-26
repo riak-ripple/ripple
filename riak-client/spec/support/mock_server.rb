@@ -16,6 +16,8 @@
 # Based on code from Rob Styles and Chris Tierney found at:
 #   http://dynamicorange.com/2009/02/18/ruby-mock-web-server/
 require 'rack'
+require 'openssl'
+require 'webrick/https'
 
 class MockServer
   attr_accessor :port
@@ -25,14 +27,24 @@ class MockServer
     self.port = 4000 + rand(61535)
     @block = nil
     @parent_thread = Thread.current
+    options = {:AccessLog => [], :Logger => NullLogger.new, :Host => '127.0.0.1'}
     @thread = Thread.new do
-      Rack::Handler::WEBrick.run(self, :Port => port, :AccessLog => [], :Logger => NullLogger.new, :Host => '127.0.0.1')
+      Rack::Handler::WEBrick.run(self, options.merge(:Port => port))
+    end
+    @ssl_thread = Thread.new do
+      Rack::Handler::WEBrick.run(self, options.merge(:Port => port+1,
+        :SSLEnable       => true,
+        :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
+        :SSLCertificate  => read_cert,
+        :SSLPrivateKey   => read_pkey,
+        :SSLCertName     => [ [ "CN",'127.0.0.1' ] ]))
     end
     sleep pause # give the server time to fire up… YUK!
   end
 
   def stop
     Thread.kill(@thread)
+    Thread.kill(@ssl_thread)
   end
 
   def expect(status, headers, method, path, query, body)
@@ -62,6 +74,14 @@ class MockServer
       body = "Bad test code\n#{e.inspect}\n#{e.backtrace}"
       [ 500, { 'Content-Type' => 'text/plain', 'Content-Length' => body.length.to_s }, [ body ]]
     end
+  end
+
+  def read_pkey
+    OpenSSL::PKey::RSA.new(File.read(File.expand_path(File.dirname(__FILE__) + '/../fixtures/server.cert.key')), 'ripple')
+  end
+
+  def read_cert
+    OpenSSL::X509::Certificate.new(File.read((File.expand_path(File.dirname(__FILE__) + '/../fixtures/server.cert.crt'))))
   end
 
   class NullLogger
