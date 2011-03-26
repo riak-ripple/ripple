@@ -47,9 +47,9 @@ module Riak
               response.read_body {|chunk| yield chunk } if block_given?
               if return_body?(method, response.code, block_given?)
                 result[:body] = response.body
-              else
-                raise Riak::HTTPFailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
               end
+            else
+              raise Riak::HTTPFailedRequest.new(method, expect, response.code.to_i, response.to_hash, response.body)
             end
           end
         end
