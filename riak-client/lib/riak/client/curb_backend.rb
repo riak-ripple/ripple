@@ -68,12 +68,18 @@ module Riak
 
       def curl
         Thread.current[:curl_easy_handle] ||= Curl::Easy.new.tap do |c|
+          configure_ssl(c) if @client.ssl_enabled?
+
           c.follow_location = false
           c.on_header do |header_line|
             response_headers.parse(header_line)
             header_line.size
           end
         end
+      end
+
+      def configure_ssl(curl)
+        curl.ssl_verify_peer = @client.ssl_options[:verify_mode] == "peer"
       end
     end
   end
