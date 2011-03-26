@@ -280,7 +280,7 @@ module Riak
     def ssl_enable
       self.protocol = 'https'
       @ssl_options[:pem] = File.read(@ssl_options[:pem_file]) if @ssl_options[:pem_file]
-      @ssl_options[:verify_mode] ||= "peer" if (@ssl_options.keys.map{|k|k.to_s} & %w[pem pem_file ca_file ca_path]).any?
+      @ssl_options[:verify_mode] ||= "peer" if @ssl_options.stringify_keys.any? {|k,v| %w[pem ca_file ca_path].include?(k)}
       @ssl_options[:verify_mode] ||= "none"
       raise ArgumentError.new unless %w[none peer].include?(@ssl_options[:verify_mode])
 
