@@ -27,5 +27,7 @@ RSpec.configure do |config|
     $test_server.recycle if $test_server
   end
 
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
   config.debug = true
 end
