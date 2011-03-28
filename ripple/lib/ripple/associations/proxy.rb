@@ -100,12 +100,12 @@ module Ripple
 
       protected
       def method_missing(method, *args, &block)
-        if load_target
-          if block_given?
-            target.send(method, *args)  { |*block_args| block.call(*block_args) }
-          else
-            target.send(method, *args)
-          end
+        load_target
+
+        if block_given?
+          target.send(method, *args)  { |*block_args| block.call(*block_args) }
+        else
+          target.send(method, *args)
         end
       end
 

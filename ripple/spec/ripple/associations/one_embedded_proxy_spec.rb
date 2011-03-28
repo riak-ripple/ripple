@@ -27,6 +27,10 @@ describe Ripple::Associations::OneEmbeddedProxy do
   it "should not have a child before one is set" do
     @parent.child.should be_nil
   end
+
+  it "should raise NoMethodError when an undefined method is called on the unset child" do
+    expect { @parent.child.some_undefined_method }.to raise_error(NoMethodError)
+  end
   
   it "should be able to set and get its child" do
     @parent.child = @child
