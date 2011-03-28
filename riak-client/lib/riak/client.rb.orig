@@ -87,8 +87,13 @@ module Riak
     # @option options [String, Symbol] :protobuffs_backend (:Beefcake) which Protocol Buffers backend to use
     # @raise [ArgumentError] raised if any invalid options are given
     def initialize(options={})
-      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :protobuffs_backend, :ssl, :basic_auth]).empty?
+<<<<<<< HEAD
+      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :ssl, :basic_auth]).empty?
+        raise ArgumentError, "invalid options"
+=======
+      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :protobuffs_backend, :ssl]).empty?
         raise ArgumentError, t("invalid options")
+>>>>>>> Integrate Beefcake backend with Riak::Client.
       end
       self.ssl          = options[:ssl]
       self.protocol     = options[:protocol]     || "http"
@@ -99,8 +104,12 @@ module Riak
       self.mapred       = options[:mapred]       || "/mapred"
       self.luwak        = options[:luwak]        || "/luwak"
       self.http_backend = options[:http_backend] || :NetHTTP
-      self.protobuffs_backend = options[:protobuffs_backend] || :Beefcake
+<<<<<<< HEAD
       self.basic_auth   = options[:basic_auth] if options[:basic_auth]
+      raise ArgumentError, t("missing_host_and_port") unless @host && @port
+=======
+      self.protobuffs_backend = options[:protobuffs_backend] || :Beefcake
+>>>>>>> Integrate Beefcake backend with Riak::Client.
     end
 
     # Set the client ID for this client. Must be a string or Fixnum value 0 =< value < MAX_CLIENT_ID.
@@ -126,8 +135,11 @@ module Riak
       unless PROTOCOLS.include?(value.to_s)
         raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', '))
       end
+<<<<<<< HEAD
       @ssl_options ||= {} if value === 'https'
+=======
       @backend = nil
+>>>>>>> Integrate Beefcake backend with Riak::Client.
       @protocol = value
     end
 
@@ -220,12 +232,6 @@ module Riak
                    when /pbc/i
                      protobuffs
                    end
-    end
-
-    # Pings the Riak server to check for liveness.
-    # @return [true,false] whether the Riak server is alive and reachable
-    def ping
-      backend.ping
     end
 
     # Retrieves a bucket from Riak.

@@ -36,6 +36,10 @@ describe Riak::Client do
       client.port.should == 9000
     end
 
+    it "should default the port to 8087 when the protocol is pbc" do
+      Riak::Client.new(:protocol => "pbc").port.should == 8087
+    end
+    
     it "should accept basic_auth" do
       client = Riak::Client.new :basic_auth => "user:pass"
       client.basic_auth.should eq("user:pass")
@@ -98,6 +102,12 @@ describe Riak::Client do
       it "should require a valid protocol to be set" do
         lambda { @client.protocol = 'invalid-protocol' }.should(
           raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
+      end
+
+      it "should reset the unified backend when changing the protocol" do
+        old = @client.backend
+        @client.protocol = "pbc"
+        old.should_not eq(@client.backend)
       end
     end
 
@@ -192,11 +202,45 @@ describe Riak::Client do
 
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::NetHTTPBackend.should_receive(:configured?).and_return(false)
-      @client = Riak::Client.new(:http_backend => :NetHTTP)
+      # @client = Riak::Client.new(:http_backend => :NetHTTP)
       lambda { @client.http }.should raise_error
     end
   end
 
+  describe "choosing a Protobuffs backend" do
+    before :each do
+      @client = Riak::Client.new(:protocol => "pbc")
+    end
+
+    it "should choose the selected backend" do
+      @client.protobuffs_backend = :Beefcake
+      @client.protobuffs.should be_instance_of(Riak::Client::BeefcakeProtobuffsBackend)      
+    end
+
+    it "should raise an error when the chosen backend is not valid" do
+      Riak::Client::BeefcakeProtobuffsBackend.should_receive(:configured?).and_return(false)
+      lambda { @client.protobuffs }.should raise_error
+    end
+  end
+
+  describe "choosing a unified backend" do
+    before :each do
+      @client = Riak::Client.new
+    end
+
+    it "should use HTTP when the protocol is http or https" do
+      %w[http https].each do |p|
+        @client.protocol = p
+        @client.backend.should be_kind_of(Riak::Client::HTTPBackend)
+      end
+    end
+    
+    it "should use Protobuffs when the protocol is pbc" do
+      @client.protocol = "pbc"
+      @client.backend.should be_kind_of(Riak::Client::ProtobuffsBackend)
+    end
+  end
+  
   describe "retrieving a bucket" do
     before :each do
       @client = Riak::Client.new
@@ -217,7 +261,6 @@ describe Riak::Client do
       @backend.should_receive(:list_keys) {|b| b.name.should == "foo"; ["bar"] }
       @client.bucket("foo", :keys => true)
     end
-
 
     it "should memoize bucket parameters" do
       @bucket = mock("Bucket")

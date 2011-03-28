@@ -76,7 +76,7 @@ describe Riak::Client::HTTPBackend do
     end
 
     it "should raise an exception when the response code is not 200 or 304" do
-      @backend.should_receive(:get).and_raise(Riak::FailedRequest.new(:get, 200, 500, {}, ''))
+      @backend.should_receive(:get).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 500, {}, ''))
       lambda { @backend.reload_object(@object) }.should raise_error(Riak::FailedRequest)
     end
 

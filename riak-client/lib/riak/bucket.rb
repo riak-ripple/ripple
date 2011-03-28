@@ -113,7 +113,7 @@ module Riak
       begin
         get(key, options)
       rescue Riak::FailedRequest => fr
-        if fr.code.to_i == 404
+        if fr.not_found?
           new(key)
         else
           raise fr

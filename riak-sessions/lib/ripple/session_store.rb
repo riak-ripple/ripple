@@ -47,7 +47,7 @@ module Ripple
       begin
         session = @bucket.get(sid).data
       rescue Riak::FailedRequest => fr
-        raise fr unless fr.code.to_i == 404
+        raise fr unless fr.not_found?
       end
       [sid, session]
     end

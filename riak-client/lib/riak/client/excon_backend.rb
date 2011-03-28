@@ -53,7 +53,7 @@ module Riak
           end
           result
         else
-          raise FailedRequest.new(method, expect, response.status, response.headers, response.body)
+          raise HTTPFailedRequest.new(method, expect, response.status, response.headers, response.body)
         end
       end
 

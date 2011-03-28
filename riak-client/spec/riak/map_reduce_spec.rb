@@ -250,19 +250,19 @@ describe Riak::MapReduce do
     end
 
     it "should interpret failed requests with JSON content-types as map reduce errors" do
-      @backend.stub!(:mapred).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["application/json"]}, '{"error":"syntax error"}'))
+      @backend.stub!(:mapred).and_raise(Riak::HTTPFailedRequest.new(:post, 200, 500, {"content-type" => ["application/json"]}, '{"error":"syntax error"}'))
       lambda { @mr.run }.should raise_error(Riak::MapReduceError)
       begin
         @mr.run
       rescue Riak::MapReduceError => mre
-        mre.message.should == '{"error":"syntax error"}'
+        mre.message.should include('{"error":"syntax error"}')
       else
         fail "No exception raised!"
       end
     end
 
     it "should re-raise non-JSON error responses" do
-      @backend.stub!(:mapred).and_raise(Riak::FailedRequest.new(:post, 200, 500, {"content-type" => ["text/plain"]}, 'Oops, you bwoke it.'))
+      @backend.stub!(:mapred).and_raise(Riak::HTTPFailedRequest.new(:post, 200, 500, {"content-type" => ["text/plain"]}, 'Oops, you bwoke it.'))
       lambda { @mr.run }.should raise_error(Riak::FailedRequest)
     end
   end

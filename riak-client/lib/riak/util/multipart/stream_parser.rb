@@ -45,8 +45,7 @@ module Riak
 
         # Returns a Proc that can be passed to an HTTP request method.
         def to_proc
-          parser = self
-          Proc.new {|chunk| parser.accept(chunk) }
+          method(:accept).to_proc
         end
 
         private
