@@ -215,12 +215,28 @@ shared_examples_for "HTTP backend" do
 
   describe "SSL" do
     it "should be supported" do
-      @client.port = $mock_server.port + 1 if $mock_server
+      @client.port = $mock_server.port + 1 unless @client.http_backend == :NetHTTP
       @client.ssl = true
       setup_http_mock(:get, @backend.path("/riak/","ssl").to_s, :body => "Success!")
       response = @backend.get(200, "/riak/","ssl")
       response[:code].should == 200
-      @backend
+    end
+  end
+
+  describe "HTTP Basic Authentication", :basic_auth => true do
+    it "should add the http basic auth header" do
+      @client.basic_auth = "ripple:rocks"
+      if @client.http_backend == :NetHTTP
+        setup_http_mock(:get, "http://ripple:rocks@127.0.0.1:8098/riak/auth", :body => 'Success!')
+      else # net/http
+        @_mock_set = "Basic #{Base64::encode64("ripple:rocks").strip}" 
+        $mock_server.attach do |env|
+          $mock_server.satisfied = env['HTTP_AUTHORIZATION'] == @_mock_set
+          [200, {}, Array('Success!')]
+        end
+      end
+      response = @backend.get(200, "/riak/", "auth")
+      response[:code].should == 200
     end
   end
 end

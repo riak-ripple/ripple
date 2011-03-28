@@ -138,7 +138,11 @@ module Riak
           {
             "Accept" => "multipart/mixed, application/json;q=0.7, */*;q=0.5",
             "X-Riak-ClientId" => @client.client_id
-          }
+          }.merge(basic_auth_header)
+        end
+
+        def basic_auth_header
+          @client.basic_auth ? {"Authorization" => "Basic #{Base64::encode64(@client.basic_auth)}"} : {}
         end
 
         # @return [URI] The calculated root URI for the Riak HTTP endpoint
