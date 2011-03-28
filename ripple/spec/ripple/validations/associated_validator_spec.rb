@@ -11,18 +11,23 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-#
-# Taken from ActiveRecord::Validations::AssociatedValidators
-#
-require 'ripple'
+require File.expand_path("../../../spec_helper", __FILE__)
 
-module Ripple
-  module Validations
-    class AssociatedValidator < ActiveModel::EachValidator
-      def validate_each(record, attribute, value)
-        return if (value.is_a?(Array) ? value : [value]).collect{ |r| r.nil? || r.valid? }.all?
-        record.errors.add(attribute, :invalid, options.merge(:value => value))
-      end
-    end
+describe Ripple::Validations::AssociatedValidator do
+  require 'support/models/family'
+
+  let(:child)  { Child.new  }
+  let(:parent) { Parent.new }
+  before(:each) { parent.child = child }
+
+  it "is invalid when the associated record is invalid" do
+    child.should_not be_valid
+    parent.should_not be_valid
+  end
+
+  it "is valid when the associated record is valid" do
+    child.name = 'Coen'
+    child.should be_valid
+    parent.should be_valid
   end
 end
