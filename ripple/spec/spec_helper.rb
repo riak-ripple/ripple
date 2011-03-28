@@ -26,4 +26,6 @@ RSpec.configure do |config|
   config.after(:each) do
     $test_server.recycle if $test_server
   end
+
+  config.debug = true
 end
