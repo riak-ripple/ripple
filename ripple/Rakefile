@@ -23,10 +23,12 @@ gemspec = Gem::Specification.new do |gem|
       lib/rails/generators/ripple/configuration/templates/ripple.yml
       lib/rails/generators/ripple/js/js_generator.rb
       lib/rails/generators/ripple/js/templates/js/contrib.js
+      lib/rails/generators/ripple/js/templates/js/iso8601.js
       lib/rails/generators/ripple/js/templates/js/ripple.js
       lib/rails/generators/ripple/model/model_generator.rb
-      lib/rails/generators/ripple/model/templates
       lib/rails/generators/ripple/model/templates/model.rb
+      lib/rails/generators/ripple/observer/observer_generator.rb
+      lib/rails/generators/ripple/observer/templates/observer.rb
       lib/rails/generators/ripple/test/templates/test_server.rb
       lib/rails/generators/ripple/test/test_generator.rb
       lib/rails/generators/ripple_generator.rb
@@ -60,9 +62,9 @@ gemspec = Gem::Specification.new do |gem|
       lib/ripple/embedded_document.rb
       lib/ripple/i18n.rb
       lib/ripple/inspection.rb
-      lib/ripple/locale
       lib/ripple/locale/en.yml
       lib/ripple/nested_attributes.rb
+      lib/ripple/observable.rb
       lib/ripple/properties.rb
       lib/ripple/property_type_mismatch.rb
       lib/ripple/railtie.rb
@@ -95,6 +97,7 @@ gemspec = Gem::Specification.new do |gem|
       spec/ripple/finders_spec.rb
       spec/ripple/inspection_spec.rb
       spec/ripple/key_spec.rb
+      spec/ripple/observable_spec.rb
       spec/ripple/persistence_spec.rb
       spec/ripple/properties_spec.rb
       spec/ripple/ripple_spec.rb
