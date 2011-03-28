@@ -78,7 +78,7 @@ describe Ripple::Validations do
 
   it "should allow unexpected exceptions to be raised" do
     robject = mock("robject", :key => @box.key, "data=" => true)
-    robject.should_receive(:store).and_raise(Riak::FailedRequest.new(:post, 200, 404, {}, "404 not found"))
+    robject.should_receive(:store).and_raise(Riak::HTTPFailedRequest.new(:post, 200, 404, {}, "404 not found"))
     @box.stub!(:robject).and_return(robject)
     @box.stub!(:valid?).and_return(true)
     lambda { @box.save! }.should raise_error(Riak::FailedRequest)

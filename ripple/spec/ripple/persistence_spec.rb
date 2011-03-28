@@ -113,7 +113,7 @@ describe Ripple::Document::Persistence do
 
   it "should allow unexpected exceptions to be raised" do
     robject = mock("robject", :key => @widget.key, "data=" => true)
-    robject.should_receive(:store).and_raise(Riak::FailedRequest.new(:post, 200, 404, {}, "404 not found"))
+    robject.should_receive(:store).and_raise(Riak::HTTPFailedRequest.new(:post, 200, 404, {}, "404 not found"))
     @widget.stub!(:robject).and_return(robject)
     lambda { @widget.save }.should raise_error(Riak::FailedRequest)
   end
