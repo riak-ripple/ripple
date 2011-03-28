@@ -29,9 +29,8 @@ describe Ripple::Associations::OneEmbeddedProxy do
   end
   
   it "should be able to set and get its child" do
-    Child.stub!(:instantiate).and_return(@child)
     @parent.child = @child
-    @parent.child.should == @child
+    @parent.child.should equal(@child)
   end
   
   it "should set the parent document on the child when assigning" do
