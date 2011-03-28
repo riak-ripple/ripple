@@ -222,6 +222,12 @@ module Riak
                    end
     end
 
+    # Pings the Riak server to check for liveness.
+    # @return [true,false] whether the Riak server is alive and reachable
+    def ping
+      backend.ping
+    end
+
     # Retrieves a bucket from Riak.
     # @param [String] bucket the bucket to retrieve
     # @param [Hash] options options for retrieving the bucket

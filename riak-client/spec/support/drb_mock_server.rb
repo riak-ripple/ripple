@@ -7,7 +7,7 @@ module DrbMockServer
   def start_client
     # JRuby doesn't support fork
     if defined? JRUBY_VERSION
-      @server = MockServer.new
+      @server = MockServer.new(2)
       at_exit { @server.stop }
     else
       child_pid = Process.fork do
@@ -17,6 +17,7 @@ module DrbMockServer
       at_exit { Process.kill("HUP", child_pid); Process.wait2 }
       DRb.start_service
       @server = DRbObject.new_with_uri(DRBURI)
+      sleep 1
     end
     true
   end
@@ -29,7 +30,6 @@ module DrbMockServer
     @server.send(meth, *args, &block)
   end
 
-  private
   def start_server
     server = MockServer.new
     DRb.start_service(DRBURI, server)

@@ -18,6 +18,7 @@
 require 'rack'
 require 'openssl'
 require 'webrick/https'
+require 'rack/handler/webrick'
 
 class MockServer
   attr_accessor :port
@@ -33,11 +34,11 @@ class MockServer
     end
     @ssl_thread = Thread.new do
       Rack::Handler::WEBrick.run(self, options.merge(:Port => port+1,
-        :SSLEnable       => true,
-        :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
-        :SSLCertificate  => read_cert,
-        :SSLPrivateKey   => read_pkey,
-        :SSLCertName     => [ [ "CN",'127.0.0.1' ] ]))
+                                                     :SSLEnable       => true,
+                                                     :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE,
+                                                     :SSLCertificate  => read_cert,
+                                                     :SSLPrivateKey   => read_pkey,
+                                                     :SSLCertName     => [ [ "CN",'127.0.0.1' ] ]))
     end
     sleep pause # give the server time to fire up… YUK!
   end

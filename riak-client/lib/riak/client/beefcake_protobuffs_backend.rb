@@ -97,11 +97,14 @@ module Riak
         req = RpbListKeysReq.new(:bucket => bucket)
         write_protobuff(:ListKeysReq, req)
         keys = []
-        block = block_given? ? Pump.new(block).to_proc :  lambda {|kl| keys.concat kl }
-        res = decode_response
-        while res.respond_to?(:done) && !res.done
-          block.call res.keys
-          res = decode_response
+        pump = Pump.new(block) if block_given?
+        while msg = decode_response
+          break if msg.done
+          if pump
+            pump.pump msg.keys
+          else
+            keys += msg.keys
+          end
         end
         block_given? || keys
       end
