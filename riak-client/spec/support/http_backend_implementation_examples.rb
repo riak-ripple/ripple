@@ -228,7 +228,7 @@ shared_examples_for "HTTP backend" do
       @client.basic_auth = "ripple:rocks"
       if @client.http_backend == :NetHTTP
         setup_http_mock(:get, "http://ripple:rocks@127.0.0.1:8098/riak/auth", :body => 'Success!')
-      else # net/http
+      else
         @_mock_set = "Basic #{Base64::encode64("ripple:rocks").strip}" 
         $mock_server.attach do |env|
           $mock_server.satisfied = env['HTTP_AUTHORIZATION'] == @_mock_set
