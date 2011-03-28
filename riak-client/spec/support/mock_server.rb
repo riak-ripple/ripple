@@ -18,6 +18,7 @@
 require 'rack'
 require 'openssl'
 require 'webrick/https'
+require 'rack/handler/webrick'
 
 class MockServer
   attr_accessor :port
