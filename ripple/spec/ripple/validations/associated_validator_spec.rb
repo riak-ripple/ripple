@@ -11,23 +11,23 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', 'riak-client','lib'))
+require File.expand_path("../../../spec_helper", __FILE__)
 
-require 'rubygems' # Use the gems path only for the spec suite
-require 'ripple'
-require 'rspec'
+describe Ripple::Validations::AssociatedValidator do
+  require 'support/models/family'
 
-Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
+  let(:child)  { Child.new  }
+  let(:parent) { Parent.new }
+  before(:each) { parent.child = child }
 
-RSpec.configure do |config|
-  config.mock_with :rspec
-  config.after(:each) do
-    $test_server.recycle if $test_server
+  it "is invalid when the associated record is invalid" do
+    child.should_not be_valid
+    parent.should_not be_valid
   end
 
-  config.filter_run :focus => true
-  config.run_all_when_everything_filtered = true
-  config.debug = true
+  it "is valid when the associated record is valid" do
+    child.name = 'Coen'
+    child.should be_valid
+    parent.should be_valid
+  end
 end

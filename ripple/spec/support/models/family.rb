@@ -14,6 +14,7 @@
 class Parent
   include Ripple::Document
   one :child
+  validates_associated :child
 end
 
 class Child
