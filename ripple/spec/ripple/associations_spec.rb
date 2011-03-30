@@ -49,6 +49,13 @@ describe Ripple::Associations do
       Invoice.instance_methods.map(&:to_sym).should include(:payee?)
     end
   end
+
+  after do
+    Invoice.associations.delete(:foo)
+    Invoice.associations.delete(:items)
+    SubInvoice.associations.delete(:foo) if defined?(SubInvoice)
+    Invoice.associations.delete(:payee)
+  end
 end
 
 describe Ripple::Association do

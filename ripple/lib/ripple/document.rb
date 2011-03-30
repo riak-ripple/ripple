@@ -63,6 +63,7 @@ module Ripple
       include Ripple::Document::Finders
       include Ripple::Inspection
       include Ripple::NestedAttributes
+      include Ripple::Serialization
     end
 
     module ClassMethods

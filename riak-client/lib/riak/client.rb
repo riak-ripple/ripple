@@ -40,6 +40,8 @@ module Riak
     # Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
     HOST_REGEX = /^(?:(?:(?:[a-zA-Z\d](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.)*(?:[a-zA-Z](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\])$/n
 
+    VALID_OPTIONS = [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :protobuffs_backend, :ssl, :basic_auth]
+
     # @return [String] The protocol to use for the Riak endpoint
     attr_reader :protocol
 
@@ -87,7 +89,7 @@ module Riak
     # @option options [String, Symbol] :protobuffs_backend (:Beefcake) which Protocol Buffers backend to use
     # @raise [ArgumentError] raised if any invalid options are given
     def initialize(options={})
-      unless (options.keys - [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :protobuffs_backend, :ssl, :basic_auth]).empty?
+      unless (options.keys - VALID_OPTIONS).empty?
         raise ArgumentError, t("invalid options")
       end
       self.ssl          = options[:ssl]

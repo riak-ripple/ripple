@@ -41,6 +41,7 @@ module Ripple
   autoload :Validations
   autoload :NestedAttributes
   autoload :Observable
+  autoload :Serialization
 
   # Exceptions
   autoload :PropertyTypeMismatch
@@ -100,7 +101,7 @@ module Ripple
 
     private
     def client_config
-      config.slice(:host, :port, :prefix, :mapred, :client_id, :http_backend, :solr)
+      config.slice(*Riak::Client::VALID_OPTIONS)
     end
   end
 
