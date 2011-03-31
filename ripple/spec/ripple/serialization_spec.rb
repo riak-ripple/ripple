@@ -13,7 +13,7 @@
 #    limitations under the License.
 require File.expand_path("../../spec_helper", __FILE__)
 
-describe Ripple::Serialization, :focus => true do
+describe Ripple::Serialization do
   require 'support/models/invoice'
   require 'support/models/note'
   require 'support/models/customer'
