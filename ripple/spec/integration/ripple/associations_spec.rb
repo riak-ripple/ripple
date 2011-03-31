@@ -58,6 +58,15 @@ describe "Ripple Associations" do
     @found.profile.user.should == @found
   end
 
+  it "should not raise an error when a one linked associated record has been deleted" do
+    @user.emergency_contact = @friend1
+    @user.save
+
+    @friend1.destroy
+    @found = User.find(@user.key)
+    @found.emergency_contact.should be_nil
+  end
+
   it "should save many embedded associations" do
     @user.addresses << @billing << @shipping
     @user.save

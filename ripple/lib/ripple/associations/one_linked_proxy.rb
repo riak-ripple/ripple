@@ -22,7 +22,11 @@ module Ripple
       protected
       def find_target
         return nil if links.blank?
-        klass.send(:instantiate,robjects.first)
+
+        robjs = robjects
+        return nil if robjs.blank?
+
+        klass.send(:instantiate, robjs.first)
       end
     end
   end
