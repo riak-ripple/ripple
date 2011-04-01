@@ -44,6 +44,14 @@ describe Ripple::EmbeddedDocument do
       (address_2 == address_1).should be_true
     end
 
+    it "returns true when the documents match and only one of them includes the _type attribute" do
+      attrs = address_1.attributes
+      address_1.stub(:attributes => attrs.merge('_type' => 'Address'))
+
+      (address_1 == address_2).should be_true
+      (address_2 == address_1).should be_true
+    end
+
     it "returns false when the parents are different (even if the attributes and classes are the same)" do
       address_2._parent_document = user_2
       (address_1 == address_2).should be_false

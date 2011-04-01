@@ -51,7 +51,7 @@ module Ripple
       def ==(other)
         self.class == other.class &&
         _parent_document == other._parent_document &&
-        attributes == other.attributes
+        attributes.except('_type') == other.attributes.except('_type')
       end
     end
   end
