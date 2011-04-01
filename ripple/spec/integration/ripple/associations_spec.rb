@@ -79,6 +79,15 @@ describe "Ripple Associations" do
     User.find(@friend1.key).should be
   end
 
+  it "should allow a many embedded record to be deleted from the association" do
+    @user.addresses << @billing << @shipping
+    @user.save!
+
+    @user.addresses.delete(@billing)
+    @user.save!
+    User.find(@user.key).addresses.should == [@shipping]
+  end
+
   it "should save many embedded associations" do
     @user.addresses << @billing << @shipping
     @user.save
