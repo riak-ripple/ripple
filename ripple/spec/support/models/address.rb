@@ -20,3 +20,6 @@ class Address
   many :notes
   embedded_in :user
 end
+
+class SpecialAddress < Address
+end

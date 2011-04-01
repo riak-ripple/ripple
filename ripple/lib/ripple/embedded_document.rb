@@ -46,5 +46,13 @@ module Ripple
         true
       end
     end
+
+    module InstanceMethods
+      def ==(other)
+        self.class == other.class &&
+        _parent_document == other._parent_document &&
+        attributes == other.attributes
+      end
+    end
   end
 end
