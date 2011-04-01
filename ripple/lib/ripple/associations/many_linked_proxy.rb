@@ -26,6 +26,13 @@ module Ripple
         self
       end
 
+      def delete(value)
+        load_target
+        @target.delete(value)
+        replace @target
+        self
+      end
+
       protected
       def find_target
         robjects.map {|robj| klass.send(:instantiate, robj) }

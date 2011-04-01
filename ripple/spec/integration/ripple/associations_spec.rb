@@ -67,6 +67,18 @@ describe "Ripple Associations" do
     @found.emergency_contact.should be_nil
   end
 
+  it "should allow a many linked record to be deleted from the association but kept in the datastore" do
+    @user.friends << @friend1
+    @user.save!
+
+    @user.friends.delete(@friend1)
+    @user.save!
+
+    found_user = User.find(@user.key)
+    found_user.friends.should be_empty
+    User.find(@friend1.key).should be
+  end
+
   it "should save many embedded associations" do
     @user.addresses << @billing << @shipping
     @user.save
