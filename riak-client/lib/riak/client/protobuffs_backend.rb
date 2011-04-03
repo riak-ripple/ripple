@@ -20,7 +20,7 @@ module Riak
   class Client
     class ProtobuffsBackend
       include Util::Translation
-      
+
       # Message Codes Enum
       MESSAGE_CODES = %W[
           ErrorResp
@@ -74,7 +74,7 @@ module Riak
       end
 
       def socket
-        Thread.current[:riakpbc_socket] ||= TCPSocket.new(@client.host, @client.port)
+        Thread.current[:riakpbc_socket] ||= TCPSocket.new(@client.host, @client.pb_port)
       end
 
       def reset_socket

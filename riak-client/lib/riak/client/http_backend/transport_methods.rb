@@ -12,6 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+require 'base64'
 
 module Riak
   class Client
@@ -137,8 +138,18 @@ module Riak
         def default_headers
           {
             "Accept" => "multipart/mixed, application/json;q=0.7, */*;q=0.5",
-            "X-Riak-ClientId" => @client.client_id
+            "X-Riak-ClientId" => client_id
           }.merge(basic_auth_header)
+        end
+
+        def client_id
+          value = @client.client_id
+          case value
+          when Integer
+            b64encode(value)
+          when String
+            value
+          end
         end
 
         def basic_auth_header
@@ -147,7 +158,8 @@ module Riak
 
         # @return [URI] The calculated root URI for the Riak HTTP endpoint
         def root_uri
-          URI.parse("#{client.protocol}://#{client.host}:#{client.port}")
+          protocol = client.ssl_enabled? ? "https" : "http"
+          URI.parse("#{protocol}://#{client.host}:#{client.http_port}")
         end
 
         # Calculates an absolute URI from a relative path specification
@@ -205,6 +217,10 @@ module Riak
         private
         def response_headers
           Thread.current[:response_headers] ||= Riak::Util::Headers.new
+        end
+
+        def b64encode(n)
+          Base64.encode64([n].pack("N")).chomp
         end
       end
     end

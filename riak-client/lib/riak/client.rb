@@ -40,7 +40,7 @@ module Riak
     # Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
     HOST_REGEX = /^(?:(?:(?:[a-zA-Z\d](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.)*(?:[a-zA-Z](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\])$/n
 
-    VALID_OPTIONS = [:protocol, :host, :port, :prefix, :client_id, :mapred, :luwak, :http_backend, :protobuffs_backend, :ssl, :basic_auth]
+    VALID_OPTIONS = [:protocol, :host, :port, :http_port, :pb_port, :prefix, :client_id, :mapred, :luwak, :http_backend, :protobuffs_backend, :ssl, :basic_auth]
 
     # @return [String] The protocol to use for the Riak endpoint
     attr_reader :protocol
@@ -48,19 +48,23 @@ module Riak
     # @return [String] The host or IP address for the Riak endpoint
     attr_reader :host
 
-    # @return [Fixnum] The port of the Riak HTTP endpoint
-    attr_reader :port
+    # @return [Fixnum] The HTTP(S) port for the Riak endpoint
+    attr_reader :http_port
+
+    # @return [Fixnum] The Protocol Buffers port for the Riak endpoint
+    attr_reader :pb_port
 
     # @return [String] The user:pass for http basic authentication
     attr_reader :basic_auth
 
-    # @return [String] The internal client ID used by Riak to route responses
-    attr_reader :client_id
-
     # @return [Hash|nil] The SSL options that get built when using SSL
     attr_reader :ssl_options
 
-    # @return [Hash|nil] The writer that will build valid SSL options from the provided config
+    # @return [String] The internal client ID used by Riak to route responses
+    attr_reader :client_id
+
+    # @attr_writer [Hash|nil] The writer that will build valid SSL options
+    #     from the provided config
     attr_writer :ssl
 
     # @return [String] The URL path prefix to the "raw" HTTP endpoint
@@ -90,19 +94,21 @@ module Riak
     # @raise [ArgumentError] raised if any invalid options are given
     def initialize(options={})
       unless (options.keys - VALID_OPTIONS).empty?
-        raise ArgumentError, t("invalid options")
+        raise ArgumentError, t("invalid_options")
       end
-      self.ssl          = options[:ssl]
-      self.protocol     = options[:protocol]     || "http"
-      self.host         = options[:host]         || "127.0.0.1"
-      self.port         = options[:port]         || ((protocol == "pbc") ? 8087 : 8098)
-      self.client_id    = options[:client_id]    || make_client_id
-      self.prefix       = options[:prefix]       || "/riak/"
-      self.mapred       = options[:mapred]       || "/mapred"
-      self.luwak        = options[:luwak]        || "/luwak"
-      self.http_backend = options[:http_backend] || :NetHTTP
+      self.protocol           = options[:protocol]           || "http"
+      self.ssl                = options[:ssl]                if options[:ssl]
+      self.host               = options[:host]               || "127.0.0.1"
+      self.http_port          = options[:http_port]          || 8098
+      self.pb_port            = options[:pb_port]            || 8087
+      self.port               = options[:port]               if options[:port]
+      self.prefix             = options[:prefix]             || "/riak/"
+      self.mapred             = options[:mapred]             || "/mapred"
+      self.luwak              = options[:luwak]              || "/luwak"
+      self.http_backend       = options[:http_backend]       || :NetHTTP
       self.protobuffs_backend = options[:protobuffs_backend] || :Beefcake
-      self.basic_auth   = options[:basic_auth] if options[:basic_auth]
+      self.basic_auth         = options[:basic_auth]         if options[:basic_auth]
+      self.client_id          = options[:client_id]          if options[:client_id]
     end
 
     # Set the client ID for this client. Must be a string or Fixnum value 0 =< value < MAX_CLIENT_ID.
@@ -110,14 +116,18 @@ module Riak
     # @raise [ArgumentError] when an invalid client ID is given
     # @return [String] the assigned client ID
     def client_id=(value)
-      @client_id = case value
-                   when 0...MAX_CLIENT_ID
-                     b64encode(value)
-                   when String
-                     value
-                   else
-                     raise ArgumentError, t("invalid_client_id", :max_id => MAX_CLIENT_ID)
-                   end
+      value = case value
+              when 0...MAX_CLIENT_ID, String
+                value
+              else
+                raise ArgumentError, t("invalid_client_id", :max_id => MAX_CLIENT_ID)
+              end
+      backend.set_client_id value if backend.respond_to?(:set_client_id)
+      @client_id = value
+    end
+
+    def client_id
+      @client_id ||= backend.respond_to?(:get_client_id) ? backend.get_client_id : make_client_id
     end
 
     # Set the protocol of the Riak endpoint.  Value must be in the
@@ -128,7 +138,8 @@ module Riak
       unless PROTOCOLS.include?(value.to_s)
         raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', '))
       end
-      @ssl_options ||= {} if value === 'https'
+      @ssl_options ||= {} if value == 'https'
+      @ssl_options = nil if value == 'http'
       @backend = nil
       @protocol = value
     end
@@ -142,15 +153,58 @@ module Riak
       @host = value
     end
 
-    # Set the port number of the Riak endpoint. This must be an integer between 0 and 65535.
+    # @return [Fixnum] The port of the Riak endpoint
+    # @deprecated Ports for HTTP(S) and Protocol Buffers are
+    #    segregated. Use {#http_port} or {#pb_port}.
+    def port
+      warn(t('deprecated.port', :backtrace => caller.join("\n")))
+      case protocol
+      when /http/i
+        http_port
+      when /pbc/i
+        pb_port
+      end
+    end
+
+    # Set the port number of the Riak endpoint. This must be an
+    # integer between 0 and 65535.
+    # @deprecated Ports for HTTP(S) and Protocol Buffers are
+    #    segregated. Use {#http_port=} or {#pb_port=}.
     # @param [Fixnum] value The port number of the Riak endpoint
     # @raise [ArgumentError] if an invalid port number is given
     # @return [Fixnum] the assigned port number
     def port=(value)
+      warn(t('deprecated.port', :backtrace => caller[0..2].join("\n    ")))
       raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
-      @port = value
+      case protocol
+      when /http/i
+        self.http_port = value
+      when /pbc/i
+        self.pb_port = value
+      end
     end
 
+    # Set the HTTP(S) port for the Riak endpoint
+    # @param [Fixnum] value The HTTP port number of the Riak endpoint
+    # @raise [ArgumentError] if an invalid port number is given
+    # @return [Fixnum] the assigned port number
+    def http_port=(value)
+      raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
+      @http_port = value
+    end
+
+    # Set the Protocol Buffers port for the Riak endpoint
+    # @param [Fixnum] value The Protocol Buffers port number of the Riak endpoint
+    # @raise [ArgumentError] if an invalid port number is given
+    # @return [Fixnum] the assigned port number
+    def pb_port=(value)
+      raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
+      @pb_port = value
+    end
+
+
+    # Sets the HTTP Basic Authentication credentials.
+    # @param [String] value an auth string in the form "user:password"
     def basic_auth=(value)
       raise ArgumentError, t("invalid_basic_auth") unless value.to_s.split(':').length === 2
       @basic_auth = value
@@ -174,9 +228,9 @@ module Riak
       value ? ssl_enable : ssl_disable
     end
 
-    # Checks if the current protocol is https
+    # Checks if SSL is enabled for HTTP
     def ssl_enabled?
-      protocol === 'https'
+      protocol == 'https' || @ssl_options.present?
     end
 
     # Automatically detects and returns an appropriate HTTP backend.
@@ -326,16 +380,12 @@ module Riak
 
     # @return [String] A representation suitable for IRB and debugging output.
     def inspect
-      "#<Riak::Client #{protocol}://#{host}:#{port}>"
+      "#<Riak::Client #{protocol}://#{host}:#{protocol == 'pbc' ? pb_port : http_port}>"
     end
 
     private
     def make_client_id
-      b64encode(rand(MAX_CLIENT_ID))
-    end
-
-    def b64encode(n)
-      Base64.encode64([n].pack("N")).chomp
+      rand(MAX_CLIENT_ID)
     end
 
     def ssl_enable
@@ -343,7 +393,7 @@ module Riak
       @ssl_options[:pem] = File.read(@ssl_options[:pem_file]) if @ssl_options[:pem_file]
       @ssl_options[:verify_mode] ||= "peer" if @ssl_options.stringify_keys.any? {|k,v| %w[pem ca_file ca_path].include?(k)}
       @ssl_options[:verify_mode] ||= "none"
-      raise ArgumentError.new unless %w[none peer].include?(@ssl_options[:verify_mode])
+      raise ArgumentError.new(t('invalid_ssl_verify_mode', :invalid => @ssl_options[:verify_mode])) unless %w[none peer].include?(@ssl_options[:verify_mode])
 
       @ssl_options
     end

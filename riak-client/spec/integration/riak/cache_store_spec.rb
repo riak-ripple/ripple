@@ -24,7 +24,7 @@ describe Riak::CacheStore do
 
   before do
     @web_port ||= 8098
-    @cache = ActiveSupport::Cache.lookup_store(:riak_store, :port => @web_port)
+    @cache = ActiveSupport::Cache.lookup_store(:riak_store, :http_port => @web_port)
     @cleanup = true
   end
 
@@ -56,12 +56,12 @@ describe Riak::CacheStore do
     end
 
     it "should configure the client according to the initialized options" do
-      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :port => 10000)
-      @cache.client.port.should == 10000
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :http_port => 10000)
+      @cache.client.http_port.should == 10000
     end
 
     it "should choose the bucket according to the initializer option" do
-      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :bucket => "foobar", :port => @web_port)
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :bucket => "foobar", :http_port => @web_port)
       @cache.bucket.name.should == "foobar"
     end
 
@@ -70,7 +70,7 @@ describe Riak::CacheStore do
     end
 
     it "should set the N value to the specified value" do
-      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :n_value => 1, :port => @web_port)
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :n_value => 1, :http_port => @web_port)
       @cache.bucket.n_value.should == 1
     end
 
@@ -79,7 +79,7 @@ describe Riak::CacheStore do
     end
 
     it "should set the bucket R default to the specified value" do
-      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :r => "quorum", :port => @web_port)
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :r => "quorum", :http_port => @web_port)
       @cache.bucket.r.should == "quorum"
     end
 
@@ -88,7 +88,7 @@ describe Riak::CacheStore do
     end
 
     it "should set the bucket W default to the specified value" do
-      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :w => "all", :port => @web_port)
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :w => "all", :http_port => @web_port)
       @cache.bucket.w.should == "all"
     end
 
@@ -97,7 +97,7 @@ describe Riak::CacheStore do
     end
 
     it "should set the bucket DW default to the specified value" do
-      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :dw => "quorum", :port => @web_port)
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :dw => "quorum", :http_port => @web_port)
       @cache.bucket.dw.should == "quorum"
     end
 
@@ -106,7 +106,7 @@ describe Riak::CacheStore do
     end
 
     it "should set the bucket RW default to the specified value" do
-      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :rw => "all", :port => @web_port)
+      @cache = ActiveSupport::Cache.lookup_store(:riak_store, :rw => "all", :http_port => @web_port)
       @cache.bucket.rw.should == "all"
     end
   end

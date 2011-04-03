@@ -23,7 +23,7 @@ describe "HTTP" do
 
   before do
     @web_port ||= 8098
-    @client = Riak::Client.new(:port => @web_port)
+    @client = Riak::Client.new(:http_port => @web_port)
   end
 
   after do

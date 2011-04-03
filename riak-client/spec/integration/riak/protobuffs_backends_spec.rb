@@ -23,7 +23,7 @@ describe "Protocol Buffers" do
 
   before do
     @pbc_port ||= 8087
-    @client = Riak::Client.new(:port => @pbc_port, :protocol => "pbc")
+    @client = Riak::Client.new(:pb_port => @pbc_port, :protocol => "pbc")
   end
 
   after do

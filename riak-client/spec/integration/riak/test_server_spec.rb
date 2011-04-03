@@ -156,7 +156,7 @@ if $test_server
         @server.prepare!
         @server.start.should be_true
 
-        client = Riak::Client.new(:port => 9000)
+        client = Riak::Client.new(:http_port => 9000)
         obj = client['test_bucket'].new("test_item")
         obj.data = {"data" => "testing"}
         obj.store rescue nil

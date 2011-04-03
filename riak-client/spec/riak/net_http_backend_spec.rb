@@ -15,8 +15,8 @@ require File.expand_path("../spec_helper", File.dirname(__FILE__))
                   
 describe Riak::Client::NetHTTPBackend do
   before :each do
-    @client = Riak::Client.new
-    @backend = Riak::Client::NetHTTPBackend.new(@client)
+    @client = Riak::Client.new(:http_backend => :NetHTTP)
+    @backend = @client.http
     FakeWeb.allow_net_connect = false
   end
 

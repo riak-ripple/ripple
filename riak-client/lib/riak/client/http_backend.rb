@@ -13,7 +13,6 @@
 #    limitations under the License.
 require 'riak'
 
-
 module Riak
   class Client
     # The parent class for all backends that connect to Riak via

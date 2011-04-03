@@ -15,10 +15,11 @@ require File.expand_path("../spec_helper", File.dirname(__FILE__))
 
 describe Riak::Client do
   describe "when initializing" do
-    it "should default to the local interface on port 8098" do
+    it "should default to the local interface on port 8098 (8087 for protobuffs)" do
       client = Riak::Client.new
       client.host.should == "127.0.0.1"
-      client.port.should == 8098
+      client.http_port.should == 8098
+      client.pb_port.should == 8087
     end
 
     it "should accept a protocol" do
@@ -31,15 +32,23 @@ describe Riak::Client do
       client.host.should == "riak.basho.com"
     end
 
-    it "should accept a port" do
-      client = Riak::Client.new :port => 9000
-      client.port.should == 9000
+    it "should accept an HTTP port" do
+      client = Riak::Client.new :http_port => 9000
+      client.http_port.should == 9000
     end
 
-    it "should default the port to 8087 when the protocol is pbc" do
-      Riak::Client.new(:protocol => "pbc").port.should == 8087
+    it "should accept a Protobuffs port" do
+      client = Riak::Client.new :pb_port => 9000
+      client.pb_port.should == 9000
     end
-    
+
+    it "should warn on setting :port" do
+      # TODO: make a deprecation utility class/module instead
+      client = Riak::Client.allocate
+      client.should_receive(:warn).and_return(true)
+      client.send :initialize, :port => 9000
+    end
+
     it "should accept basic_auth" do
       client = Riak::Client.new :basic_auth => "user:pass"
       client.basic_auth.should eq("user:pass")
@@ -50,13 +59,8 @@ describe Riak::Client do
       client.client_id.should == "AAAAAA=="
     end
 
-    it "should turn an integer client ID into a base64-encoded string" do
-      client = Riak::Client.new :client_id => 1
-      client.client_id.should == "AAAAAQ=="
-    end
-
     it "should create a client ID if not specified" do
-      Riak::Client.new.client_id.should be_kind_of(String)
+      Riak::Client.new.client_id.should_not be_nil
     end
 
     it "should accept a path prefix" do
@@ -101,7 +105,7 @@ describe Riak::Client do
 
       it "should require a valid protocol to be set" do
         lambda { @client.protocol = 'invalid-protocol' }.should(
-          raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
+                                                           raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
       end
 
       it "should reset the unified backend when changing the protocol" do
@@ -128,20 +132,38 @@ describe Riak::Client do
       end
     end
 
+    [:http, :pb].each do |protocol|
+      describe "setting the #{protocol} port" do
+        it "should allow setting the #{protocol} port" do
+          @client.should respond_to("#{protocol}_port=")
+          @client.send("#{protocol}_port=", 9000)
+          @client.send("#{protocol}_port").should == 9000
+        end
+
+        it "should require the port to be a valid number" do
+          [-1,65536,"foo"].each do |invalid|
+            lambda { @client.send("#{protocol}_port=",invalid) }.should raise_error(ArgumentError)
+          end
+          [0,1,65535,8098].each do |valid|
+            lambda { @client.send("#{protocol}_port=", valid) }.should_not raise_error
+          end
+        end
+      end
+    end
+
     describe "setting the port" do
-      it "should allow setting the port" do
-        @client.should respond_to(:port=)
+      before do
+        @client.stub!(:warn).and_return(true)
+      end
+      it "should raise a deprecation warning" do
+        @client.should_receive(:warn).and_return(true)
         @client.port = 9000
-        @client.port.should == 9000
       end
 
-      it "should require the port to be a valid number" do
-        [-1,65536,"foo"].each do |invalid|
-          lambda { @client.port = invalid }.should raise_error(ArgumentError)
-        end
-        [0,1,65535,8098].each do |valid|
-          lambda { @client.port = valid }.should_not raise_error
-        end
+      it "should set the port for the selected protocol" do
+        @client.protocol = "pbc"
+        @client.port = 9000
+        @client.pb_port.should == 9000
       end
     end
 
@@ -150,7 +172,7 @@ describe Riak::Client do
         @client.should respond_to(:basic_auth=)
         @client.basic_auth = "user:pass"
         @client.basic_auth.should eq("user:pass")
-      end 
+      end
 
       it "should require that basic auth splits into two even parts" do
         lambda { @client.basic_auth ="user" }.should raise_error(ArgumentError, "basic auth must be set using 'user:pass'")
@@ -167,11 +189,6 @@ describe Riak::Client do
       it "should accept a string unmodified" do
         @client.client_id = "foo"
         @client.client_id.should == "foo"
-      end
-
-      it "should base64-encode an integer" do
-        @client.client_id = 1
-        @client.client_id.should == "AAAAAQ=="
       end
 
       it "should reject an integer equal to the maximum client id" do
@@ -202,7 +219,6 @@ describe Riak::Client do
 
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::NetHTTPBackend.should_receive(:configured?).and_return(false)
-      # @client = Riak::Client.new(:http_backend => :NetHTTP)
       lambda { @client.http }.should raise_error
     end
   end
@@ -214,7 +230,7 @@ describe Riak::Client do
 
     it "should choose the selected backend" do
       @client.protobuffs_backend = :Beefcake
-      @client.protobuffs.should be_instance_of(Riak::Client::BeefcakeProtobuffsBackend)      
+      @client.protobuffs.should be_instance_of(Riak::Client::BeefcakeProtobuffsBackend)
     end
 
     it "should raise an error when the chosen backend is not valid" do
@@ -234,13 +250,13 @@ describe Riak::Client do
         @client.backend.should be_kind_of(Riak::Client::HTTPBackend)
       end
     end
-    
+
     it "should use Protobuffs when the protocol is pbc" do
       @client.protocol = "pbc"
       @client.backend.should be_kind_of(Riak::Client::ProtobuffsBackend)
     end
   end
-  
+
   describe "retrieving a bucket" do
     before :each do
       @client = Riak::Client.new
@@ -460,7 +476,7 @@ describe Riak::Client do
       @client.ssl = {:pem => 'i-am-a-pem'}
       @client.ssl_options[:pem].should eq('i-am-a-pem')
     end
-    
+
     it "should set them pem from the contents of pem_file" do
       filepath = File.expand_path(File.join(File.dirname(__FILE__), '../fixtures/test.pem'))
       @client.ssl = {:pem_file => filepath}

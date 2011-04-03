@@ -36,7 +36,7 @@ else
     end
 
     before :each do
-      @client = Riak::Client.new(:port => $mock_server.port, :http_backend => :Curb) # Point to our mock
+      @client = Riak::Client.new(:http_port => $mock_server.port, :http_backend => :Curb) # Point to our mock
       @backend = @client.http
       @_mock_set = false
     end
