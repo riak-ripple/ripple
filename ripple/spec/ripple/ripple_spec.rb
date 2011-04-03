@@ -30,16 +30,16 @@ describe Ripple do
 
   it "should allow setting the client manually" do
     Ripple.should respond_to(:client=)
-    client = Riak::Client.new(:port => 9000)
+    client = Riak::Client.new(:http_port => 9000)
     Ripple.client = client
     Ripple.client.should == client
   end
 
   it "should reset the client when the configuration changes" do
     c = Ripple.client
-    Ripple.config = {:port => 9000}
+    Ripple.config = {:http_port => 9000}
     Ripple.client.should_not == c
-    Ripple.client.port.should == 9000
+    Ripple.client.http_port.should == 9000
   end
 
   it "should raise No Such File or Directory when given a bad configuration file" do
@@ -53,13 +53,13 @@ describe Ripple do
 
   it "should select the configuration hash from the config keys provided" do
     Ripple.load_config(File.join(File.dirname(__FILE__), '..', 'fixtures', 'config.yml'), ['ripple_rails', 'development'])
-    Ripple.client.port.should == 9001
+    Ripple.client.http_port.should == 9001
     Ripple.client.host.should == '127.0.0.1'
   end
 
   it "should apply the configuration under the ripple key" do
     Ripple.load_config(File.join(File.dirname(__FILE__), '..', 'fixtures', 'config.yml'))
-    Ripple.client.port.should == 9000
+    Ripple.client.http_port.should == 9000
     Ripple.client.host.should == 'localhost'
   end
 

@@ -33,9 +33,9 @@ module Ripple
         :n_val => 2,
         :last_write_wins => false,
         :host => "127.0.0.1",
-        :port => 8098
+        :http_port => 8098
       }.merge(@default_options)
-      @client = Riak::Client.new(@default_options.slice(:host,:port,:client_id))
+      @client = Riak::Client.new(@default_options.slice(*Riak::Client::VALID_OPTIONS))
       @bucket = @client.bucket(@default_options[:bucket])
       set_bucket_defaults
     end

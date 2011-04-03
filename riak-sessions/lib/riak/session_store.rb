@@ -29,7 +29,7 @@ module Riak
   class SessionStore < Rack::Session::Abstract::ID
     DEFAULT_OPTIONS = Rack::Session::Abstract::ID::DEFAULT_OPTIONS.merge \
     :host => "127.0.0.1",
-    :port => 8098,
+    :http_port => 8098,
     :bucket => "_sessions",
     :r => 1,
     :w => 1,
@@ -47,15 +47,9 @@ module Riak
     # @see Rack::Session::Abstract::ID#initialize
     def initialize(app, options={})
       super
-      @client = Riak::Client.new(default_options.slice(:host,:port))
-      # @client.http.send(:curl).verbose = true
-      @bucket = @client.bucket(default_options[:bucket]).tap do |b|
-        new_props = {}
-        [:r,:w,:dw,:rw,:n_val].each do |q|
-          new_props[q.to_s] = default_options[q] unless b.send(q) == default_options[q]
-        end
-        b.props = new_props unless new_props.blank?
-      end
+      @client = Riak::Client.new(@default_options.slice(*Riak::Client::VALID_OPTIONS))
+      @bucket = @client.bucket(default_options[:bucket])
+      set_bucket_defaults
       self
     end
 
@@ -115,6 +109,16 @@ module Riak
       robject.data = {}
       robject.store
       [session_id, robject.data]
+    end
+
+    private
+    def set_bucket_defaults
+      bucket_opts = @default_options.slice(:r,:w,:dw,:rw,:n_val,:last_write_wins).stringify_keys
+      new_props = bucket_opts.inject({}) do |hash,(k,v)|
+        hash[k] = v unless @bucket.props[k] == v
+        hash
+      end
+      @bucket.props = new_props unless new_props.empty?
     end
   end
 end
