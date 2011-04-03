@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::BucketAccess</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -219,7 +219,7 @@ The bucket assigned to this class.
       <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
-  <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='const'>Ripple</span><span class='period'>.</span><span class='id client'>client</span><span class='comma'>,</span> <span class='id bucket_name'>bucket_name</span><span class='rparen'>)</span>
+  <span class='const'>Ripple</span><span class='period'>.</span><span class='id client'>client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id bucket_name'>bucket_name</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -351,9 +351,9 @@ the new bucket name
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:11 2010 by 
+  Generated on Sun Apr  3 19:32:40 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

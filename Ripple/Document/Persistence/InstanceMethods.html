@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Document::Persistence::InstanceMethods</title>
 <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -179,6 +179,27 @@ Determines whether this is a new document.
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#really_save-instance_method" title="#really_save (instance method)">- (Object) <strong>really_save</strong>(*args) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#reload-instance_method" title="#reload (instance method)">- (Object) <strong>reload</strong> </a>
     
 
@@ -296,14 +317,14 @@ Writes new attributes and then saves the document.
       <pre class="lines">
 
 
-108
-109
 110
 111
-112</pre>
+112
+113
+114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id robject'>robject</span>
   <span class='ivar'>@robject</span> <span class='op'>||=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>RObject</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='id key'>key</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id obj'>obj</span><span class='op'>|</span>
@@ -346,16 +367,16 @@ Deletes the document from Riak and freezes this instance
       <pre class="lines">
 
 
-93
-94
 95
 96
 97
 98
-99</pre>
+99
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 95</span>
 
 <span class='kw'>def</span> <span class='id destroy'>destroy</span>
   <span class='id robject'>robject</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id quorums'>quorums</span><span class='period'>.</span><span class='id slice'>slice</span><span class='lparen'>(</span><span class='symbol'>:rw</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id new?'>new?</span>
@@ -393,12 +414,12 @@ Freezes the document, preventing further modification.
       <pre class="lines">
 
 
-102
-103
-104</pre>
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 104</span>
 
 <span class='kw'>def</span> <span class='id freeze'>freeze</span>
   <span class='ivar'>@attributes</span><span class='period'>.</span><span class='id freeze'>freeze</span><span class='semicolon'>;</span> <span class='kw'>super</span>
@@ -461,6 +482,44 @@ Determines whether this is a new document.
 </div>
     
       <div class="method_details ">
+  <p class="signature " id="really_save-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>really_save</strong>(*args) 
+  
+
+  
+</p><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+76
+77
+78
+79
+80
+81
+82
+83</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 76</span>
+
+<span class='kw'>def</span> <span class='id really_save'>really_save</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>=</span> <span class='id key'>key</span> <span class='kw'>if</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>!=</span> <span class='id key'>key</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id data'>data</span> <span class='op'>=</span> <span class='id attributes_for_persistence'>attributes_for_persistence</span>
+  <span class='id robject'>robject</span><span class='period'>.</span><span class='id store'>store</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id quorums'>quorums</span><span class='period'>.</span><span class='id slice'>slice</span><span class='lparen'>(</span><span class='symbol'>:w</span><span class='comma'>,</span><span class='symbol'>:dw</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>=</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span>
+  <span class='ivar'>@new</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <p class="signature " id="reload-instance_method">
   
     - (<tt><span class='object_link'><a href="../../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>reload</strong> 
@@ -503,20 +562,20 @@ self
       <pre class="lines">
 
 
-85
-86
 87
 88
 89
-90</pre>
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id reload'>reload</span>
   <span class='kw'>return</span> <span class='kw'>self</span> <span class='kw'>if</span> <span class='id new?'>new?</span>
   <span class='id robject'>robject</span><span class='period'>.</span><span class='id reload'>reload</span><span class='lparen'>(</span><span class='symbol'>:force</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rparen'>)</span>
-  <span class='ivar'>@robject</span><span class='period'>.</span><span class='id data'>data</span><span class='period'>.</span><span class='id except'>except</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_type</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id value'>value</span><span class='op'>|</span> <span class='id send'>send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id key'>key</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id value'>value</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id __send__'>__send__</span><span class='lparen'>(</span><span class='symbol'>:attributes=</span><span class='comma'>,</span> <span class='ivar'>@robject</span><span class='period'>.</span><span class='id data'>data</span><span class='period'>.</span><span class='id except'>except</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_type</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -569,27 +628,13 @@ whether the document succeeded in saving
 
 72
 73
-74
-75
-76
-77
-78
-79
-80
-81</pre>
+74</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/persistence.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id save'>save</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
-  <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>=</span> <span class='id key'>key</span> <span class='kw'>if</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>!=</span> <span class='id key'>key</span>
-  <span class='id robject'>robject</span><span class='period'>.</span><span class='id data'>data</span> <span class='op'>=</span> <span class='id attributes_for_persistence'>attributes_for_persistence</span>
-  <span class='id robject'>robject</span><span class='period'>.</span><span class='id store'>store</span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id quorums'>quorums</span><span class='period'>.</span><span class='id slice'>slice</span><span class='lparen'>(</span><span class='symbol'>:w</span><span class='comma'>,</span><span class='symbol'>:dw</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id key'>key</span> <span class='op'>=</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span>
-  <span class='ivar'>@new</span> <span class='op'>=</span> <span class='kw'>false</span>
-  <span class='kw'>true</span>
-<span class='kw'>rescue</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>FailedRequest</span>
-  <span class='kw'>false</span>
+  <span class='id really_save'>really_save</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -722,9 +767,9 @@ whether the document succeeded in saving
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:11 2010 by 
+  Generated on Sun Apr  3 19:32:40 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

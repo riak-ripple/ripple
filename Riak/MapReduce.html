@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::MapReduce</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -79,7 +79,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">riak-client/lib/riak/map_reduce.rb<span class="defines">,<br />
-  riak-client/lib/riak/search.rb</span>
+  riak-client/lib/riak/search.rb,<br /> riak-client/lib/riak/map_reduce/phase.rb,<br /> riak-client/lib/riak/map_reduce/filter_builder.rb</span>
 </dd>
   
 </dl>
@@ -102,7 +102,7 @@ Class for invoking map-reduce jobs using the HTTP interface.
     
    
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="MapReduce/FilterBuilder.html" title="Riak::MapReduce::FilterBuilder (class)">FilterBuilder</a></span>, <span class='object_link'><a href="MapReduce/Phase.html" title="Riak::MapReduce::Phase (class)">Phase</a></span>
     
   
 </p>
@@ -122,7 +122,7 @@ Class for invoking map-reduce jobs using the HTTP interface.
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#inputs-instance_method" title="#inputs (instance method)">- (Array&lt;[bucket,key]&gt;, String) <strong>inputs</strong> </a>
+      <a href="#inputs-instance_method" title="#inputs (instance method)">- (Array&lt;[bucket,key]&gt;, ...) <strong>inputs</strong> </a>
     
 
     
@@ -139,7 +139,8 @@ Class for invoking map-reduce jobs using the HTTP interface.
 
   
     <span class="summary_desc"><div class='inline'><p>
-The bucket/keys for input to the job, or the bucket (all keys).
+The bucket/keys for input to the job, or the bucket (all keys), or a hash
+containing the bucket and key-filters.
 </p>
 </div></span>
   
@@ -204,6 +205,30 @@ The map and reduce phases that will be executed.
   
     <span class="summary_desc"><div class='inline'><p>
 Add or replace inputs for the job.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#filter-instance_method" title="#filter (instance method)">- (MapReduce) <strong>filter</strong>(bucket) { ... }</a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Adds a bucket and key-filters built by the given block.
 </p>
 </div></span>
   
@@ -311,7 +336,7 @@ Add a reduce phase to the job.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#run-instance_method" title="#run (instance method)">- (Array&lt;Array&gt;) <strong>run</strong> </a>
+      <a href="#run-instance_method" title="#run (instance method)">- (Object) <strong>run</strong>(&amp;block) </a>
     
 
     
@@ -418,7 +443,7 @@ Convert the job to JSON for submission over the HTTP interface.
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span>, <span class='object_link'><a href="Util/Escape.html#unescape-instance_method" title="Riak::Util::Escape#unescape (method)">#unescape</a></span></p>
 
   
   
@@ -496,13 +521,13 @@ helpful for initializing the job
       <pre class="lines">
 
 
-35
-36
-37
-38</pre>
+40
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span>
   <span class='ivar'>@client</span><span class='comma'>,</span> <span class='ivar'>@inputs</span><span class='comma'>,</span> <span class='ivar'>@query</span> <span class='op'>=</span> <span class='id client'>client</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -524,14 +549,15 @@ helpful for initializing the job
       <div class="method_details first">
   <p class="signature first" id="inputs-instance_method">
   
-    - (<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;[bucket,key]&gt;</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>inputs</strong> 
+    - (<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;[bucket,key]&gt;</tt>, ...) <strong>inputs</strong> 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-The bucket/keys for input to the job, or the bucket (all keys).
+The bucket/keys for input to the job, or the bucket (all keys), or a hash
+containing the bucket and key-filters.
 </p>
 
 
@@ -543,14 +569,15 @@ The bucket/keys for input to the job, or the bucket (all keys).
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;[bucket,key]&gt;</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;[bucket,key]&gt;</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&lt;:bucket,:filters&gt;</tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-The bucket/keys for input to the job, or the bucket (all keys).
+The bucket/keys for input to the job, or the bucket (all keys), or a hash
+containing the bucket and key-filters.
 </p>
 </div>
       
@@ -571,12 +598,12 @@ The bucket/keys for input to the job, or the bucket (all keys).
       <pre class="lines">
 
 
-24
-25
-26</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id inputs'>inputs</span>
   <span class='ivar'>@inputs</span>
@@ -643,12 +670,12 @@ The map and reduce phases that will be executed
       <pre class="lines">
 
 
-30
-31
-32</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id query'>query</span>
   <span class='ivar'>@query</span>
@@ -676,6 +703,8 @@ The map and reduce phases that will be executed
       <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(object) </span>
     
       <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket, key, keydata) </span>
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket, filters) </span>
     
   
 
@@ -899,6 +928,62 @@ extra data to pass along with the object to the job
 </div>
       </li>
     
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(bucket, filters) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Run the job across all keys in the bucket, with the given key-filters. This
+will replace any other inputs previously added. (Requires Riak 0.14)
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the bucket to filter keys from
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&gt;</tt>)</span>
+      
+      
+        <span class='name'>filters</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a list of key-filters to apply to the key list
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
   </ul>
 <h3>Returns:</h3>
 <ul class="return">
@@ -926,18 +1011,6 @@ self
       <pre class="lines">
 
 
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
 68
 69
 70
@@ -946,13 +1019,31 @@ self
 73
 74
 75
-76</pre>
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id add'>add</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
-  <span class='id params'>params</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id flatten'>flatten</span>
+  <span class='id params'>params</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id dup'>dup</span>
+  <span class='id params'>params</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id first'>first</span> <span class='kw'>if</span> <span class='const'>Array</span> <span class='op'>===</span> <span class='id params'>params</span><span class='period'>.</span><span class='id first'>first</span>
   <span class='kw'>case</span> <span class='id params'>params</span><span class='period'>.</span><span class='id size'>size</span>
   <span class='kw'>when</span> <span class='int'>1</span>
     <span class='id p'>p</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id first'>first</span>
@@ -967,10 +1058,123 @@ self
   <span class='kw'>when</span> <span class='int'>2</span><span class='op'>..</span><span class='int'>3</span>
     <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id shift'>shift</span>
     <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span> <span class='kw'>if</span> <span class='const'>Bucket</span> <span class='op'>===</span> <span class='id bucket'>bucket</span>
-    <span class='id key'>key</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id shift'>shift</span>
-    <span class='ivar'>@inputs</span> <span class='op'>&lt;&lt;</span> <span class='id params'>params</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='const'>Array</span> <span class='op'>===</span> <span class='id params'>params</span><span class='period'>.</span><span class='id first'>first</span>
+      <span class='ivar'>@inputs</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:bucket</span> <span class='op'>=&gt;</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='symbol'>:key_filters</span> <span class='op'>=&gt;</span> <span class='id params'>params</span><span class='period'>.</span><span class='id first'>first</span> <span class='rbrace'>}</span>
+    <span class='kw'>else</span>
+      <span class='id key'>key</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id shift'>shift</span>
+      <span class='ivar'>@inputs</span> <span class='op'>&lt;&lt;</span> <span class='id params'>params</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id unshift'>unshift</span><span class='lparen'>(</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
   <span class='kw'>end</span>
   <span class='kw'>self</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="filter-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>) <strong>filter</strong>(bucket) { ... }
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Adds a bucket and key-filters built by the given block. Equivalent to #add
+with a list of filters.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the bucket to apply key-filters to
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'></span>
+      
+      
+      
+      
+        
+        <div class='inline'><dl>
+<dt></dt><dd><p>
+builder block - instance_eval&#8217;ed into a FilterBuilder
+</p>
+</dd>
+</dl>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Riak::MapReduce (class)">MapReduce</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+self
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="#add-instance_method" title="Riak::MapReduce#add (method)">#add</a></span></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+103
+104
+105</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 103</span>
+
+<span class='kw'>def</span> <span class='id filter'>filter</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='id add'>add</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='const'>FilterBuilder</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span><span class='period'>.</span><span class='id to_a'>to_a</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1219,16 +1423,16 @@ self
       <pre class="lines">
 
 
-122
-123
-124
-125
-126
-127
-128</pre>
+149
+150
+151
+152
+153
+154
+155</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 149</span>
 
 <span class='kw'>def</span> <span class='id link'>link</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1390,14 +1594,14 @@ self
       <pre class="lines">
 
 
-88
-89
-90
-91
-92</pre>
+115
+116
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id map'>map</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1557,14 +1761,14 @@ self
       <pre class="lines">
 
 
-102
-103
-104
-105
-106</pre>
+129
+130
+131
+132
+133</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='id reduce'>reduce</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id options'>options</span> <span class='op'>=</span> <span class='id params'>params</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span>
@@ -1579,7 +1783,11 @@ self
       <div class="method_details ">
   <p class="signature " id="run-instance_method">
   
-    - (<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&gt;</tt>) <strong>run</strong> 
+    
+      <span class="overload">- (<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&gt;</tt>) <strong>run</strong> </span>
+    
+      <span class="overload">- (<tt>nil</tt>) <strong>run</strong> {|phase, data| ... }</span>
+    
   
 
   
@@ -1587,6 +1795,23 @@ self
   <div class="discussion">
     <p>
 Executes this map-reduce job.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&gt;</tt>) <strong>run</strong> </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Return the entire collection of results.
 </p>
 
 
@@ -1615,43 +1840,129 @@ phase, only the results from that phase will be returned.
   
 </ul>
 
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>nil</tt>) <strong>run</strong> {|phase, data| ... }</span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Stream the results through the given block without accumulating.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Yields:</h3>
+<ul class="yield">
+  
+    <li>
+      
+        <span class='type'>(<tt>phase</tt>, <tt>data</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+A block to stream results through
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Yield Parameters:</h3>
+<ul class="yieldparam">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>phase</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the phase from which the results were generated
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span></tt>)</span>
+      
+      
+        <span class='name'>data</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a list of results from the phase
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+nothing
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163</pre>
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 148</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 187</span>
 
-<span class='kw'>def</span> <span class='id run'>run</span>
+<span class='kw'>def</span> <span class='id run'>run</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>MapReduceError</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>empty_map_reduce_query</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@query</span><span class='period'>.</span><span class='id empty?'>empty?</span>
-  <span class='id response'>response</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id http'>http</span><span class='period'>.</span><span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id mapred'>mapred</span><span class='comma'>,</span> <span class='id to_json'>to_json</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='kw'>begin</span>
-    <span class='id raise'>raise</span> <span class='kw'>unless</span> <span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>content-type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>application/json</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-    <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>rescue</span>
-    <span class='id response'>response</span>
-  <span class='kw'>end</span>
+  <span class='ivar'>@client</span><span class='period'>.</span><span class='id backend'>backend</span><span class='period'>.</span><span class='id mapred'>mapred</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
 <span class='kw'>rescue</span> <span class='const'>FailedRequest</span> <span class='op'>=&gt;</span> <span class='id fr'>fr</span>
-  <span class='kw'>if</span> <span class='id fr'>fr</span><span class='period'>.</span><span class='id code'>code</span> <span class='op'>==</span> <span class='int'>500</span> <span class='op'>&amp;&amp;</span> <span class='id fr'>fr</span><span class='period'>.</span><span class='id headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>content-type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id fr'>fr</span><span class='period'>.</span><span class='id server_error?'>server_error?</span> <span class='op'>&amp;&amp;</span> <span class='id fr'>fr</span><span class='period'>.</span><span class='id is_json?'>is_json?</span>
     <span class='id raise'>raise</span> <span class='const'>MapReduceError</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id fr'>fr</span><span class='period'>.</span><span class='id body'>body</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='id raise'>raise</span> <span class='id fr'>fr</span>
@@ -1811,13 +2122,13 @@ the job timeout, in milliseconds
       <pre class="lines">
 
 
-132
-133
-134
-135</pre>
+159
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 159</span>
 
 <span class='kw'>def</span> <span class='id timeout'>timeout</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@timeout</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -1871,14 +2182,14 @@ the JSON representation
       <pre class="lines">
 
 
-140
-141
-142
-143
-144</pre>
+167
+168
+169
+170
+171</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 167</span>
 
 <span class='kw'>def</span> <span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='op'>*</span><span class='id a'>a</span><span class='rparen'>)</span>
   <span class='id hash'>hash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>inputs</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id inputs'>inputs</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>query</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='id query'>query</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:as_json</span><span class='rparen'>)</span><span class='rbrace'>}</span>
@@ -1895,9 +2206,9 @@ the JSON representation
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:09 2010 by 
+  Generated on Sun Apr  3 19:32:37 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

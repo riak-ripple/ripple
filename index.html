@@ -2,8 +2,8 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
-<title>Documentation by YARD 0.6.3</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Documentation by YARD 0.6.5</title>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
 
@@ -62,6 +62,9 @@
 
 <span class='comment'># Create a client interface that uses Excon
 </span><span class='id client'>client</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:http_backend</span> <span class='op'>=&gt;</span> <span class='symbol'>:Excon</span><span class='rparen'>)</span>
+
+<span class='comment'># Create a client that uses Protocol Buffers
+</span><span class='id client'>client</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:protocol</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>pbc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 
 <span class='comment'># Retrieve a bucket
 </span><span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id client'>client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>doc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>  <span class='comment'># a Riak::Bucket
@@ -210,7 +213,8 @@ $ rails g ripple
 <pre class="code">
 # Configure Riak connections for the Ripple library.
 development:
-  port: 8098
+  http_port: 8098
+  pb_port: 8087
   host: localhost
 
 # The test environment has additional keys for configuring the
@@ -221,13 +225,15 @@ development:
 # * js_source_dir specifies where your custom Javascript functions for
 #           MapReduce should be loaded from. Usually app/mapreduce.
 test:
-  port: 9000
+  http_port: 9000
+  pb_port: 9002
   host: localhost
   bin_dir: /usr/local/bin   # Default for Homebrew.
-  js_source_dir: &lt;%= Rails.root + &quot;app/mapreduce&quot; %&gt;
+  js_source_dir: &lt;%%= Rails.root + &quot;app/mapreduce&quot; %&gt;
 
 production:
-  port: 8098
+  http_port: 8098
+  pb_port: 8087
   host: localhost
 </pre><p><code>require 'ripple/railtie'</code> from your <code>config/application.rb</code> file to complete the integration.</p>
 <h2>How to Contribute</h2>
@@ -259,9 +265,9 @@ $ git pull --rebase seancribbs master</pre></li>
 <p>The &#8220;Poor Man&#8217;s Fibers&#8221; implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.</p></div></div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:07 2010 by 
+  Generated on Sun Apr  3 19:32:36 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::Client::CurbBackend</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -103,6 +103,22 @@ library/gem. Conforms to the Riak::Client::HTTPBackend interface.
   
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   
     <h2>
@@ -145,7 +161,7 @@ library/gem. Conforms to the Riak::Client::HTTPBackend interface.
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="HTTPBackend.html#default_headers-instance_method" title="Riak::Client::HTTPBackend#default_headers (method)">#default_headers</a></span>, <span class='object_link'><a href="HTTPBackend.html#delete-instance_method" title="Riak::Client::HTTPBackend#delete (method)">#delete</a></span>, <span class='object_link'><a href="HTTPBackend.html#get-instance_method" title="Riak::Client::HTTPBackend#get (method)">#get</a></span>, <span class='object_link'><a href="HTTPBackend.html#head-instance_method" title="Riak::Client::HTTPBackend#head (method)">#head</a></span>, <span class='object_link'><a href="HTTPBackend.html#initialize-instance_method" title="Riak::Client::HTTPBackend#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="HTTPBackend.html#path-instance_method" title="Riak::Client::HTTPBackend#path (method)">#path</a></span>, <span class='object_link'><a href="HTTPBackend.html#post-instance_method" title="Riak::Client::HTTPBackend#post (method)">#post</a></span>, <span class='object_link'><a href="HTTPBackend.html#put-instance_method" title="Riak::Client::HTTPBackend#put (method)">#put</a></span>, <span class='object_link'><a href="HTTPBackend.html#return_body%3F-instance_method" title="Riak::Client::HTTPBackend#return_body? (method)">#return_body?</a></span>, <span class='object_link'><a href="HTTPBackend.html#root_uri-instance_method" title="Riak::Client::HTTPBackend#root_uri (method)">#root_uri</a></span>, <span class='object_link'><a href="HTTPBackend.html#valid_response%3F-instance_method" title="Riak::Client::HTTPBackend#valid_response? (method)">#valid_response?</a></span>, <span class='object_link'><a href="HTTPBackend.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend#verify_path! (method)">#verify_path!</a></span>, <span class='object_link'><a href="HTTPBackend.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend#verify_path_and_body! (method)">#verify_path_and_body!</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="HTTPBackend.html#delete_object-instance_method" title="Riak::Client::HTTPBackend#delete_object (method)">#delete_object</a></span>, <span class='object_link'><a href="HTTPBackend.html#fetch_object-instance_method" title="Riak::Client::HTTPBackend#fetch_object (method)">#fetch_object</a></span>, <span class='object_link'><a href="HTTPBackend.html#get_bucket_props-instance_method" title="Riak::Client::HTTPBackend#get_bucket_props (method)">#get_bucket_props</a></span>, <span class='object_link'><a href="HTTPBackend.html#initialize-instance_method" title="Riak::Client::HTTPBackend#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="HTTPBackend.html#link_walk-instance_method" title="Riak::Client::HTTPBackend#link_walk (method)">#link_walk</a></span>, <span class='object_link'><a href="HTTPBackend.html#list_buckets-instance_method" title="Riak::Client::HTTPBackend#list_buckets (method)">#list_buckets</a></span>, <span class='object_link'><a href="HTTPBackend.html#list_keys-instance_method" title="Riak::Client::HTTPBackend#list_keys (method)">#list_keys</a></span>, <span class='object_link'><a href="HTTPBackend.html#mapred-instance_method" title="Riak::Client::HTTPBackend#mapred (method)">#mapred</a></span>, <span class='object_link'><a href="HTTPBackend.html#ping-instance_method" title="Riak::Client::HTTPBackend#ping (method)">#ping</a></span>, <span class='object_link'><a href="HTTPBackend.html#reload_object-instance_method" title="Riak::Client::HTTPBackend#reload_object (method)">#reload_object</a></span>, <span class='object_link'><a href="HTTPBackend.html#set_bucket_props-instance_method" title="Riak::Client::HTTPBackend#set_bucket_props (method)">#set_bucket_props</a></span>, <span class='object_link'><a href="HTTPBackend.html#stats-instance_method" title="Riak::Client::HTTPBackend#stats (method)">#stats</a></span>, <span class='object_link'><a href="HTTPBackend.html#store_object-instance_method" title="Riak::Client::HTTPBackend#store_object (method)">#store_object</a></span></p>
 
   
   
@@ -156,6 +172,41 @@ library/gem. Conforms to the Riak::Client::HTTPBackend interface.
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span>, <span class='object_link'><a href="../Util/Escape.html#unescape-instance_method" title="Riak::Util::Escape#unescape (method)">#unescape</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="HTTPBackend/ObjectMethods.html" title="Riak::Client::HTTPBackend::ObjectMethods (module)">HTTPBackend::ObjectMethods</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HTTPBackend/ObjectMethods.html#load_object-instance_method" title="Riak::Client::HTTPBackend::ObjectMethods#load_object (method)">#load_object</a></span>, <span class='object_link'><a href="HTTPBackend/ObjectMethods.html#reload_headers-instance_method" title="Riak::Client::HTTPBackend::ObjectMethods#reload_headers (method)">#reload_headers</a></span>, <span class='object_link'><a href="HTTPBackend/ObjectMethods.html#store_headers-instance_method" title="Riak::Client::HTTPBackend::ObjectMethods#store_headers (method)">#store_headers</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="HTTPBackend/TransportMethods.html" title="Riak::Client::HTTPBackend::TransportMethods (module)">HTTPBackend::TransportMethods</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HTTPBackend/TransportMethods.html#basic_auth_header-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#basic_auth_header (method)">#basic_auth_header</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#client_id-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#client_id (method)">#client_id</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#default_headers-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#default_headers (method)">#default_headers</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#delete-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#delete (method)">#delete</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#get-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#get (method)">#get</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#head-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#head (method)">#head</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#path-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#path (method)">#path</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#post-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#post (method)">#post</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#put-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#put (method)">#put</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#return_body%3F-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#return_body? (method)">#return_body?</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#root_uri-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#root_uri (method)">#root_uri</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#valid_response%3F-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#valid_response? (method)">#valid_response?</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#verify_path! (method)">#verify_path!</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#verify_path_and_body! (method)">#verify_path_and_body!</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -202,17 +253,17 @@ library/gem. Conforms to the Riak::Client::HTTPBackend interface.
       <pre class="lines">
 
 
+22
+23
+24
+25
+26
 27
 28
-29
-30
-31
-32
-33
-34</pre>
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/curb_backend.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/curb_backend.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id configured?'>configured?</span>
   <span class='kw'>begin</span>
@@ -232,9 +283,9 @@ library/gem. Conforms to the Riak::Client::HTTPBackend interface.
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:11 2010 by 
+  Generated on Sun Apr  3 19:32:40 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

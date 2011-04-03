@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Ripple::Validations::InstanceMethods</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -159,12 +159,12 @@ fail.
       <pre class="lines">
 
 
-67
-68
-69</pre>
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id save!'>save!</span>
   <span class='lparen'>(</span><span class='id raise'>raise</span> <span class='const'>Ripple</span><span class='op'>::</span><span class='const'>DocumentInvalid</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id save'>save</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='kw'>true</span>
@@ -199,13 +199,13 @@ Sets the passed attributes and saves the document, raising a
       <pre class="lines">
 
 
-73
-74
-75
-76</pre>
+77
+78
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id update_attributes!'>update_attributes!</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id attributes'>attributes</span> <span class='op'>=</span> <span class='id attrs'>attrs</span>
@@ -221,9 +221,9 @@ Sets the passed attributes and saves the document, raising a
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:09 2010 by 
+  Generated on Sun Apr  3 19:32:38 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

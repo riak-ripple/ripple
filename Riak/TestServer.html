@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::TestServer</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -101,8 +101,11 @@
     <span class='symbol'>:js_vm_count</span> <span class='op'>=&gt;</span> <span class='int'>8</span><span class='comma'>,</span>
     <span class='symbol'>:js_max_vm_mem</span> <span class='op'>=&gt;</span> <span class='int'>8</span><span class='comma'>,</span>
     <span class='symbol'>:js_thread_stack</span> <span class='op'>=&gt;</span> <span class='int'>16</span><span class='comma'>,</span>
-    <span class='symbol'>:riak_kv_stat</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
-  <span class='rbrace'>}</span><span class='comma'>,</span>
+    <span class='symbol'>:riak_kv_stat</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='comma'>,</span>
+    <span class='comment'># Turn off map caching
+</span>    <span class='symbol'>:map_cache_size</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>     <span class='comment'># 0.14
+</span>    <span class='symbol'>:vnode_cache_entries</span> <span class='op'>=&gt;</span> <span class='int'>0</span> <span class='comment'># 0.13
+</span>  <span class='rbrace'>}</span><span class='comma'>,</span>
   <span class='symbol'>:luwak</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
     <span class='symbol'>:enabled</span> <span class='op'>=&gt;</span> <span class='kw'>false</span>
   <span class='rbrace'>}</span>
@@ -541,19 +544,20 @@ A new instance of TestServer
       <pre class="lines">
 
 
-59
-60
-61
 62
 63
 64
 65
 66
 67
-68</pre>
+68
+69
+70
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id options'>options</span>   <span class='op'>=</span> <span class='id deep_merge'>deep_merge</span><span class='lparen'>(</span><span class='const'>DEFAULTS</span><span class='period'>.</span><span class='id dup'>dup</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -564,7 +568,8 @@ A new instance of TestServer
   <span class='ivar'>@vm_args</span>    <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:vm_args</span><span class='rbracket'>]</span>
   <span class='comment'># For synchronizing start/stop/recycle
 </span>  <span class='ivar'>@mutex</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id new'>new</span>
-<span class='kw'>end</span></pre>
+  <span class='id cleanup'>cleanup</span> <span class='comment'># Should prevent some errors related to unclean startup
+</span><span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -602,12 +607,12 @@ Returns the value of attribute app_config
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id app_config'>app_config</span>
   <span class='ivar'>@app_config</span>
@@ -644,12 +649,12 @@ Returns the value of attribute cerr
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id cerr'>cerr</span>
   <span class='ivar'>@cerr</span>
@@ -686,12 +691,12 @@ Returns the value of attribute cin
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id cin'>cin</span>
   <span class='ivar'>@cin</span>
@@ -728,12 +733,12 @@ Returns the value of attribute cout
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id cout'>cout</span>
   <span class='ivar'>@cout</span>
@@ -770,12 +775,12 @@ Returns the value of attribute cpid
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id cpid'>cpid</span>
   <span class='ivar'>@cpid</span>
@@ -812,12 +817,12 @@ Returns the value of attribute temp_dir
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id temp_dir'>temp_dir</span>
   <span class='ivar'>@temp_dir</span>
@@ -854,12 +859,12 @@ Returns the value of attribute vm_args
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id vm_args'>vm_args</span>
   <span class='ivar'>@vm_args</span>
@@ -900,14 +905,14 @@ Cleans up any files and directories generated by the test server.
       <pre class="lines">
 
 
-149
-150
-151
-152
-153</pre>
+153
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 153</span>
 
 <span class='kw'>def</span> <span class='id cleanup'>cleanup</span>
   <span class='id stop'>stop</span> <span class='kw'>if</span> <span class='ivar'>@started</span>
@@ -944,19 +949,19 @@ server.  Call at the top of your test suite (not in a setup method).
       <pre class="lines">
 
 
-73
-74
-75
-76
 77
 78
 79
 80
 81
-82</pre>
+82
+83
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id prepare!'>prepare!</span>
   <span class='kw'>unless</span> <span class='ivar'>@prepared</span>
@@ -998,10 +1003,6 @@ performing a soft restart.
       <pre class="lines">
 
 
-121
-122
-123
-124
 125
 126
 127
@@ -1022,10 +1023,14 @@ performing a soft restart.
 142
 143
 144
-145</pre>
+145
+146
+147
+148
+149</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 125</span>
 
 <span class='kw'>def</span> <span class='id recycle'>recycle</span>
   <span class='kw'>if</span> <span class='ivar'>@started</span>
@@ -1082,20 +1087,20 @@ respond to pings.
       <pre class="lines">
 
 
-86
-87
-88
-89
 90
 91
 92
 93
 94
 95
-96</pre>
+96
+97
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id start'>start</span>
   <span class='kw'>if</span> <span class='ivar'>@prepared</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='ivar'>@started</span>
@@ -1150,12 +1155,12 @@ Whether the server has been started.
       <pre class="lines">
 
 
-115
-116
-117</pre>
+119
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 119</span>
 
 <span class='kw'>def</span> <span class='id started?'>started?</span>
   <span class='ivar'>@started</span>
@@ -1189,10 +1194,6 @@ Stops the test server if it is running.
       <pre class="lines">
 
 
-99
-100
-101
-102
 103
 104
 105
@@ -1202,10 +1203,14 @@ Stops the test server if it is running.
 109
 110
 111
-112</pre>
+112
+113
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/test_server.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='id stop'>stop</span>
   <span class='kw'>if</span> <span class='ivar'>@started</span>
@@ -1231,9 +1236,9 @@ Stops the test server if it is running.
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:10 2010 by 
+  Generated on Sun Apr  3 19:32:39 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

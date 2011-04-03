@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::MapReduce::Phase</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -78,7 +78,7 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">riak-client/lib/riak/map_reduce.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/map_reduce/phase.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -471,16 +471,16 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-191
-192
-193
-194
-195
-196
-197</pre>
+44
+45
+46
+47
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 191</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id type'>type</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span>
@@ -545,12 +545,12 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-182
-183
-184</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 182</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id arg'>arg</span>
   <span class='ivar'>@arg</span>
@@ -610,12 +610,12 @@ hash with bucket/key), or the module + function in Erlang to run. For a
       <pre class="lines">
 
 
-173
-174
-175</pre>
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id function'>function</span>
   <span class='ivar'>@function</span>
@@ -671,12 +671,12 @@ whether results of this phase will be returned
       <pre class="lines">
 
 
-179
-180
-181</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 179</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id keep'>keep</span>
   <span class='ivar'>@keep</span>
@@ -734,12 +734,12 @@ the language of the phase&#8217;s function - &#8220;javascript&#8221; or
       <pre class="lines">
 
 
-176
-177
-178</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id language'>language</span>
   <span class='ivar'>@language</span>
@@ -795,12 +795,12 @@ the type of phase - :map, :reduce, or :link
       <pre class="lines">
 
 
-170
-171
-172</pre>
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id type'>type</span>
   <span class='ivar'>@type</span>
@@ -861,32 +861,32 @@ a Hash-equivalent of the phase
       <pre class="lines">
 
 
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-247
-248
-249
-250
-251
-252</pre>
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 230</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id as_json'>as_json</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id obj'>obj</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id type'>type</span>
@@ -959,12 +959,12 @@ a JSON representation of the phase
       <pre class="lines">
 
 
-224
-225
-226</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce.rb', line 224</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='op'>*</span><span class='id a'>a</span><span class='rparen'>)</span>
   <span class='id as_json'>as_json</span><span class='period'>.</span><span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='op'>*</span><span class='id a'>a</span><span class='rparen'>)</span>
@@ -979,9 +979,9 @@ a JSON representation of the phase
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:10 2010 by 
+  Generated on Sun Apr  3 19:32:40 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

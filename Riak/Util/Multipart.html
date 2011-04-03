@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Module: Riak::Util::Multipart</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -62,12 +62,14 @@
   
   
     <dt class="r2">Included in:</dt>
-    <dd class="r2"><span class='object_link'><a href="" title="Riak::Util::Multipart (module)">Multipart</a></span></dd>
+    <dd class="r2"><span class='object_link'><a href="" title="Riak::Util::Multipart (module)">Multipart</a></span>, <span class='object_link'><a href="Multipart/StreamParser.html" title="Riak::Util::Multipart::StreamParser (class)">StreamParser</a></span></dd>
     
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">riak-client/lib/riak/util/multipart.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/util/multipart.rb<span class="defines">,<br />
+  riak-client/lib/riak/util/multipart/stream_parser.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
@@ -83,7 +85,17 @@ Utility methods for handling multipart/mixed responses
 </div>
 <div class="tags">
   
-</div>
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+   
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Multipart/StreamParser.html" title="Riak::Util::Multipart::StreamParser (class)">StreamParser</a></span>
+    
+  
+</p>
+
 
 
   
@@ -218,12 +230,12 @@ the boundary string separating each part
       <pre class="lines">
 
 
-47
-48
-49</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/multipart.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/multipart.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id extract_boundary'>extract_boundary</span><span class='lparen'>(</span><span class='id header_string'>header_string</span><span class='rparen'>)</span>
   <span class='backref'>$1</span> <span class='kw'>if</span> <span class='id header_string'>header_string</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>boundary=([A-Za-z0-9\'()+_,-.\/:=?]+)</span><span class='regexp_end'>/</span></span>
@@ -296,46 +308,20 @@ the boundary string given in the Content-Type header
       <pre class="lines">
 
 
-24
 25
 26
 27
 28
 29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42</pre>
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/multipart.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/util/multipart.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id parse'>parse</span><span class='lparen'>(</span><span class='id data'>data</span><span class='comma'>,</span> <span class='id boundary'>boundary</span><span class='rparen'>)</span>
-  <span class='id contents'>contents</span> <span class='op'>=</span> <span class='id data'>data</span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\r?\n--</span><span class='embexpr_beg'>#{</span><span class='const'>Regexp</span><span class='period'>.</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id boundary'>boundary</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>--\r?\n</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id pre_match'>pre_match</span> <span class='kw'>rescue</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id contents'>contents</span><span class='period'>.</span><span class='id split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\r?\n--</span><span class='embexpr_beg'>#{</span><span class='const'>Regexp</span><span class='period'>.</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id boundary'>boundary</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>\r?\n</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id reject'>reject</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:blank?</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id part'>part</span><span class='op'>|</span>
-    <span class='id headers'>headers</span> <span class='op'>=</span> <span class='const'>Headers</span><span class='period'>.</span><span class='id new'>new</span>
-    <span class='kw'>if</span> <span class='id md'>md</span> <span class='op'>=</span> <span class='id part'>part</span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\r?\n\r?\n</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
-      <span class='id body'>body</span> <span class='op'>=</span> <span class='id md'>md</span><span class='period'>.</span><span class='id post_match'>post_match</span>
-      <span class='id md'>md</span><span class='period'>.</span><span class='id pre_match'>pre_match</span><span class='period'>.</span><span class='id split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\r?\n</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id line'>line</span><span class='op'>|</span>
-        <span class='id headers'>headers</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id line'>line</span><span class='rparen'>)</span>
-      <span class='kw'>end</span>
-
-      <span class='kw'>if</span> <span class='id headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>content-type</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>multipart\/mixed</span><span class='regexp_end'>/</span></span>
-        <span class='id boundary'>boundary</span> <span class='op'>=</span> <span class='id extract_boundary'>extract_boundary</span><span class='lparen'>(</span><span class='id headers'>headers</span><span class='period'>.</span><span class='id to_hash'>to_hash</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>content-type</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span>
-        <span class='id parse'>parse</span><span class='lparen'>(</span><span class='id body'>body</span><span class='comma'>,</span> <span class='id boundary'>boundary</span><span class='rparen'>)</span>
-      <span class='kw'>else</span>
-        <span class='lbrace'>{</span><span class='symbol'>:headers</span> <span class='op'>=&gt;</span> <span class='id headers'>headers</span><span class='period'>.</span><span class='id to_hash'>to_hash</span><span class='comma'>,</span> <span class='symbol'>:body</span> <span class='op'>=&gt;</span> <span class='id body'>body</span><span class='rbrace'>}</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
+  <span class='id contents'>contents</span> <span class='op'>=</span> <span class='id data'>data</span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='id end_boundary_regex'>end_boundary_regex</span><span class='lparen'>(</span><span class='id boundary'>boundary</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id pre_match'>pre_match</span> <span class='kw'>rescue</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id contents'>contents</span><span class='period'>.</span><span class='id split'>split</span><span class='lparen'>(</span><span class='id inner_boundary_regex'>inner_boundary_regex</span><span class='lparen'>(</span><span class='id boundary'>boundary</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id reject'>reject</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:blank?</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id part'>part</span><span class='op'>|</span>
+    <span class='id parse_multipart_section'>parse_multipart_section</span><span class='lparen'>(</span><span class='id part'>part</span><span class='rparen'>)</span>
   <span class='kw'>end</span><span class='period'>.</span><span class='id compact'>compact</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -348,9 +334,9 @@ the boundary string given in the Content-Type header
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:10 2010 by 
+  Generated on Sun Apr  3 19:32:39 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

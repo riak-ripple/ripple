@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::Client::HTTPBackend</title>
 <link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -71,14 +71,16 @@
   
     
       <dt class="r2">Includes:</dt>
-      <dd class="r2"><span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></dd>
+      <dd class="r2"><span class='object_link'><a href="HTTPBackend/Configuration.html" title="Riak::Client::HTTPBackend::Configuration (module)">Configuration</a></span>, <span class='object_link'><a href="HTTPBackend/ObjectMethods.html" title="Riak::Client::HTTPBackend::ObjectMethods (module)">ObjectMethods</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html" title="Riak::Client::HTTPBackend::TransportMethods (module)">TransportMethods</a></span>, <span class='object_link'><a href="../Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span>, <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></dd>
       
     
   
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">riak-client/lib/riak/client/http_backend.rb</dd>
+    <dd class="r1 last">riak-client/lib/riak/client/http_backend.rb<span class="defines">,<br />
+  riak-client/lib/riak/client/http_backend/configuration.rb,<br /> riak-client/lib/riak/client/http_backend/object_methods.rb,<br /> riak-client/lib/riak/client/http_backend/request_headers.rb,<br /> riak-client/lib/riak/client/http_backend/transport_methods.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
@@ -86,7 +88,10 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-The parent class for all backends that connect to Riak via HTTP.
+The parent class for all backends that connect to Riak via HTTP. This class
+implements all of the universal backend API methods on behalf of
+subclasses, which need only implement the <span class='object_link'><a href="HTTPBackend/TransportMethods.html#perform-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#perform (method)">TransportMethods#perform</a></span> method
+for library-specific semantics.
 </p>
 
 
@@ -98,8 +103,34 @@ The parent class for all backends that connect to Riak via HTTP.
   <h2>Direct Known Subclasses</h2>
   <p class="children"><span class='object_link'><a href="CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a></span>, <span class='object_link'><a href="ExconBackend.html" title="Riak::Client::ExconBackend (class)">ExconBackend</a></span>, <span class='object_link'><a href="NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a></span></p>
 </div>
+<h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="HTTPBackend/Configuration.html" title="Riak::Client::HTTPBackend::Configuration (module)">Configuration</a></span>, <span class='object_link'><a href="HTTPBackend/ObjectMethods.html" title="Riak::Client::HTTPBackend::ObjectMethods (module)">ObjectMethods</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html" title="Riak::Client::HTTPBackend::TransportMethods (module)">TransportMethods</a></span>
+    
+   
+    
+  
+</p>
 
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   
@@ -148,7 +179,7 @@ The Riak::Client that uses this backend.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#default_headers-instance_method" title="#default_headers (instance method)">- (Hash) <strong>default_headers</strong> </a>
+      <a href="#delete_object-instance_method" title="#delete_object (instance method)">- (Object) <strong>delete_object</strong>(bucket, key, rw = nil) </a>
     
 
     
@@ -162,8 +193,7 @@ The Riak::Client that uses this backend.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Default header hash sent with every request, based on settings in the
-client.
+Deletes an object.
 </p>
 </div></span>
   
@@ -173,7 +203,7 @@ client.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#delete-instance_method" title="#delete (instance method)">- (Hash) <strong>delete</strong>(expect, *resource, &amp;block) </a>
+      <a href="#fetch_object-instance_method" title="#fetch_object (instance method)">- (RObject) <strong>fetch_object</strong>(bucket, key, r = nil) </a>
     
 
     
@@ -187,7 +217,7 @@ client.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Performs a DELETE request to the specified resource on the Riak server.
+Fetches an object by bucket/key.
 </p>
 </div></span>
   
@@ -197,7 +227,7 @@ Performs a DELETE request to the specified resource on the Riak server.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#get-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(expect, *resource, &amp;block) </a>
+      <a href="#get_bucket_props-instance_method" title="#get_bucket_props (instance method)">- (Hash) <strong>get_bucket_props</strong>(bucket) </a>
     
 
     
@@ -211,31 +241,7 @@ Performs a DELETE request to the specified resource on the Riak server.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Performs a GET request to the specified resource on the Riak server.
-</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#head-instance_method" title="#head (instance method)">- (Hash) <strong>head</strong>(expect, *resource) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-Performs a HEAD request to the specified resource on the Riak server.
+Fetches bucket properties.
 </p>
 </div></span>
   
@@ -271,7 +277,7 @@ Create an HTTPBackend for the Riak::Client.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#path-instance_method" title="#path (instance method)">- (URI) <strong>path</strong>(*segments) </a>
+      <a href="#link_walk-instance_method" title="#link_walk (instance method)">- (Array&lt;Array&lt;RObject&gt;&gt;) <strong>link_walk</strong>(robject, walk_specs) </a>
     
 
     
@@ -285,7 +291,7 @@ Create an HTTPBackend for the Riak::Client.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Calculates an absolute URI from a relative path specification.
+Performs a link-walking query.
 </p>
 </div></span>
   
@@ -295,7 +301,7 @@ Calculates an absolute URI from a relative path specification.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#perform-instance_method" title="#perform (instance method)">- (Hash) <strong>perform</strong>(method, uri, headers, expect, body = nil) {|chunk| ... }</a>
+      <a href="#list_buckets-instance_method" title="#list_buckets (instance method)">- (Array&lt;String&gt;) <strong>list_buckets</strong> </a>
     
 
     
@@ -303,14 +309,13 @@ Calculates an absolute URI from a relative path specification.
   
   
   
-  <span class="abstract note title">Abstract</span>
+  
   
   
 
   
     <span class="summary_desc"><div class='inline'><p>
-Executes requests according to the underlying HTTP client library
-semantics.
+Lists known buckets.
 </p>
 </div></span>
   
@@ -320,7 +325,7 @@ semantics.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#post-instance_method" title="#post (instance method)">- (Hash) <strong>post</strong>(expect, *resource, &amp;block) </a>
+      <a href="#list_keys-instance_method" title="#list_keys (instance method)">- (Array&lt;String&gt;) <strong>list_keys</strong>(bucket) {|Array&lt;String&gt;| ... }</a>
     
 
     
@@ -334,7 +339,7 @@ semantics.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Performs a POST request to the specified resource on the Riak server.
+List keys in a bucket.
 </p>
 </div></span>
   
@@ -344,7 +349,7 @@ Performs a POST request to the specified resource on the Riak server.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#put-instance_method" title="#put (instance method)">- (Hash) <strong>put</strong>(expect, *resource, &amp;block) </a>
+      <a href="#mapred-instance_method" title="#mapred (instance method)">- (Array&lt;Object&gt;) <strong>mapred</strong>(mr) {|Fixnum, Object| ... }</a>
     
 
     
@@ -358,7 +363,7 @@ Performs a POST request to the specified resource on the Riak server.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Performs a PUT request to the specified resource on the Riak server.
+Performs a MapReduce query.
 </p>
 </div></span>
   
@@ -368,7 +373,7 @@ Performs a PUT request to the specified resource on the Riak server.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#return_body%3F-instance_method" title="#return_body? (instance method)">- (Boolean) <strong>return_body?</strong>(method, code, has_block) </a>
+      <a href="#ping-instance_method" title="#ping (instance method)">- (true, false) <strong>ping</strong> </a>
     
 
     
@@ -382,8 +387,7 @@ Performs a PUT request to the specified resource on the Riak server.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Checks whether a combination of the HTTP method, response code, and block
-should result in returning the :body in the response hash.
+Pings the server.
 </p>
 </div></span>
   
@@ -393,7 +397,7 @@ should result in returning the :body in the response hash.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#root_uri-instance_method" title="#root_uri (instance method)">- (URI) <strong>root_uri</strong> </a>
+      <a href="#reload_object-instance_method" title="#reload_object (instance method)">- (Object) <strong>reload_object</strong>(robject, r = nil) </a>
     
 
     
@@ -407,7 +411,7 @@ should result in returning the :body in the response hash.
 
   
     <span class="summary_desc"><div class='inline'><p>
-The calculated root URI for the Riak HTTP endpoint.
+Reloads the data for a given RObject, a special case of <span class='object_link'><a href="#fetch_object-instance_method" title="Riak::Client::HTTPBackend#fetch_object (method)">#fetch_object</a></span>.
 </p>
 </div></span>
   
@@ -417,7 +421,7 @@ The calculated root URI for the Riak HTTP endpoint.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#valid_response%3F-instance_method" title="#valid_response? (instance method)">- (Boolean) <strong>valid_response?</strong>(expected, actual) </a>
+      <a href="#set_bucket_props-instance_method" title="#set_bucket_props (instance method)">- (Object) <strong>set_bucket_props</strong>(bucket, props) </a>
     
 
     
@@ -431,7 +435,7 @@ The calculated root URI for the Riak HTTP endpoint.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Checks the expected response codes against the actual response code.
+Sets bucket properties.
 </p>
 </div></span>
   
@@ -441,7 +445,7 @@ Checks the expected response codes against the actual response code.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#verify_path%21-instance_method" title="#verify_path! (instance method)">- (Object) <strong>verify_path!</strong>(resource) </a>
+      <a href="#stats-instance_method" title="#stats (instance method)">- (Hash) <strong>stats</strong> </a>
     
 
     
@@ -455,7 +459,7 @@ Checks the expected response codes against the actual response code.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Verifies that the specified resource is valid.
+Gets health statistics.
 </p>
 </div></span>
   
@@ -465,7 +469,7 @@ Verifies that the specified resource is valid.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#verify_path_and_body%21-instance_method" title="#verify_path_and_body! (instance method)">- (Object) <strong>verify_path_and_body!</strong>(args) </a>
+      <a href="#store_object-instance_method" title="#store_object (instance method)">- (Object) <strong>store_object</strong>(robject, returnbody = false, w = nil, dw = nil) </a>
     
 
     
@@ -479,7 +483,7 @@ Verifies that the specified resource is valid.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Verifies that both a resource path and body are present in the arguments.
+Stores an object.
 </p>
 </div></span>
   
@@ -499,6 +503,41 @@ Verifies that both a resource path and body are present in the arguments.
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span>, <span class='object_link'><a href="../Util/Escape.html#unescape-instance_method" title="Riak::Util::Escape#unescape (method)">#unescape</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="HTTPBackend/ObjectMethods.html" title="Riak::Client::HTTPBackend::ObjectMethods (module)">ObjectMethods</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HTTPBackend/ObjectMethods.html#load_object-instance_method" title="Riak::Client::HTTPBackend::ObjectMethods#load_object (method)">#load_object</a></span>, <span class='object_link'><a href="HTTPBackend/ObjectMethods.html#reload_headers-instance_method" title="Riak::Client::HTTPBackend::ObjectMethods#reload_headers (method)">#reload_headers</a></span>, <span class='object_link'><a href="HTTPBackend/ObjectMethods.html#store_headers-instance_method" title="Riak::Client::HTTPBackend::ObjectMethods#store_headers (method)">#store_headers</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="HTTPBackend/TransportMethods.html" title="Riak::Client::HTTPBackend::TransportMethods (module)">TransportMethods</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="HTTPBackend/TransportMethods.html#basic_auth_header-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#basic_auth_header (method)">#basic_auth_header</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#client_id-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#client_id (method)">#client_id</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#default_headers-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#default_headers (method)">#default_headers</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#delete-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#delete (method)">#delete</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#get-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#get (method)">#get</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#head-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#head (method)">#head</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#path-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#path (method)">#path</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#perform-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#perform (method)">#perform</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#post-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#post (method)">#post</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#put-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#put (method)">#put</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#return_body%3F-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#return_body? (method)">#return_body?</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#root_uri-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#root_uri (method)">#root_uri</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#valid_response%3F-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#valid_response? (method)">#valid_response?</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#verify_path! (method)">#verify_path!</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#verify_path_and_body! (method)">#verify_path_and_body!</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -560,13 +599,13 @@ the client
       <pre class="lines">
 
 
-26
-27
-28
-29</pre>
+41
+42
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_type</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:client</span> <span class='op'>=&gt;</span> <span class='id client'>client</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Client</span> <span class='op'>===</span> <span class='id client'>client</span>
@@ -609,12 +648,12 @@ The Riak::Client that uses this backend
       <pre class="lines">
 
 
-22
-23
-24</pre>
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='ivar'>@client</span>
@@ -632,17 +671,440 @@ The Riak::Client that uses this backend
     
     
       <div class="method_details first">
-  <p class="signature first" id="default_headers-instance_method">
+  <p class="signature first" id="delete_object-instance_method">
   
-    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>default_headers</strong> 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>delete_object</strong>(bucket, key, rw = nil) 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Default header hash sent with every request, based on settings in the
-client
+Deletes an object
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the bucket where the object lives
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>key</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key where the object lives
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+      
+      
+        <span class='name'>rw</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the read/write quorum for the request
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+107
+108
+109
+110
+111</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 107</span>
+
+<span class='kw'>def</span> <span class='id delete_object'>delete_object</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='id key'>key</span><span class='comma'>,</span> <span class='id rw'>rw</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span> <span class='kw'>if</span> <span class='const'>Bucket</span> <span class='op'>===</span> <span class='id bucket'>bucket</span>
+  <span class='id options'>options</span> <span class='op'>=</span> <span class='id rw'>rw</span> <span class='op'>?</span> <span class='lbrace'>{</span><span class='symbol'>:rw</span> <span class='op'>=&gt;</span> <span class='id rw'>rw</span><span class='rbrace'>}</span> <span class='op'>:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id delete'>delete</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span> <span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="fetch_object-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../RObject.html" title="Riak::RObject (class)">RObject</a></span></tt>) <strong>fetch_object</strong>(bucket, key, r = nil) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Fetches an object by bucket/key
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the bucket where the object is stored
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>key</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the key of the object
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+      
+      
+        <span class='name'>r</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the read quorum for the request - how many nodes should concur on the read
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../RObject.html" title="Riak::RObject (class)">RObject</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the fetched object
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 62</span>
+
+<span class='kw'>def</span> <span class='id fetch_object'>fetch_object</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='id key'>key</span><span class='comma'>,</span> <span class='id r'>r</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id client'>client</span><span class='comma'>,</span> <span class='id bucket'>bucket</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'>String</span> <span class='op'>===</span> <span class='id bucket'>bucket</span>
+  <span class='id options'>options</span> <span class='op'>=</span> <span class='id r'>r</span> <span class='op'>?</span> <span class='lbrace'>{</span><span class='symbol'>:r</span> <span class='op'>=&gt;</span> <span class='id r'>r</span><span class='rbrace'>}</span> <span class='op'>:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>300</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id load_object'>load_object</span><span class='lparen'>(</span><span class='const'>RObject</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id response'>response</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="get_bucket_props-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>get_bucket_props</strong>(bucket) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Fetches bucket properties
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+        <span class='name'>bucket</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the bucket properties to fetch
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+bucket properties
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 116</span>
+
+<span class='kw'>def</span> <span class='id get_bucket_props'>get_bucket_props</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span>
+  <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span> <span class='kw'>if</span> <span class='const'>Bucket</span> <span class='op'>===</span> <span class='id bucket'>bucket</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='symbol'>:props</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>props</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="link_walk-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../RObject.html" title="Riak::RObject (class)">RObject</a></span>&gt;&gt;</tt>) <strong>link_walk</strong>(robject, walk_specs) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Performs a link-walking query
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../RObject.html" title="Riak::RObject (class)">RObject</a></span></tt>)</span>
+      
+      
+        <span class='name'>robject</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the object to start at
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../WalkSpec.html" title="Riak::WalkSpec (class)">WalkSpec</a></span>&gt;</tt>)</span>
+      
+      
+        <span class='name'>walk_specs</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a list of walk specifications to process
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../RObject.html" title="Riak::RObject (class)">RObject</a></span>&gt;&gt;</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a list of the matched objects, grouped by phase
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 196</span>
+
+<span class='kw'>def</span> <span class='id link_walk'>link_walk</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='comma'>,</span> <span class='id walk_specs'>walk_specs</span><span class='rparen'>)</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_link_walker'>riak_kv_wm_link_walker</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id walk_specs'>walk_specs</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id boundary'>boundary</span> <span class='op'>=</span> <span class='const'>Util</span><span class='op'>::</span><span class='const'>Multipart</span><span class='period'>.</span><span class='id extract_boundary'>extract_boundary</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>content-type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id first'>first</span><span class='rparen'>)</span>
+    <span class='const'>Util</span><span class='op'>::</span><span class='const'>Multipart</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id boundary'>boundary</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id group'>group</span><span class='op'>|</span>
+      <span class='id group'>group</span><span class='period'>.</span><span class='id map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id obj'>obj</span><span class='op'>|</span>
+        <span class='kw'>if</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span> <span class='op'>&amp;&amp;</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>location</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+          <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='backref'>$1</span> <span class='kw'>if</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:headers</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>location</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id first'>first</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/.*/(.*)/.*$</span><span class='regexp_end'>}</span></span>
+          <span class='id load_object'>load_object</span><span class='lparen'>(</span><span class='const'>RObject</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id client'>client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id obj'>obj</span><span class='rparen'>)</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="list_buckets-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>) <strong>list_buckets</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Lists known buckets
 </p>
 
 
@@ -654,14 +1116,14 @@ client
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-headers that will be merged with user-specified headers on every request
+the list of buckets
 </p>
 </div>
       
@@ -675,21 +1137,17 @@ headers that will be merged with user-specified headers on every request
       <pre class="lines">
 
 
-33
-34
-35
-36
-37
-38</pre>
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 154</span>
 
-<span class='kw'>def</span> <span class='id default_headers'>default_headers</span>
-  <span class='lbrace'>{</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>multipart/mixed, application/json;q=0.7, */*;q=0.5</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>X-Riak-ClientId</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id client_id'>client_id</span>
-  <span class='rbrace'>}</span>
+<span class='kw'>def</span> <span class='id list_buckets'>list_buckets</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:buckets</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>buckets</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -697,40 +1155,16 @@ headers that will be merged with user-specified headers on every request
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="delete-instance_method">
+  <p class="signature " id="list_keys-instance_method">
   
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>delete</strong>(expect, *resource) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
-    
+    - (<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>) <strong>list_keys</strong>(bucket) {|Array&lt;String&gt;| ... }
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Performs a DELETE request to the specified resource on the Riak server.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <h3>Overloads:</h3>
-  <ul class="overload">
-    
-      
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>delete</strong>(expect, *resource, headers) </span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Send the request with custom headers
+List keys in a bucket
 </p>
 
 
@@ -742,54 +1176,16 @@ Send the request with custom headers
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>delete</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Stream the response body through the supplied block
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
+        <span class='name'>bucket</span>
       
       
       
         &mdash;
         <div class='inline'><p>
-custom headers to send with the request
+the bucket to fetch the keys for
 </p>
 </div>
       
@@ -801,14 +1197,14 @@ custom headers to send with the request
   
     <li>
       
-        <span class='type'>(<tt>chunk</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-yields successive chunks of the response body as strings
+a list of keys from the current streamed chunk
 </p>
 </div>
       
@@ -820,96 +1216,14 @@ yields successive chunks of the response body as strings
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-response data, containing only the :headers and :code keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-  </ul>
-<h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-        <span class='name'>expect</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the expected HTTP response code(s) from Riak
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
-        <span class='name'>resource</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-a relative path or array of path segments and optional query params Hash
-that will be joined to the root URI
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing :headers, :code and :body keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-if the response code doesn&#8217;t match the expected response
+the list of keys, if no block was given
 </p>
 </div>
       
@@ -923,504 +1237,14 @@ if the response code doesn&#8217;t match the expected response
       <pre class="lines">
 
 
-131
-132
-133
-134
-135</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 131</span>
-
-<span class='kw'>def</span> <span class='id delete'>delete</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
-  <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
-  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:delete</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="get-instance_method">
-  
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>get</strong>(expect, *resource) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>get</strong>(expect, *resource, headers) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
-    
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Performs a GET request to the specified resource on the Riak server.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <h3>Overloads:</h3>
-  <ul class="overload">
-    
-      
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>get</strong>(expect, *resource, headers) </span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Send the request with custom headers
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>get</strong>(expect, *resource, headers = {}) {|chunk| ... }</span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Stream the response body through the supplied block
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Yields:</h3>
-<ul class="yield">
-  
-    <li>
-      
-        <span class='type'>(<tt>chunk</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-yields successive chunks of the response body as strings
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing only the :headers and :code keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-  </ul>
-<h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-        <span class='name'>expect</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the expected HTTP response code(s) from Riak
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
-        <span class='name'>resource</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-a relative path or array of path segments and optional query params Hash
-that will be joined to the root URI
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing :headers, :body, and :code keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-if the response code doesn&#8217;t match the expected response
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-69
-70
-71
-72
-73</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 69</span>
-
-<span class='kw'>def</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
-  <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
-  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:get</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="head-instance_method">
-  
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>head</strong>(expect, *resource) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>head</strong>(expect, *resource, headers) </span>
-    
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Performs a HEAD request to the specified resource on the Riak server.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <h3>Overloads:</h3>
-  <ul class="overload">
-    
-      
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>head</strong>(expect, *resource, headers) </span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Send the request with custom headers
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-  </ul>
-<h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-        <span class='name'>expect</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the expected HTTP response code(s) from Riak
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
-        <span class='name'>resource</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-a relative path or array of path segments and optional query params Hash
-that will be joined to the root URI
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing only the :headers and :code keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-if the response code doesn&#8217;t match the expected response
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-49
-50
-51
-52
-53</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 49</span>
-
-<span class='kw'>def</span> <span class='id head'>head</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span>
-  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
-  <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
-  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:head</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="path-instance_method">
-  
-    - (<tt>URI</tt>) <strong>path</strong>(*segments) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Calculates an absolute URI from a relative path specification
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
-        <span class='name'>segments</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-a relative path or sequence of path segments and optional query params Hash
-that will be joined to the root URI
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>URI</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-an absolute URI for the resource
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
+137
+138
+139
+140
+141
+142
+143
+144
 145
 146
 147
@@ -1429,12 +1253,20 @@ an absolute URI for the resource
 150</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 145</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 137</span>
 
-<span class='kw'>def</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id segments'>segments</span><span class='rparen'>)</span>
-  <span class='id query'>query</span> <span class='op'>=</span> <span class='id segments'>segments</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='period'>.</span><span class='id to_param'>to_param</span>
-  <span class='id root_uri'>root_uri</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id segments'>segments</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\/+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\/</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id uri'>uri</span><span class='op'>|</span>
-    <span class='id uri'>uri</span><span class='period'>.</span><span class='id query'>query</span> <span class='op'>=</span> <span class='id query'>query</span> <span class='kw'>if</span> <span class='id query'>query</span><span class='period'>.</span><span class='id present?'>present?</span>
+<span class='kw'>def</span> <span class='id list_keys'>list_keys</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
+  <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span> <span class='kw'>if</span> <span class='const'>Bucket</span> <span class='op'>===</span> <span class='id bucket'>bucket</span>
+  <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
+    <span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:props</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>stream</span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id chunk'>chunk</span><span class='op'>|</span>
+      <span class='id obj'>obj</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id chunk'>chunk</span><span class='rparen'>)</span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
+      <span class='kw'>next</span> <span class='kw'>unless</span> <span class='id obj'>obj</span> <span class='op'>&amp;&amp;</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>keys</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+      <span class='kw'>yield</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>keys</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id k'>k</span><span class='op'>|</span> <span class='id unescape'>unescape</span><span class='lparen'>(</span><span class='id k'>k</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='id response'>response</span> <span class='op'>=</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:props</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='id obj'>obj</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='id obj'>obj</span> <span class='op'>&amp;&amp;</span> <span class='id obj'>obj</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>keys</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id k'>k</span><span class='op'>|</span> <span class='id unescape'>unescape</span><span class='lparen'>(</span><span class='id k'>k</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1443,25 +1275,16 @@ an absolute URI for the resource
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="perform-instance_method">
+  <p class="signature " id="mapred-instance_method">
   
-    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>perform</strong>(method, uri, headers, expect, body = nil) {|chunk| ... }
+    - (<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span>&gt;</tt>) <strong>mapred</strong>(mr) {|Fixnum, Object| ... }
   
 
   
 </p><div class="docstring">
   <div class="discussion">
-    <div class="note abstract">
-  <strong>This method is abstract.</strong> 
-  <div class='inline'><p>
-Subclasses must implement this internal method to perform HTTP requests
-according to the API of their HTTP libraries.
-</p>
-</div>
-</div>
-<p>
-Executes requests according to the underlying HTTP client library
-semantics.
+    <p>
+Performs a MapReduce query.
 </p>
 
 
@@ -1473,86 +1296,16 @@ semantics.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../MapReduce.html" title="Riak::MapReduce (class)">MapReduce</a></span></tt>)</span>
       
       
-        <span class='name'>method</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-one of :head, :get, :post, :put, :delete
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt>URI</tt>)</span>
-      
-      
-        <span class='name'>uri</span>
+        <span class='name'>mr</span>
       
       
       
         &mdash;
         <div class='inline'><p>
-the HTTP URI to request
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-headers to send along with the request
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-        <span class='name'>expect</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the expected response code(s)
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>IO</tt>)</span>
-      
-      
-        <span class='name'>body</span>
-      
-      
-        <em class="default">(defaults to: <tt>nil</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the PUT or POST request body
+the query to perform
 </p>
 </div>
       
@@ -1564,15 +1317,14 @@ the PUT or POST request body
   
     <li>
       
-        <span class='type'>(<tt>chunk</tt>)</span>
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-if the method is not :head, successive chunks of the response body will be
-yielded as strings
+the phase number and single result from the phase
 </p>
 </div>
       
@@ -1584,34 +1336,14 @@ yielded as strings
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span>&gt;</tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-response data, containing :headers, :code and :body keys. Only :headers and
-:code should be present when the body is streamed or the method is :head.
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt>NotImplementedError</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-if a subclass does not implement this method
+the list of results, if no block was given
 </p>
 </div>
       
@@ -1625,15 +1357,43 @@ if a subclass does not implement this method
       <pre class="lines">
 
 
-205
-206
-207</pre>
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 205</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 165</span>
 
-<span class='kw'>def</span> <span class='id perform'>perform</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id uri'>uri</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='id body'>body</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id raise'>raise</span> <span class='const'>NotImplementedError</span>
+<span class='kw'>def</span> <span class='id mapred'>mapred</span><span class='lparen'>(</span><span class='id mr'>mr</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
+    <span class='id parser'>parser</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Util</span><span class='op'>::</span><span class='const'>Multipart</span><span class='op'>::</span><span class='const'>StreamParser</span><span class='period'>.</span><span class='id new'>new</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id response'>response</span><span class='op'>|</span>
+      <span class='id result'>result</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='kw'>yield</span> <span class='id result'>result</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>phase</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id result'>result</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>data</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+    <span class='kw'>end</span>
+    <span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_mapred'>riak_kv_wm_mapred</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:chunked</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='id mr'>mr</span><span class='period'>.</span><span class='id to_json'>to_json</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id parser'>parser</span><span class='rparen'>)</span>
+    <span class='kw'>nil</span>
+  <span class='kw'>else</span>
+    <span class='id response'>response</span> <span class='op'>=</span> <span class='id post'>post</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_mapred'>riak_kv_wm_mapred</span><span class='comma'>,</span> <span class='id mr'>mr</span><span class='period'>.</span><span class='id to_json'>to_json</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
+    <span class='kw'>begin</span>
+      <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>rescue</span>
+      <span class='id response'>response</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1641,658 +1401,16 @@ if a subclass does not implement this method
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="post-instance_method">
+  <p class="signature " id="ping-instance_method">
   
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>post</strong>(expect, *resource, body) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
-    
+    - (<tt>true</tt>, <tt>false</tt>) <strong>ping</strong> 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Performs a POST request to the specified resource on the Riak server.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <h3>Overloads:</h3>
-  <ul class="overload">
-    
-      
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>post</strong>(expect, *resource, body, headers) </span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Send the request with custom headers
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>post</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Stream the response body through the supplied block
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Yields:</h3>
-<ul class="yield">
-  
-    <li>
-      
-        <span class='type'>(<tt>chunk</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-yields successive chunks of the response body as strings
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing only the :headers and :code keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-  </ul>
-<h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-        <span class='name'>expect</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the expected HTTP response code(s) from Riak
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
-      
-      
-        <span class='name'>resource</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-a relative path or array of path segments that will be joined to the root
-URI
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-        <span class='name'>body</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the request body to send to the server
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing :headers, :code and :body keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-if the response code doesn&#8217;t match the expected response
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-111
-112
-113
-114
-115</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 111</span>
-
-<span class='kw'>def</span> <span class='id post'>post</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
-  <span class='id uri'>uri</span><span class='comma'>,</span> <span class='id data'>data</span> <span class='op'>=</span> <span class='id verify_path_and_body!'>verify_path_and_body!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
-  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:post</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id uri'>uri</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='id data'>data</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="put-instance_method">
-  
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>put</strong>(expect, *resource, body) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
-    
-      <span class="overload">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
-    
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Performs a PUT request to the specified resource on the Riak server.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  <h3>Overloads:</h3>
-  <ul class="overload">
-    
-      
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>put</strong>(expect, *resource, body, headers) </span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Send the request with custom headers
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-      
-      <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>put</strong>(expect, *resource, body, headers = {}) {|chunk| ... }</span>
-        <div class="docstring">
-  <div class="discussion">
-    <p>
-Stream the response body through the supplied block
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-        <span class='name'>headers</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-custom headers to send with the request
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Yields:</h3>
-<ul class="yield">
-  
-    <li>
-      
-        <span class='type'>(<tt>chunk</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-yields successive chunks of the response body as strings
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing only the :headers and :code keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div>
-      </li>
-    
-  </ul>
-<h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-        <span class='name'>expect</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the expected HTTP response code(s) from Riak
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,<span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
-        <span class='name'>resource</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-a relative path or array of path segments and optional query params Hash
-that will be joined to the root URI
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-        <span class='name'>body</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the request body to send to the server
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-response data, containing :headers, :code, and :body keys
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../FailedRequest.html" title="Riak::FailedRequest (class)">FailedRequest</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-if the response code doesn&#8217;t match the expected response
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-90
-91
-92
-93
-94</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 90</span>
-
-<span class='kw'>def</span> <span class='id put'>put</span><span class='lparen'>(</span><span class='id expect'>expect</span><span class='comma'>,</span> <span class='op'>*</span><span class='id resource'>resource</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-  <span class='id headers'>headers</span> <span class='op'>=</span> <span class='id default_headers'>default_headers</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='period'>.</span><span class='id extract_options!'>extract_options!</span><span class='rparen'>)</span>
-  <span class='id uri'>uri</span><span class='comma'>,</span> <span class='id data'>data</span> <span class='op'>=</span> <span class='id verify_path_and_body!'>verify_path_and_body!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
-  <span class='id perform'>perform</span><span class='lparen'>(</span><span class='symbol'>:put</span><span class='comma'>,</span> <span class='id path'>path</span><span class='lparen'>(</span><span class='op'>*</span><span class='id uri'>uri</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id expect'>expect</span><span class='comma'>,</span> <span class='id data'>data</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="return_body?-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>return_body?</strong>(method, code, has_block) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Checks whether a combination of the HTTP method, response code, and block
-should result in returning the :body in the response hash. Use internally
-when implementing <span class='object_link'><a href="#perform-instance_method" title="Riak::Client::HTTPBackend#perform (method)">#perform</a></span>.
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
-      
-      
-        <span class='name'>method</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the HTTP method
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Fixnum</tt>)</span>
-      
-      
-        <span class='name'>code</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the received response code
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
-      
-      
-        <span class='name'>has_block</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-whether a streaming block was passed to <span class='object_link'><a href="#perform-instance_method" title="Riak::Client::HTTPBackend#perform (method)">#perform</a></span>. Pass block_given? to
-this parameter.
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-whether to return the body in the response hash
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-190
-191
-192</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 190</span>
-
-<span class='kw'>def</span> <span class='id return_body?'>return_body?</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id code'>code</span><span class='comma'>,</span> <span class='id has_block'>has_block</span><span class='rparen'>)</span>
-  <span class='id method'>method</span> <span class='op'>!=</span> <span class='symbol'>:head</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id valid_response?'>valid_response?</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>205</span><span class='comma'>,</span><span class='int'>304</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id code'>code</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id has_block'>has_block</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="root_uri-instance_method">
-  
-    - (<tt>URI</tt>) <strong>root_uri</strong> 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-The calculated root URI for the Riak HTTP endpoint
+Pings the server
 </p>
 
 
@@ -2304,14 +1422,14 @@ The calculated root URI for the Riak HTTP endpoint
   
     <li>
       
-        <span class='type'>(<tt>URI</tt>)</span>
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-The calculated root URI for the Riak HTTP endpoint
+whether the server is available
 </p>
 </div>
       
@@ -2325,15 +1443,21 @@ The calculated root URI for the Riak HTTP endpoint
       <pre class="lines">
 
 
-138
-139
-140</pre>
+48
+49
+50
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 48</span>
 
-<span class='kw'>def</span> <span class='id root_uri'>root_uri</span>
-  <span class='const'>URI</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://</span><span class='embexpr_beg'>#{</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id host'>host</span><span class='rbrace'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id port'>port</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id ping'>ping</span>
+  <span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_ping'>riak_kv_wm_ping</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>true</span>
+<span class='kw'>rescue</span>
+  <span class='kw'>false</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2341,17 +1465,67 @@ The calculated root URI for the Riak HTTP endpoint
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="valid_response?-instance_method">
+  <p class="signature " id="reload_object-instance_method">
   
-    - (<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>valid_response?</strong>(expected, actual) 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>reload_object</strong>(robject, r = nil) 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Checks the expected response codes against the actual response code. Use
-internally when implementing <span class='object_link'><a href="#perform-instance_method" title="Riak::Client::HTTPBackend#perform (method)">#perform</a></span>.
+Reloads the data for a given RObject, a special case of <span class='object_link'><a href="#fetch_object-instance_method" title="Riak::Client::HTTPBackend#fetch_object (method)">#fetch_object</a></span>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+70
+71
+72
+73
+74
+75
+76
+77
+78</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 70</span>
+
+<span class='kw'>def</span> <span class='id reload_object'>reload_object</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='comma'>,</span> <span class='id r'>r</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id options'>options</span> <span class='op'>=</span> <span class='id r'>r</span> <span class='op'>?</span> <span class='lbrace'>{</span><span class='symbol'>:r</span> <span class='op'>=&gt;</span> <span class='id r'>r</span><span class='rbrace'>}</span> <span class='op'>:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>300</span><span class='comma'>,</span><span class='int'>304</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id options'>options</span><span class='comma'>,</span> <span class='id reload_headers'>reload_headers</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:code</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id to_i'>to_i</span> <span class='op'>==</span> <span class='int'>304</span>
+    <span class='id robject'>robject</span>
+  <span class='kw'>else</span>
+    <span class='id load_object'>load_object</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='comma'>,</span> <span class='id response'>response</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="set_bucket_props-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>set_bucket_props</strong>(bucket, props) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Sets bucket properties
 </p>
 
 
@@ -2363,16 +1537,16 @@ internally when implementing <span class='object_link'><a href="#perform-instanc
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../String.html" title="String (class)">String</a></span>,Fixnum&gt;</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
-        <span class='name'>expected</span>
+        <span class='name'>bucket</span>
       
       
       
         &mdash;
         <div class='inline'><p>
-the expected response code(s)
+the bucket to set properties on
 </p>
 </div>
       
@@ -2380,35 +1554,78 @@ the expected response code(s)
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt>Fixnum</tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
-        <span class='name'>actual</span>
+        <span class='name'>properties</span>
       
       
       
         &mdash;
         <div class='inline'><p>
-the received response code
+the properties to set
 </p>
 </div>
       
     </li>
   
 </ul>
-<h3>Returns:</h3>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+125
+126
+127
+128
+129</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 125</span>
+
+<span class='kw'>def</span> <span class='id set_bucket_props'>set_bucket_props</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='comma'>,</span> <span class='id props'>props</span><span class='rparen'>)</span>
+  <span class='id bucket'>bucket</span> <span class='op'>=</span> <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span> <span class='kw'>if</span> <span class='const'>Bucket</span> <span class='op'>===</span> <span class='id bucket'>bucket</span>
+  <span class='id body'>body</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>props</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id props'>props</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id to_json'>to_json</span>
+  <span class='id put'>put</span><span class='lparen'>(</span><span class='int'>204</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id body'>body</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="stats-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>stats</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Gets health statistics
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
 <ul class="return">
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
       
         &mdash;
         <div class='inline'><p>
-whether the actual response code is acceptable given the expectations
+information about the server, including stats
 </p>
 </div>
       
@@ -2422,15 +1639,17 @@ whether the actual response code is acceptable given the expectations
       <pre class="lines">
 
 
-180
-181
-182</pre>
+185
+186
+187
+188</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 185</span>
 
-<span class='kw'>def</span> <span class='id valid_response?'>valid_response?</span><span class='lparen'>(</span><span class='id expected'>expected</span><span class='comma'>,</span> <span class='id actual'>actual</span><span class='rparen'>)</span>
-  <span class='const'>Array</span><span class='lparen'>(</span><span class='id expected'>expected</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:to_i</span><span class='rparen'>)</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='id actual'>actual</span><span class='period'>.</span><span class='id to_i'>to_i</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id stats'>stats</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id riak_kv_wm_stats'>riak_kv_wm_stats</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='const'>JSON</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id response'>response</span><span class='lbracket'>[</span><span class='symbol'>:body</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2438,16 +1657,16 @@ whether the actual response code is acceptable given the expectations
 </div>
     
       <div class="method_details ">
-  <p class="signature " id="verify_path!-instance_method">
+  <p class="signature " id="store_object-instance_method">
   
-    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>verify_path!</strong>(resource) 
+    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_object</strong>(robject, returnbody = false, w = nil, dw = nil) 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Verifies that the specified resource is valid
+Stores an object
 </p>
 
 
@@ -2459,35 +1678,73 @@ Verifies that the specified resource is valid
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
+        <span class='type'>(<tt><span class='object_link'><a href="../RObject.html" title="Riak::RObject (class)">RObject</a></span></tt>)</span>
       
       
-        <span class='name'>resource</span>
+        <span class='name'>robject</span>
       
       
       
         &mdash;
         <div class='inline'><p>
-the resource specification
+the object to store
 </p>
 </div>
       
     </li>
   
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
     <li>
       
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
+        <span class='name'>returnbody</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
       
       
         &mdash;
         <div class='inline'><p>
-if the resource path is too short
+(false) whether to update the object after write with the new value
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+      
+      
+        <span class='name'>w</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the write quorum
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+      
+      
+        <span class='name'>dw</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the durable write quorum
 </p>
 </div>
       
@@ -2501,112 +1758,37 @@ if the resource path is too short
       <pre class="lines">
 
 
-170
-171
-172
-173</pre>
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 86</span>
 
-<span class='kw'>def</span> <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span>
-  <span class='id resource'>resource</span> <span class='op'>=</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id resource'>resource</span><span class='rparen'>)</span><span class='period'>.</span><span class='id flatten'>flatten</span>
-  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>resource_path_short</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id resource'>resource</span><span class='period'>.</span><span class='id length'>length</span> <span class='op'>&gt;</span> <span class='int'>1</span> <span class='op'>||</span> <span class='id resource'>resource</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='ivar'>@client</span><span class='period'>.</span><span class='id mapred'>mapred</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <p class="signature " id="verify_path_and_body!-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>) <strong>verify_path_and_body!</strong>(args) 
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-Verifies that both a resource path and body are present in the arguments
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Parameters:</h3>
-<ul class="param">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../../Array.html" title="Array (class)">Array</a></span></tt>)</span>
-      
-      
-        <span class='name'>args</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the arguments to verify
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-<h3>Raises:</h3>
-<ul class="raise">
-  
-    <li>
-      
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-if the body or resource is missing, or if the body is not a String
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend.rb', line 155</span>
-
-<span class='kw'>def</span> <span class='id verify_path_and_body!'>verify_path_and_body!</span><span class='lparen'>(</span><span class='id args'>args</span><span class='rparen'>)</span>
-  <span class='id body'>body</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id pop'>pop</span>
-  <span class='kw'>begin</span>
-    <span class='id verify_path!'>verify_path!</span><span class='lparen'>(</span><span class='id args'>args</span><span class='rparen'>)</span>
-  <span class='kw'>rescue</span> <span class='const'>ArgumentError</span>
-    <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>path_and_body_required</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id store_object'>store_object</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='comma'>,</span> <span class='id returnbody'>returnbody</span><span class='op'>=</span><span class='kw'>false</span><span class='comma'>,</span> <span class='id w'>w</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id dw'>dw</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id query'>query</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id q'>q</span><span class='op'>|</span>
+    <span class='id q'>q</span><span class='lbracket'>[</span><span class='symbol'>:returnbody</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id returnbody'>returnbody</span> <span class='kw'>unless</span> <span class='id returnbody'>returnbody</span><span class='period'>.</span><span class='id nil?'>nil?</span>
+    <span class='id q'>q</span><span class='lbracket'>[</span><span class='symbol'>:w</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id w'>w</span> <span class='kw'>unless</span> <span class='id w'>w</span><span class='period'>.</span><span class='id nil?'>nil?</span>
+    <span class='id q'>q</span><span class='lbracket'>[</span><span class='symbol'>:dw</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id dw'>dw</span> <span class='kw'>unless</span> <span class='id dw'>dw</span><span class='period'>.</span><span class='id nil?'>nil?</span>
   <span class='kw'>end</span>
-
-  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>request_body_type</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>String</span> <span class='op'>===</span> <span class='id body'>body</span> <span class='op'>||</span> <span class='const'>IO</span> <span class='op'>===</span> <span class='id body'>body</span>
-  <span class='lbracket'>[</span><span class='id args'>args</span><span class='comma'>,</span> <span class='id body'>body</span><span class='rbracket'>]</span>
+  <span class='id method'>method</span><span class='comma'>,</span> <span class='id codes'>codes</span><span class='comma'>,</span> <span class='id path'>path</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span><span class='period'>.</span><span class='id present?'>present?</span>
+                          <span class='lbracket'>[</span><span class='symbol'>:put</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>300</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='period'>.</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+                        <span class='kw'>else</span>
+                          <span class='lbracket'>[</span><span class='symbol'>:post</span><span class='comma'>,</span> <span class='int'>201</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='period'>.</span><span class='id name'>name</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+                        <span class='kw'>end</span>
+  <span class='id response'>response</span> <span class='op'>=</span> <span class='id send'>send</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id codes'>codes</span><span class='comma'>,</span> <span class='id riak_kv_wm_raw'>riak_kv_wm_raw</span><span class='comma'>,</span> <span class='id path'>path</span><span class='comma'>,</span> <span class='id query'>query</span><span class='comma'>,</span> <span class='id robject'>robject</span><span class='period'>.</span><span class='id raw_data'>raw_data</span><span class='comma'>,</span> <span class='id store_headers'>store_headers</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id load_object'>load_object</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='comma'>,</span> <span class='id response'>response</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id returnbody'>returnbody</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2618,9 +1800,9 @@ if the body or resource is missing, or if the body is not a String
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:11 2010 by 
+  Generated on Sun Apr  3 19:32:40 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Exception: Riak::FailedRequest</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -88,8 +88,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Exception raised when the expected response code from Riak fails to match
-the actual response code.
+Exception raised when receiving an unexpected client response from Riak.
 </p>
 
 
@@ -97,153 +96,17 @@ the actual response code.
 </div>
 <div class="tags">
   
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="HTTPFailedRequest.html" title="Riak::HTTPFailedRequest (class)">HTTPFailedRequest</a></span>, <span class='object_link'><a href="ProtobuffsFailedRequest.html" title="Riak::ProtobuffsFailedRequest (class)">ProtobuffsFailedRequest</a></span></p>
 </div>
 
-  
-  
-  
-  
-  
-  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#body-instance_method" title="#body (instance method)">- (String) <strong>body</strong> </a>
-    
-
-    
-  </span>
-  
-  
-    <span class="note title readonly">readonly</span>
-    
-  
-  
-  
-  
-  
 
   
-    <span class="summary_desc"><div class='inline'><p>
-The response body, if present.
-</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#code-instance_method" title="#code (instance method)">- (Fixnum) <strong>code</strong> </a>
-    
-
-    
-  </span>
-  
-  
-    <span class="note title readonly">readonly</span>
-    
   
   
   
   
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-The received response code.
-</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#expected-instance_method" title="#expected (instance method)">- (Fixnum) <strong>expected</strong> </a>
-    
-
-    
-  </span>
-  
-  
-    <span class="note title readonly">readonly</span>
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-The expected response code.
-</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#headers-instance_method" title="#headers (instance method)">- (Hash) <strong>headers</strong> </a>
-    
-
-    
-  </span>
-  
-  
-    <span class="note title readonly">readonly</span>
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-The response headers.
-</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#method-instance_method" title="#method (instance method)">- (Symbol) <strong>method</strong> </a>
-    
-
-    
-  </span>
-  
-  
-    <span class="note title readonly">readonly</span>
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'><p>
-The HTTP method, one of :head, :get, :post, :put, :delete.
-</p>
-</div></span>
-  
-</li>
-
-    
-  </ul>
-
 
   
     <h2>
@@ -256,7 +119,7 @@ The HTTP method, one of :head, :get, :post, :put, :delete.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (FailedRequest) <strong>initialize</strong>(method, expected_code, received_code, headers, body) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (FailedRequest) <strong>initialize</strong>(message) </a>
     
 
     
@@ -299,7 +162,7 @@ A new instance of FailedRequest.
     <div class="method_details first">
   <p class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="Riak::FailedRequest (class)">FailedRequest</a></span></tt>) <strong>initialize</strong>(method, expected_code, received_code, headers, body) 
+    - (<tt><span class='object_link'><a href="" title="Riak::FailedRequest (class)">FailedRequest</a></span></tt>) <strong>initialize</strong>(message) 
   
 
   
@@ -320,318 +183,6 @@ A new instance of FailedRequest
       <pre class="lines">
 
 
-32
-33
-34
-35</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 32</span>
-
-<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='id expected_code'>expected_code</span><span class='comma'>,</span> <span class='id received_code'>received_code</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id body'>body</span><span class='rparen'>)</span>
-  <span class='ivar'>@method</span><span class='comma'>,</span> <span class='ivar'>@expected</span><span class='comma'>,</span> <span class='ivar'>@code</span><span class='comma'>,</span> <span class='ivar'>@headers</span><span class='comma'>,</span> <span class='ivar'>@body</span> <span class='op'>=</span> <span class='id method'>method</span><span class='comma'>,</span> <span class='id expected_code'>expected_code</span><span class='comma'>,</span> <span class='id received_code'>received_code</span><span class='comma'>,</span> <span class='id headers'>headers</span><span class='comma'>,</span> <span class='id body'>body</span>
-  <span class='kw'>super</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>failed_request</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:expected</span> <span class='op'>=&gt;</span> <span class='ivar'>@expected</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='comma'>,</span> <span class='symbol'>:code</span> <span class='op'>=&gt;</span> <span class='ivar'>@code</span><span class='comma'>,</span> <span class='symbol'>:body</span> <span class='op'>=&gt;</span> <span class='ivar'>@body</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-  
-</div>
-
-  <div id="instance_attr_details" class="attr_details">
-    <h2>Instance Attribute Details</h2>
-    
-      
-      <span id=""></span>
-      <span id="body-instance_method"></span>
-      <div class="method_details first">
-  <p class="signature first" id="body-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>body</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-The response body, if present
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the response body, if present
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-30
-31
-32</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 30</span>
-
-<span class='kw'>def</span> <span class='id body'>body</span>
-  <span class='ivar'>@body</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <span id="code-instance_method"></span>
-      <div class="method_details ">
-  <p class="signature " id="code-instance_method">
-  
-    - (<tt>Fixnum</tt>) <strong>code</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-The received response code
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the received response code
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-26
-27
-28</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 26</span>
-
-<span class='kw'>def</span> <span class='id code'>code</span>
-  <span class='ivar'>@code</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <span id="expected-instance_method"></span>
-      <div class="method_details ">
-  <p class="signature " id="expected-instance_method">
-  
-    - (<tt>Fixnum</tt>) <strong>expected</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-The expected response code
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt>Fixnum</tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the expected response code
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-24
-25
-26</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 24</span>
-
-<span class='kw'>def</span> <span class='id expected'>expected</span>
-  <span class='ivar'>@expected</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <span id="headers-instance_method"></span>
-      <div class="method_details ">
-  <p class="signature " id="headers-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>headers</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-The response headers
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the response headers
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-28
-29
-30</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 28</span>
-
-<span class='kw'>def</span> <span class='id headers'>headers</span>
-  <span class='ivar'>@headers</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <span id="method-instance_method"></span>
-      <div class="method_details ">
-  <p class="signature " id="method-instance_method">
-  
-    - (<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>) <strong>method</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-</p><div class="docstring">
-  <div class="discussion">
-    <p>
-The HTTP method, one of :head, :get, :post, :put, :delete
-</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <h3>Returns:</h3>
-<ul class="return">
-  
-    <li>
-      
-        <span class='type'>(<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
-      
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the HTTP method, one of :head, :get, :post, :put, :delete
-</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
 22
 23
 24</pre>
@@ -639,23 +190,23 @@ the HTTP method, one of :head, :get, :post, :put, :delete
     <td>
       <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 22</span>
 
-<span class='kw'>def</span> <span class='id method'>method</span>
-  <span class='ivar'>@method</span>
+<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id message'>message</span><span class='rparen'>)</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='id message'>message</span> <span class='op'>||</span>  <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>failed_request</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
 </div>
-    
-  </div>
+  
+</div>
 
 
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:10 2010 by 
+  Generated on Sun Apr  3 19:32:39 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>

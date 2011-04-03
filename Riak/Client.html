@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Class: Riak::Client</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
@@ -79,7 +79,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">riak-client/lib/riak/client.rb<span class="defines">,<br />
-  riak-client/lib/riak/search.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/excon_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb</span>
+  riak-client/lib/riak/search.rb,<br /> riak-client/lib/riak/client/pump.rb,<br /> riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/excon_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb,<br /> riak-client/lib/riak/client/beefcake/messages.rb,<br /> riak-client/lib/riak/client/protobuffs_backend.rb,<br /> riak-client/lib/riak/client/beefcake/object_methods.rb,<br /> riak-client/lib/riak/client/http_backend/configuration.rb,<br /> riak-client/lib/riak/client/http_backend/object_methods.rb,<br /> riak-client/lib/riak/client/beefcake_protobuffs_backend.rb,<br /> riak-client/lib/riak/client/http_backend/request_headers.rb,<br /> riak-client/lib/riak/client/http_backend/transport_methods.rb</span>
 </dd>
   
 </dl>
@@ -102,7 +102,7 @@ A client connection to Riak.
     
    
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Client/CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a></span>, <span class='object_link'><a href="Client/ExconBackend.html" title="Riak::Client::ExconBackend (class)">ExconBackend</a></span>, <span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span>, <span class='object_link'><a href="Client/NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a></span>
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Client/CurbBackend.html" title="Riak::Client::CurbBackend (class)">CurbBackend</a></span>, <span class='object_link'><a href="Client/ExconBackend.html" title="Riak::Client::ExconBackend (class)">ExconBackend</a></span>, <span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span>, <span class='object_link'><a href="Client/NetHTTPBackend.html" title="Riak::Client::NetHTTPBackend (class)">NetHTTPBackend</a></span>, <span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span>
     
   
 </p>
@@ -127,6 +127,22 @@ When using integer client IDs, the exclusive upper-bound of valid values.
         </dt>
         <dd><pre class="code"><span class='int'>4294967296</span></pre></dd>
       
+        <dt id="PROTOCOLS-constant" class="">PROTOCOLS =
+          <div class="docstring">
+  <div class="discussion">
+    <p>
+Array of valid protocols
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+        </dt>
+        <dd><pre class="code"><span class='qwords_beg'>%w[</span><span class='tstring_end'>http</span></span></pre></dd>
+      
         <dt id="HOST_REGEX-constant" class="">HOST_REGEX =
           <div class="docstring">
   <div class="discussion">
@@ -143,6 +159,11 @@ Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(?:(?:(?:[a-zA-Z\d](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.)*(?:[a-zA-Z](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\])$</span><span class='regexp_end'>/n</span></span></pre></dd>
       
+        <dt id="VALID_OPTIONS-constant" class="">VALID_OPTIONS =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span><span class='symbol'>:protocol</span><span class='comma'>,</span> <span class='symbol'>:host</span><span class='comma'>,</span> <span class='symbol'>:port</span><span class='comma'>,</span> <span class='symbol'>:http_port</span><span class='comma'>,</span> <span class='symbol'>:pb_port</span><span class='comma'>,</span> <span class='symbol'>:prefix</span><span class='comma'>,</span> <span class='symbol'>:client_id</span><span class='comma'>,</span> <span class='symbol'>:mapred</span><span class='comma'>,</span> <span class='symbol'>:luwak</span><span class='comma'>,</span> <span class='symbol'>:http_backend</span><span class='comma'>,</span> <span class='symbol'>:protobuffs_backend</span><span class='comma'>,</span> <span class='symbol'>:ssl</span><span class='comma'>,</span> <span class='symbol'>:basic_auth</span><span class='rbracket'>]</span></pre></dd>
+      
     </dl>
   
 
@@ -157,6 +178,33 @@ Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
   
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#basic_auth-instance_method" title="#basic_auth (instance method)">- (String) <strong>basic_auth</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The user:pass for http basic authentication.
+</p>
+</div></span>
+  
+</li>
+
     
       <li class="public ">
   <span class="summary_signature">
@@ -242,6 +290,33 @@ The HTTP backend/client to use.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#http_port-instance_method" title="#http_port (instance method)">- (Fixnum) <strong>http_port</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The HTTP(S) port for the Riak endpoint.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#luwak-instance_method" title="#luwak (instance method)">- (String) <strong>luwak</strong> </a>
     
 
@@ -296,7 +371,7 @@ The URL path to the map-reduce HTTP endpoint.
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#port-instance_method" title="#port (instance method)">- (Fixnum) <strong>port</strong> </a>
+      <a href="#pb_port-instance_method" title="#pb_port (instance method)">- (Fixnum) <strong>pb_port</strong> </a>
     
 
     
@@ -313,7 +388,7 @@ The URL path to the map-reduce HTTP endpoint.
 
   
     <span class="summary_desc"><div class='inline'><p>
-The port of the Riak HTTP endpoint.
+The Protocol Buffers port for the Riak endpoint.
 </p>
 </div></span>
   
@@ -350,6 +425,60 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint.
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#protobuffs_backend-instance_method" title="#protobuffs_backend (instance method)">- (Symbol) <strong>protobuffs_backend</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The Protocol Buffers backend/client to use.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#protocol-instance_method" title="#protocol (instance method)">- (String) <strong>protocol</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The protocol to use for the Riak endpoint.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#solr-instance_method" title="#solr (instance method)">- (String) <strong>solr</strong> </a>
     
 
@@ -374,6 +503,60 @@ The URL path prefix to the Solr HTTP endpoint.
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ssl%3D-instance_method" title="#ssl= (instance method)">- (Object) <strong>ssl</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    <span class="note title writeonly">writeonly</span>
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Enables or disables SSL on the client to be utilized by the HTTP Backends.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ssl_options-instance_method" title="#ssl_options (instance method)">- (Hash|nil) <strong>ssl_options</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The SSL options that get built when using SSL.
+</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -384,6 +567,30 @@ The URL path prefix to the Solr HTTP endpoint.
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#backend-instance_method" title="#backend (instance method)">- (HTTPBackend, ProtobuffsBackend) <strong>backend</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns a backend for operations that are protocol-independent.
+</p>
+</div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -405,6 +612,32 @@ The URL path prefix to the Solr HTTP endpoint.
   
     <span class="summary_desc"><div class='inline'><p>
 Retrieves a bucket from Riak.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#buckets-instance_method" title="#buckets (instance method)">- (Array&lt;Bucket&gt;) <strong>buckets</strong> </a>
+    
+
+    
+      (also: #list_buckets)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Lists buckets which have keys stored in them.
 </p>
 </div></span>
   
@@ -543,8 +776,6 @@ Adds documents to a search index via the Solr interface.
     
 
     
-      (also: #initialize_core)
-    
   </span>
   
     <span class="note title constructor">constructor</span>
@@ -582,6 +813,104 @@ A new instance of Client.
   
     <span class="summary_desc"><div class='inline'><p>
 A representation suitable for IRB and debugging output.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ping-instance_method" title="#ping (instance method)">- (true, false) <strong>ping</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Pings the Riak server to check for liveness.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public deprecated">
+  <span class="summary_signature">
+    
+      <a href="#port-instance_method" title="#port (instance method)">- (Fixnum) <strong>port</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  <span class="deprecated note title">Deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>
+Ports for HTTP(S) and Protocol Buffers are segregated. Use <span class='object_link'><a href="#http_port-instance_method" title="Riak::Client#http_port (method)">#http_port</a></span> or
+<span class='object_link'><a href="#pb_port-instance_method" title="Riak::Client#pb_port (method)">#pb_port</a></span>.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public deprecated">
+  <span class="summary_signature">
+    
+      <a href="#port%3D-instance_method" title="#port= (instance method)">- (Fixnum) <strong>port=</strong>(value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  <span class="deprecated note title">Deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'><p>
+Ports for HTTP(S) and Protocol Buffers are segregated. Use <span class='object_link'><a href="#http_port%3D-instance_method" title="Riak::Client#http_port= (method)">#http_port=</a></span> or
+<span class='object_link'><a href="#pb_port%3D-instance_method" title="Riak::Client#pb_port= (method)">#pb_port=</a></span>.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#protobuffs-instance_method" title="#protobuffs (instance method)">- (ProtobuffsBackend) <strong>protobuffs</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Automatically detects and returns an appropriate Protocol Buffers backend.
 </p>
 </div></span>
   
@@ -643,6 +972,30 @@ Performs a search via the Solr interface.
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#ssl_enabled%3F-instance_method" title="#ssl_enabled? (instance method)">- (Boolean) <strong>ssl_enabled?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Checks if SSL is enabled for HTTP.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#store_file-instance_method" title="#store_file (instance method)">- (String) <strong>store_file</strong>(*args) </a>
     
 
@@ -677,7 +1030,7 @@ interface.
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span>, <span class='object_link'><a href="Util/Escape.html#unescape-instance_method" title="Riak::Util::Escape#unescape (method)">#unescape</a></span></p>
 
   
   
@@ -697,10 +1050,6 @@ interface.
     - (<tt><span class='object_link'><a href="" title="Riak::Client (class)">Client</a></span></tt>) <strong>initialize</strong>(options = {}) 
   
 
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='initialize_core-instance_method'>initialize_core</span></span>
-    </span>
   
 </p><div class="docstring">
   <div class="discussion">
@@ -766,13 +1115,13 @@ The URL path prefix to the Solr HTTP endpoint
       <pre class="lines">
 
 
-65
-66
-67
-68</pre>
+95
+96
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 95</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id solr'>solr</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:solr</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/solr</span><span class='tstring_end'>&quot;</span></span>
@@ -789,10 +1138,71 @@ The URL path prefix to the Solr HTTP endpoint
     <h2>Instance Attribute Details</h2>
     
       
+      <span id="basic_auth=-instance_method"></span>
+      <span id="basic_auth-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="basic_auth-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>basic_auth</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The user:pass for http basic authentication
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The user:pass for http basic authentication
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 58</span>
+
+<span class='kw'>def</span> <span class='id basic_auth'>basic_auth</span>
+  <span class='ivar'>@basic_auth</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
       <span id="client_id=-instance_method"></span>
       <span id="client_id-instance_method"></span>
-      <div class="method_details first">
-  <p class="signature first" id="client_id-instance_method">
+      <div class="method_details ">
+  <p class="signature " id="client_id-instance_method">
   
     - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>client_id</strong> 
   
@@ -834,15 +1244,15 @@ The internal client ID used by Riak to route responses
       <pre class="lines">
 
 
-42
-43
-44</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id client_id'>client_id</span>
-  <span class='ivar'>@client_id</span>
+  <span class='ivar'>@client_id</span> <span class='op'>||=</span> <span class='id backend'>backend</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:get_client_id</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id backend'>backend</span><span class='period'>.</span><span class='id get_client_id'>get_client_id</span> <span class='op'>:</span> <span class='id make_client_id'>make_client_id</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -895,12 +1305,12 @@ The host or IP address for the Riak endpoint
       <pre class="lines">
 
 
-36
-37
-38</pre>
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id host'>host</span>
   <span class='ivar'>@host</span>
@@ -956,15 +1366,76 @@ The HTTP backend/client to use
       <pre class="lines">
 
 
-54
-55
-56</pre>
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='id http_backend'>http_backend</span>
   <span class='ivar'>@http_backend</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="http_port=-instance_method"></span>
+      <span id="http_port-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="http_port-instance_method">
+  
+    - (<tt>Fixnum</tt>) <strong>http_port</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The HTTP(S) port for the Riak endpoint
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The HTTP(S) port for the Riak endpoint
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='id http_port'>http_port</span>
+  <span class='ivar'>@http_port</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1017,12 +1488,12 @@ The URL path to the luwak HTTP endpoint
       <pre class="lines">
 
 
-51
-52
-53</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id luwak'>luwak</span>
   <span class='ivar'>@luwak</span>
@@ -1078,12 +1549,12 @@ The URL path to the map-reduce HTTP endpoint
       <pre class="lines">
 
 
-48
-49
-50</pre>
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id mapred'>mapred</span>
   <span class='ivar'>@mapred</span>
@@ -1094,19 +1565,19 @@ The URL path to the map-reduce HTTP endpoint
 </div>
     
       
-      <span id="port=-instance_method"></span>
-      <span id="port-instance_method"></span>
+      <span id="pb_port=-instance_method"></span>
+      <span id="pb_port-instance_method"></span>
       <div class="method_details ">
-  <p class="signature " id="port-instance_method">
+  <p class="signature " id="pb_port-instance_method">
   
-    - (<tt>Fixnum</tt>) <strong>port</strong> 
+    - (<tt>Fixnum</tt>) <strong>pb_port</strong> 
   
 
   
 </p><div class="docstring">
   <div class="discussion">
     <p>
-The port of the Riak HTTP endpoint
+The Protocol Buffers port for the Riak endpoint
 </p>
 
 
@@ -1125,7 +1596,7 @@ The port of the Riak HTTP endpoint
       
         &mdash;
         <div class='inline'><p>
-The port of the Riak HTTP endpoint
+The Protocol Buffers port for the Riak endpoint
 </p>
 </div>
       
@@ -1139,15 +1610,15 @@ The port of the Riak HTTP endpoint
       <pre class="lines">
 
 
-39
-40
-41</pre>
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 55</span>
 
-<span class='kw'>def</span> <span class='id port'>port</span>
-  <span class='ivar'>@port</span>
+<span class='kw'>def</span> <span class='id pb_port'>pb_port</span>
+  <span class='ivar'>@pb_port</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1200,15 +1671,137 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint
       <pre class="lines">
 
 
-45
-46
-47</pre>
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id prefix'>prefix</span>
   <span class='ivar'>@prefix</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="protobuffs_backend=-instance_method"></span>
+      <span id="protobuffs_backend-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="protobuffs_backend-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>) <strong>protobuffs_backend</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The Protocol Buffers backend/client to use
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The Protocol Buffers backend/client to use
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+83
+84
+85</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 83</span>
+
+<span class='kw'>def</span> <span class='id protobuffs_backend'>protobuffs_backend</span>
+  <span class='ivar'>@protobuffs_backend</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="protocol=-instance_method"></span>
+      <span id="protocol-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="protocol-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>protocol</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The protocol to use for the Riak endpoint
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The protocol to use for the Riak endpoint
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+46
+47
+48</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 46</span>
+
+<span class='kw'>def</span> <span class='id protocol'>protocol</span>
+  <span class='ivar'>@protocol</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1276,6 +1869,111 @@ The URL path prefix to the Solr HTTP endpoint
 </table>
 </div>
     
+      
+      <span id="ssl=-instance_method"></span>
+      <span id=""></span>
+      <div class="method_details ">
+  <p class="signature " id="ssl=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>ssl=</strong>(value)  <span class="extras">(writeonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Enables or disables SSL on the client to be utilized by the HTTP Backends
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 68</span>
+
+<span class='kw'>def</span> <span class='id ssl='>ssl=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='ivar'>@ssl_options</span> <span class='op'>=</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id value'>value</span> <span class='op'>?</span> <span class='id value'>value</span> <span class='op'>:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id value'>value</span> <span class='op'>?</span> <span class='id ssl_enable'>ssl_enable</span> <span class='op'>:</span> <span class='id ssl_disable'>ssl_disable</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <span id="ssl_options-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="ssl_options-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>|nil</tt>) <strong>ssl_options</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The SSL options that get built when using SSL
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>|nil</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The SSL options that get built when using SSL
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 61</span>
+
+<span class='kw'>def</span> <span class='id ssl_options'>ssl_options</span>
+  <span class='ivar'>@ssl_options</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 
@@ -1284,7 +1982,76 @@ The URL path prefix to the Solr HTTP endpoint
     
     
       <div class="method_details first">
-  <p class="signature first" id="bucket-instance_method">
+  <p class="signature first" id="backend-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>, <tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>) <strong>backend</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns a backend for operations that are protocol-independent. You can
+change which type of backend is used by setting the <span class='object_link'><a href="#protocol-instance_method" title="Riak::Client#protocol (method)">#protocol</a></span>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>, <tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+an appropriate client backend
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+272
+273
+274
+275
+276
+277
+278
+279</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 272</span>
+
+<span class='kw'>def</span> <span class='id backend'>backend</span>
+  <span class='ivar'>@backend</span> <span class='op'>||=</span> <span class='kw'>case</span> <span class='ivar'>@protocol</span><span class='period'>.</span><span class='id to_s'>to_s</span>
+               <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>https?</span><span class='regexp_end'>/i</span></span>
+                 <span class='id http'>http</span>
+               <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>pbc</span><span class='regexp_end'>/i</span></span>
+                 <span class='id protobuffs'>protobuffs</span>
+               <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="bucket-instance_method">
   
     - (<tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>) <strong>bucket</strong>(name, options = {}) 
   
@@ -1359,11 +2126,11 @@ options for retrieving the bucket
           <span class="default">
             
               &mdash; default:
-              <tt>true</tt>
+              <tt>false whether to retrieve the bucket keys</tt>
             
           </span>
           &mdash; <div class='inline'><p>
-whether to retrieve the bucket keys
+false whether to retrieve the bucket keys
 </p>
 </div>
         </tr>
@@ -1374,7 +2141,7 @@ whether to retrieve the bucket keys
           <span class="default">
             
               &mdash; default:
-              <tt>true</tt>
+              <tt>false</tt>
             
           </span>
           &mdash; <div class='inline'><p>
@@ -1411,23 +2178,100 @@ the requested bucket
       <pre class="lines">
 
 
-139
-140
-141
-142
-143
-144
-145</pre>
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 139</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 293</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='lparen'>(</span><span class='id options'>options</span><span class='period'>.</span><span class='id keys'>keys</span> <span class='op'>-</span> <span class='lbracket'>[</span><span class='symbol'>:keys</span><span class='comma'>,</span> <span class='symbol'>:props</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id empty?'>empty?</span>
     <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>invalid options</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>end</span>
-  <span class='id response'>response</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id get'>get</span><span class='lparen'>(</span><span class='int'>200</span><span class='comma'>,</span> <span class='id prefix'>prefix</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id name'>name</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='id options'>options</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id load'>load</span><span class='lparen'>(</span><span class='id response'>response</span><span class='rparen'>)</span>
+  <span class='ivar'>@bucket_cache</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='lparen'>(</span><span class='ivar'>@bucket_cache</span><span class='lbracket'>[</span><span class='id name'>name</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id b'>b</span><span class='op'>|</span>
+    <span class='id b'>b</span><span class='period'>.</span><span class='id props'>props</span> <span class='kw'>if</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:props</span><span class='rbracket'>]</span>
+    <span class='id b'>b</span><span class='period'>.</span><span class='id keys'>keys</span>  <span class='kw'>if</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:keys</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="buckets-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span>&gt;</tt>) <strong>buckets</strong> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='list_buckets-instance_method'>list_buckets</span></span>
+    </span>
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong> 
+    <div class='inline'><p>
+This is an expensive operation and should be used only in development.
+</p>
+</div>
+  </div>
+
+<p>
+Lists buckets which have keys stored in them.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span>&gt;</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+a list of buckets
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+309
+310
+311</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 309</span>
+
+<span class='kw'>def</span> <span class='id buckets'>buckets</span>
+  <span class='id backend'>backend</span><span class='period'>.</span><span class='id list_buckets'>list_buckets</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id name'>name</span><span class='op'>|</span> <span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1479,13 +2323,13 @@ the key/filename to delete
       <pre class="lines">
 
 
-201
-202
-203
-204</pre>
+367
+368
+369
+370</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 201</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 367</span>
 
 <span class='kw'>def</span> <span class='id delete_file'>delete_file</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span>
   <span class='id http'>http</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -1564,13 +2408,13 @@ whether the key exists in &#8220;Luwak&#8220;
       <pre class="lines">
 
 
-209
-210
-211
-212</pre>
+375
+376
+377
+378</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 209</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 375</span>
 
 <span class='kw'>def</span> <span class='id file_exists?'>file_exists?</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span>
   <span class='id result'>result</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id head'>head</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -1689,26 +2533,26 @@ is given.
       <pre class="lines">
 
 
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197</pre>
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 181</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 347</span>
 
 <span class='kw'>def</span> <span class='id get_file'>get_file</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
@@ -1777,19 +2621,19 @@ the HTTP backend for this client
       <pre class="lines">
 
 
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131</pre>
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 240</span>
 
 <span class='kw'>def</span> <span class='id http'>http</span>
   <span class='ivar'>@http</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -2041,15 +2885,340 @@ A representation suitable for IRB and debugging output.
       <pre class="lines">
 
 
-216
-217
-218</pre>
+382
+383
+384</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 216</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 382</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;Riak::Client </span><span class='embexpr_beg'>#{</span><span class='id http'>http</span><span class='period'>.</span><span class='id root_uri'>root_uri</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;Riak::Client </span><span class='embexpr_beg'>#{</span><span class='id protocol'>protocol</span><span class='rbrace'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id host'>host</span><span class='rbrace'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id protocol'>protocol</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>pbc</span><span class='tstring_end'>'</span></span> <span class='op'>?</span> <span class='id pb_port'>pb_port</span> <span class='op'>:</span> <span class='id http_port'>http_port</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="ping-instance_method">
+  
+    - (<tt>true</tt>, <tt>false</tt>) <strong>ping</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Pings the Riak server to check for liveness.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+whether the Riak server is alive and reachable
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+283
+284
+285</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 283</span>
+
+<span class='kw'>def</span> <span class='id ping'>ping</span>
+  <span class='id backend'>backend</span><span class='period'>.</span><span class='id ping'>ping</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="port-instance_method">
+  
+    - (<tt>Fixnum</tt>) <strong>port</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>
+Ports for HTTP(S) and Protocol Buffers are segregated. Use <span class='object_link'><a href="#http_port-instance_method" title="Riak::Client#http_port (method)">#http_port</a></span> or
+<span class='object_link'><a href="#pb_port-instance_method" title="Riak::Client#pb_port (method)">#pb_port</a></span>.
+</p>
+</div></div>
+<p>
+The port of the Riak endpoint
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The port of the Riak endpoint
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+159
+160
+161
+162
+163
+164
+165
+166
+167</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 159</span>
+
+<span class='kw'>def</span> <span class='id port'>port</span>
+  <span class='id warn'>warn</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>deprecated.port</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:backtrace</span> <span class='op'>=&gt;</span> <span class='id caller'>caller</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id protocol'>protocol</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>http</span><span class='regexp_end'>/i</span></span>
+    <span class='id http_port'>http_port</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>pbc</span><span class='regexp_end'>/i</span></span>
+    <span class='id pb_port'>pb_port</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="port=-instance_method">
+  
+    - (<tt>Fixnum</tt>) <strong>port=</strong>(value) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'><p>
+Ports for HTTP(S) and Protocol Buffers are segregated. Use <span class='object_link'><a href="#http_port%3D-instance_method" title="Riak::Client#http_port= (method)">#http_port=</a></span> or
+<span class='object_link'><a href="#pb_port%3D-instance_method" title="Riak::Client#pb_port= (method)">#pb_port=</a></span>.
+</p>
+</div></div>
+<p>
+Set the port number of the Riak endpoint. This must be an integer between 0
+and 65535.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+        <span class='name'>value</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The port number of the Riak endpoint
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the assigned port number
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+if an invalid port number is given
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 176</span>
+
+<span class='kw'>def</span> <span class='id port='>port=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='id warn'>warn</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>deprecated.port</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:backtrace</span> <span class='op'>=&gt;</span> <span class='id caller'>caller</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='int'>2</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n    </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>port_invalid</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>65535</span><span class='rparen'>)</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
+  <span class='kw'>case</span> <span class='id protocol'>protocol</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>http</span><span class='regexp_end'>/i</span></span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id http_port'>http_port</span> <span class='op'>=</span> <span class='id value'>value</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>pbc</span><span class='regexp_end'>/i</span></span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id pb_port'>pb_port</span> <span class='op'>=</span> <span class='id value'>value</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="protobuffs-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>) <strong>protobuffs</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Automatically detects and returns an appropriate Protocol Buffers backend. 
+The Protocol Buffers backend is used internally by the Riak client but can
+also be used to access the server directly.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the Protocol Buffers backend for this client
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 257</span>
+
+<span class='kw'>def</span> <span class='id protobuffs'>protobuffs</span>
+  <span class='ivar'>@protobuffs</span> <span class='op'>||=</span> <span class='kw'>begin</span>
+                    <span class='id klass'>klass</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id const_get'>const_get</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@protobuffs_backend</span><span class='rbrace'>}</span><span class='tstring_content'>ProtobuffsBackend</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+                    <span class='kw'>if</span> <span class='id klass'>klass</span><span class='period'>.</span><span class='id configured?'>configured?</span>
+                      <span class='id klass'>klass</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
+                    <span class='kw'>else</span>
+                      <span class='id raise'>raise</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>protobuffs_configuration</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:backend</span> <span class='op'>=&gt;</span> <span class='ivar'>@protobuffs_backend</span><span class='rparen'>)</span>
+                    <span class='kw'>end</span>
+                  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2461,6 +3630,58 @@ the query result, containing the &#8216;responseHeaders&#8217; and
 </div>
     
       <div class="method_details ">
+  <p class="signature " id="ssl_enabled?-instance_method">
+  
+    - (<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>) <strong>ssl_enabled?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Checks if SSL is enabled for HTTP
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+232
+233
+234</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 232</span>
+
+<span class='kw'>def</span> <span class='id ssl_enabled?'>ssl_enabled?</span>
+  <span class='id protocol'>protocol</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>https</span><span class='tstring_end'>'</span></span> <span class='op'>||</span> <span class='ivar'>@ssl_options</span><span class='period'>.</span><span class='id present?'>present?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <p class="signature " id="store_file-instance_method">
   
     
@@ -2640,19 +3861,19 @@ the key/filename where the object was stored
       <pre class="lines">
 
 
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168</pre>
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 325</span>
 
 <span class='kw'>def</span> <span class='id store_file'>store_file</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id data'>data</span><span class='comma'>,</span> <span class='id content_type'>content_type</span><span class='comma'>,</span> <span class='id filename'>filename</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id reverse'>reverse</span>
@@ -2674,9 +3895,9 @@ the key/filename where the object was stored
 </div>
     
     <div id="footer">
-  Generated on Mon Dec 13 16:31:08 2010 by 
+  Generated on Sun Apr  3 19:32:37 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.3 (ruby-1.9.2).
+  0.6.5 (ruby-1.9.2).
 </div>
 
   </body>
