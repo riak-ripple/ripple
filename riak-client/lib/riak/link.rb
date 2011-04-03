@@ -22,7 +22,7 @@ module Riak
     # @return [String] the relationship tag (or "rel") of the other resource to this one
     attr_accessor :tag
     alias_method :rel, :tag
-    alias_method :'rel=', :'tag='
+    alias_method :rel=, :tag=
 
     # @return [String] the bucket of the related resource
     attr_accessor :bucket

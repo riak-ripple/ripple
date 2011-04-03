@@ -66,7 +66,7 @@ module Riak
         load_object(RObject.new(bucket, key), response)
       end
 
-      # Reloads the data for a given RObject, a special case of {#fetch}.
+      # Reloads the data for a given RObject, a special case of {#fetch_object}.
       def reload_object(robject, r = nil)
         options = r ? {:r => r} : {}
         response = get([200,300,304], riak_kv_wm_raw, escape(robject.bucket.name), escape(robject.key), options, reload_headers(robject))

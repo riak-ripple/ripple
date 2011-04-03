@@ -1,5 +1,44 @@
 h1. Ripple Release Notes
 
+h2. 0.9.0 Feature Release - 2011-04-03
+
+Release 0.9.0 is a huge step forward from the 0.8 series, including support for Riak 0.14.x features, Protocol Buffers transport, and many bugfixes.
+
+Following this release, the code will be branched into a 0.9-stable branch, which will only receive critical bugfixes. Development of 1.0 features will occur on the master branch.
+
+Full notes:
+
+* Fixed some client semantics: separate ports for protocols, client ID responsibility.
+* Add definition of EmbeddedDocument#==. [Myron Marston]
+* Allow a many-linked doc to be removed from an association. [Myron Marston]
+* Fix one-linked association to return nil appropriately. [Myron Marston]
+* Added external JSON serialization for Ripple documents.
+* Fixed validates_associated. [Myron Marston]
+* Fixed assignment bug in one-embedded associations. [Myron Marston]
+* Added integration tests that work across all client backends.
+* Added support for Protocol Buffers transport with Beefcake library.
+* Added HTTP Basic authorization support. [Adam Hunter]
+* Added HTTPS support. [Adam Hunter]
+* Normalized project Gemfiles.
+* Extracted stream-isolating pump pattern from client backends.
+* Improve speed and reliability of test server.
+* Bubble up errors when saving a document. [Duff OMelia]
+* Add automatic expiration to Rack session store.
+* Use ISO8601 datetime format in stored documents (configurable). [Nicolas Fouché]
+* Access document attributes that do not have a declared property. [Duff OMelia]
+* Fix document callback ordering. [Nathaniel Talbott]
+* Consolidate setting of the object key when link-walking. [Kyle Kingsbury]
+* Added support for streaming MapReduce.
+* Bucket instances are now memoized in the Client. [Woody Peterson]
+* Client backends were refactored so that higher layers are not concerned with transport semantics.
+* Fix false.present? bug.
+* Riak 0.14 features:
+** MapReduce has support for key-filters.
+** Add list_buckets operation.
+** HTTP resources prefixes can be discovered from the root URL.
+* Added document observers using ActiveModel::Observer. [Stefan Springer]
+* :key is a protected attribute on Document models. [Adam Hunter]
+
 h2. 0.8.3 Patch/Minor Feature Release - 2010-12-13
 
 Release 0.8.3 includes new generators for Rails 3 projects, a new HTTP backend based on Wesley Beary's Excon library, and significant bugfixes for Document models.

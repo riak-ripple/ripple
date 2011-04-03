@@ -26,7 +26,6 @@ module Ripple
 
     module InstanceMethods
       # Creates a Hash suitable for conversion to an external format.
-      # Called internally by {#to_json}.
       # @param [Hash] options (nil) serialization options
       # @option options [Array<Symbol>] :only emit only the specified attributes
       # @option options [Array<Symbol>] :except omit the specified attributes

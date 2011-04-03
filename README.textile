@@ -32,6 +32,9 @@ client = Riak::Client.new
 # Create a client interface that uses Excon
 client = Riak::Client.new(:http_backend => :Excon)
 
+# Create a client that uses Protocol Buffers
+client = Riak::Client.new(:protocol => "pbc")
+
 # Retrieve a bucket
 bucket = client.bucket("doc")  # a Riak::Bucket
 
@@ -196,7 +199,8 @@ $ rails g ripple
 <notextile><pre>
 # Configure Riak connections for the Ripple library.
 development:
-  port: 8098
+  http_port: 8098
+  pb_port: 8087
   host: localhost
 
 # The test environment has additional keys for configuring the
@@ -207,13 +211,15 @@ development:
 # * js_source_dir specifies where your custom Javascript functions for
 #           MapReduce should be loaded from. Usually app/mapreduce.
 test:
-  port: 9000
+  http_port: 9000
+  pb_port: 9002
   host: localhost
   bin_dir: /usr/local/bin   # Default for Homebrew.
-  js_source_dir: <%= Rails.root + "app/mapreduce" %>
+  js_source_dir: <%%= Rails.root + "app/mapreduce" %>
 
 production:
-  port: 8098
+  http_port: 8098
+  pb_port: 8087
   host: localhost
 </pre></notextile>
 
