@@ -13,7 +13,7 @@ module Ripple
             :map_cache_size => 0, # 0.14
             :vnode_cache_entries => 0 # 0.13
           },
-          :riak_core => { :web_port => Ripple.config[:port] || 8098 }
+          :riak_core => { :web_port => Ripple.config[:http_port] || 8098 }
         },
         :bin_dir => Ripple.config.delete(:bin_dir),
         :temp_dir => Rails.root + "tmp/riak_test_server"
