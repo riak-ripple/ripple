@@ -24,7 +24,7 @@ Full notes:
 * Improve speed and reliability of test server.
 * Bubble up errors when saving a document. [Duff OMelia]
 * Add automatic expiration to Rack session store.
-* Use ISO8601 datetime format in stored documents (configurable). [Nicolas Fouché]
+* Use ISO8601 datetime format in stored documents (configurable). [Nicolas Fouché]
 * Access document attributes that do not have a declared property. [Duff OMelia]
 * Fix document callback ordering. [Nathaniel Talbott]
 * Consolidate setting of the object key when link-walking. [Kyle Kingsbury]
@@ -36,7 +36,7 @@ Full notes:
 ** MapReduce has support for key-filters.
 ** Add list_buckets operation.
 ** HTTP resources prefixes can be discovered from the root URL.
-* Added document observers using ActiveModel::Observer. [Stefan Springer]
+* Added document observers using ActiveModel::Observer. [Stefan Sprenger]
 * :key is a protected attribute on Document models. [Adam Hunter]
 
 h2. 0.8.3 Patch/Minor Feature Release - 2010-12-13
