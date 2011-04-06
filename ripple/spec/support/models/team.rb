@@ -11,19 +11,14 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-class Parent
+class Team
   include Ripple::Document
-  one :child
-  validates_associated :child
+  many :players
+  validates_associated :players
 end
 
-class Child
-  include Ripple::EmbeddedDocument
+class Player
+  include Ripple::Document
   property :name, String, :presence => true
-  property :age, Integer, :presence => true
-  one :gchild, :class_name => 'Grandchild'
-end
-
-class Grandchild
-  include Ripple::EmbeddedDocument
+  property :position, String, :presence => true
 end
