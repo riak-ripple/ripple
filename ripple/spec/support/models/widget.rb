@@ -20,8 +20,15 @@ class Widget
   property :shipped_at, Time
 
   attr_protected :manufactured
+
+  many :widget_parts
 end
 
 class Cog < Widget
   property :name, String, :default => "cog"
+end
+
+class WidgetPart
+  include Ripple::Document
+  property :name, String
 end

@@ -119,6 +119,13 @@ module Ripple
         proxy
       end
 
+      # @private
+      def reset_associations
+        self.class.associations.each do |name, assoc_object|
+          send(name).reset
+        end
+      end
+
       # Adds embedded documents to the attributes
       # @private
       def attributes_for_persistence

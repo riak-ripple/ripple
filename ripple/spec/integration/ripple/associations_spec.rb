@@ -120,6 +120,18 @@ describe "Ripple Associations" do
     @found.emergency_contact.key.should == @friend1.key
   end
 
+  it "should reload associations" do
+    @user.friends << @friend1
+    @user.save!
+
+    friend1_new_instance = User.find(@friend1.key)
+    friend1_new_instance.email = 'new-address@ripple.com'
+    friend1_new_instance.save!
+
+    @user.reload
+    @user.friends.map(&:email).should == ['new-address@ripple.com']
+  end
+
   after :each do
     User.destroy_all
   end

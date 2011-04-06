@@ -118,7 +118,7 @@ describe Ripple::Document::Persistence do
     lambda { @widget.save }.should raise_error(Riak::FailedRequest)
   end
 
-  it "should reload a saved object" do
+  it "should reload a saved object, including associations" do
     json = @widget.attributes.merge(:_type => "Widget").to_json
     @backend.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
@@ -131,6 +131,8 @@ describe Ripple::Document::Persistence do
       obj.key.should == "new_widget"
       obj.raw_data = '{"name":"spring","size":10,"shipped_at":"Sat, 01 Jan 2000 20:15:01 -0000","_type":"Widget"}'
     end
+
+    @widget.widget_parts.should_receive(:reset)
     @widget.reload
     @widget.changes.should be_blank
     @widget.name.should == "spring"
