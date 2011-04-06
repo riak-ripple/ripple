@@ -66,7 +66,9 @@ module Ripple
         # Saves this embedded document by delegating to the root document.
         def save(*args)
           if _root_document
-            _root_document.save(*args)
+            run_save_callbacks do
+              _root_document.save(*args)
+            end
           else
             raise NoRootDocument.new(self, :save)
           end

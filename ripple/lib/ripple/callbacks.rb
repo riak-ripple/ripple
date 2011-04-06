@@ -51,10 +51,16 @@ module Ripple
     module InstanceMethods
       # @private
       def really_save(*args, &block)
+        run_save_callbacks do
+          super
+        end
+      end
+
+      def run_save_callbacks
         state = new? ? :create : :update
         run_callbacks(:save) do
           run_callbacks(state) do
-            super
+            yield
           end
         end
       end
