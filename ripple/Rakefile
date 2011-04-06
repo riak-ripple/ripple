@@ -65,9 +65,7 @@ namespace :spec do
   end
 
   desc "Run All Specs"
-  RSpec::Core::RakeTask.new(:all) do |spec|
-    spec.pattern = "spec/**/*_spec.rb"
-  end
+  task :all => ['spec', 'spec:integration']
 end
 
 task :default => :spec
