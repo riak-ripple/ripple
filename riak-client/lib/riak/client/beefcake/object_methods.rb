@@ -17,19 +17,21 @@ module Riak
   class Client
     class BeefcakeProtobuffsBackend
       module ObjectMethods
+        ENCODING = "Riak".respond_to?(:encoding)
+
         # Returns RpbPutReq
         def dump_object(robject)
-          pbuf = RpbPutReq.new(:bucket => robject.bucket.name)
-          pbuf.key = robject.key || generate_key
-          pbuf.vclock = Base64.decode64(robject.vclock) if robject.vclock
-          pbuf.content = RpbContent.new(:value => robject.raw_data,
-                                        :content_type => robject.content_type,
+          pbuf = RpbPutReq.new(:bucket => maybe_encode(robject.bucket.name))
+          pbuf.key = maybe_encode(robject.key ||= generate_key)
+          pbuf.vclock = maybe_encode Base64.decode64(robject.vclock) if robject.vclock
+          pbuf.content = RpbContent.new(:value => maybe_encode(robject.raw_data),
+                                        :content_type => maybe_encode(robject.content_type),
                                         :links => robject.links.map {|l| encode_link(l) }.compact)
 
           pbuf.content.usermeta = robject.meta.map {|k,v| encode_meta(k,v)} if robject.meta.any?
-          pbuf.content.vtag = robject.etag if robject.etag.present?
-          if robject.raw_data.respond_to?(:encoding) # 1.9 support
-            pbuf.content.charset = robject.raw_data.encoding.name
+          pbuf.content.vtag = maybe_encode(robject.etag) if robject.etag.present?
+          if ENCODING # 1.9 support
+            pbuf.content.charset = maybe_encode(robject.raw_data.encoding.name)
           end
           pbuf
         end
@@ -52,7 +54,7 @@ module Riak
 
         private
         def load_content(pbuf, robject)
-          if pbuf.value.respond_to?(:force_encoding) && pbuf.charset.present?
+          if ENCODING && pbuf.charset.present?
             pbuf.value.force_encoding(pbuf.charset) if Encoding.find(pbuf.charset)
           end
           robject.raw_data = pbuf.value
@@ -73,7 +75,9 @@ module Riak
 
         def encode_link(link)
           return nil unless link.key.present?
-          RpbLink.new(:bucket => link.bucket.to_s, :key => link.key.to_s, :tag => link.tag.to_s)
+          RpbLink.new(:bucket => maybe_encode(link.bucket.to_s),
+                      :key => maybe_encode(link.key.to_s),
+                      :tag => maybe_encode(link.tag.to_s))
         end
 
         def decode_meta(pbuf, hash)
@@ -82,7 +86,12 @@ module Riak
 
         def encode_meta(key,value)
           return nil unless value.present?
-          RpbPair.new(:key.to_s, :value => value.to_s)
+          RpbPair.new(:key => maybe_encode(key.to_s),
+                      :value => maybe_encode(value.to_s))
+        end
+
+        def maybe_encode(string)
+          ENCODING ? string.encode('BINARY') : string
         end
       end
 
