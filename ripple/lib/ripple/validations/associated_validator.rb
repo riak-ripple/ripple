@@ -30,12 +30,15 @@ module Ripple
         def error_message_for(attribute, associated_records)
           if associated_records.respond_to?(:each_with_index)
             record_errors = associated_records.enum_for(:each_with_index).collect do |record, index|
+              next unless record.errors.any?
+
               t("associated_document_error_summary",
                 :doc_type => attribute.to_s.singularize,
                 :doc_id => index + 1,
                 :errors => record.errors.full_messages.to_sentence
               )
             end
+            record_errors.compact!
             record_errors.flatten!
 
             t("many_association_validation_error",

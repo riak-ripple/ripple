@@ -44,7 +44,7 @@ describe Ripple::Validations::AssociatedValidator do
     require 'support/models/team'
 
     let(:team) { Team.new }
-    let(:ichiro) { Player.new(:name => 'Ichiro') }
+    let(:ichiro) { Player.new(:name => 'Ichiro', :position => 'Right Field') }
     let(:satchel_paige) { Player.new(:position => 'Pitcher') }
     let(:unknown) { Player.new }
 
@@ -55,7 +55,6 @@ describe Ripple::Validations::AssociatedValidator do
     end
 
     it 'is invalid when the associated records are invalid' do
-      ichiro.should_not be_valid
       satchel_paige.should_not be_valid
       unknown.should_not be_valid
       team.should_not be_valid
@@ -66,13 +65,12 @@ describe Ripple::Validations::AssociatedValidator do
       team.errors[:players].size.should == 1
 
       expected_errors = [
-        "for player 1: Position can't be blank",
         "for player 2: Name can't be blank",
         "for player 3: Name can't be blank and Position can't be blank"
       ]
 
       expected_errors = expected_errors.join('; ')
-      team.errors[:players].first.should =~ /are invalid \(#{Regexp.escape(expected_errors)}\)/
+      team.errors[:players].first.should == "are invalid (#{expected_errors})"
     end
 
     it 'is valid when the associated records are all valid' do
