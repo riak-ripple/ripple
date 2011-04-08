@@ -11,24 +11,14 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-
-class Widget
+class Team
   include Ripple::Document
-  property :size, Integer
-  property :name, String, :default => "widget"
-  property :manufactured, Boolean, :default => false
-  property :shipped_at, Time
-
-  attr_protected :manufactured
-
-  many :widget_parts
+  many :players
+  validates_associated :players
 end
 
-class Cog < Widget
-  property :name, String, :default => "cog"
-end
-
-class WidgetPart
+class Player
   include Ripple::Document
-  property :name, String
+  property :name, String, :presence => true
+  property :position, String, :presence => true
 end
