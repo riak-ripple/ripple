@@ -42,7 +42,11 @@ module Riak
         params[:body] = data if [:put,:post].include?(method)
         params[:idempotent] = (method != :post)
 
-        block = Pump.new(block) if block_given?
+        if block_given?
+          pump = Pump.new(block)
+          # Later versions of Excon pass multiple arguments to the block
+          block = lambda {|*args| pump.pump(args.first) }
+        end
 
         response = connection.request(params, &block)
         if valid_response?(expect, response.status)
