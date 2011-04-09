@@ -239,4 +239,41 @@ shared_examples_for "HTTP backend" do
       response[:code].should == 200
     end
   end
+
+  describe "Invalid responses" do
+
+    def bad_request(method)
+      if method == :post || method == :put
+        @backend.send(method, 200, "/riak/","foo", "body")
+      else
+        @backend.send(method, 200, "/riak/","foo")
+      end
+    end
+
+    [:get, :post, :put, :delete].each do |method|
+      context method.to_s do
+
+        before(:each) do
+          setup_http_mock(method, @backend.path("/riak/","foo").to_s, :body => "Failure!", :status => 400, 'Content-Type' => 'text/plain' )
+        end
+
+        it "raises an HTTPFailedRequest exeption" do
+          lambda { bad_request(method) }.should raise_error(Riak::HTTPFailedRequest)
+        end
+
+        it "should normalize the response header keys to lower case" do
+          begin
+            bad_request(method)
+          rescue Riak::HTTPFailedRequest => fr
+            fr.headers.keys.should =~ fr.headers.keys.collect(&:downcase)
+          else
+            fail "No exception raised!"
+          end
+        end
+
+      end
+    end
+    
+  end
+  
 end
