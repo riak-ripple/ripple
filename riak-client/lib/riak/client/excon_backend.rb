@@ -49,15 +49,16 @@ module Riak
         end
 
         response = connection.request(params, &block)
+        response_headers.initialize_http_header(response.headers)
+
         if valid_response?(expect, response.status)
-          response_headers.initialize_http_header(response.headers)
           result = {:headers => response_headers.to_hash, :code => response.status}
           if return_body?(method, response.status, block_given?)
             result[:body] = response.body
           end
           result
         else
-          raise HTTPFailedRequest.new(method, expect, response.status, response.headers, response.body)
+          raise HTTPFailedRequest.new(method, expect, response.status, response_headers.to_hash, response.body)
         end
       end
 
