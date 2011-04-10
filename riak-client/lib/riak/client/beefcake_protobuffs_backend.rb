@@ -11,7 +11,10 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+
+require 'riak/json'
+require 'riak/client'
+require 'riak/failed_request'
 require 'riak/client/protobuffs_backend'
 require 'riak/client/pump'
 
@@ -22,7 +25,7 @@ module Riak
         begin
           require 'beefcake'
           require 'riak/client/beefcake/messages'
-          require "riak/client/beefcake/object_methods"
+          require 'riak/client/beefcake/object_methods'
           true
         rescue LoadError, NameError
           false

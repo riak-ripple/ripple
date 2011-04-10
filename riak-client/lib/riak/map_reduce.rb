@@ -11,16 +11,24 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+
+require 'riak/util/translation'
+require 'riak/util/escape'
+require 'riak/json'
+require 'riak/client'
+require 'riak/bucket'
+require 'riak/robject'
+require 'riak/walk_spec'
+require 'riak/failed_request'
+require 'riak/map_reduce_error'
+require 'riak/map_reduce/phase'
+require 'riak/map_reduce/filter_builder'
 
 module Riak
   # Class for invoking map-reduce jobs using the HTTP interface.
   class MapReduce
     include Util::Translation
     include Util::Escape
-
-    autoload :Phase,         "riak/map_reduce/phase"
-    autoload :FilterBuilder, "riak/map_reduce/filter_builder"
 
     # @return [Array<[bucket,key]>,String,Hash<:bucket,:filters>] The
     #       bucket/keys for input to the job, or the bucket (all

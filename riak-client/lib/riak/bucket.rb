@@ -11,7 +11,12 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+
+require 'riak/util/translation'
+require 'riak/util/escape'
+require 'riak/client'
+require 'riak/robject'
+require 'riak/failed_request'
 
 module Riak
   # Represents and encapsulates operations on a Riak bucket.  You may retrieve a bucket

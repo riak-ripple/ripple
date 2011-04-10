@@ -21,6 +21,7 @@ require 'fakeweb'
 
 begin
   require 'yaml'
+  require 'riak/test_server'
   config = YAML.load_file("spec/support/test_server.yml")
   $test_server = Riak::TestServer.new(config.symbolize_keys)
   $test_server.prepare!
@@ -35,7 +36,7 @@ Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
-
+  
   config.before(:each) do
     FakeWeb.clean_registry
   end

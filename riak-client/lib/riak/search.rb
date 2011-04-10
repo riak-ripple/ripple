@@ -12,7 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-require 'riak'
+require 'riak/json'
 require 'riak/client'
 require 'riak/bucket'
 require 'riak/map_reduce'

@@ -11,25 +11,26 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+
 require 'tempfile'
 require 'delegate'
+require 'riak'
+require 'riak/util/translation'
+require 'riak/util/escape'
 require 'riak/failed_request'
+require 'riak/client/http_backend'
+require 'riak/client/net_http_backend'
+require 'riak/client/curb_backend'
+require 'riak/client/excon_backend'
+require 'riak/client/protobuffs_backend'
+require 'riak/client/beefcake_protobuffs_backend'
+require 'riak/bucket'
 
 module Riak
   # A client connection to Riak.
   class Client
     include Util::Translation
     include Util::Escape
-
-    autoload :Pump,           "riak/client/pump"
-    autoload :HTTPBackend,    "riak/client/http_backend"
-    autoload :NetHTTPBackend, "riak/client/net_http_backend"
-    autoload :CurbBackend,    "riak/client/curb_backend"
-    autoload :ExconBackend,   "riak/client/excon_backend"
-
-    autoload :ProtobuffsBackend, "riak/client/protobuffs_backend"
-    autoload :BeefcakeProtobuffsBackend, "riak/client/beefcake_protobuffs_backend"
 
     # When using integer client IDs, the exclusive upper-bound of valid values.
     MAX_CLIENT_ID = 4294967296

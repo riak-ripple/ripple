@@ -32,6 +32,7 @@ en:
     invalid_function_value: "invalid value for function: %{value}"
     invalid_options: "Invalid configuration options given."
     invalid_phase_type: "type must be :map, :reduce, or :link"
+    invalid_response: "Expected %{expected} but received %{received} from Riak %{extra}"
     invalid_ssl_verify_mode: "%{invalid} is not a valid :verify_mode option for SSL. Valid options are 'peer' and 'none'."
     loading_bucket: "while loading bucket '%{name}'"    
     missing_block: "A block must be given."

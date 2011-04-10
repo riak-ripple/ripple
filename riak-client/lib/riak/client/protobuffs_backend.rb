@@ -15,6 +15,7 @@ require 'riak'
 require 'socket'
 require 'base64'
 require 'digest/sha1'
+require 'riak/util/translation'
 
 module Riak
   class Client
