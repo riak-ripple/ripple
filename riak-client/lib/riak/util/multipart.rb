@@ -11,13 +11,12 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+require 'riak/util/headers'
 
 module Riak
   module Util
     # Utility methods for handling multipart/mixed responses
     module Multipart
-      autoload :StreamParser, "riak/util/multipart/stream_parser"
       extend self
       # Parses a multipart/mixed body into its constituent parts, including nested multipart/mixed sections
       # @param [String] data the multipart body data

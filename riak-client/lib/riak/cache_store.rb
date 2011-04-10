@@ -11,8 +11,14 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+
+require 'yaml'
+require 'riak/client'
+require 'riak/bucket'
+require 'riak/robject'
+require 'riak/failed_request'
 require 'active_support/version'
+
 if ActiveSupport::VERSION::STRING < "3.0.0"
   raise LoadError, "ActiveSupport 3.0.0 or greater is required to use Riak::CacheStore."
 else

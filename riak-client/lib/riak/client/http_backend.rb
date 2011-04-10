@@ -11,7 +11,18 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+
+require 'riak/util/escape'
+require 'riak/util/translation'
+require 'riak/util/multipart'
+require 'riak/util/multipart/stream_parser'
+require 'riak/json'
+require 'riak/client'
+require 'riak/bucket'
+require 'riak/robject'
+require 'riak/client/http_backend/transport_methods'
+require 'riak/client/http_backend/object_methods'
+require 'riak/client/http_backend/configuration'
 
 module Riak
   class Client
@@ -21,17 +32,12 @@ module Riak
     # {TransportMethods#perform} method for library-specific
     # semantics.
     class HTTPBackend
-      autoload :RequestHeaders,   "riak/client/http_backend/request_headers"
-      autoload :TransportMethods, "riak/client/http_backend/transport_methods"
-      autoload :ObjectMethods,    "riak/client/http_backend/object_methods"
-      autoload :Configuration,    "riak/client/http_backend/configuration"
-
+      include Util::Escape
+      include Util::Translation
+      
       include TransportMethods
       include ObjectMethods
       include Configuration
-
-      include Util::Escape
-      include Util::Translation
 
       # The Riak::Client that uses this backend
       attr_reader :client

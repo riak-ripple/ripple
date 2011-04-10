@@ -11,8 +11,13 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+require 'uri'
+require 'set'
 require 'time'
+require 'riak/client/http_backend'
+require 'riak/robject'
+require 'riak/link'
+require 'riak/util/multipart'
 
 module Riak
   class Client

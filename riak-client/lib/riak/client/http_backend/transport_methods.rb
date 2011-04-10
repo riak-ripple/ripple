@@ -11,8 +11,11 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+
 require 'base64'
+require 'uri'
+require 'riak/client'
+require 'riak/util/headers'
 
 module Riak
   class Client

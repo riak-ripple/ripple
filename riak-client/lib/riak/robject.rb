@@ -11,9 +11,14 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
 require 'set'
 require 'time'
+require 'yaml'
+require 'riak/util/translation'
+require 'riak/util/escape'
+require 'riak/bucket'
+require 'riak/link'
+require 'riak/walk_spec'
 
 module Riak
   # Represents the data and metadata stored in a bucket/key pair in

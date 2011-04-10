@@ -11,7 +11,7 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
+require 'riak/util/translation'
 
 module Riak
   # Raised when an error occurred in the Javascript map-reduce chain.
