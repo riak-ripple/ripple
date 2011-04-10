@@ -11,23 +11,10 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'riak'
 require 'rack'
-
-module Riak
-  autoload :SessionStore, "riak/session_store"
-end
+require 'riak/session_store'
 
 if defined?(ActionDispatch)
-  module Ripple
-    autoload :SessionStore, "ripple/session_store"
-  end
-
-  # @private
-  module ActionDispatch
-    # @private
-    module Session
-      autoload :RiakStore, "ripple/session_store"
-    end
-  end
+  require 'ripple/session_store'
+  ActionDispatch::Session::RiakStore = Ripple::SessionStore
 end
