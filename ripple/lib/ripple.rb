@@ -13,6 +13,7 @@
 #    limitations under the License.
 
 require 'riak'
+require 'erb'
 require 'active_model'
 require 'ripple/core_ext'
 require 'ripple/translation'
