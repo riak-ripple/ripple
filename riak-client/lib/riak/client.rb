@@ -18,6 +18,7 @@ require 'riak'
 require 'riak/util/translation'
 require 'riak/util/escape'
 require 'riak/failed_request'
+require 'riak/client/search'
 require 'riak/client/http_backend'
 require 'riak/client/net_http_backend'
 require 'riak/client/excon_backend'
@@ -76,6 +77,9 @@ module Riak
     # @return [String] The URL path to the luwak HTTP endpoint
     attr_accessor :luwak
 
+    # @return [String] The URL path prefix to the Solr HTTP endpoint
+    attr_accessor :solr
+
     # @return [Symbol] The HTTP backend/client to use
     attr_accessor :http_backend
 
@@ -105,6 +109,7 @@ module Riak
       self.prefix             = options[:prefix]             || "/riak/"
       self.mapred             = options[:mapred]             || "/mapred"
       self.luwak              = options[:luwak]              || "/luwak"
+      self.solr               = options[:solr]               || "/solr"
       self.http_backend       = options[:http_backend]       || :NetHTTP
       self.protobuffs_backend = options[:protobuffs_backend] || :Beefcake
       self.basic_auth         = options[:basic_auth]         if options[:basic_auth]

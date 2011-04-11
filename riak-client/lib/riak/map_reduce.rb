@@ -112,6 +112,16 @@ module Riak
       add(bucket, FilterBuilder.new(&block).to_a)
     end
 
+    # (Riak Search) Use a search query to start a map/reduce job.
+    # @param [String, Bucket] bucket the bucket/index to search
+    # @param [String] query the query to run
+    # @return [MapReduce] self
+    def search(bucket, query)
+      bucket = bucket.name if bucket.respond_to?(:name)
+      @inputs = {:module => "riak_search", :function => "mapred_search", :arg => [bucket, query]}
+      self
+    end
+
     # Add a map phase to the job.
     # @overload map(function)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair

@@ -13,11 +13,7 @@
 #    limitations under the License.
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe "Search mixins" do
-  before :all do
-    require 'riak/search'
-  end
-
+describe "Search features" do
   describe Riak::Client do
     before :each do
       @client = Riak::Client.new

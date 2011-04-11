@@ -25,6 +25,9 @@ module Riak
     include Util::Translation
     include Util::Escape
 
+    # (Riak Search) The precommit specification for kv/search integration
+    SEARCH_PRECOMMIT_HOOK = {"mod" => "riak_search_kv_hook", "fun" => "precommit"}
+
     # @return [Riak::Client] the associated client
     attr_reader :client
 
@@ -186,7 +189,30 @@ module Riak
           self.props = {"#{q}" => value}
           value
         end
-        CODE
+      CODE
+    end
+
+    # (Riak Search) Installs a precommit hook that automatically indexes objects
+    # into riak_search.
+    def enable_index!
+      unless is_indexed?
+        self.props = {"precommit" => (props['precommit'] + [SEARCH_PRECOMMIT_HOOK])}
+      end
+    end
+
+    # (Riak Search) Removes the precommit hook that automatically indexes objects
+    # into riak_search.
+    def disable_index!
+      if is_indexed?
+        self.props = {"precommit" => (props['precommit'] - [SEARCH_PRECOMMIT_HOOK])}
+      end
+    end
+
+    # (Riak Search) Detects whether the bucket is automatically indexed into
+    # riak_search.
+    # @return [true,false] whether the bucket includes the search indexing hook
+    def is_indexed?
+      props['precommit'].include?(SEARCH_PRECOMMIT_HOOK)
     end
 
     # @return [String] a representation suitable for IRB and debugging output
