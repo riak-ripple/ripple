@@ -11,7 +11,9 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'active_support/concern'
+require 'ripple/translation'
 
 module Ripple
   # Exception raised when save is called on an EmbeddedDocument that

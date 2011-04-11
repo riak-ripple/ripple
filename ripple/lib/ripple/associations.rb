@@ -11,7 +11,21 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'active_support/concern'
+require 'riak/walk_spec'
+require 'ripple/translation'
+require 'ripple/associations/proxy'
+require 'ripple/associations/instantiators'
+require 'ripple/associations/linked'
+require 'ripple/associations/embedded'
+require 'ripple/associations/many'
+require 'ripple/associations/one'
+require 'ripple/associations/linked'
+require 'ripple/associations/one_embedded_proxy'
+require 'ripple/associations/many_embedded_proxy'
+require 'ripple/associations/one_linked_proxy'
+require 'ripple/associations/many_linked_proxy'
 
 module Ripple
   # Adds associations via links and embedding to {Ripple::Document}
@@ -48,18 +62,6 @@ module Ripple
   #   person.account.paid_until = 3.months.from_now
   module Associations
     extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
-
-    autoload :Proxy
-    autoload :One
-    autoload :Many
-    autoload :Embedded
-    autoload :Linked
-    autoload :Instantiators
-    autoload :OneEmbeddedProxy
-    autoload :ManyEmbeddedProxy
-    autoload :OneLinkedProxy
-    autoload :ManyLinkedProxy
 
     module ClassMethods
       # @private

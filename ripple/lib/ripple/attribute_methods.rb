@@ -11,7 +11,15 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'ripple/translation'
+require 'active_support/concern'
+require 'active_model/attribute_methods'
+require 'active_model/mass_assignment_security'
+require 'ripple/attribute_methods/read'
+require 'ripple/attribute_methods/write'
+require 'ripple/attribute_methods/query'
+require 'ripple/attribute_methods/dirty'
 
 module Ripple
   # Makes ActiveRecord-like attribute accessors based on your
@@ -19,13 +27,7 @@ module Ripple
   module AttributeMethods
     include Translation
     extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
     include ActiveModel::AttributeMethods
-
-    autoload :Read
-    autoload :Write
-    autoload :Query
-    autoload :Dirty
 
     included do
       include Read

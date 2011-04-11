@@ -11,7 +11,12 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'ripple/translation'
+require 'active_support/concern'
+require 'active_support/inflector'
+require 'active_support/core_ext/hash/except'
+require 'active_support/core_ext/hash/slice'
 
 module Ripple
 

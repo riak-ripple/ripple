@@ -11,7 +11,24 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'active_support/concern'
+require 'active_model/naming'
+require 'ripple/document/bucket_access'
+require 'ripple/document/key'
+require 'ripple/document/persistence'
+require 'ripple/document/finders'
+require 'ripple/properties'
+require 'ripple/attribute_methods'
+require 'ripple/timestamps'
+require 'ripple/validations'
+require 'ripple/associations'
+require 'ripple/callbacks'
+require 'ripple/observable'
+require 'ripple/conversion'
+require 'ripple/inspection'
+require 'ripple/nested_attributes'
+require 'ripple/serialization'
 
 module Ripple
   # Represents a model stored in Riak, serialized in JSON object (document).
@@ -40,12 +57,6 @@ module Ripple
   #
   module Document
     extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
-
-    autoload :BucketAccess
-    autoload :Finders
-    autoload :Key
-    autoload :Persistence
 
     included do
       extend ActiveModel::Naming

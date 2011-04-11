@@ -12,9 +12,17 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+require 'active_support/json'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/to_json'
-require 'active_support/time_with_zone'
+require 'active_support/core_ext/date/conversions'
+require 'active_support/core_ext/date/zones'
+require 'active_support/core_ext/date_time/conversions'
+require 'active_support/core_ext/date_time/zones'
+require 'active_support/core_ext/time/conversions'
+require 'active_support/core_ext/time/zones'
+require 'active_support/core_ext/string/conversions'
+require 'ripple/property_type_mismatch'
 
 # @private
 class Object
