@@ -11,7 +11,22 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'active_support/concern'
+require 'active_support/core_ext/hash/except'
+require 'ripple/translation'
+require 'ripple/embedded_document/finders'
+require 'ripple/embedded_document/persistence'
+require 'ripple/properties'
+require 'ripple/attribute_methods'
+require 'ripple/timestamps'
+require 'ripple/validations'
+require 'ripple/associations'
+require 'ripple/callbacks'
+require 'ripple/conversion'
+require 'ripple/inspection'
+require 'ripple/nested_attributes'
+require 'ripple/serialization'
 
 module Ripple
   # Represents a document model that is composed into or stored in a parent
@@ -19,10 +34,6 @@ module Ripple
   # callbacks and validations, but are solely dependent on the parent Document.
   module EmbeddedDocument
     extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
-
-    autoload :Finders
-    autoload :Persistence
     include Translation
 
     included do

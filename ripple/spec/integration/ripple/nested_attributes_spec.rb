@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require 'active_support/core_ext/array'
 
 describe Ripple::NestedAttributes do
   require 'support/models/car'

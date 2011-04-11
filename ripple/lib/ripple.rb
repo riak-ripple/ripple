@@ -13,42 +13,15 @@
 #    limitations under the License.
 
 require 'riak'
-require 'active_support/all'
-require 'active_support/json'
 require 'active_model'
-require 'ripple/i18n'
 require 'ripple/core_ext'
 require 'ripple/translation'
+require 'ripple/document'
+require 'ripple/embedded_document'
 
 # Contains the classes and modules related to the ODM built on top of
 # the basic Riak client.
 module Ripple
-  extend ActiveSupport::Autoload
-
-  # Primary models
-  autoload :EmbeddedDocument
-  autoload :Document
-
-  # Model mixins and support classes
-  autoload :Association, "ripple/associations"
-  autoload :Associations
-  autoload :AttributeMethods
-  autoload :Callbacks
-  autoload :Conversion
-  autoload :Properties
-  autoload :Property, "ripple/properties"
-  autoload :Timestamps
-  autoload :Validations
-  autoload :NestedAttributes
-  autoload :Observable
-  autoload :Serialization
-
-  # Exceptions
-  autoload :PropertyTypeMismatch
-
-  # Utilities
-  autoload :Inspection
-
   class << self
     # @return [Riak::Client] The client for the current thread.
     def client

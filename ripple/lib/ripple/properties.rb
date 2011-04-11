@@ -11,8 +11,10 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
 require 'ripple/core_ext/casting'
+require 'active_support/core_ext/hash/except'
+require 'active_support/core_ext/hash/indifferent_access'
 
 module Ripple
   # Adds the ability to declare properties on your Ripple::Document class.

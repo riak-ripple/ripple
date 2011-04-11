@@ -11,10 +11,10 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'active_support/concern'
 require 'active_model/serialization'
 require 'active_model/serializers/json'
-require 'active_model/serializers/xml'
 
 module Ripple
   # Provides methods for serializing Ripple documents to external

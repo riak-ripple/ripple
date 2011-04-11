@@ -11,7 +11,11 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-require 'ripple'
+
+require 'active_support/concern'
+require 'active_model/validations'
+require 'ripple/translation'
+require 'ripple/validations/associated_validator'
 
 module Ripple
   # Raised by <tt>save!</tt> when the document is invalid.  Use the
@@ -35,10 +39,7 @@ module Ripple
   # executed before saving the document.
   module Validations
     extend ActiveSupport::Concern
-    extend ActiveSupport::Autoload
     include ActiveModel::Validations
-
-    autoload :AssociatedValidator
 
     module ClassMethods
       # @private

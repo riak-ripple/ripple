@@ -14,7 +14,7 @@
 #
 # Taken from ActiveRecord::Validations::AssociatedValidators
 #
-require 'ripple'
+require 'active_model/validator'
 
 module Ripple
   module Validations
