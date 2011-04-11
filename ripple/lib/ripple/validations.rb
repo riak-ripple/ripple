@@ -54,10 +54,6 @@ module Ripple
         obj = create(attrs, &block)
         (raise Ripple::DocumentInvalid.new(obj) if obj.new?) || obj
       end
-
-      def validates_associated(*attr_names)
-        validates_with AssociatedValidator, _merge_attributes(attr_names)
-      end
     end
 
     module InstanceMethods
