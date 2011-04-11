@@ -566,8 +566,6 @@ whether to return results from following this link specification
       <pre class="lines">
 
 
-72
-73
 74
 75
 76
@@ -578,10 +576,12 @@ whether to return results from following this link specification
 81
 82
 83
-84</pre>
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id args'>args</span><span class='period'>.</span><span class='id flatten!'>flatten!</span>
@@ -654,12 +654,12 @@ represents all buckets.
       <pre class="lines">
 
 
-29
-30
-31</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
   <span class='ivar'>@bucket</span>
@@ -717,12 +717,12 @@ is false.
       <pre class="lines">
 
 
-35
-36
-37</pre>
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id keep'>keep</span>
   <span class='ivar'>@keep</span>
@@ -780,12 +780,12 @@ be restricted to. &#8220;_&#8221; represents all tags.
       <pre class="lines">
 
 
-32
-33
-34</pre>
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id tag'>tag</span>
   <span class='ivar'>@tag</span>
@@ -826,8 +826,6 @@ Normalize a list of walk specs into WalkSpec objects.
       <pre class="lines">
 
 
-38
-39
 40
 41
 42
@@ -845,10 +843,12 @@ Normalize a list of walk specs into WalkSpec objects.
 54
 55
 56
-57</pre>
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id normalize'>normalize</span><span class='lparen'>(</span><span class='op'>*</span><span class='id params'>params</span><span class='rparen'>)</span>
   <span class='id params'>params</span><span class='period'>.</span><span class='id flatten!'>flatten!</span>
@@ -894,12 +894,12 @@ Normalize a list of walk specs into WalkSpec objects.
       <pre class="lines">
 
 
-93
-94
-95</pre>
+95
+96
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 95</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='id other'>other</span><span class='period'>.</span><span class='id is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>WalkSpec</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id bucket'>bucket</span> <span class='op'>==</span> <span class='id bucket'>bucket</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tag'>tag</span> <span class='op'>==</span> <span class='id tag'>tag</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id keep'>keep</span> <span class='op'>==</span> <span class='id keep'>keep</span>
@@ -922,8 +922,6 @@ Normalize a list of walk specs into WalkSpec objects.
       <pre class="lines">
 
 
-97
-98
 99
 100
 101
@@ -932,10 +930,12 @@ Normalize a list of walk specs into WalkSpec objects.
 104
 105
 106
-107</pre>
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='op'>===</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='kw'>self</span> <span class='op'>==</span> <span class='id other'>other</span> <span class='op'>||</span> <span class='kw'>case</span> <span class='id other'>other</span>
@@ -978,14 +978,14 @@ URL
       <pre class="lines">
 
 
-87
-88
 89
 90
-91</pre>
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 87</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/walk_spec.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id to_s'>to_s</span>
   <span class='id b'>b</span> <span class='op'>=</span> <span class='ivar'>@bucket</span> <span class='op'>&amp;&amp;</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='ivar'>@bucket</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_</span><span class='tstring_end'>'</span></span>
@@ -1002,9 +1002,9 @@ URL
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:38 2011 by 
+  Generated on Sun Apr 10 22:47:02 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

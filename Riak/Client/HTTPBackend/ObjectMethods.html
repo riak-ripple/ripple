@@ -71,7 +71,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     <p>
-Methods for assisting with the handling of {RObject}s present in HTTP
+Methods for assisting with the handling of <span class='object_link'><a href="../../RObject.html" title="Riak::RObject (class)">RObject</a></span>s present in HTTP
 requests and responses.
 </p>
 
@@ -217,11 +217,6 @@ a response from <span class='object_link'><a href="../HTTPBackend.html" title="R
       <pre class="lines">
 
 
-56
-57
-58
-59
-60
 61
 62
 63
@@ -234,10 +229,15 @@ a response from <span class='object_link'><a href="../HTTPBackend.html" title="R
 70
 71
 72
-73</pre>
+73
+74
+75
+76
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend/object_methods.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend/object_methods.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id load_object'>load_object</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='comma'>,</span> <span class='id response'>response</span><span class='rparen'>)</span>
   <span class='id extract_header'>extract_header</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='comma'>,</span> <span class='id response'>response</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>location</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:key</span><span class='rparen'>)</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id v'>v</span><span class='op'>|</span> <span class='const'>URI</span><span class='period'>.</span><span class='id unescape'>unescape</span><span class='lparen'>(</span><span class='id v'>v</span><span class='period'>.</span><span class='id match'>match</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>.*/(.*?)(\?.*)?$</span><span class='regexp_end'>}</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
@@ -305,15 +305,15 @@ hash of HTTP headers
       <pre class="lines">
 
 
-25
-26
-27
-28
-29
-30</pre>
+30
+31
+32
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend/object_methods.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend/object_methods.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id reload_headers'>reload_headers</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='rparen'>)</span>
   <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id h'>h</span><span class='op'>|</span>
@@ -369,11 +369,6 @@ hash of HTTP Headers
       <pre class="lines">
 
 
-34
-35
-36
-37
-38
 39
 40
 41
@@ -387,10 +382,15 @@ hash of HTTP Headers
 49
 50
 51
-52</pre>
+52
+53
+54
+55
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend/object_methods.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/http_backend/object_methods.rb', line 39</span>
 
 <span class='kw'>def</span> <span class='id store_headers'>store_headers</span><span class='lparen'>(</span><span class='id robject'>robject</span><span class='rparen'>)</span>
   <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id hash'>hash</span><span class='op'>|</span>
@@ -421,9 +421,9 @@ hash of HTTP Headers
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:41 2011 by 
+  Generated on Sun Apr 10 22:47:05 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

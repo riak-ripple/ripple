@@ -788,7 +788,7 @@ Adds documents to a search index via the Solr interface.
 
   
     <span class="summary_desc"><div class='inline'><p>
-A new instance of Client.
+Creates a client connection to Riak.
 </p>
 </div></span>
   
@@ -1054,7 +1054,7 @@ interface.
 </p><div class="docstring">
   <div class="discussion">
     <p>
-A new instance of Client
+Creates a client connection to Riak
 </p>
 
 
@@ -1077,7 +1077,7 @@ A new instance of Client
       
         &mdash;
         <div class='inline'><p>
-a customizable set of options
+configuration options for the client
 </p>
 </div>
       
@@ -1093,21 +1093,130 @@ a customizable set of options
       
         <li>
           <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-          <span class="name">:solr</span>
+          <span class="name">:host</span>
           <span class="default">
             
               &mdash; default:
-              <tt>'/solr'</tt>
+              <tt>'127.0.0.1'</tt>
             
           </span>
           &mdash; <div class='inline'><p>
-The URL path prefix to the Solr HTTP endpoint
+The host or IP address for the Riak endpoint
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt>Fixnum</tt>)</span>
+          <span class="name">:port</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>8098</tt>
+            
+          </span>
+          &mdash; <div class='inline'><p>
+The port of the Riak HTTP endpoint
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+          <span class="name">:prefix</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>'/riak/'</tt>
+            
+          </span>
+          &mdash; <div class='inline'><p>
+The URL path prefix to the main HTTP endpoint
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+          <span class="name">:mapred</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>'/mapred'</tt>
+            
+          </span>
+          &mdash; <div class='inline'><p>
+The path to the map-reduce HTTP endpoint
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
+          <span class="name">:client_id</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>rand(MAX_CLIENT_ID)</tt>
+            
+          </span>
+          &mdash; <div class='inline'><p>
+The internal client ID used by Riak to route responses
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+          <span class="name">:http_backend</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>:NetHTTP</tt>
+            
+          </span>
+          &mdash; <div class='inline'><p>
+which  HTTP backend to use
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
+          <span class="name">:protobuffs_backend</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>:Beefcake</tt>
+            
+          </span>
+          &mdash; <div class='inline'><p>
+which Protocol Buffers backend to use
 </p>
 </div>
         </tr>
       
     </ul>
   
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+raised if any invalid options are given
+</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1115,17 +1224,45 @@ The URL path prefix to the Solr HTTP endpoint
       <pre class="lines">
 
 
-95
-96
-97
-98</pre>
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 95</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/search.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id solr'>solr</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:solr</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/solr</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id initialize_core'>initialize_core</span><span class='lparen'>(</span><span class='id options'>options</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='lparen'>(</span><span class='id options'>options</span><span class='period'>.</span><span class='id keys'>keys</span> <span class='op'>-</span> <span class='const'>VALID_OPTIONS</span><span class='rparen'>)</span><span class='period'>.</span><span class='id empty?'>empty?</span>
+    <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>invalid_options</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id protocol'>protocol</span>           <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:protocol</span><span class='rbracket'>]</span>           <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id ssl'>ssl</span>                <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:ssl</span><span class='rbracket'>]</span>                <span class='kw'>if</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:ssl</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id host'>host</span>               <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:host</span><span class='rbracket'>]</span>               <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>127.0.0.1</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id http_port'>http_port</span>          <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:http_port</span><span class='rbracket'>]</span>          <span class='op'>||</span> <span class='int'>8098</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id pb_port'>pb_port</span>            <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:pb_port</span><span class='rbracket'>]</span>            <span class='op'>||</span> <span class='int'>8087</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id port'>port</span>               <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span>               <span class='kw'>if</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id prefix'>prefix</span>             <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:prefix</span><span class='rbracket'>]</span>             <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/riak/</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id mapred'>mapred</span>             <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:mapred</span><span class='rbracket'>]</span>             <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/mapred</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id luwak'>luwak</span>              <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:luwak</span><span class='rbracket'>]</span>              <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/luwak</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id http_backend'>http_backend</span>       <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:http_backend</span><span class='rbracket'>]</span>       <span class='op'>||</span> <span class='symbol'>:NetHTTP</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id protobuffs_backend'>protobuffs_backend</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:protobuffs_backend</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:Beefcake</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id basic_auth'>basic_auth</span>         <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:basic_auth</span><span class='rbracket'>]</span>         <span class='kw'>if</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:basic_auth</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id client_id'>client_id</span>          <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:client_id</span><span class='rbracket'>]</span>          <span class='kw'>if</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:client_id</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1183,12 +1320,12 @@ The user:pass for http basic authentication
       <pre class="lines">
 
 
-58
 59
-60</pre>
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id basic_auth'>basic_auth</span>
   <span class='ivar'>@basic_auth</span>
@@ -1244,12 +1381,12 @@ The internal client ID used by Riak to route responses
       <pre class="lines">
 
 
-64
 65
-66</pre>
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id client_id'>client_id</span>
   <span class='ivar'>@client_id</span> <span class='op'>||=</span> <span class='id backend'>backend</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:get_client_id</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id backend'>backend</span><span class='period'>.</span><span class='id get_client_id'>get_client_id</span> <span class='op'>:</span> <span class='id make_client_id'>make_client_id</span>
@@ -1305,12 +1442,12 @@ The host or IP address for the Riak endpoint
       <pre class="lines">
 
 
-49
 50
-51</pre>
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id host'>host</span>
   <span class='ivar'>@host</span>
@@ -1366,12 +1503,12 @@ The HTTP backend/client to use
       <pre class="lines">
 
 
-80
 81
-82</pre>
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 80</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id http_backend'>http_backend</span>
   <span class='ivar'>@http_backend</span>
@@ -1427,12 +1564,12 @@ The HTTP(S) port for the Riak endpoint
       <pre class="lines">
 
 
-52
 53
-54</pre>
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id http_port'>http_port</span>
   <span class='ivar'>@http_port</span>
@@ -1488,12 +1625,12 @@ The URL path to the luwak HTTP endpoint
       <pre class="lines">
 
 
-77
 78
-79</pre>
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id luwak'>luwak</span>
   <span class='ivar'>@luwak</span>
@@ -1549,12 +1686,12 @@ The URL path to the map-reduce HTTP endpoint
       <pre class="lines">
 
 
-74
 75
-76</pre>
+76
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id mapred'>mapred</span>
   <span class='ivar'>@mapred</span>
@@ -1610,12 +1747,12 @@ The Protocol Buffers port for the Riak endpoint
       <pre class="lines">
 
 
-55
 56
-57</pre>
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id pb_port'>pb_port</span>
   <span class='ivar'>@pb_port</span>
@@ -1671,12 +1808,12 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint
       <pre class="lines">
 
 
-71
 72
-73</pre>
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id prefix'>prefix</span>
   <span class='ivar'>@prefix</span>
@@ -1732,12 +1869,12 @@ The Protocol Buffers backend/client to use
       <pre class="lines">
 
 
-83
 84
-85</pre>
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 84</span>
 
 <span class='kw'>def</span> <span class='id protobuffs_backend'>protobuffs_backend</span>
   <span class='ivar'>@protobuffs_backend</span>
@@ -1793,12 +1930,12 @@ The protocol to use for the Riak endpoint
       <pre class="lines">
 
 
-46
 47
-48</pre>
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id protocol'>protocol</span>
   <span class='ivar'>@protocol</span>
@@ -1896,13 +2033,13 @@ Enables or disables SSL on the client to be utilized by the HTTP Backends
       <pre class="lines">
 
 
-68
 69
 70
-71</pre>
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id ssl='>ssl=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@ssl_options</span> <span class='op'>=</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id value'>value</span> <span class='op'>?</span> <span class='id value'>value</span> <span class='op'>:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -1959,12 +2096,12 @@ The SSL options that get built when using SSL
       <pre class="lines">
 
 
-61
 62
-63</pre>
+63
+64</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id ssl_options'>ssl_options</span>
   <span class='ivar'>@ssl_options</span>
@@ -2025,17 +2162,17 @@ an appropriate client backend
       <pre class="lines">
 
 
-272
 273
 274
 275
 276
 277
 278
-279</pre>
+279
+280</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 272</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 273</span>
 
 <span class='kw'>def</span> <span class='id backend'>backend</span>
   <span class='ivar'>@backend</span> <span class='op'>||=</span> <span class='kw'>case</span> <span class='ivar'>@protocol</span><span class='period'>.</span><span class='id to_s'>to_s</span>
@@ -2178,7 +2315,6 @@ the requested bucket
       <pre class="lines">
 
 
-293
 294
 295
 296
@@ -2187,10 +2323,11 @@ the requested bucket
 299
 300
 301
-302</pre>
+302
+303</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 293</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 294</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='lparen'>(</span><span class='id options'>options</span><span class='period'>.</span><span class='id keys'>keys</span> <span class='op'>-</span> <span class='lbracket'>[</span><span class='symbol'>:keys</span><span class='comma'>,</span> <span class='symbol'>:props</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id empty?'>empty?</span>
@@ -2263,12 +2400,12 @@ a list of buckets
       <pre class="lines">
 
 
-309
 310
-311</pre>
+311
+312</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 309</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 310</span>
 
 <span class='kw'>def</span> <span class='id buckets'>buckets</span>
   <span class='id backend'>backend</span><span class='period'>.</span><span class='id list_buckets'>list_buckets</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id name'>name</span><span class='op'>|</span> <span class='const'>Bucket</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
@@ -2323,13 +2460,13 @@ the key/filename to delete
       <pre class="lines">
 
 
-367
 368
 369
-370</pre>
+370
+371</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 367</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 368</span>
 
 <span class='kw'>def</span> <span class='id delete_file'>delete_file</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span>
   <span class='id http'>http</span><span class='period'>.</span><span class='id delete'>delete</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>204</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -2408,13 +2545,13 @@ whether the key exists in &#8220;Luwak&#8220;
       <pre class="lines">
 
 
-375
 376
 377
-378</pre>
+378
+379</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 375</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 376</span>
 
 <span class='kw'>def</span> <span class='id file_exists?'>file_exists?</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span>
   <span class='id result'>result</span> <span class='op'>=</span> <span class='id http'>http</span><span class='period'>.</span><span class='id head'>head</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='int'>200</span><span class='comma'>,</span><span class='int'>404</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id luwak'>luwak</span><span class='comma'>,</span> <span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -2533,7 +2670,6 @@ is given.
       <pre class="lines">
 
 
-347
 348
 349
 350
@@ -2549,10 +2685,11 @@ is given.
 360
 361
 362
-363</pre>
+363
+364</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 347</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 348</span>
 
 <span class='kw'>def</span> <span class='id get_file'>get_file</span><span class='lparen'>(</span><span class='id filename'>filename</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
@@ -2621,7 +2758,6 @@ the HTTP backend for this client
       <pre class="lines">
 
 
-240
 241
 242
 243
@@ -2630,10 +2766,11 @@ the HTTP backend for this client
 246
 247
 248
-249</pre>
+249
+250</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 240</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 241</span>
 
 <span class='kw'>def</span> <span class='id http'>http</span>
   <span class='ivar'>@http</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -2885,12 +3022,12 @@ A representation suitable for IRB and debugging output.
       <pre class="lines">
 
 
-382
 383
-384</pre>
+384
+385</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 382</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 383</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;Riak::Client </span><span class='embexpr_beg'>#{</span><span class='id protocol'>protocol</span><span class='rbrace'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id host'>host</span><span class='rbrace'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id protocol'>protocol</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>pbc</span><span class='tstring_end'>'</span></span> <span class='op'>?</span> <span class='id pb_port'>pb_port</span> <span class='op'>:</span> <span class='id http_port'>http_port</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
@@ -2943,12 +3080,12 @@ whether the Riak server is alive and reachable
       <pre class="lines">
 
 
-283
 284
-285</pre>
+285
+286</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 283</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 284</span>
 
 <span class='kw'>def</span> <span class='id ping'>ping</span>
   <span class='id backend'>backend</span><span class='period'>.</span><span class='id ping'>ping</span>
@@ -3006,7 +3143,6 @@ The port of the Riak endpoint
       <pre class="lines">
 
 
-159
 160
 161
 162
@@ -3014,10 +3150,11 @@ The port of the Riak endpoint
 164
 165
 166
-167</pre>
+167
+168</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 160</span>
 
 <span class='kw'>def</span> <span class='id port'>port</span>
   <span class='id warn'>warn</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>deprecated.port</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:backtrace</span> <span class='op'>=&gt;</span> <span class='id caller'>caller</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -3122,7 +3259,6 @@ if an invalid port number is given
       <pre class="lines">
 
 
-176
 177
 178
 179
@@ -3131,10 +3267,11 @@ if an invalid port number is given
 182
 183
 184
-185</pre>
+185
+186</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 177</span>
 
 <span class='kw'>def</span> <span class='id port='>port=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='id warn'>warn</span><span class='lparen'>(</span><span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>deprecated.port</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:backtrace</span> <span class='op'>=&gt;</span> <span class='id caller'>caller</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='int'>2</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n    </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -3196,7 +3333,6 @@ the Protocol Buffers backend for this client
       <pre class="lines">
 
 
-257
 258
 259
 260
@@ -3205,10 +3341,11 @@ the Protocol Buffers backend for this client
 263
 264
 265
-266</pre>
+266
+267</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 257</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 258</span>
 
 <span class='kw'>def</span> <span class='id protobuffs'>protobuffs</span>
   <span class='ivar'>@protobuffs</span> <span class='op'>||=</span> <span class='kw'>begin</span>
@@ -3666,12 +3803,12 @@ Checks if SSL is enabled for HTTP
       <pre class="lines">
 
 
-232
 233
-234</pre>
+234
+235</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 232</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 233</span>
 
 <span class='kw'>def</span> <span class='id ssl_enabled?'>ssl_enabled?</span>
   <span class='id protocol'>protocol</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>https</span><span class='tstring_end'>'</span></span> <span class='op'>||</span> <span class='ivar'>@ssl_options</span><span class='period'>.</span><span class='id present?'>present?</span>
@@ -3861,7 +3998,6 @@ the key/filename where the object was stored
       <pre class="lines">
 
 
-325
 326
 327
 328
@@ -3870,10 +4006,11 @@ the key/filename where the object was stored
 331
 332
 333
-334</pre>
+334
+335</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 325</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client.rb', line 326</span>
 
 <span class='kw'>def</span> <span class='id store_file'>store_file</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id data'>data</span><span class='comma'>,</span> <span class='id content_type'>content_type</span><span class='comma'>,</span> <span class='id filename'>filename</span> <span class='op'>=</span> <span class='id args'>args</span><span class='period'>.</span><span class='id reverse'>reverse</span>
@@ -3895,9 +4032,9 @@ the key/filename where the object was stored
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:37 2011 by 
+  Generated on Sun Apr 10 22:47:01 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

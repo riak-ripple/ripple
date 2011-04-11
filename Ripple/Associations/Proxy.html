@@ -515,14 +515,14 @@ A new instance of Proxy
       <pre class="lines">
 
 
-34
 35
 36
 37
-38</pre>
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id owner'>owner</span><span class='comma'>,</span> <span class='id reflection'>reflection</span><span class='rparen'>)</span>
   <span class='ivar'>@owner</span><span class='comma'>,</span> <span class='ivar'>@reflection</span> <span class='op'>=</span> <span class='id owner'>owner</span><span class='comma'>,</span> <span class='id reflection'>reflection</span>
@@ -555,7 +555,6 @@ A new instance of Proxy
       <pre class="lines">
 
 
-102
 103
 104
 105
@@ -563,10 +562,11 @@ A new instance of Proxy
 107
 108
 109
-110</pre>
+110
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='id method_missing'>method_missing</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='id load_target'>load_target</span>
@@ -618,12 +618,12 @@ Returns the value of attribute owner
       <pre class="lines">
 
 
-24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id owner'>owner</span>
   <span class='ivar'>@owner</span>
@@ -664,12 +664,12 @@ Returns the value of attribute reflection
       <pre class="lines">
 
 
-24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id reflection'>reflection</span>
   <span class='ivar'>@reflection</span>
@@ -710,12 +710,12 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id target'>target</span>
   <span class='ivar'>@target</span>
@@ -745,13 +745,13 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-96
 97
 98
-99</pre>
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 96</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 97</span>
 
 <span class='kw'>def</span> <span class='op'>===</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='id load_target'>load_target</span>
@@ -796,13 +796,13 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-58
 59
 60
-61</pre>
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id blank?'>blank?</span>
   <span class='id load_target'>load_target</span>
@@ -826,13 +826,13 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-40
 41
 42
-43</pre>
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span>
   <span class='id load_target'>load_target</span>
@@ -856,12 +856,12 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-49
 50
-51</pre>
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id loaded'>loaded</span>
   <span class='ivar'>@loaded</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -905,12 +905,12 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-45
 46
-47</pre>
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id loaded?'>loaded?</span>
   <span class='ivar'>@loaded</span>
@@ -954,13 +954,13 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-53
 54
 55
-56</pre>
+56
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id nil?'>nil?</span>
   <span class='id load_target'>load_target</span>
@@ -1005,13 +1005,13 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-63
 64
 65
-66</pre>
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id present?'>present?</span>
   <span class='id load_target'>load_target</span>
@@ -1035,10 +1035,10 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-19</pre>
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 20</span>
 
 <span class='kw'>alias</span> <span class='symbol'>:proxy_respond_to?</span> <span class='symbol'>:respond_to?</span></pre>
     </td>
@@ -1059,14 +1059,14 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-68
 69
 70
 71
-72</pre>
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id reload'>reload</span>
   <span class='id reset'>reset</span>
@@ -1112,12 +1112,12 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-74
 75
-76</pre>
+76
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id replace'>replace</span><span class='lparen'>(</span><span class='id v'>v</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>NotImplementedError</span>
@@ -1140,13 +1140,13 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-78
 79
 80
-81</pre>
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='id reset'>reset</span>
   <span class='ivar'>@loaded</span> <span class='op'>=</span> <span class='kw'>false</span>
@@ -1191,12 +1191,12 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-83
 84
-85</pre>
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 84</span>
 
 <span class='kw'>def</span> <span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id proxy_respond_to?'>proxy_respond_to?</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='lparen'>(</span><span class='id load_target'>load_target</span> <span class='op'>&amp;&amp;</span> <span class='id target'>target</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -1219,17 +1219,17 @@ Returns the value of attribute target
       <pre class="lines">
 
 
-87
 88
 89
 90
 91
 92
 93
-94</pre>
+94
+95</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 87</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations/proxy.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='id send'>send</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id proxy_respond_to?'>proxy_respond_to?</span><span class='lparen'>(</span><span class='id method'>method</span><span class='rparen'>)</span>
@@ -1249,9 +1249,9 @@ Returns the value of attribute target
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:39 2011 by 
+  Generated on Sun Apr 10 22:47:03 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

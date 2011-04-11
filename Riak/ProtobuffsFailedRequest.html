@@ -259,15 +259,15 @@ A new instance of ProtobuffsFailedRequest
       <pre class="lines">
 
 
-64
-65
 66
 67
 68
-69</pre>
+69
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id code'>code</span><span class='comma'>,</span> <span class='id message'>message</span><span class='rparen'>)</span>
   <span class='kw'>super</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>protobuffs_failed_request</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='symbol'>:code</span> <span class='op'>=&gt;</span> <span class='id code'>code</span><span class='comma'>,</span> <span class='symbol'>:body</span> <span class='op'>=&gt;</span> <span class='id message'>message</span><span class='rparen'>)</span>
@@ -330,17 +330,17 @@ whether the error response is in JSON
       <pre class="lines">
 
 
-72
-73
 74
 75
 76
 77
 78
-79</pre>
+79
+80
+81</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id is_json?'>is_json?</span>
   <span class='kw'>begin</span>
@@ -398,12 +398,12 @@ whether the error represents a &#8220;not found&#8221; response
       <pre class="lines">
 
 
-82
-83
-84</pre>
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 84</span>
 
 <span class='kw'>def</span> <span class='id not_found?'>not_found?</span>
   <span class='ivar'>@not_found</span>
@@ -456,12 +456,12 @@ whether the error represents an internal server error
       <pre class="lines">
 
 
-88
-89
-90</pre>
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/failed_request.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id server_error?'>server_error?</span>
   <span class='ivar'>@server_error</span>
@@ -476,9 +476,9 @@ whether the error represents an internal server error
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:39 2011 by 
+  Generated on Sun Apr 10 22:47:03 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

@@ -236,20 +236,20 @@ Creates a Riak-backed cache store.
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
 35
 36
 37
 38
-39</pre>
+39
+40
+41
+42
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>super</span>
@@ -299,12 +299,12 @@ Returns the value of attribute client
       <pre class="lines">
 
 
-26
-27
-28</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='ivar'>@client</span>
@@ -334,12 +334,12 @@ Returns the value of attribute client
       <pre class="lines">
 
 
-41
-42
-43</pre>
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
   <span class='ivar'>@bucket</span> <span class='op'>||=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='ivar'>@bucket_name</span><span class='comma'>,</span> <span class='symbol'>:keys</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='rparen'>)</span>
@@ -362,18 +362,18 @@ Returns the value of attribute client
       <pre class="lines">
 
 
-45
-46
-47
-48
-49
-50
 51
 52
-53</pre>
+53
+54
+55
+56
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/cache_store.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id delete_matched'>delete_matched</span><span class='lparen'>(</span><span class='id matcher'>matcher</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id instrument'>instrument</span><span class='lparen'>(</span><span class='symbol'>:delete_matched</span><span class='comma'>,</span> <span class='id matcher'>matcher</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -394,9 +394,9 @@ Returns the value of attribute client
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:39 2011 by 
+  Generated on Sun Apr 10 22:47:02 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

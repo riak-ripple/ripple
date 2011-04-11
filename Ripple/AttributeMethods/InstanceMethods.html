@@ -146,13 +146,13 @@ Mass assign the document&#8217;s attributes.
       <pre class="lines">
 
 
-89
-90
 91
-92</pre>
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 89</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 91</span>
 
 <span class='kw'>def</span> <span class='id method_missing'>method_missing</span><span class='lparen'>(</span><span class='id method'>method</span><span class='comma'>,</span> <span class='op'>*</span><span class='id args'>args</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id define_attribute_methods'>define_attribute_methods</span>
@@ -215,15 +215,15 @@ all document attributes, by key
       <pre class="lines">
 
 
-59
-60
 61
 62
 63
-64</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id attributes'>attributes</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id properties'>properties</span><span class='period'>.</span><span class='id values'>values</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='ivar'>@attributes</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id hash'>hash</span><span class='comma'>,</span> <span class='id prop'>prop</span><span class='op'>|</span>
@@ -294,8 +294,6 @@ the attributes to assign
       <pre class="lines">
 
 
-68
-69
 70
 71
 72
@@ -304,10 +302,12 @@ the attributes to assign
 75
 76
 77
-78</pre>
+78
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/attribute_methods.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id attributes='>attributes=</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='comma'>,</span> <span class='id guard_protected_attrs'>guard_protected_attrs</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>attribute_hash</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id attrs'>attrs</span>
@@ -330,9 +330,9 @@ the attributes to assign
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:39 2011 by 
+  Generated on Sun Apr 10 22:47:03 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

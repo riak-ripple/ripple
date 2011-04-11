@@ -625,17 +625,17 @@ the tag for the related resource
       <pre class="lines">
 
 
-52
-53
-54
 55
 56
 57
 58
-59</pre>
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span> <span class='kw'>unless</span> <span class='lparen'>(</span><span class='int'>2</span><span class='op'>..</span><span class='int'>3</span><span class='rparen'>)</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='id args'>args</span><span class='period'>.</span><span class='id size'>size</span><span class='rparen'>)</span>
@@ -701,12 +701,12 @@ the bucket of the related resource
       <pre class="lines">
 
 
-28
-29
-30</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
   <span class='ivar'>@bucket</span>
@@ -762,12 +762,12 @@ the key of the related resource
       <pre class="lines">
 
 
-31
-32
-33</pre>
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id key'>key</span>
   <span class='ivar'>@key</span>
@@ -829,12 +829,12 @@ one
       <pre class="lines">
 
 
-23
-24
-25</pre>
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id tag'>tag</span>
   <span class='ivar'>@tag</span>
@@ -915,14 +915,14 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-39
-40
-41
 42
-43</pre>
+43
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 42</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='id header_string'>header_string</span><span class='rparen'>)</span>
   <span class='id header_string'>header_string</span><span class='period'>.</span><span class='id scan'>scan</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>&lt;([^&gt;]+)&gt;\s*;\s*(?:rel|riaktag)=\&quot;([^\&quot;]+)\&quot;</span><span class='regexp_end'>}</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id match'>match</span><span class='op'>|</span>
@@ -953,12 +953,12 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-86
-87
-88</pre>
+89
+90
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 86</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='id other'>other</span><span class='period'>.</span><span class='id is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Link</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id url'>url</span> <span class='op'>==</span> <span class='id other'>other</span><span class='period'>.</span><span class='id url'>url</span> <span class='op'>&amp;&amp;</span> <span class='id tag'>tag</span> <span class='op'>==</span> <span class='id other'>other</span><span class='period'>.</span><span class='id tag'>tag</span>
@@ -1002,12 +1002,12 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-82
-83
-84</pre>
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id eql?'>eql?</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='kw'>self</span> <span class='op'>==</span> <span class='id other'>other</span>
@@ -1030,12 +1030,12 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-78
-79
-80</pre>
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id hash'>hash</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id to_s'>to_s</span><span class='period'>.</span><span class='id hash'>hash</span>
@@ -1058,10 +1058,10 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-72</pre>
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span><span class='semicolon'>;</span> <span class='id to_s'>to_s</span><span class='semicolon'>;</span> <span class='kw'>end</span></pre>
     </td>
@@ -1082,12 +1082,12 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-74
-75
-76</pre>
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id to_s'>to_s</span>
   <span class='tstring'><span class='tstring_beg'>%Q[</span><span class='tstring_content'>&lt;</span><span class='embexpr_beg'>#{</span><span class='id url'>url</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;; riaktag=&quot;</span><span class='embexpr_beg'>#{</span><span class='id tag'>tag</span><span class='rbrace'>}</span><span class='tstring_content'>&quot;</span><span class='tstring_end'>]</span></span>
@@ -1110,13 +1110,13 @@ an array of Riak::Link structs parsed from the header
       <pre class="lines">
 
 
-90
-91
-92
-93</pre>
+93
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 93</span>
 
 <span class='kw'>def</span> <span class='id to_walk_spec'>to_walk_spec</span>
   <span class='id raise'>raise</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bucket_link_conversion</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id tag'>tag</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>up</span><span class='tstring_end'>&quot;</span></span> <span class='op'>||</span> <span class='id key'>key</span><span class='period'>.</span><span class='id nil?'>nil?</span>
@@ -1170,12 +1170,12 @@ the URL (relative or absolute) of the related resource
       <pre class="lines">
 
 
-62
-63
-64</pre>
+65
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id url'>url</span>
   <span class='ivar'>@url</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/riak/</span><span class='embexpr_beg'>#{</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id bucket'>bucket</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id key'>key</span><span class='period'>.</span><span class='id blank?'>blank?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id escape'>escape</span><span class='lparen'>(</span><span class='id key'>key</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -1198,14 +1198,14 @@ the URL (relative or absolute) of the related resource
       <pre class="lines">
 
 
-66
-67
-68
 69
-70</pre>
+70
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/link.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id url='>url=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@url</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -1222,9 +1222,9 @@ the URL (relative or absolute) of the related resource
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:36 2011 by 
+  Generated on Sun Apr 10 22:47:00 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

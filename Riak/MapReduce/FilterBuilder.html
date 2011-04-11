@@ -302,13 +302,13 @@ instance_eval&#8217;ed to construct the sequence of filters.
       <pre class="lines">
 
 
-88
 89
 90
-91</pre>
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/filter_builder.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/filter_builder.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@filters</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -355,12 +355,12 @@ correspond to an actual filter.
       <pre class="lines">
 
 
-95
 96
-97</pre>
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/filter_builder.rb', line 95</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/filter_builder.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id sequence'>sequence</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='ivar'>@filters</span> <span class='op'>&lt;&lt;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span><span class='period'>.</span><span class='id to_a'>to_a</span>
@@ -413,12 +413,12 @@ A list of filters for handing to the MapReduce inputs.
       <pre class="lines">
 
 
-101
 102
-103</pre>
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/filter_builder.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/filter_builder.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id to_a'>to_a</span>
   <span class='ivar'>@filters</span>
@@ -433,9 +433,9 @@ A list of filters for handing to the MapReduce inputs.
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:41 2011 by 
+  Generated on Sun Apr 10 22:47:05 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

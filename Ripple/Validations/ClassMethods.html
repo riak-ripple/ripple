@@ -155,13 +155,13 @@ Raises Ripple::DocumentInvalid if the record did not save
       <pre class="lines">
 
 
-52
 53
 54
-55</pre>
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id create!'>create!</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='id obj'>obj</span> <span class='op'>=</span> <span class='id create'>create</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
@@ -185,12 +185,12 @@ Raises Ripple::DocumentInvalid if the record did not save
       <pre class="lines">
 
 
-57
 58
-59</pre>
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/validations.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id validates_associated'>validates_associated</span><span class='lparen'>(</span><span class='op'>*</span><span class='id attr_names'>attr_names</span><span class='rparen'>)</span>
   <span class='id validates_with'>validates_with</span> <span class='const'>AssociatedValidator</span><span class='comma'>,</span> <span class='id _merge_attributes'>_merge_attributes</span><span class='lparen'>(</span><span class='id attr_names'>attr_names</span><span class='rparen'>)</span>
@@ -205,9 +205,9 @@ Raises Ripple::DocumentInvalid if the record did not save
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:38 2011 by 
+  Generated on Sun Apr 10 22:47:02 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

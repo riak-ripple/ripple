@@ -170,26 +170,6 @@ library. Conforms to the Riak::Client::HTTPBackend interface.
   
   
   
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
-
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span>, <span class='object_link'><a href="../Util/Escape.html#unescape-instance_method" title="Riak::Util::Escape#unescape (method)">#unescape</a></span></p>
-
-  
-  
-  
-  
-  
-  
-  
   
   
   
@@ -207,6 +187,26 @@ library. Conforms to the Riak::Client::HTTPBackend interface.
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="HTTPBackend/TransportMethods.html" title="Riak::Client::HTTPBackend::TransportMethods (module)">HTTPBackend::TransportMethods</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="HTTPBackend/TransportMethods.html#basic_auth_header-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#basic_auth_header (method)">#basic_auth_header</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#client_id-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#client_id (method)">#client_id</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#default_headers-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#default_headers (method)">#default_headers</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#delete-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#delete (method)">#delete</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#get-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#get (method)">#get</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#head-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#head (method)">#head</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#path-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#path (method)">#path</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#post-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#post (method)">#post</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#put-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#put (method)">#put</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#return_body%3F-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#return_body? (method)">#return_body?</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#root_uri-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#root_uri (method)">#root_uri</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#valid_response%3F-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#valid_response? (method)">#valid_response?</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#verify_path%21-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#verify_path! (method)">#verify_path!</a></span>, <span class='object_link'><a href="HTTPBackend/TransportMethods.html#verify_path_and_body%21-instance_method" title="Riak::Client::HTTPBackend::TransportMethods#verify_path_and_body! (method)">#verify_path_and_body!</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Translation.html" title="Riak::Util::Translation (module)">Util::Translation</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Util/Translation.html#i18n_scope-instance_method" title="Riak::Util::Translation#i18n_scope (method)">#i18n_scope</a></span>, <span class='object_link'><a href="../Util/Translation.html#t-instance_method" title="Riak::Util::Translation#t (method)">#t</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="../Util/Escape.html" title="Riak::Util::Escape (module)">Util::Escape</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../Util/Escape.html#escape-instance_method" title="Riak::Util::Escape#escape (method)">#escape</a></span>, <span class='object_link'><a href="../Util/Escape.html#unescape-instance_method" title="Riak::Util::Escape#unescape (method)">#unescape</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -253,17 +253,17 @@ library. Conforms to the Riak::Client::HTTPBackend interface.
       <pre class="lines">
 
 
-23
-24
-25
 26
 27
 28
 29
-30</pre>
+30
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/excon_backend.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/client/excon_backend.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id configured?'>configured?</span>
   <span class='kw'>begin</span>
@@ -283,9 +283,9 @@ library. Conforms to the Riak::Client::HTTPBackend interface.
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:40 2011 by 
+  Generated on Sun Apr 10 22:47:04 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

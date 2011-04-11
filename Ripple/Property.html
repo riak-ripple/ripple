@@ -401,14 +401,14 @@ the default.
       <pre class="lines">
 
 
-53
-54
 55
 56
-57</pre>
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id type'>type</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id to_options'>to_options</span>
@@ -471,12 +471,12 @@ the key of this property in the Document
       <pre class="lines">
 
 
-42
-43
-44</pre>
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id key'>key</span>
   <span class='ivar'>@key</span>
@@ -532,12 +532,12 @@ configuration options
       <pre class="lines">
 
 
-46
-47
-48</pre>
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id options'>options</span>
   <span class='ivar'>@options</span>
@@ -593,12 +593,12 @@ the Ruby type of property.
       <pre class="lines">
 
 
-44
-45
-46</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id type'>type</span>
   <span class='ivar'>@type</span>
@@ -658,15 +658,15 @@ The default value for this property if defined, or nil.
       <pre class="lines">
 
 
-60
-61
 62
 63
 64
-65</pre>
+65
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 62</span>
 
 <span class='kw'>def</span> <span class='id default'>default</span>
   <span class='id default'>default</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:default</span><span class='rbracket'>]</span>
@@ -762,16 +762,16 @@ if the value cannot be coerced into the property&#8217;s type
       <pre class="lines">
 
 
-76
-77
 78
 79
 80
 81
-82</pre>
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id type_cast'>type_cast</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@type</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:ripple_cast</span><span class='rparen'>)</span>
@@ -828,12 +828,12 @@ options appropriate for the validates class method
       <pre class="lines">
 
 
-68
-69
-70</pre>
+70
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/properties.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id validation_options'>validation_options</span>
   <span class='ivar'>@options</span><span class='period'>.</span><span class='id dup'>dup</span><span class='period'>.</span><span class='id except'>except</span><span class='lparen'>(</span><span class='symbol'>:default</span><span class='rparen'>)</span>
@@ -848,9 +848,9 @@ options appropriate for the validates class method
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:38 2011 by 
+  Generated on Sun Apr 10 22:47:01 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

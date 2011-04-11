@@ -263,12 +263,12 @@ The parent document to this embedded document. This may be a
       <pre class="lines">
 
 
-42
-43
-44</pre>
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id _parent_document'>_parent_document</span>
   <span class='ivar'>@_parent_document</span>
@@ -309,12 +309,12 @@ The root <span class='object_link'><a href="../../Document.html" title="Ripple::
       <pre class="lines">
 
 
-81
-82
-83</pre>
+83
+84
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id _root_document'>_root_document</span>
   <span class='ivar'>@_parent_document</span><span class='period'>.</span><span class='id try'>try</span><span class='lparen'>(</span><span class='symbol'>:_root_document</span><span class='rparen'>)</span>
@@ -361,16 +361,16 @@ Whether the root document is unsaved.
       <pre class="lines">
 
 
-45
-46
 47
 48
 49
 50
-51</pre>
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id new?'>new?</span>
   <span class='kw'>if</span> <span class='id _root_document'>_root_document</span>
@@ -408,16 +408,16 @@ Saves this embedded document by delegating to the root document.
       <pre class="lines">
 
 
-67
-68
 69
 70
 71
 72
-73</pre>
+73
+74
+75</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id save'>save</span><span class='lparen'>(</span><span class='op'>*</span><span class='id args'>args</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id _root_document'>_root_document</span>
@@ -456,13 +456,13 @@ document, skipping validations.
       <pre class="lines">
 
 
-61
-62
 63
-64</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id update_attribute'>update_attribute</span><span class='lparen'>(</span><span class='id attribute'>attribute</span><span class='comma'>,</span> <span class='id value'>value</span><span class='rparen'>)</span>
   <span class='id send'>send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id attribute'>attribute</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id value'>value</span><span class='rparen'>)</span>
@@ -497,13 +497,13 @@ Sets this embedded documents attributes and saves the root document.
       <pre class="lines">
 
 
-54
-55
 56
-57</pre>
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/embedded_document/persistence.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id update_attributes'>update_attributes</span><span class='lparen'>(</span><span class='id attrs'>attrs</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id attributes'>attributes</span> <span class='op'>=</span> <span class='id attrs'>attrs</span>
@@ -519,9 +519,9 @@ Sets this embedded documents attributes and saves the root document.
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:41 2011 by 
+  Generated on Sun Apr 10 22:47:05 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

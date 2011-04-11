@@ -225,16 +225,16 @@
       <pre class="lines">
 
 
-235
-236
-237
-238
-239
-240
-241</pre>
+251
+252
+253
+254
+255
+256
+257</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 235</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 251</span>
 
 <span class='kw'>def</span> <span class='id assign_to_or_mark_for_destruction'>assign_to_or_mark_for_destruction</span><span class='lparen'>(</span><span class='id record'>record</span><span class='comma'>,</span> <span class='id attributes'>attributes</span><span class='comma'>,</span> <span class='id association_name'>association_name</span><span class='comma'>,</span> <span class='id allow_destroy'>allow_destroy</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id has_destroy_flag?'>has_destroy_flag?</span><span class='lparen'>(</span><span class='id attributes'>attributes</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id allow_destroy'>allow_destroy</span>
@@ -261,18 +261,18 @@
       <pre class="lines">
 
 
-251
-252
-253
-254
-255
-256
-257
-258
-259</pre>
+267
+268
+269
+270
+271
+272
+273
+274
+275</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 251</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 267</span>
 
 <span class='kw'>def</span> <span class='id call_reject_if'>call_reject_if</span><span class='lparen'>(</span><span class='id association_name'>association_name</span><span class='comma'>,</span> <span class='id attributes'>attributes</span><span class='rparen'>)</span>
   <span class='id attributes'>attributes</span> <span class='op'>=</span> <span class='id attributes'>attributes</span><span class='period'>.</span><span class='id stringify_keys'>stringify_keys</span>
@@ -322,12 +322,12 @@
       <pre class="lines">
 
 
-243
-244
-245</pre>
+259
+260
+261</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 243</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 259</span>
 
 <span class='kw'>def</span> <span class='id has_destroy_flag?'>has_destroy_flag?</span><span class='lparen'>(</span><span class='id hash'>hash</span><span class='rparen'>)</span>
   <span class='const'>TRUE_VALUES</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='id hash'>hash</span><span class='period'>.</span><span class='id stringify_keys'>stringify_keys</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>_destroy</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -371,12 +371,12 @@
       <pre class="lines">
 
 
-247
-248
-249</pre>
+263
+264
+265</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 247</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/nested_attributes.rb', line 263</span>
 
 <span class='kw'>def</span> <span class='id reject_new_record?'>reject_new_record?</span><span class='lparen'>(</span><span class='id association_name'>association_name</span><span class='comma'>,</span> <span class='id attributes'>attributes</span><span class='rparen'>)</span>
   <span class='id has_destroy_flag?'>has_destroy_flag?</span><span class='lparen'>(</span><span class='id attributes'>attributes</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id call_reject_if'>call_reject_if</span><span class='lparen'>(</span><span class='id association_name'>association_name</span><span class='comma'>,</span> <span class='id attributes'>attributes</span><span class='rparen'>)</span>
@@ -391,9 +391,9 @@
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:39 2011 by 
+  Generated on Sun Apr 10 22:47:03 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

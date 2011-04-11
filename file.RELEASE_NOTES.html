@@ -42,6 +42,21 @@
     <iframe id="search_frame"></iframe>
     
     <div id="content"><div id='filecontents'><h1>Ripple Release Notes</h1>
+<h2>0.9.2 Patch Release &#8211; 2011-04-11</h2>
+<p>Release 0.9.2 is a minor bugfix release.</p>
+<p>Full notes:</p>
+<ul>
+	<li>Remove usage of autoload from all projects to reduce thread-safety problems.</li>
+	<li>Fix Excon backend to properly initialize response headers under error conditions. [Jeff Pollard, Myron Marston]</li>
+	<li>Excon yields multiple arguments to the streaming block.</li>
+</ul>
+<h2>0.9.1 Patch Release &#8211; 2011-04-07</h2>
+<p>Release 0.9.1 is a minor bugfix release.</p>
+<p>Full notes:</p>
+<ul>
+	<li>Fix strange encoding problems on Ruby 1.9 when using Protocol Buffers.</li>
+	<li>Use http_port rather than port in the generated TestServer. [Myron Marston]</li>
+</ul>
 <h2>0.9.0 Feature Release &#8211; 2011-04-03</h2>
 <p>Release 0.9.0 is a huge step forward from the 0.8 series, including support for Riak 0.14.x features, Protocol Buffers transport, and many bugfixes.</p>
 <p>Following this release, the code will be branched into a 0.9-stable branch, which will only receive critical bugfixes. Development of 1.0 features will occur on the master branch.</p>
@@ -63,7 +78,7 @@
 	<li>Improve speed and reliability of test server.</li>
 	<li>Bubble up errors when saving a document. [Duff OMelia]</li>
 	<li>Add automatic expiration to Rack session store.</li>
-	<li>Use ISO8601 datetime format in stored documents (configurable). [Nicolas Fouché]</li>
+	<li>Use ISO8601 datetime format in stored documents (configurable). [Nicolas Fouché]</li>
 	<li>Access document attributes that do not have a declared property. [Duff OMelia]</li>
 	<li>Fix document callback ordering. [Nathaniel Talbott]</li>
 	<li>Consolidate setting of the object key when link-walking. [Kyle Kingsbury]</li>
@@ -77,7 +92,7 @@
 		<li>Add list_buckets operation.</li>
 		<li><span class="caps">HTTP</span> resources prefixes can be discovered from the root <span class="caps">URL</span>.</li>
 	</ul></li>
-	<li>Added document observers using ActiveModel::Observer. [Stefan Springer]</li>
+	<li>Added document observers using ActiveModel::Observer. [Stefan Sprenger]</li>
 	<li>:key is a protected attribute on Document models. [Adam Hunter]</li>
 </ul>
 <h2>0.8.3 Patch/Minor Feature Release &#8211; 2010-12-13</h2>
@@ -258,9 +273,9 @@ It includes:</p>
 </ul></div></div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:36 2011 by 
+  Generated on Sun Apr 10 22:47:00 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

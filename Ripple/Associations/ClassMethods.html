@@ -204,12 +204,12 @@ Associations defined on the document
       <pre class="lines">
 
 
-72
-73
-74</pre>
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id associations'>associations</span>
   <span class='ivar'>@associations</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id with_indifferent_access'>with_indifferent_access</span>
@@ -243,12 +243,12 @@ Associations of embedded documents
       <pre class="lines">
 
 
-77
-78
-79</pre>
+79
+80
+81</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='id embedded_associations'>embedded_associations</span>
   <span class='id associations'>associations</span><span class='period'>.</span><span class='id values'>values</span><span class='period'>.</span><span class='id select'>select</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:embeddable?</span><span class='rparen'>)</span>
@@ -282,12 +282,12 @@ Creates a plural association
       <pre class="lines">
 
 
-87
-88
-89</pre>
+89
+90
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 87</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id many'>many</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id create_association'>create_association</span><span class='lparen'>(</span><span class='symbol'>:many</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -321,12 +321,12 @@ Creates a singular association
       <pre class="lines">
 
 
-82
-83
-84</pre>
+84
+85
+86</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 82</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/associations.rb', line 84</span>
 
 <span class='kw'>def</span> <span class='id one'>one</span><span class='lparen'>(</span><span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id create_association'>create_association</span><span class='lparen'>(</span><span class='symbol'>:one</span><span class='comma'>,</span> <span class='id name'>name</span><span class='comma'>,</span> <span class='id options'>options</span><span class='rparen'>)</span>
@@ -341,9 +341,9 @@ Creates a singular association
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:38 2011 by 
+  Generated on Sun Apr 10 22:47:02 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

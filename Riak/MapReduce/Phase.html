@@ -471,16 +471,16 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-44
-45
-46
 47
 48
 49
-50</pre>
+50
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id type'>type</span> <span class='op'>=</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span>
@@ -545,12 +545,12 @@ any extra static arguments to pass to the phase
       <pre class="lines">
 
 
-35
-36
-37</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id arg'>arg</span>
   <span class='ivar'>@arg</span>
@@ -610,12 +610,12 @@ hash with bucket/key), or the module + function in Erlang to run. For a
       <pre class="lines">
 
 
-26
-27
-28</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id function'>function</span>
   <span class='ivar'>@function</span>
@@ -671,12 +671,12 @@ whether results of this phase will be returned
       <pre class="lines">
 
 
-32
-33
-34</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id keep'>keep</span>
   <span class='ivar'>@keep</span>
@@ -734,12 +734,12 @@ the language of the phase&#8217;s function - &#8220;javascript&#8221; or
       <pre class="lines">
 
 
-29
-30
-31</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id language'>language</span>
   <span class='ivar'>@language</span>
@@ -795,12 +795,12 @@ the type of phase - :map, :reduce, or :link
       <pre class="lines">
 
 
-23
-24
-25</pre>
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id type'>type</span>
   <span class='ivar'>@type</span>
@@ -861,9 +861,6 @@ a Hash-equivalent of the phase
       <pre class="lines">
 
 
-83
-84
-85
 86
 87
 88
@@ -883,10 +880,13 @@ a Hash-equivalent of the phase
 102
 103
 104
-105</pre>
+105
+106
+107
+108</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 86</span>
 
 <span class='kw'>def</span> <span class='id as_json'>as_json</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id obj'>obj</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id type'>type</span>
@@ -959,12 +959,12 @@ a JSON representation of the phase
       <pre class="lines">
 
 
-77
-78
-79</pre>
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/map_reduce/phase.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='op'>*</span><span class='id a'>a</span><span class='rparen'>)</span>
   <span class='id as_json'>as_json</span><span class='period'>.</span><span class='id to_json'>to_json</span><span class='lparen'>(</span><span class='op'>*</span><span class='id a'>a</span><span class='rparen'>)</span>
@@ -979,9 +979,9 @@ a JSON representation of the phase
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:40 2011 by 
+  Generated on Sun Apr 10 22:47:03 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

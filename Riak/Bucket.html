@@ -750,14 +750,14 @@ the name of the bucket
       <pre class="lines">
 
 
-32
-33
-34
-35
-36</pre>
+37
+38
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id client'>client</span><span class='comma'>,</span> <span class='id name'>name</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>client_type</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:client</span> <span class='op'>=&gt;</span> <span class='id client'>client</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Client</span> <span class='op'>===</span> <span class='id client'>client</span>
@@ -820,12 +820,12 @@ the associated client
       <pre class="lines">
 
 
-24
-25
-26</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='ivar'>@client</span>
@@ -881,12 +881,12 @@ the bucket name
       <pre class="lines">
 
 
-27
-28
-29</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id name'>name</span>
   <span class='ivar'>@name</span>
@@ -946,12 +946,12 @@ whether the other is equivalent
       <pre class="lines">
 
 
-193
-194
-195</pre>
+198
+199
+200</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 193</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 198</span>
 
 <span class='kw'>def</span> <span class='op'>==</span><span class='lparen'>(</span><span class='id other'>other</span><span class='rparen'>)</span>
   <span class='const'>Bucket</span> <span class='op'>===</span> <span class='id other'>other</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id client'>client</span> <span class='op'>==</span> <span class='id client'>client</span> <span class='op'>&amp;&amp;</span> <span class='id other'>other</span><span class='period'>.</span><span class='id name'>name</span> <span class='op'>==</span> <span class='id name'>name</span>
@@ -1004,12 +1004,12 @@ whether the bucket allows divergent siblings
       <pre class="lines">
 
 
-148
-149
-150</pre>
+153
+154
+155</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 148</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 153</span>
 
 <span class='kw'>def</span> <span class='id allow_mult'>allow_mult</span>
   <span class='id props'>props</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>allow_mult</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
@@ -1065,13 +1065,13 @@ whether the bucket should allow siblings
       <pre class="lines">
 
 
-154
-155
-156
-157</pre>
+159
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 154</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 159</span>
 
 <span class='kw'>def</span> <span class='id allow_mult='>allow_mult=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id props'>props</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>allow_mult</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id value'>value</span><span class='rbrace'>}</span>
@@ -1172,12 +1172,12 @@ the read/write quorum for the delete
       <pre class="lines">
 
 
-143
-144
-145</pre>
+148
+149
+150</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 148</span>
 
 <span class='kw'>def</span> <span class='id delete'>delete</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id client'>client</span><span class='period'>.</span><span class='id backend'>backend</span><span class='period'>.</span><span class='id delete_object'>delete_object</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:rw</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1388,17 +1388,17 @@ whether the key exists in this bucket
       <pre class="lines">
 
 
-129
-130
-131
-132
-133
 134
 135
-136</pre>
+136
+137
+138
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 129</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 134</span>
 
 <span class='kw'>def</span> <span class='id exists?'>exists?</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -1545,12 +1545,12 @@ if the object is not found or some other error occurs
       <pre class="lines">
 
 
-95
-96
-97</pre>
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 95</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 100</span>
 
 <span class='kw'>def</span> <span class='id get'>get</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@client</span><span class='period'>.</span><span class='id backend'>backend</span><span class='period'>.</span><span class='id fetch_object'>fetch_object</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='lbracket'>[</span><span class='symbol'>:r</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1625,20 +1625,20 @@ the new or existing object
       <pre class="lines">
 
 
-112
-113
-114
-115
-116
 117
 118
 119
 120
 121
-122</pre>
+122
+123
+124
+125
+126
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='id get_or_new'>get_or_new</span><span class='lparen'>(</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -1699,12 +1699,12 @@ a representation suitable for IRB and debugging output
       <pre class="lines">
 
 
-188
-189
-190</pre>
+193
+194
+195</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 193</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#&lt;Riak::Bucket {</span><span class='embexpr_beg'>#{</span><span class='id name'>name</span><span class='rbrace'>}</span><span class='tstring_content'>}</span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> keys=[</span><span class='embexpr_beg'>#{</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>,</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='kw'>defined?</span><span class='lparen'>(</span><span class='ivar'>@keys</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&quot;</span></span>
@@ -1884,17 +1884,17 @@ Keys in this bucket
       <pre class="lines">
 
 
-46
-47
-48
-49
-50
 51
 52
-53</pre>
+53
+54
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id keys'>keys</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='op'>&amp;</span><span class='id block'>block</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
@@ -1956,12 +1956,12 @@ the N value, or number of replicas for this bucket
       <pre class="lines">
 
 
-160
-161
-162</pre>
+165
+166
+167</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 160</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 165</span>
 
 <span class='kw'>def</span> <span class='id n_value'>n_value</span>
   <span class='id props'>props</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>n_val</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
@@ -2022,13 +2022,13 @@ the number of replicas the bucket should keep of each object
       <pre class="lines">
 
 
-168
-169
-170
-171</pre>
+173
+174
+175
+176</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 168</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id n_value='>n_value=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id props'>props</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>n_val</span><span class='tstring_end'>'</span></span> <span class='op'>=&gt;</span> <span class='id value'>value</span><span class='rbrace'>}</span>
@@ -2105,14 +2105,14 @@ the new, unsaved object
       <pre class="lines">
 
 
-103
-104
-105
-106
-107</pre>
+108
+109
+110
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 103</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='id new'>new</span><span class='lparen'>(</span><span class='id key'>key</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='const'>RObject</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id key'>key</span><span class='rparen'>)</span><span class='period'>.</span><span class='id tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id obj'>obj</span><span class='op'>|</span>
@@ -2178,12 +2178,12 @@ Internal Riak bucket properties.
       <pre class="lines">
 
 
-84
-85
-86</pre>
+89
+90
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id props'>props</span>
   <span class='ivar'>@props</span> <span class='op'>||=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id backend'>backend</span><span class='period'>.</span><span class='id get_bucket_props'>get_bucket_props</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
@@ -2432,15 +2432,15 @@ if the new properties were not accepted by the Riakserver
       <pre class="lines">
 
 
-74
-75
-76
-77
-78
-79</pre>
+79
+80
+81
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/bucket.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='id props='>props=</span><span class='lparen'>(</span><span class='id properties'>properties</span><span class='rparen'>)</span>
   <span class='id raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='id t'>t</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hash_type</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='symbol'>:hash</span> <span class='op'>=&gt;</span> <span class='id properties'>properties</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='const'>Hash</span> <span class='op'>===</span> <span class='id properties'>properties</span>
@@ -2458,9 +2458,9 @@ if the new properties were not accepted by the Riakserver
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:37 2011 by 
+  Generated on Sun Apr 10 22:47:00 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

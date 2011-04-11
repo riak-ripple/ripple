@@ -211,12 +211,12 @@ The bucket assigned to this class.
       <pre class="lines">
 
 
-27
 28
-29</pre>
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
   <span class='const'>Ripple</span><span class='period'>.</span><span class='id client'>client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id bucket_name'>bucket_name</span><span class='rparen'>)</span>
@@ -271,12 +271,12 @@ their bucket name from their parent class unless they redefine it.
       <pre class="lines">
 
 
-22
 23
-24</pre>
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id bucket_name'>bucket_name</span>
   <span class='id superclass'>superclass</span><span class='period'>.</span><span class='id respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:bucket_name</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id superclass'>superclass</span><span class='period'>.</span><span class='id bucket_name'>bucket_name</span> <span class='op'>:</span> <span class='id model_name'>model_name</span><span class='period'>.</span><span class='id plural'>plural</span>
@@ -331,12 +331,12 @@ the new bucket name
       <pre class="lines">
 
 
-33
 34
-35</pre>
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/bucket_access.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id bucket_name='>bucket_name=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='lparen'>(</span><span class='kw'>class</span> <span class='op'>&lt;&lt;</span> <span class='kw'>self</span><span class='semicolon'>;</span> <span class='kw'>self</span><span class='semicolon'>;</span> <span class='kw'>end</span><span class='rparen'>)</span><span class='period'>.</span><span class='id send'>send</span><span class='lparen'>(</span><span class='symbol'>:define_method</span><span class='comma'>,</span> <span class='symbol'>:bucket_name</span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='id value'>value</span> <span class='rbrace'>}</span>
@@ -351,9 +351,9 @@ the new bucket name
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:40 2011 by 
+  Generated on Sun Apr 10 22:47:04 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>

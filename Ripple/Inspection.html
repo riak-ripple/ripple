@@ -145,14 +145,14 @@ A human-readable version of the <span class='object_link'><a href="Document.html
       <pre class="lines">
 
 
+20
 21
 22
 23
-24
-25</pre>
+24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/inspection.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/inspection.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id inspect'>inspect</span>
   <span class='id attribute_list'>attribute_list</span> <span class='op'>=</span> <span class='id attributes_for_persistence'>attributes_for_persistence</span><span class='period'>.</span><span class='id except'>except</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_type</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id k'>k</span><span class='comma'>,</span><span class='id v'>v</span><span class='op'>|</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id k'>k</span><span class='rbrace'>}</span><span class='tstring_content'>=</span><span class='embexpr_beg'>#{</span><span class='id v'>v</span><span class='period'>.</span><span class='id inspect'>inspect</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
@@ -169,9 +169,9 @@ A human-readable version of the <span class='object_link'><a href="Document.html
 </div>
     
     <div id="footer">
-  Generated on Sun Apr  3 19:32:38 2011 by 
+  Generated on Sun Apr 10 22:47:01 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.5 (ruby-1.9.2).
+  0.6.7 (ruby-1.9.2).
 </div>
 
   </body>
