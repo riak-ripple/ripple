@@ -33,7 +33,6 @@ module Riak
 
       def pump(input)
         @fiber.resume input
-        input.size if input.respond_to?(:size) # for curb
       end
 
       def to_proc

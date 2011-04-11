@@ -30,7 +30,7 @@ describe "HTTP" do
     $test_server.recycle if $test_server.started?
   end
 
-  [:CurbBackend, :ExconBackend, :NetHTTPBackend].each do |klass|
+  [:ExconBackend, :NetHTTPBackend].each do |klass|
     bklass = Riak::Client.const_get(klass)
     if bklass.configured?
       describe klass.to_s do

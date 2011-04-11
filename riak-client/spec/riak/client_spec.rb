@@ -105,7 +105,7 @@ describe Riak::Client do
 
       it "should require a valid protocol to be set" do
         lambda { @client.protocol = 'invalid-protocol' }.should(
-                                                           raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
+                                                                raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
       end
 
       it "should reset the unified backend when changing the protocol" do
@@ -210,11 +210,9 @@ describe Riak::Client do
       @client.http_backend = :NetHTTP
       @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
 
-      unless defined? JRUBY_VERSION
-        @client = Riak::Client.new
-        @client.http_backend = :Curb
-        @client.http.should be_instance_of(Riak::Client::CurbBackend)
-      end
+      @client = Riak::Client.new
+      @client.http_backend = :Excon
+      @client.http.should be_instance_of(Riak::Client::ExconBackend)
     end
 
     it "should raise an error when the chosen backend is not valid" do
