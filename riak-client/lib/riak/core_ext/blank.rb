@@ -1,3 +1,5 @@
+require 'set'
+
 unless Object.new.respond_to? :blank?
   class Object
     def blank?
