@@ -14,6 +14,7 @@
 
 require 'riak'
 require 'erb'
+require 'yaml'
 require 'active_model'
 require 'ripple/core_ext'
 require 'ripple/translation'
