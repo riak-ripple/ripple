@@ -30,9 +30,20 @@ module Riak
         end
       end
 
+      # Sets the read_timeout applied to Net::HTTP connections
+      # Increase this if you have very long request times.
+      def self.read_timeout=(timeout)
+        @read_timeout = timeout
+      end
+
+      def self.read_timeout
+        @read_timeout ||= 4096
+      end
+
       private
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
         http = Net::HTTP.new(uri.host, uri.port)
+        http.read_timeout = self.class.read_timeout
         configure_ssl(http) if @client.ssl_enabled?
 
         request = Net::HTTP.const_get(method.to_s.capitalize).new(uri.request_uri, headers)
