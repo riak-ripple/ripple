@@ -73,11 +73,11 @@ describe Riak::RObject do
       end
 
       it "should serialize into a YAML stream" do
-        @object.serialize({"foo" => "bar"}).should == "--- \nfoo: bar\n"
+        @object.serialize({"foo" => "bar"}).should == YAML.dump({"foo" => "bar"})
       end
 
       it "should deserialize a YAML stream" do
-        @object.deserialize("--- \nfoo: bar\n").should == {"foo" => "bar"}
+        @object.deserialize(YAML.dump({"foo" => "bar"})).should == {"foo" => "bar"}
       end
     end
 
