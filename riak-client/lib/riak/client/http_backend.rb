@@ -23,6 +23,7 @@ require 'riak/robject'
 require 'riak/client/http_backend/transport_methods'
 require 'riak/client/http_backend/object_methods'
 require 'riak/client/http_backend/configuration'
+require 'riak/client/http_backend/key_streamer'
 
 module Riak
   class Client
@@ -142,12 +143,8 @@ module Riak
       # @return [Array<String>] the list of keys, if no block was given
       def list_keys(bucket, &block)
         bucket = bucket.name if Bucket === bucket
-        if block_given?
-          get(200, riak_kv_wm_raw, escape(bucket), {:props => false, :keys => 'stream'}, {}) do |chunk|
-            obj = JSON.parse(chunk) rescue nil
-            next unless obj && obj['keys']
-            yield obj['keys'].map {|k| unescape(k) }
-          end
+        if block_given?          
+          get(200, riak_kv_wm_raw, escape(bucket), {:props => false, :keys => 'stream'}, {}, &KeyStreamer.new(block))
         else
           response = get(200, riak_kv_wm_raw, escape(bucket), {:props => false, :keys => true}, {})
           obj = JSON.parse(response[:body])
