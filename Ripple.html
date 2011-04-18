@@ -60,7 +60,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">ripple/lib/ripple.rb<span class="defines">,<br />
-  ripple/lib/ripple/railtie.rb,<br /> ripple/lib/ripple/document.rb,<br /> ripple/lib/ripple/callbacks.rb,<br /> ripple/lib/ripple/timestamps.rb,<br /> ripple/lib/ripple/inspection.rb,<br /> ripple/lib/ripple/properties.rb,<br /> ripple/lib/ripple/conversion.rb,<br /> ripple/lib/ripple/observable.rb,<br /> ripple/lib/ripple/validations.rb,<br /> ripple/lib/ripple/translation.rb,<br /> ripple/lib/ripple/document/key.rb,<br /> ripple/lib/ripple/associations.rb,<br /> ripple/lib/ripple/serialization.rb,<br /> ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/associations/one.rb,<br /> ripple/lib/ripple/embedded_document.rb,<br /> ripple/lib/ripple/nested_attributes.rb,<br /> ripple/lib/ripple/attribute_methods.rb,<br /> ripple/lib/ripple/associations/many.rb,<br /> ripple/lib/ripple/associations/proxy.rb,<br /> ripple/lib/ripple/associations/linked.rb,<br /> riak-sessions/lib/ripple/session_store.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> ripple/lib/ripple/associations/embedded.rb,<br /> ripple/lib/ripple/attribute_methods/read.rb,<br /> ripple/lib/ripple/property_type_mismatch.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/attribute_methods/write.rb,<br /> ripple/lib/ripple/attribute_methods/query.rb,<br /> ripple/lib/ripple/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/embedded_document/finders.rb,<br /> ripple/lib/rails/generators/ripple_generator.rb,<br /> ripple/lib/ripple/associations/instantiators.rb,<br /> ripple/lib/ripple/associations/one_linked_proxy.rb,<br /> ripple/lib/ripple/embedded_document/persistence.rb,<br /> ripple/lib/ripple/associations/many_linked_proxy.rb,<br /> ripple/lib/ripple/associations/one_embedded_proxy.rb,<br /> ripple/lib/ripple/validations/associated_validator.rb,<br /> ripple/lib/rails/generators/ripple/js/js_generator.rb,<br /> ripple/lib/ripple/associations/many_embedded_proxy.rb,<br /> ripple/lib/rails/generators/ripple/test/test_generator.rb,<br /> ripple/lib/rails/generators/ripple/model/model_generator.rb,<br /> ripple/lib/rails/generators/ripple/observer/observer_generator.rb,<br /> ripple/lib/rails/generators/ripple/configuration/configuration_generator.rb</span>
+  ripple/lib/ripple/railtie.rb,<br /> ripple/lib/ripple/document.rb,<br /> ripple/lib/ripple/callbacks.rb,<br /> ripple/lib/ripple/timestamps.rb,<br /> ripple/lib/ripple/properties.rb,<br /> ripple/lib/ripple/inspection.rb,<br /> ripple/lib/ripple/conversion.rb,<br /> ripple/lib/ripple/observable.rb,<br /> ripple/lib/ripple/validations.rb,<br /> ripple/lib/ripple/translation.rb,<br /> ripple/lib/ripple/document/key.rb,<br /> ripple/lib/ripple/associations.rb,<br /> ripple/lib/ripple/serialization.rb,<br /> ripple/lib/ripple/document/finders.rb,<br /> ripple/lib/ripple/associations/one.rb,<br /> ripple/lib/ripple/embedded_document.rb,<br /> ripple/lib/ripple/nested_attributes.rb,<br /> ripple/lib/ripple/attribute_methods.rb,<br /> ripple/lib/ripple/associations/many.rb,<br /> ripple/lib/ripple/associations/proxy.rb,<br /> ripple/lib/ripple/associations/linked.rb,<br /> ripple/lib/ripple/document/persistence.rb,<br /> riak-sessions/lib/ripple/session_store.rb,<br /> ripple/lib/ripple/associations/embedded.rb,<br /> ripple/lib/ripple/attribute_methods/read.rb,<br /> ripple/lib/ripple/document/bucket_access.rb,<br /> ripple/lib/ripple/property_type_mismatch.rb,<br /> ripple/lib/ripple/attribute_methods/write.rb,<br /> ripple/lib/ripple/attribute_methods/query.rb,<br /> ripple/lib/ripple/attribute_methods/dirty.rb,<br /> ripple/lib/ripple/embedded_document/finders.rb,<br /> ripple/lib/ripple/associations/instantiators.rb,<br /> ripple/lib/rails/generators/ripple_generator.rb,<br /> ripple/lib/ripple/embedded_document/persistence.rb,<br /> ripple/lib/ripple/associations/one_linked_proxy.rb,<br /> ripple/lib/ripple/associations/many_linked_proxy.rb,<br /> ripple/lib/ripple/associations/one_embedded_proxy.rb,<br /> ripple/lib/rails/generators/ripple/js/js_generator.rb,<br /> ripple/lib/ripple/associations/many_embedded_proxy.rb,<br /> ripple/lib/ripple/validations/associated_validator.rb,<br /> ripple/lib/rails/generators/ripple/test/test_generator.rb,<br /> ripple/lib/rails/generators/ripple/model/model_generator.rb,<br /> ripple/lib/rails/generators/ripple/observer/observer_generator.rb,<br /> ripple/lib/rails/generators/ripple/configuration/configuration_generator.rb</span>
 </dd>
   
 </dl>
@@ -324,12 +324,12 @@ The client for the current thread.
       <pre class="lines">
 
 
-27
-28
-29</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id client'>client</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id client_config'>client_config</span><span class='rparen'>)</span>
@@ -384,12 +384,12 @@ the client
       <pre class="lines">
 
 
-33
-34
-35</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id client='>client=</span><span class='lparen'>(</span><span class='id value'>value</span><span class='rparen'>)</span>
   <span class='const'>Thread</span><span class='period'>.</span><span class='id current'>current</span><span class='lbracket'>[</span><span class='symbol'>:ripple_client</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id value'>value</span>
@@ -423,12 +423,12 @@ Reads the global Ripple configuration.
       <pre class="lines">
 
 
-44
-45
-46</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id config'>config</span>
   <span class='ivar'>@config</span> <span class='op'>||=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -462,13 +462,13 @@ Sets the global Ripple configuration.
       <pre class="lines">
 
 
-38
-39
 40
-41</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id config='>config=</span><span class='lparen'>(</span><span class='id hash'>hash</span><span class='rparen'>)</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id client'>client</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -523,12 +523,12 @@ the date format
       <pre class="lines">
 
 
-52
-53
-54</pre>
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id date_format'>date_format</span>
   <span class='lparen'>(</span><span class='id config'>config</span><span class='lbracket'>[</span><span class='symbol'>:date_format</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='symbol'>:iso8601</span><span class='rparen'>)</span><span class='period'>.</span><span class='id to_sym'>to_sym</span>
@@ -583,12 +583,12 @@ the date format
       <pre class="lines">
 
 
-59
-60
-61</pre>
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id date_format='>date_format=</span><span class='lparen'>(</span><span class='id format'>format</span><span class='rparen'>)</span>
   <span class='id config'>config</span><span class='lbracket'>[</span><span class='symbol'>:date_format</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id format'>format</span><span class='period'>.</span><span class='id to_sym'>to_sym</span>
@@ -627,17 +627,17 @@ configuration with ERB before loading.
       <pre class="lines">
 
 
-65
-66
 67
 68
 69
 70
 71
-72</pre>
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple.rb', line 67</span>
 
 <span class='kw'>def</span> <span class='id load_configuration'>load_configuration</span><span class='lparen'>(</span><span class='id config_file'>config_file</span><span class='comma'>,</span> <span class='id config_keys'>config_keys</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:ripple</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id config_file'>config_file</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id expand_path'>expand_path</span><span class='lparen'>(</span><span class='id config_file'>config_file</span><span class='rparen'>)</span>
@@ -657,7 +657,7 @@ configuration with ERB before loading.
 </div>
     
     <div id="footer">
-  Generated on Sun Apr 10 22:47:00 2011 by 
+  Generated on Sun Apr 17 20:28:48 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.7 (ruby-1.9.2).
 </div>
