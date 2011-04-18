@@ -2,7 +2,7 @@ h1. Ripple Release Notes
 
 h2. 0.9.3 Patch Release - 2011-04-18
 
-Release 0.9.2 is a minor bugfix release.
+Release 0.9.3 is a minor bugfix release.
 
 Full notes:
 
