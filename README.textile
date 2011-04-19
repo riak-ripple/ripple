@@ -42,7 +42,7 @@ bucket = client.bucket("doc")  # a Riak::Bucket
 object = bucket.get("index.html")   # a Riak::RObject
 
 # Change the object's data and save
-object.data = "<html><body>Hello, world!</body></html>"
+object.data = "&lt;html&gt;&lt;body&gt;Hello, world!&lt;/body&gt;&lt;/html&gt;"
 object.store
 
 # Reload an object you already have
