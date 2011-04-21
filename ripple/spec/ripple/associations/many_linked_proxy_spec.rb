@@ -87,4 +87,34 @@ describe Ripple::Associations::ManyLinkedProxy do
     lambda { @person.tasks = @task }.should raise_error
     lambda { @person.tasks = [@person] }.should raise_error
   end
+
+  describe "#keys" do
+    let(:link_keys) { %w[ 1 2 3 ] }
+    let(:links) { link_keys.map { |k| Riak::Link.new('tasks', k, 'task') } }
+
+    before(:each) do
+      @person.tasks.stub(:links => links)
+    end
+
+    it "returns a set of keys" do
+      @person.tasks.keys.should be_a(Set)
+      @person.tasks.keys.to_a.should == link_keys
+    end
+
+    it "is memoized between calls" do
+      @person.tasks.keys.should equal(@person.tasks.keys)
+    end
+
+    it "is cleared when the association is reset" do
+      orig_set = @person.tasks.keys
+      @person.tasks.reset
+      @person.tasks.keys.should_not equal(orig_set)
+    end
+
+    it "is cleared when the association is replaced" do
+      orig_set = @person.tasks.keys
+      @person.tasks.replace([@task])
+      @person.tasks.keys.should_not equal(orig_set)
+    end
+  end
 end

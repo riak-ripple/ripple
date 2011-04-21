@@ -1,4 +1,5 @@
 require 'ripple/associations'
+require 'set'
 
 module Ripple
   module Associations
@@ -11,7 +12,17 @@ module Ripple
           @owner.robject.links << doc.to_link(@reflection.link_tag)
         end
         loaded
+        @keys = nil
         @target = value
+      end
+
+      def keys
+        @keys ||= Set.new(links.map { |l| l.key })
+      end
+
+      def reset
+        super
+        @keys = nil
       end
 
       protected
