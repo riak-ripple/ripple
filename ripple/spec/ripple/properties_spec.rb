@@ -252,5 +252,35 @@ describe Ripple::Property do
         @prop.type_cast("  ").should be_nil
       end
     end
+
+    describe "when type is a Set type" do
+      let(:prop) { Ripple::Property.new(:foo, Set) }
+
+      it "casts an array to a a set" do
+        prop.type_cast([1]).should be_a(Set)
+        prop.type_cast([1]).to_a.should == [1]
+      end
+
+      it "raises an error when casting a non-enumerable" do
+        expect {
+          prop.type_cast(1)
+        }.to raise_error(Ripple::PropertyTypeMismatch)
+      end
+    end
+  end
+end
+
+describe Ripple::Document do
+  let(:custom_data)        { Subscription::MyCustomType.new('bar') }
+  let(:days_of_month)      { Set.new([1, 7, 15, 23]) }
+  let(:subscription)       { Subscription.create!(:custom_data => custom_data, :days_of_month => days_of_month) }
+  let(:found_subscription) { Subscription.find(subscription.key) }
+
+  it 'allows properties with custom types to be saved and restored from riak' do
+    found_subscription.custom_data.should == custom_data
+  end
+
+  it 'allows Set properties to be saved and restored from riak' do
+    found_subscription.days_of_month.should == days_of_month
   end
 end

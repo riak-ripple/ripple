@@ -23,6 +23,7 @@ require 'active_support/core_ext/time/conversions'
 require 'active_support/core_ext/time/zones'
 require 'active_support/core_ext/string/conversions'
 require 'ripple/property_type_mismatch'
+require 'set'
 
 # @private
 class Object
@@ -144,6 +145,17 @@ module ActiveSupport
     def as_json(options={})
       self.utc.send(Ripple.date_format)
     end
+  end
+end
+
+# @private
+class Set
+  def as_json(options = {})
+    to_a
+  end
+
+  def self.ripple_cast(value)
+    value.is_a?(Enumerable) && new(value) or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
 
