@@ -73,6 +73,11 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.tasks.count.should == 2
   end
 
+  it "asks the keys set for the count to avoid having to unnecessarily load all documents" do
+    @person.tasks.keys.stub(:size => 17)
+    @person.tasks.count.should == 17
+  end
+
   # it "should be able to build a new associated document" do
   #   pending "Need unsaved document support"
   # end
