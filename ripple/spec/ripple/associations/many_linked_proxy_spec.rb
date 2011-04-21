@@ -117,4 +117,22 @@ describe Ripple::Associations::ManyLinkedProxy do
       @person.tasks.keys.should_not equal(orig_set)
     end
   end
+
+  describe "#include?" do
+    it "delegates to the set of keys so as not to unnecessarily load the associated documents" do
+      @person.tasks.keys.should_receive(:include?).with(@task.key).and_return(true)
+      @person.tasks.include?(@task).should be_true
+    end
+
+    it "short-circuits and returns false if the given object is not a ripple document" do
+      @person.tasks.keys.should_not_receive(:include?)
+      @person.tasks.include?(Object.new).should be_false
+    end
+
+    it "returns false if the document's bucket is different from the associations bucket, even if the keys are the same" do
+      @person.tasks << @task
+      other_person = Person.new { |p| p.key = @task.key }
+      @person.tasks.include?(other_person).should be_false
+    end
+  end
 end

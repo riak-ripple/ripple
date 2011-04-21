@@ -25,6 +25,12 @@ module Ripple
         @keys = nil
       end
 
+      def include?(document)
+        return false unless document.respond_to?(:robject)
+        return false unless document.robject.bucket.name == @reflection.bucket_name
+        keys.include?(document.key)
+      end
+
       protected
       def links
         @owner.robject.links.select(&@reflection.link_filter)

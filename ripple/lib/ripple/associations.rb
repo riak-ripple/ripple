@@ -217,13 +217,16 @@ module Ripple
       linked? ? Array(link_spec).first.tag : nil
     end
 
+    def bucket_name
+      polymorphic? ? '_' : klass.bucket_name
+    end
+
     # @return [Riak::WalkSpec] when #linked? is true, a specification for which links to follow to retrieve the associated documents
     def link_spec
       # TODO: support transitive linked associations
       if linked?
         tag = name.to_s
-        bucket = polymorphic? ? '_' : klass.bucket_name
-        Riak::WalkSpec.new(:tag => tag, :bucket => bucket)
+        Riak::WalkSpec.new(:tag => tag, :bucket => bucket_name)
       else
         nil
       end
