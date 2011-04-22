@@ -22,7 +22,7 @@ describe Ripple::Associations::ManyLinkedProxy do
 
   it "should set the links on the RObject when assigning" do
     @person.tasks = [@task]
-    @person.robject.links.should include(@task.robject.to_link("tasks"))
+    @person.robject.links.should include(@task.to_link("tasks"))
   end
 
   it "should return the assigned documents when assigning" do
@@ -37,7 +37,7 @@ describe Ripple::Associations::ManyLinkedProxy do
   end
 
   it "should link-walk to the associated documents when accessing" do
-    @person.robject.links << @task.robject.to_link("tasks")
+    @person.robject.links << @task.to_link("tasks")
     @person.robject.should_receive(:walk).with(Riak::WalkSpec.new(:bucket => "tasks", :tag => "tasks")).and_return([])
     @person.tasks.should == []
   end
@@ -62,7 +62,7 @@ describe Ripple::Associations::ManyLinkedProxy do
   it "should set the links on the RObject when appending" do
     @person.tasks << @task << @other_task
     [@task, @other_task].each do |t|
-      @person.robject.links.should include(t.robject.to_link("tasks"))
+      @person.robject.links.should include(t.to_link("tasks"))
     end
   end
 

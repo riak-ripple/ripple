@@ -23,7 +23,7 @@ describe Ripple::Associations::OneLinkedProxy do
 
   it "should set the link on the RObject when assigning" do
     @person.profile = @profile
-    @person.robject.links.should include(@profile.robject.to_link("profile"))
+    @person.robject.links.should include(@profile.to_link("profile"))
   end
 
   it "should return the assigned document when assigning" do

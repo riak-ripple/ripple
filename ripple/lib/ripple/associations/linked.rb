@@ -8,7 +8,7 @@ module Ripple
         @owner.robject.links -= links
         Array(value).compact.each do |doc|
           doc.save if doc.new?
-          @owner.robject.links << doc.robject.to_link(@reflection.link_tag)
+          @owner.robject.links << doc.to_link(@reflection.link_tag)
         end
         loaded
         @target = value
