@@ -36,12 +36,6 @@ describe Ripple::Associations::ManyLinkedProxy do
     t.should == [@task]
   end
 
-  it "should save unsaved documents when assigning" do
-    @task.should_receive(:new?).and_return(true)
-    @task.should_receive(:save).and_return(true)
-    @person.tasks = [@task]
-  end
-
   it "should link-walk to the associated documents when accessing" do
     @person.robject.links << @task.to_link("tasks")
     @person.robject.should_receive(:walk).with(Riak::WalkSpec.new(:bucket => "tasks", :tag => "tasks")).and_return([])

@@ -19,7 +19,6 @@ module Ripple
           replace new_target
         else
           @reflection.verify_type!([value], @owner)
-          value.save if value.new?
           @owner.robject.links << value.to_link(@reflection.link_tag)
           appended_documents << value
           @keys = nil

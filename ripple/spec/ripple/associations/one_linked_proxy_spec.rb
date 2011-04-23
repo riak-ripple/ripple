@@ -31,12 +31,6 @@ describe Ripple::Associations::OneLinkedProxy do
     ret.should == @profile
   end
 
-  it "should save the new document when assigning" do
-    @profile.should_receive(:new?).and_return(true)
-    @profile.should_receive(:save).and_return(true)
-    @person.profile = @profile
-  end
-
   it "should link-walk to the associated document when accessing" do
     @person.robject.links << @profile.robject.to_link("profile")
     @person.robject.should_receive(:walk).with(Riak::WalkSpec.new(:bucket => "profiles", :tag => "profile")).and_return([[@profile.robject]])
