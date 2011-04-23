@@ -25,6 +25,12 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.robject.links.should include(@task.to_link("tasks"))
   end
 
+  it "should be able to replace the entire collection of documents (even appended ones)" do
+    @person.tasks << @task
+    @person.tasks = [@other_task]
+    @person.tasks.should == [@other_task]
+  end
+
   it "should return the assigned documents when assigning" do
     t = (@person.tasks = [@task])
     t.should == [@task]
@@ -48,31 +54,6 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.tasks.should == [@other_task]
   end
 
-  it "should be able to append documents to the associated set" do
-    @person.tasks << @task
-    @person.tasks << @other_task
-    @person.should have(2).tasks
-  end
-
-  it "should be able to chain calls to adding documents" do
-    @person.tasks << @task << @other_task
-    @person.should have(2).tasks
-  end
-
-  it "should set the links on the RObject when appending" do
-    @person.tasks << @task << @other_task
-    [@task, @other_task].each do |t|
-      @person.robject.links.should include(t.to_link("tasks"))
-    end
-  end
-
-  it "should be able to count the associated documents" do
-    @person.tasks << @task
-    @person.tasks.count.should == 1
-    @person.tasks << @other_task
-    @person.tasks.count.should == 2
-  end
-
   it "asks the keys set for the count to avoid having to unnecessarily load all documents" do
     @person.tasks.keys.stub(:size => 17)
     @person.tasks.count.should == 17
@@ -91,6 +72,60 @@ describe Ripple::Associations::ManyLinkedProxy do
     lambda { @person.tasks = nil }.should raise_error
     lambda { @person.tasks = @task }.should raise_error
     lambda { @person.tasks = [@person] }.should raise_error
+  end
+
+  describe "#<< (when the target has not already been loaded)" do
+    it "avoids link-walking when adding a record to an unloaded association" do
+      @person.robject.should_not_receive(:walk)
+      @person.tasks << @task
+    end
+
+    it "should be able to count the associated documents" do
+      @person.tasks << @task
+      @person.tasks.count.should == 1
+      @person.tasks << @other_task
+      @person.tasks.count.should == 2
+    end
+
+    it "maintains the list of keys properly as new documents are appended" do
+      @person.tasks << @task
+      @person.tasks.should have(1).key
+      @person.tasks << @other_task
+      @person.tasks.should have(2).keys
+    end
+
+    it "should be able to append documents to the associated set" do
+      @person.tasks << @task
+      @person.tasks << @other_task
+      @person.should have(2).tasks
+    end
+
+    it "should be able to chain calls to adding documents" do
+      @person.tasks << @task << @other_task
+      @person.should have(2).tasks
+    end
+
+    it "should set the links on the RObject when appending" do
+      @person.tasks << @task << @other_task
+      [@task, @other_task].each do |t|
+        @person.robject.links.should include(t.to_link("tasks"))
+      end
+    end
+
+    it "does not return duplicates (for when the object has been appended and it's robject is found while walking the links)" do
+      @person.tasks.stub(:robjects => [@task.robject])
+      @person.tasks.reset
+      @person.tasks << @task
+      @person.tasks.should == [@task]
+    end
+  end
+
+  describe "#reset" do
+    it "clears appended documents" do
+      @person.tasks << @task
+      @person.tasks.reset
+      @person.tasks.should == []
+    end
   end
 
   describe "#keys" do
