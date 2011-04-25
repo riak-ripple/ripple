@@ -26,6 +26,9 @@ module Ripple
 
       def include?(document)
         return false unless document.respond_to?(:robject)
+
+        # TODO: when we allow polymorphic assocations, this will have to change
+        #       since @reflection.bucket_name will be '_' in that case.
         return false unless document.robject.bucket.name == @reflection.bucket_name
         keys.include?(document.key)
       end
