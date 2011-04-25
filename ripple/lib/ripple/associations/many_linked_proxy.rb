@@ -39,6 +39,10 @@ module Ripple
         super
       end
 
+      def loaded_documents
+        (super + appended_documents).uniq
+      end
+
       protected
 
       def find_target

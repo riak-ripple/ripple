@@ -79,6 +79,7 @@ module Ripple
       private
       def create_association(type, name, options={})
         association = associations[name] = Association.new(type, name, options)
+        association.define_callbacks_on(self)
 
         define_method(name) do
           get_proxy(association)
@@ -257,6 +258,20 @@ module Ripple
         Array === value && value.all? {|d| (embeddable? && Hash === d) || klass === d }
       when one?
         value.nil? || (embeddable? && Hash === value) || value.kind_of?(klass)
+      end
+    end
+
+    def define_callbacks_on(klass)
+      _association_name = name
+
+      klass.before_save do
+        proxy = send(_association_name)
+
+        if proxy.respond_to?(:loaded_documents)
+          proxy.loaded_documents.each do |document|
+            document.save if document.new? || document.has_changes?
+          end
+        end
       end
     end
   end

@@ -198,4 +198,60 @@ describe Ripple::Document::Persistence do
       widget.destroy
     end
   end
+
+  shared_examples_for "saving a parent document with linked child documents" do
+    before(:each) do
+      @backend.stub(:store_object)
+    end
+
+    it 'saves new children when the parent is saved' do
+      children.each do |child|
+        child.stub(:new? => true)
+        child.should_receive(:save)
+      end
+      parent.save
+    end
+
+    it 'saves children that have changes when the parent is saved' do
+      children.each do |child|
+        child.stub(:new? => false)
+        child.should respond_to(:has_changes?)
+        child.stub(:has_changes? => true)
+        child.should_receive(:save)
+      end
+      parent.save
+    end
+
+    it 'does not save children that have no changes and are not new when the parent is saved' do
+      children.each do |child|
+        child.stub(:new? => false)
+        child.should respond_to(:has_changes?)
+        child.stub(:has_changes? => false)
+        child.should_not_receive(:save)
+      end
+      parent.save
+    end
+  end
+
+  context "for a document with a many linked association" do
+    it_behaves_like "saving a parent document with linked child documents" do
+      let(:parent)   { Widget.new(:name => 'fizzbuzz') }
+      let(:children) { %w[ fizz buzz ].map { |n| WidgetPart.new(:name => n) } }
+
+      before(:each) do
+        children.each { |c| parent.widget_parts << c }
+      end
+    end
+  end
+
+  describe "for a document with a one linked association" do
+    it_behaves_like "saving a parent document with linked child documents" do
+      let(:parent)   { Invoice.new }
+      let(:children) { [Customer.new] }
+
+      before(:each) do
+        parent.customer = children.first
+      end
+    end
+  end
 end
