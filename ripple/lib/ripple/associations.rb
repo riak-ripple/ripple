@@ -269,7 +269,7 @@ module Ripple
 
         if proxy.respond_to?(:loaded_documents)
           proxy.loaded_documents.each do |document|
-            document.save if document.new? || document.has_changes?
+            document.save if document.new? || document.changed?
           end
         end
       end

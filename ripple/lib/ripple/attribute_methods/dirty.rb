@@ -28,15 +28,15 @@ module Ripple
         changed_attributes.clear
       end
 
-      # Like #changed? but also takes into account the entire embedded document hierarchy.
-      # @return [Boolean] true if this document, or any of its embedded documents at any
-      # level, have changed.
-      def has_changes?
-        changed? || self.class.embedded_associations.any? do |association|
+      # Determines if the document has any chnages.
+      # @return [Boolean] true if this document, or any of its embedded
+      # documents at any level, have changed.
+      def changed?
+        super || self.class.embedded_associations.any? do |association|
           documents = send(association.name)
           documents = [documents] if association.one?
           documents = documents.reject { |d| d.nil? } # in case proxy is proxying nil
-          documents.any? { |d| d.has_changes? }
+          documents.any? { |d| d.changed? }
         end
       end
 

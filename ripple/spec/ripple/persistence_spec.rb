@@ -215,8 +215,7 @@ describe Ripple::Document::Persistence do
     it 'saves children that have changes when the parent is saved' do
       children.each do |child|
         child.stub(:new? => false)
-        child.should respond_to(:has_changes?)
-        child.stub(:has_changes? => true)
+        child.stub(:changed? => true)
         child.should_receive(:save)
       end
       parent.save
@@ -225,8 +224,7 @@ describe Ripple::Document::Persistence do
     it 'does not save children that have no changes and are not new when the parent is saved' do
       children.each do |child|
         child.stub(:new? => false)
-        child.should respond_to(:has_changes?)
-        child.stub(:has_changes? => false)
+        child.stub(:changed? => false)
         child.should_not_receive(:save)
       end
       parent.save

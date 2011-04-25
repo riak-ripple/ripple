@@ -1,23 +1,21 @@
 require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::AttributeMethods::Dirty do
-  describe "#has_changes?" do
-    let(:company)    { Company.new(:name => 'FizzBuzz, Inc') }
+  describe "#changed?" do
+    let(:company)    { Company.new }
     let(:ceo)        { CEO.new(:name => 'John Doe') }
     let(:department) { Department.new(:name => 'Marketing') }
     let(:manager)    { Manager.new(:name => 'Billy Willy') }
     let(:invoice)    { Invoice.new }
 
     it "returns true if the document's attributes have changed (regardless of whether or not it has any embedded associated documents)" do
-      company.should_receive(:changed?).and_return(true)
-      company.should have_changes
+      company.name = 'Fizz Buzz, Inc'
+      company.should be_changed
     end
 
     context "when the document's attributes have not changed" do
-      before(:each) { company.stub(:changed? => false) }
-
       it 'returns false if it has no embedded associated documents' do
-        company.should_not have_changes
+        company.should_not be_changed
       end
 
       context 'when the document has embedded associated documents' do
@@ -26,35 +24,30 @@ describe Ripple::AttributeMethods::Dirty do
           company.invoices << invoice
           company.departments << department
           department.managers << manager
-
-          ceo.stub(:changed? => false)
-          department.stub(:changed? => false)
-          manager.stub(:changed? => false)
-          invoice.stub(:changed? => false)
         end
 
-        it 'returns false if all the embedded documents have no changes' do
-          company.should_not have_changes
+        it 'returns false if all the embedded documents are not changed' do
+          company.should_not be_changed
         end
 
         it 'does not consider changes to linked associated documents' do
           invoice.should_not_receive(:changed?)
-          company.has_changes?
+          company.changed?
         end
 
-        it 'returns true if a one embedded association document has changes' do
+        it 'returns true if a one embedded association document is changed' do
           ceo.should_receive(:changed?).and_return(true)
-          company.should have_changes
+          company.should be_changed
         end
 
-        it 'returns true if a many embedded association document has changes' do
+        it 'returns true if a many embedded association document is changed' do
           department.should_receive(:changed?).and_return(true)
-          company.should have_changes
+          company.should be_changed
         end
 
-        it 'recurses through the whole embedded document structure to find changes in grandchild documents' do
+        it 'recurses through the whole embedded document structure to find changed grandchild documents' do
           manager.should_receive(:changed?).and_return(true)
-          company.should have_changes
+          company.should be_changed
         end
       end
     end
