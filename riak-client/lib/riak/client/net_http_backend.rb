@@ -60,7 +60,7 @@ module Riak
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL.const_get("VERIFY_#{@client.ssl_options[:verify_mode].upcase}")
         if @client.ssl_options[:pem]
-          http.cert = OpenSSL::X510::Certificate.new(@client.ssl_options[:pem])
+          http.cert = OpenSSL::X509::Certificate.new(@client.ssl_options[:pem])
           http.key  = OpenSSL::PKey::RSA.new(@client.ssl_options[:pem], @client.ssl_options[:pem_password])
         end
         http.ca_file = @client.ssl_options[:ca_file] if @client.ssl_options[:ca_file]
