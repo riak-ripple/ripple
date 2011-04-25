@@ -37,11 +37,16 @@ describe Ripple::Associations do
     end
   end
 
-  after do
-    Invoice.associations.delete(:foo)
-    Invoice.associations.delete(:items)
-    SubInvoice.associations.delete(:foo) if defined?(SubInvoice)
-    Invoice.associations.delete(:payee)
+  before(:all) do
+    @orig_invoice = Invoice
+    Object.send(:remove_const, :Invoice)
+    class Invoice < @orig_invoice; end
+  end
+
+  after(:all) do
+    Object.send(:remove_const, :SubInvoice) if defined?(SubInvoice)
+    Object.send(:remove_const, :Invoice)
+    Object.send(:const_set, :Invoice, @orig_invoice)
   end
 end
 
