@@ -119,6 +119,22 @@ describe "Ripple Associations" do
     @user.friends.map(&:email).should == ['new-address@ripple.com']
   end
 
+  it "allows and autosaves transitive linked associations" do
+    friend = User.new(:email => 'user-friend@example.com')
+    friend.key = 'main-user-friend'
+    @user.key = 'main-user'
+    @user.friends << friend
+    friend.friends << @user
+
+    @user.save! # should save both since friend is new
+
+    found_user = User.find!(@user.key)
+    found_friend = User.find!(friend.key)
+
+    found_user.friends.should == [found_friend]
+    found_friend.friends.should == [found_user]
+  end
+
   after :each do
     User.destroy_all
   end

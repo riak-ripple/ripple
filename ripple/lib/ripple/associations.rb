@@ -267,9 +267,15 @@ module Ripple
       klass.before_save do
         proxy = send(_association_name)
 
-        if proxy.respond_to?(:loaded_documents)
-          proxy.loaded_documents.each do |document|
-            document.save if document.new? || document.changed?
+        if proxy.respond_to?(:loaded_documents) && !@_in_save_loaded_documents_callback
+          @_in_save_loaded_documents_callback = true
+
+          begin
+            proxy.loaded_documents.each do |document|
+              document.save if document.new? || document.changed?
+            end
+          ensure
+            remove_instance_variable(:@_in_save_loaded_documents_callback)
           end
         end
       end
