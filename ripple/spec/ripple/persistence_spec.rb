@@ -232,6 +232,12 @@ describe Ripple::Document::Persistence do
   end
 
   context "for a document with a many linked association" do
+    before(:all) do
+      # check assumptions of these examples
+      Widget.associations[:widget_parts].should be_many
+      Widget.associations[:widget_parts].should be_linked
+    end
+
     it_behaves_like "saving a parent document with linked child documents" do
       let(:parent)   { Widget.new(:name => 'fizzbuzz') }
       let(:children) { %w[ fizz buzz ].map { |n| WidgetPart.new(:name => n) } }
@@ -243,6 +249,12 @@ describe Ripple::Document::Persistence do
   end
 
   describe "for a document with a one linked association" do
+    before(:all) do
+      # check assumptions of these examples
+      Invoice.associations[:customer].should be_one
+      Invoice.associations[:customer].should be_linked
+    end
+
     it_behaves_like "saving a parent document with linked child documents" do
       let(:parent)   { Invoice.new }
       let(:children) { [Customer.new] }
@@ -269,6 +281,12 @@ describe Ripple::Document::Persistence do
   end
 
   describe "for a document with a many embedded association" do
+    before(:all) do
+      # check assumptions of these examples
+      Clock.associations[:modes].should be_many
+      Clock.associations[:modes].should be_embeddable
+    end
+
     it_behaves_like "embedded association persistence logic" do
       let(:parent)   { Clock.new }
       let(:children) { [1, 2].map { |i| Mode.new } }
@@ -280,6 +298,12 @@ describe Ripple::Document::Persistence do
   end
 
   describe "for a document with a one embedded association" do
+    before(:all) do
+      # check assumptions of these examples
+      Parent.associations[:child].should be_one
+      Parent.associations[:child].should be_embeddable
+    end
+
     it_behaves_like "embedded association persistence logic" do
       let(:parent)   { Parent.new }
       let(:children) { [Child.new(:name => 'Bobby', :age => 9)] }
