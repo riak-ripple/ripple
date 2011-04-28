@@ -85,6 +85,14 @@ module Ripple
         other === target
       end
 
+      def loaded_documents
+        loaded? ? Array(target) : []
+      end
+
+      def has_changed_documents?
+        loaded_documents.any? { |doc| doc.changed? }
+      end
+
       protected
       def method_missing(method, *args, &block)
         load_target

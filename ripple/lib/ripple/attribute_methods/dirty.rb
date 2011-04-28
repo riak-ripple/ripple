@@ -33,10 +33,7 @@ module Ripple
       # documents at any level, have changed.
       def changed?
         super || self.class.embedded_associations.any? do |association|
-          documents = send(association.name)
-          documents = [documents] if association.one?
-          documents = documents.reject { |d| d.nil? } # in case proxy is proxying nil
-          documents.any? { |d| d.changed? }
+          send(association.name).has_changed_documents?
         end
       end
 

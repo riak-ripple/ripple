@@ -33,10 +33,6 @@ module Ripple
         keys.include?(document.key)
       end
 
-      def loaded_documents
-        loaded? ? Array(@target) : []
-      end
-
       protected
       def links
         @owner.robject.links.select(&@reflection.link_filter)
