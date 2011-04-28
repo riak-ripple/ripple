@@ -10,11 +10,6 @@ module Ripple
         lazy_load_validates_associated
       end
 
-      def loaded_documents
-        load_target
-        Array(target)
-      end
-
       protected
       
       def lazy_load_validates_associated
