@@ -262,16 +262,14 @@ module Ripple
     end
 
     def define_callbacks_on(klass)
-      _association_name = name
+      _association = self
 
       klass.before_save do
-        proxy = send(_association_name)
-
-        if proxy.respond_to?(:loaded_documents) && !@_in_save_loaded_documents_callback
+        if _association.linked? && !@_in_save_loaded_documents_callback
           @_in_save_loaded_documents_callback = true
 
           begin
-            proxy.loaded_documents.each do |document|
+            send(_association.name).loaded_documents.each do |document|
               document.save if document.new? || document.changed?
             end
           ensure

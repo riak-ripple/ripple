@@ -252,4 +252,41 @@ describe Ripple::Document::Persistence do
       end
     end
   end
+
+  shared_examples_for "embedded association persistence logic" do
+    before(:each) do
+      @backend.stub(:store_object)
+    end
+
+    it "does not save children when the parent is saved" do
+      children.each do |child|
+        child.stub(:new? => true, :changed? => true)
+        child.should_not_receive(:save)
+      end
+
+      parent.save
+    end
+  end
+
+  describe "for a document with a many embedded association" do
+    it_behaves_like "embedded association persistence logic" do
+      let(:parent)   { Clock.new }
+      let(:children) { [1, 2].map { |i| Mode.new } }
+
+      before(:each) do
+        children.each { |c| parent.modes << c }
+      end
+    end
+  end
+
+  describe "for a document with a one embedded association" do
+    it_behaves_like "embedded association persistence logic" do
+      let(:parent)   { Parent.new }
+      let(:children) { [Child.new(:name => 'Bobby', :age => 9)] }
+
+      before(:each) do
+        parent.child = children.first
+      end
+    end
+  end
 end
