@@ -1,5 +1,15 @@
 h1. Ripple Release Notes
 
+h2. 0.9.4 Patch Release - 2011-05-10
+
+Release 0.9.4 is a minor bugfix release.
+
+Full notes:
+
+* Allow global JSON options to be set so that deeply nested objects can be serialized.
+* Set TCP_NODELAY on PBC sockets and send messages in a single write to reduce latency. [Technorama, Dan Hodge]
+* X510 should be X509 in OpenSSL. [Adam Hunter]
+
 h2. 0.9.3 Patch Release - 2011-04-18
 
 Release 0.9.3 is a minor bugfix release.
