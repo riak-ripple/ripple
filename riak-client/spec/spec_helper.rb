@@ -27,4 +27,7 @@ RSpec.configure do |config|
   config.before(:each) do
     FakeWeb.clean_registry
   end
+
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
 end

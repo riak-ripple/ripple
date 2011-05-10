@@ -82,6 +82,22 @@ describe Riak::RObject do
         @object.deserialize('{"foo":"bar"}').should == {"foo" => "bar"}
         @object.deserialize('[1,2,3]').should == [1,2,3]
       end
+
+      it "should respect the max nesting option" do
+        # Sadly, this spec will not fail for me when using yajl-ruby
+        # on Ruby 1.9, even when passing the options to #to_json is
+        # not implemented.
+        Riak.json_options = {:max_nesting => 51}
+        h = {}
+        p = h
+        (1..50).each do |i|
+          p['a'] = {}
+          p = p['a']
+        end
+        s = h.to_json(Riak.json_options)
+        lambda { @object.serialize(h) }.should_not raise_error
+        lambda { @object.deserialize(s) }.should_not raise_error
+      end
     end
 
     describe "when the content type is application/x-ruby-marshal" do
