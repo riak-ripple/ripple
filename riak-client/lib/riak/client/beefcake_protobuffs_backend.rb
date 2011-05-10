@@ -134,8 +134,7 @@ module Riak
       private
       def write_protobuff(code, message)
         encoded = message.encode
-        socket.write([encoded.length+1, MESSAGE_CODES.index(code)].pack("NC"))
-        socket.write(encoded)
+        socket.write([encoded.length+1, MESSAGE_CODES.index(code), encoded.to_s].pack("NCa*"))
       end
 
       def decode_response(*args)
