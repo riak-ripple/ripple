@@ -199,7 +199,7 @@ module Riak
       return payload if IO === payload
       case @content_type
       when /json/
-        payload.to_json
+        payload.to_json(Riak.json_options)
       when /yaml/
         YAML.dump(payload)
       when "application/x-ruby-marshal"
@@ -219,7 +219,7 @@ module Riak
     def deserialize(body)
       case @content_type
       when /json/
-        JSON.parse(body)
+        JSON.parse(body, Riak.json_options)
       when /yaml/
         YAML.load(body)
       when "application/x-ruby-marshal"
