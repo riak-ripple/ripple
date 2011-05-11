@@ -40,6 +40,14 @@ module Riak
         when String
           request.body = data
         when data.respond_to?(:read)
+          case
+          when data.respond_to?(:stat) # IO#stat
+            request.content_length = data.stat.size
+          when data.respond_to?(:size) # Some IO-like objects
+            request.content_length = data.size
+          else
+            request['Transfer-Encoding'] = 'chunked'
+          end
           request.body_stream = data
         end
 
