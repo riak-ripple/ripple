@@ -37,7 +37,7 @@ module Riak
         case data
         when String
           request.body = data
-        when IO
+        when data.respond_to?(:read)
           request.body_stream = data
         end
 

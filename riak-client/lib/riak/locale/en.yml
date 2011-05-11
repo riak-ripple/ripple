@@ -29,7 +29,7 @@ en:
     path_and_body_required: "You must supply both a resource path and a body."
     port_invalid: "port must be an integer between 0 and 65535"
     protobuffs_failed_request: "Expected success from Riak but received %{code}. %{body}"
-    request_body_type: "Request body must be a String or IO."
+    request_body_type: "Request body must be a String or respond to :read."
     resource_path_short: "Resource path too short"
     search_docs_require_id: "Search index documents must include the 'id' field."
     search_remove_requires_id_or_query: "Search index documents to be removed must have 'id' or 'query' keys."

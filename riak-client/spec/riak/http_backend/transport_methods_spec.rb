@@ -41,9 +41,10 @@ describe Riak::Client::HTTPBackend::TransportMethods do
       data.should == "This is the body."
     end
 
-    it "should raise an error if the body is not a string or IO" do
+    it "should raise an error if the body is not a string or IO or IO-like (responds to :read)" do
       lambda { @backend.verify_path_and_body!(["/riak/", "foo", nil]) }.should raise_error(ArgumentError)
       lambda { @backend.verify_path_and_body!(["/riak/", "foo", File.open("spec/fixtures/cat.jpg")]) }.should_not raise_error(ArgumentError)
+      lambda { @backend.verify_path_and_body!(["/riak/", "foo", Tempfile.new('riak-spec')]) }.should_not raise_error(ArgumentError)
     end
 
     it "should raise an error if a body is not given" do

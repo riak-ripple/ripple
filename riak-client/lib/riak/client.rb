@@ -303,7 +303,7 @@ module Riak
     end
     alias :list_buckets :buckets
 
-    # Stores a large file/IO object in Riak via the "Luwak" interface.
+    # Stores a large file/IO-like object in Riak via the "Luwak" interface.
     # @overload store_file(filename, content_type, data)
     #   Stores the file at the given key/filename
     #   @param [String] filename the key/filename for the object
@@ -312,7 +312,7 @@ module Riak
     # @overload store_file(content_type, data)
     #   Stores the file with a server-determined key/filename
     #   @param [String] content_type the MIME Content-Type for the data
-    #   @param [IO, String] data the contents of the file
+    #   @param [IO-like, String] data the contents of the file
     # @return [String] the key/filename where the object was stored
     def store_file(*args)
       data, content_type, filename = args.reverse

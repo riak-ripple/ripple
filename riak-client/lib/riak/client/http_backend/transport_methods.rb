@@ -115,7 +115,7 @@ module Riak
         # @param [URI] uri the HTTP URI to request
         # @param [Hash] headers headers to send along with the request
         # @param [Fixnum, Array] expect the expected response code(s)
-        # @param [String, IO] body the PUT or POST request body
+        # @param [String, IO-like] body the PUT or POST request body
         # @return [Hash] response data, containing :headers, :code and :body keys. Only :headers and :code should be present when the body is streamed or the method is :head.
         # @yield [chunk] if the method is not :head, successive chunks of the response body will be yielded as strings
         # @raise [NotImplementedError] if a subclass does not implement this method
@@ -173,7 +173,7 @@ module Riak
             raise ArgumentError, t("path_and_body_required")
           end
 
-          raise ArgumentError, t("request_body_type") unless String === body || IO === body
+          raise ArgumentError, t("request_body_type") unless String === body || body.respond_to?(:read)
           [args, body]
         end
 
