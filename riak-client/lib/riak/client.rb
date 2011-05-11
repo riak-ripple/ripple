@@ -312,7 +312,7 @@ module Riak
     # @overload store_file(content_type, data)
     #   Stores the file with a server-determined key/filename
     #   @param [String] content_type the MIME Content-Type for the data
-    #   @param [IO-like, String] data the contents of the file
+    #   @param [String, #read] data the contents of the file
     # @return [String] the key/filename where the object was stored
     def store_file(*args)
       data, content_type, filename = args.reverse
