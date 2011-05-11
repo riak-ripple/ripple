@@ -125,7 +125,7 @@ module Riak
       @raw_data
     end
 
-    # @param [String, IO] the raw data to be stored in riak at this key, will not be marshaled or manipulated prior to storage. Overrides any data stored by {#data=}
+    # @param [String, IO-like] the raw data to be stored in riak at this key, will not be marshaled or manipulated prior to storage. Overrides any data stored by {#data=}
     # @return [String] the data stored
     def raw_data=(new_raw_data)
       @data = nil
@@ -196,7 +196,7 @@ module Riak
     # be done.
     # @param [Object] payload the data to serialize
     def serialize(payload)
-      return payload if IO === payload
+      return payload if payload.respond_to?(:read)
       case @content_type
       when /json/
         payload.to_json(Riak.json_options)
