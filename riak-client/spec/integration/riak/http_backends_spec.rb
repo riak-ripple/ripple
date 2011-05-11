@@ -29,4 +29,30 @@ describe "HTTP" do
       end
     end
   end
+
+  class Reader < Array
+    def read(*args)
+      shift
+    end
+
+    def size
+      join.size
+    end
+  end
+
+  class SizelessReader < Reader
+    undef :size
+  end
+
+  describe 'NetHTTPBackend' do
+    subject { Riak::Client::NetHTTPBackend.new(@client) }
+    let(:file) { File.open(__FILE__) }
+    let(:sized) { Reader.new(["foo", "bar", "baz"]) }
+    let(:sizeless) { SizelessReader.new(["foo", "bar", "baz"]) }
+    it "should set the content-length or transfer-encoding properly on IO uploads" do
+      lambda { subject.put(204, "/riak/nethttp", "test-file", file, {"Content-Type" => "text/plain"}) }.should_not raise_error
+      lambda { subject.put(204, "/riak/nethttp", "test-sized", sized, {"Content-Type" => "text/plain"}) }.should_not raise_error
+      lambda { subject.put(204, "/riak/nethttp", "test-file", sizeless, {"Content-Type" => "text/plain"}) }.should_not raise_error
+    end
+  end
 end
