@@ -131,6 +131,28 @@ module Ripple
           attrs
         end
       end
+
+      # Propagates callbacks (save/create/update/destroy) to embedded associated documents.
+      # This is necessary so that when a parent is saved, the embedded child's before_save
+      # hooks are run as well.
+      # @private
+      def run_callbacks(*args, &block)
+        self.class.embedded_associations.each do |association|
+          documents = instance_variable_get(association.ivar)
+          # We must explicitly check #nil? (rather than just saying `if documents`)
+          # because documents can be an association proxy that is proxying nil.
+          # In this case ruby treats documents as true because it is not _really_ nil,
+          # but #nil? will tell us if it is proxying nil.
+
+          unless documents.nil?
+            Array(documents).each do |doc|
+              doc.run_callbacks(*args, &block)
+            end
+          end
+        end
+
+        super
+      end
     end
   end
 

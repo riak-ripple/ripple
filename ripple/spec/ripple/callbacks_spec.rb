@@ -36,6 +36,15 @@ describe Ripple::Callbacks do
       @box.save
     end
 
+    it "propagates callbacks to embedded associated documents" do
+      Box.before_save { $pinger.ping }
+      BoxSide.before_save { $pinger.ping }
+      $pinger.should_receive(:ping).exactly(2).times
+      @box = Box.new
+      @box.sides << BoxSide.new
+      @box.save
+    end
+
     it "should call create callbacks on save when the document is new" do
       Box.before_create { $pinger.ping }
       Box.after_create { $pinger.ping }
@@ -120,6 +129,7 @@ describe Ripple::Callbacks do
     after :each do
       [:save, :create, :update, :destroy, :validation].each do |type|
         Box.reset_callbacks(type)
+        BoxSide.reset_callbacks(type)
       end
     end
   end

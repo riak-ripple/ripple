@@ -18,21 +18,21 @@ shared_examples_for "a timestamped model" do
   end
 
   it "sets the updated_at timestamp when the object is saved" do
-    subject.save
+    record_to_save.save
     subject.updated_at.should_not be_nil
   end
 
   it "updates the updated_at timestamp when the object is updated" do
-    subject.save
+    record_to_save.save
     start = subject.updated_at
-    subject.save
+    record_to_save.save
     subject.updated_at.should > start
   end
 
   it "does not update the created_at timestamp when the object is updated" do
-    subject.save
+    record_to_save.save
     start = subject.created_at
-    subject.save
+    record_to_save.save
     subject.created_at.should == start
   end
 end
@@ -44,19 +44,33 @@ describe Ripple::Timestamps do
   before(:each) { Ripple.client.stub!(:backend).and_return(backend) }
 
   context "for a Ripple::Document" do
-    subject { Clock.new }
-    it_behaves_like "a timestamped model"
+    it_behaves_like "a timestamped model" do
+      subject { Clock.new }
+      let(:record_to_save) { subject }
+    end
   end
 
-  context "for a Ripple::EmbeddedDocument" do
-    let(:clock) { Clock.new }
+  context "for a Ripple::EmbeddedDocument when directly saved" do
+    it_behaves_like "a timestamped model" do
+      let(:clock) { Clock.new }
+      subject { Mode.new }
+      let(:record_to_save) { subject }
 
-    subject do
-      Mode.new.tap do |m|
-        clock.modes << m
+      before(:each) do
+        clock.modes << subject
       end
     end
+  end
 
-    it_behaves_like "a timestamped model"
+  context "for a Ripple::EmbeddedDocument when the parent is saved" do
+    it_behaves_like "a timestamped model" do
+      let(:clock) { Clock.new }
+      subject { Mode.new }
+      let(:record_to_save) { clock }
+
+      before(:each) do
+        clock.modes << subject
+      end
+    end
   end
 end
