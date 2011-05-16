@@ -115,7 +115,7 @@ module Riak
             results[msg.phase] += JSON.parse(msg.response)
           end
         end
-        block_given? || results.size == 1 ? results.first : results
+        block_given? || results.compact.size == 1 ? results.last : results
       end
 
       private
