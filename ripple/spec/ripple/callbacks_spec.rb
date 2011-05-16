@@ -45,6 +45,16 @@ describe Ripple::Callbacks do
       @box.save
     end
 
+    it 'does not persist the object to riak multiple times when propagating callbacks' do
+      Box.before_save { }
+      BoxSide.before_save { }
+      @box = Box.new
+      @box.sides << BoxSide.new << BoxSide.new
+
+      @box.robject.should_receive(:store).once
+      @box.save
+    end
+
     it "should call create callbacks on save when the document is new" do
       Box.before_create { $pinger.ping }
       Box.after_create { $pinger.ping }

@@ -146,7 +146,7 @@ module Ripple
 
           unless documents.nil?
             Array(documents).each do |doc|
-              doc.run_callbacks(*args, &block)
+              doc.run_callbacks(*args)
             end
           end
         end
