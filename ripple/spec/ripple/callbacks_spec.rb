@@ -55,6 +55,15 @@ describe Ripple::Callbacks do
       @box.save
     end
 
+    it 'does not propagate validation callbacks multiple times' do
+      Box.before_validation { $pinger.ping }
+      BoxSide.before_validation { $pinger.ping }
+      $pinger.should_receive(:ping).exactly(2).times
+      @box = Box.new
+      @box.sides << BoxSide.new
+      @box.valid?
+    end
+
     it "should call create callbacks on save when the document is new" do
       Box.before_create { $pinger.ping }
       Box.after_create { $pinger.ping }

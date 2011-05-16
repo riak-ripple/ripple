@@ -136,7 +136,11 @@ module Ripple
       # This is necessary so that when a parent is saved, the embedded child's before_save
       # hooks are run as well.
       # @private
-      def run_callbacks(*args, &block)
+      def run_callbacks(name, *args, &block)
+        # validation is already propagated to embedded documents via the
+        # AssociatedValidator.  We don't need to duplicate the propgation here.
+        return super if name == :validation
+
         self.class.embedded_associations.each do |association|
           documents = instance_variable_get(association.ivar)
           # We must explicitly check #nil? (rather than just saying `if documents`)
@@ -146,7 +150,7 @@ module Ripple
 
           unless documents.nil?
             Array(documents).each do |doc|
-              doc.run_callbacks(*args)
+              doc.run_callbacks(name, *args)
             end
           end
         end
