@@ -55,6 +55,21 @@ describe Ripple::Callbacks do
       @box.save
     end
 
+    it 'invokes the before/after callbacks in the correct order on embedded associated documents' do
+      callbacks = []
+      BoxSide.before_save { callbacks << :before_save }
+      BoxSide.after_save  { callbacks << :after_save  }
+
+      @box = Box.new
+      @box.sides << BoxSide.new
+      @box.robject.stub(:store) do
+        callbacks << :save
+      end
+      @box.save
+
+      callbacks.should == [:before_save, :save, :after_save]
+    end
+
     it 'does not propagate validation callbacks multiple times' do
       Box.before_validation { $pinger.ping }
       BoxSide.before_validation { $pinger.ping }

@@ -141,21 +141,21 @@ module Ripple
         # AssociatedValidator.  We don't need to duplicate the propgation here.
         return super if name == :validation
 
-        self.class.embedded_associations.each do |association|
+        associated_docs = self.class.embedded_associations.map do |association|
           documents = instance_variable_get(association.ivar)
           # We must explicitly check #nil? (rather than just saying `if documents`)
           # because documents can be an association proxy that is proxying nil.
           # In this case ruby treats documents as true because it is not _really_ nil,
           # but #nil? will tell us if it is proxying nil.
 
-          unless documents.nil?
-            Array(documents).each do |doc|
-              doc.run_callbacks(name, *args)
-            end
-          end
+          Array(documents) unless documents.nil?
+        end.flatten.compact
+
+        propagate_callbacks = associated_docs.reverse.inject(block) do |blk, doc|
+          lambda { doc.run_callbacks(name, *args, &blk) }
         end
 
-        super
+        super(name, *args, &propagate_callbacks)
       end
     end
   end
