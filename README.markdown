@@ -238,24 +238,21 @@ production:
 
 * Fork the project on [Github](http://github.com/seancribbs/ripple).  If you have already forked, use `git pull --rebase` to reapply your changes on top of the mainline. Example:
 
-  ``` bash
-  $ git checkout master
-  $ git pull --rebase seancribbs master
-  ```
-
+    ``` bash
+    $ git checkout master
+    $ git pull --rebase seancribbs master
+    ```
 * Create a topic branch. If you've already created a topic branch, rebase it on top of changes from the mainline "master" branch. Examples:
   * New branch:
 
-    ``` bash
-    $ git checkout -b topic
-    ```
-
+        ``` bash
+        $ git checkout -b topic
+        ```
   * Existing branch:
 
-    ``` bash
-    $ git rebase master
-    ```
-
+        ``` bash
+        $ git rebase master
+        ```
 * Write an RSpec example or set of examples that demonstrate the necessity and validity of your changes. **Patches without specs will most often be ignored. Just do it, you'll thank me later.** Documentation patches need no specs, of course.
 * Make your feature addition or bug fix. Make your specs and stories pass (green).
 * Run the suite using multiruby or rvm to ensure cross-version compatibility.
