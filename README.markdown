@@ -1,30 +1,35 @@
-h1. ripple
+# ripple
 
 ripple is a rich Ruby toolkit for Riak, Basho's distributed database. It consists of three gems:
 
-* @riak-client@ (@Riak@ namespace) contains a basic wrapper around typical operations, including bucket manipulation, object CRUD, link-walking, and map-reduce.
-* @ripple@ (@Ripple@ namespace) contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.
-* @riak-sessions@ contains session stores for Rack and Rails 3 applications.
+* `riak-client` (`Riak` namespace) contains a basic wrapper around typical operations, including bucket manipulation, object CRUD, link-walking, and map-reduce.
+* `ripple` (`Ripple` namespace) contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.
+* `riak-sessions` contains session stores for Rack and Rails 3 applications.
 
-h2. Dependencies
+## Dependencies
 
-@riak-client@ requires i18n and either json or yajl-ruby. For higher performance on HTTP requests, install the 'curb' or 'excon' gems. The cache store implementation requires ActiveSupport 3 or later.
+`riak-client` requires i18n and either json or yajl-ruby. For higher performance on HTTP requests, install the 'curb' or 'excon' gems. The cache store implementation requires ActiveSupport 3 or later.
 
-@ripple@ requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).
+`ripple` requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).
 
-@riak-sessions@ requires Rack (any version > 1.0), and Rails 3.0 if you want the Rails-specific session store.
+`riak-sessions` requires Rack (any version > 1.0), and Rails 3.0 if you want the Rails-specific session store.
 
-Development dependencies are handled with bundler. Install bundler (@gem install bundler@) and run this command in each sub-project to get started:
+Development dependencies are handled with bundler. Install bundler (`gem install bundler`) and run this command in each sub-project to get started:
 
-<notextile><pre>$ bundle install</pre></notextile>
+``` bash
+$ bundle install
+```
 
-Run the RSpec suite using @bundle exec@:
+Run the RSpec suite using `bundle exec`:
 
-<notextile><pre>$ bundle exec rake spec</pre></notextile>
+``` bash
+$ bundle exec rake spec
+```
 
-h2. Basic Example
+## Basic Example
 
-<notextile><pre>require 'riak'
+``` ruby
+require 'riak'
 
 # Create a client interface
 client = Riak::Client.new
@@ -42,7 +47,7 @@ bucket = client.bucket("doc")  # a Riak::Bucket
 object = bucket.get("index.html")   # a Riak::RObject
 
 # Change the object's data and save
-object.data = "&lt;html&gt;&lt;body&gt;Hello, world!&lt;/body&gt;&lt;/html&gt;"
+object.data = "<html><body>Hello, world!</body></html>"
 object.store
 
 # Reload an object you already have
@@ -56,12 +61,12 @@ client['doc']['index.html']   # the Riak::RObject
 new_one = Riak::RObject.new(bucket, "application.js")
 new_one.content_type = "application/javascript" # You must set the content type.
 new_one.data = "alert('Hello, World!')"
-new_one.store</pre></notextile>
+new_one.store
+```
 
-h2. Map-Reduce Example
+## Map-Reduce Example
 
-<notextile><pre>
-
+``` ruby
 # Assuming you've already instantiated a client, get the album titles for The Beatles
 results = Riak::MapReduce.new(client).
                 add("artists","Beatles").
@@ -72,12 +77,14 @@ p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night",
           #     "Beatles For Sale", "Help!", "Rubber Soul",
           #     "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "Magical Mystery Tour", 
           #     "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]</pre></notextile>
+```
 
-h2. Riak Search Examples
 
-For more information about Riak Search, see "the Basho wiki":http://wiki.basho.com/display/RIAK/Riak+Search.
+## Riak Search Examples
 
-<notextile><pre>
+For more information about Riak Search, see [the Basho wiki](http://wiki.basho.com/display/RIAK/Riak+Search).
+
+``` ruby
 require 'riak/search' # optional riak_search additions
 
 # Create a client, specifying the Solr-compatible endpoint
@@ -121,11 +128,11 @@ client['users'].enable_index!
 
 # Disable auto-indexing on a bucket
 client['users'].disable_index!
-</pre></notextile>
+```
 
-h2. Document Model Examples
+## Document Model Examples
 
-<notextile><pre>
+``` ruby
 require 'ripple'
 
 # Documents are stored as JSON objects in Riak but have rich
@@ -177,13 +184,14 @@ person = Person.find("adamhunter")
 person.friends << Person.find("seancribbs") # Links to people/seancribbs with tag "friend"
 person.addresses << Address.new(:street => "100 Main Street") # Adds an embedded address
 person.account.paid_until = 3.months.from_now
-</pre></notextile>
+```
 
-h2. Configuration Example
+
+## Configuration Example
 
 When using Ripple with Rails 3, add ripple to your Gemfile and then run the @ripple@ generator.  This will generate a test harness, some MapReduce functions and a configuration file. Example:
 
-<notextile><pre>
+```
 $ rails g ripple
       create  config/ripple.yml
       create  app/mapreduce
@@ -192,11 +200,11 @@ $ rails g ripple
       create  test/ripple_test_helper.rb
       insert  test/test_helper.rb
       insert  test/test_helper.rb
-</pre></notextile>
+```
 
-@config/ripple.yml@ should contain your Riak connection information, and settings for the test server. Example:
+`config/ripple.yml` should contain your Riak connection information, and settings for the test server. Example:
 
-<notextile><pre>
+``` yaml
 # Configure Riak connections for the Ripple library.
 development:
   http_port: 8098
@@ -221,39 +229,46 @@ production:
   http_port: 8098
   pb_port: 8087
   host: localhost
-</pre></notextile>
+```
 
-@require 'ripple/railtie'@ from your @config/application.rb@ file to complete the integration.
+`require 'ripple/railtie'` from your `config/application.rb` file to complete the integration.
 
-h2. How to Contribute
 
-* Fork the project on "Github":http://github.com/seancribbs/ripple.  If you have already forked, use @git pull --rebase@ to reapply your changes on top of the mainline. Example:
-  <notextile><pre>$ git checkout master
-$ git pull --rebase seancribbs master</pre></notextile>
+## How to Contribute
+
+* Fork the project on [Github](http://github.com/seancribbs/ripple).  If you have already forked, use `git pull --rebase` to reapply your changes on top of the mainline. Example:
+``` bash
+$ git checkout master
+$ git pull --rebase seancribbs master
+```
 * Create a topic branch. If you've already created a topic branch, rebase it on top of changes from the mainline "master" branch. Examples:
 ** New branch:
-  <pre>$ git checkout -b topic</pre>
+``` bash
+$ git checkout -b topic
+```
 ** Existing branch:
-  <pre>$ git rebase master</pre>
-* Write an RSpec example or set of examples that demonstrate the necessity and validity of your changes. *Patches without specs will most often be ignored. Just do it, you'll thank me later.* Documentation patches need no specs, of course.
+``` bash
+$ git rebase master
+```
+* Write an RSpec example or set of examples that demonstrate the necessity and validity of your changes. **Patches without specs will most often be ignored. Just do it, you'll thank me later.** Documentation patches need no specs, of course.
 * Make your feature addition or bug fix. Make your specs and stories pass (green).
 * Run the suite using multiruby or rvm to ensure cross-version compatibility.
 * Cleanup any trailing whitespace in your code (try @whitespace-mode@ in Emacs, or "Remove Trailing Spaces in Document" in the "Text" bundle in Textmate).
-* Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the "tracker":http://github.com/seancribbs/ripple/issues, include "Closes #X" in the commit message (where X is the issue number).
+* Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the [tracker](http://github.com/seancribbs/ripple/issues), include "Closes #X" in the commit message (where X is the issue number).
 * Send me a pull request.
 
-h2. License & Copyright
+## License & Copyright
 
 Copyright &copy;2010 Sean Cribbs, Sonian Inc., and Basho Technologies, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
-"http://www.apache.org/licenses/LICENSE-2.0":http://www.apache.org/licenses/LICENSE-2.0
+[http://www.apache.org/licenses/LICENSE-2.0"](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-h2. Auxillary Licenses
+## Auxillary Licenses
 
-The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 "Sean Cribbs":http://seancribbs.com/, and is licensed under the "Creative Commons Attribution Non-Commercial 3.0":http://creativecommons.org/licenses/by-nc/3.0 license. !http://i.creativecommons.org/l/by-nc/3.0/88x31.png! 
+The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 [Sean Cribbs](http://seancribbs.com/), and is licensed under the [Creative Commons Attribution Non-Commercial 3.0](http://creativecommons.org/licenses/by-nc/3.0) license. !["Creative Commons"](http://i.creativecommons.org/l/by-nc/3.0/88x31.png)
 
 The "Poor Man's Fibers" implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.
