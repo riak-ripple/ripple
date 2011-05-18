@@ -76,7 +76,7 @@ results = Riak::MapReduce.new(client).
 p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night", 
           #     "Beatles For Sale", "Help!", "Rubber Soul",
           #     "Revolver", "Sgt. Pepper's Lonely Hearts Club Band", "Magical Mystery Tour", 
-          #     "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]</pre></notextile>
+          #     "The Beatles", "Yellow Submarine", "Abbey Road", "Let It Be"]
 ```
 
 
@@ -189,7 +189,7 @@ person.account.paid_until = 3.months.from_now
 
 ## Configuration Example
 
-When using Ripple with Rails 3, add ripple to your Gemfile and then run the @ripple@ generator.  This will generate a test harness, some MapReduce functions and a configuration file. Example:
+When using Ripple with Rails 3, add ripple to your Gemfile and then run the `ripple` generator.  This will generate a test harness, some MapReduce functions and a configuration file. Example:
 
 ```
 $ rails g ripple
@@ -237,19 +237,25 @@ production:
 ## How to Contribute
 
 * Fork the project on [Github](http://github.com/seancribbs/ripple).  If you have already forked, use `git pull --rebase` to reapply your changes on top of the mainline. Example:
-``` bash
-$ git checkout master
-$ git pull --rebase seancribbs master
-```
+
+  ``` bash
+  $ git checkout master
+  $ git pull --rebase seancribbs master
+  ```
+
 * Create a topic branch. If you've already created a topic branch, rebase it on top of changes from the mainline "master" branch. Examples:
-** New branch:
-``` bash
-$ git checkout -b topic
-```
-** Existing branch:
-``` bash
-$ git rebase master
-```
+  * New branch:
+
+    ``` bash
+    $ git checkout -b topic
+    ```
+
+  * Existing branch:
+
+    ``` bash
+    $ git rebase master
+    ```
+
 * Write an RSpec example or set of examples that demonstrate the necessity and validity of your changes. **Patches without specs will most often be ignored. Just do it, you'll thank me later.** Documentation patches need no specs, of course.
 * Make your feature addition or bug fix. Make your specs and stories pass (green).
 * Run the suite using multiruby or rvm to ensure cross-version compatibility.
@@ -269,6 +275,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ## Auxillary Licenses
 
-The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 [Sean Cribbs](http://seancribbs.com/), and is licensed under the [Creative Commons Attribution Non-Commercial 3.0](http://creativecommons.org/licenses/by-nc/3.0) license. !["Creative Commons"](http://i.creativecommons.org/l/by-nc/3.0/88x31.png)
+The included photo (spec/fixtures/cat.jpg) is Copyright &copy;2009 [Sean Cribbs](http://seancribbs.com/), and is licensed under the [Creative Commons Attribution Non-Commercial 3.0](http://creativecommons.org/licenses/by-nc/3.0) license. 
+!["Creative Commons"](http://i.creativecommons.org/l/by-nc/3.0/88x31.png)
 
 The "Poor Man's Fibers" implementation (lib/riak/util/fiber1.8.rb) is Copyright &copy;2008 Aman Gupta.
