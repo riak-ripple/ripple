@@ -41,6 +41,7 @@ module Riak
     def keys(options={}, &block)
       if block_given?
         @client.backend.list_keys(self, &block)
+        @keys = nil
       elsif @keys.nil? || options[:reload]
         @keys = @client.backend.list_keys(self)
       end

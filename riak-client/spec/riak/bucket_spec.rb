@@ -44,6 +44,17 @@ describe Riak::Bucket do
       end
       all_keys.should == ["bar", "baz"]
     end
+
+    it "should invalidate the key cache when streaming" do
+      @backend.should_receive(:list_keys).once.and_return(['a'])
+      @backend.should_receive(:list_keys).once.and_yield(['b'])
+      @backend.should_receive(:list_keys).once.and_return(['c'])
+      @bucket.keys.should == ['a']
+      keys = []
+      @bucket.keys {|kl| keys.concat(kl) }
+      keys.should == ['b']
+      @bucket.keys.should == ['c']
+    end
   end
 
   describe "setting the bucket properties" do
