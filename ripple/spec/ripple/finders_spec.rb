@@ -128,12 +128,12 @@ describe Ripple::Document::Finders do
     end
   end
 
-  describe "finding all documents in the bucket" do
+  describe "listings all documents in the bucket" do
     it "should load all objects in the bucket" do
       @bucket.should_receive(:keys).and_return(["square", "rectangle"])
       @bucket.should_receive(:get).with("square", {}).and_return(@plain)
       @bucket.should_receive(:get).with("rectangle", {}).and_return(@cb)
-      boxes = Box.all
+      boxes = Box.list
       boxes.should have(2).items
       boxes.first.shape.should == "square"
       boxes.last.shape.should == "rectangle"
@@ -143,7 +143,7 @@ describe Ripple::Document::Finders do
       @bucket.should_receive(:keys).and_return(["square", "rectangle"])
       @bucket.should_receive(:get).with("square", {}).and_return(@plain)
       @bucket.should_receive(:get).with("rectangle", {}).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 404, {}, "404 not found"))
-      boxes = Box.all
+      boxes = Box.list
       boxes.should have(1).item
       boxes.first.shape.should == "square"
     end
@@ -154,7 +154,7 @@ describe Ripple::Document::Finders do
       @bucket.should_receive(:get).with("rectangle", {}).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 404, {}, "404 not found"))
       @block = mock()
       @block.should_receive(:ping).once
-      Box.all do |box|
+      Box.list do |box|
         @block.ping
         ["square", "rectangle"].should include(box.shape)
       end.should == []
@@ -162,7 +162,7 @@ describe Ripple::Document::Finders do
 
     it "should pass any given options to the underlying Bucket#keys method" do
       @bucket.should_receive(:keys).with(:reload => true).and_return([])
-      Box.all(:reload => true).should == []
+      Box.list(:reload => true).should == []
     end
   end
 

@@ -30,7 +30,7 @@ module Ripple
     # Generator for a {Ripple::Document} model
     class ActiveModel < ::Rails::Generators::ActiveModel
       def self.all(klass)
-        "#{klass}.all"
+        "#{klass}.list"
       end
 
       def self.find(klass, params=nil)

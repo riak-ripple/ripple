@@ -15,7 +15,7 @@ module Ripple
         # Destroys all records one at a time.
         # Place holder while :delete to bucket is being developed.
         def destroy_all
-          all(&:destroy)
+          list(&:destroy)
         end
 
         attr_writer :quorums

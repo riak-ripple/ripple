@@ -76,15 +76,15 @@ module Ripple
         end
 
         # Find all documents in the Document's bucket and return them.
-        # @overload all()
+        # @overload list()
         #   Get all documents and return them in an array.
         #   @param [Hash] options options to be passed to the
         #     underlying {Bucket#keys} method.
         #   @return [Array<Document>] all found documents in the bucket
-        # @overload all() {|doc| ... }
+        # @overload list() {|doc| ... }
         #   Stream all documents in the bucket through the block.
         #   @yield [Document] doc a found document
-        def all(options={})
+        def list(options={})
           if block_given?
             bucket.keys do |keys|
               keys.each do |key|
