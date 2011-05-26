@@ -43,6 +43,14 @@ describe Riak::Bucket do
       @backend.should_receive(:list_keys).with(@bucket).twice.and_return(["bar"])
       2.times { @bucket.keys.should == ['bar'] }
     end
+
+    it "should warn about the expense of list-keys when warnings are not disabled" do
+      Riak.disable_list_keys_warnings = false
+      @backend.stub!(:list_keys).and_return(%w{test test2})
+      @bucket.should_receive(:warn)
+      @bucket.keys
+      Riak.disable_list_keys_warnings = true
+    end
   end
 
   describe "setting the bucket properties" do

@@ -6,6 +6,9 @@ require 'riak'
 require 'rspec'
 require 'fakeweb'
 
+# Only the tests should really get away with this.
+Riak.disable_list_keys_warnings = true
+
 begin
   require 'yaml'
   require 'riak/test_server'
@@ -20,6 +23,7 @@ rescue => e
 end
 
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
+
 
 RSpec.configure do |config|
   config.mock_with :rspec

@@ -6,6 +6,9 @@ require 'rubygems' # Use the gems path only for the spec suite
 require 'ripple'
 require 'rspec'
 
+# Only the tests should really get away with this.
+Riak.disable_list_keys_warnings = true
+
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].each {|f| require f }
 
 RSpec.configure do |config|
