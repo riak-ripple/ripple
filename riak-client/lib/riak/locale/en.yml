@@ -10,6 +10,7 @@ en:
     failed_request: "Client request failed."
     filter_needs_block: "Filter %{filter} expects a block."
     filter_arity_mismatch: "Filter %{filter} expects %{expected} arguments but %{received} were given."
+    full_bucket_mapred: "Full-bucket MapReduce, including key filters, invokes list-keys which is an expensive operation that should not be used in production.\n    %{backtrace}"
     hash_type: "invalid argument %{hash} is not a Hash"
     http_configuration: "The %{backend} HTTP backend cannot be used. Please check its requirements."
     http_failed_request: "Expected %{expected} from Riak but received %{code}. %{body}"

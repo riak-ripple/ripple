@@ -102,6 +102,22 @@ describe Riak::MapReduce do
       end
       @mr.inputs.should == {:bucket => "foo", :key_filters => [[:tokenize, "-", 3], [:string_to_int], [:between, 2009, 2010]]}
     end
+
+    context "when adding an input that will result in full-bucket mapreduce" do
+      before { Riak.disable_list_keys_warnings = false }
+      after { Riak.disable_list_keys_warnings = true }
+      
+      it "should warn about list-keys on buckets" do
+        @mr.should_receive(:warn).twice
+        @mr.add("foo")
+        @mr.add(Riak::Bucket.new(@client, "foo"))
+      end
+
+      it "should warn about list-keys on key-filters" do
+        @mr.should_receive(:warn)
+        @mr.filter("foo") { matches "bar" }
+      end
+    end
   end
 
   [:map, :reduce].each do |type|
