@@ -39,6 +39,7 @@ module Riak
     # @note This operation has serious performance implications and
     #    should not be used in production applications.
     def keys(&block)
+      warn(t('list_keys', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
       if block_given?
         @client.backend.list_keys(self, &block)
       else

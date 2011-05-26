@@ -297,6 +297,7 @@ module Riak
     #       in development.
     # @return [Array<Bucket>] a list of buckets
     def buckets
+      warn(t('list_buckets', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
       backend.list_buckets.map {|name| Bucket.new(self, name) }
     end
     alias :list_buckets :buckets
