@@ -273,6 +273,8 @@ describe Riak::Client do
       @client.stub!(:backend).and_return(@backend)
     end
 
+    after { Riak.disable_list_keys_warnings = true }
+    
     it "should list buckets" do
       @backend.should_receive(:list_buckets).and_return(%w{test test2})
       buckets = @client.buckets
@@ -287,7 +289,6 @@ describe Riak::Client do
       @backend.stub!(:list_buckets).and_return(%w{test test2})
       @client.should_receive(:warn)
       @client.buckets
-      Riak.disable_list_keys_warnings = true
     end
   end
 
