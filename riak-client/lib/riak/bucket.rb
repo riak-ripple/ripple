@@ -30,22 +30,20 @@ module Riak
       @client, @name = client, name
     end
 
-    # Accesses or retrieves a list of keys in this bucket.
+    # Retrieves a list of keys in this bucket.
     # If a block is given, keys will be streamed through
     # the block (useful for large buckets). When streaming,
-    # results of the operation will not be retained in the local Bucket object.
-    # @param [Hash] options extra options
+    # results of the operation will not be returned to the caller.
     # @yield [Array<String>] a list of keys from the current chunk
-    # @option options [Boolean] :reload (false) If present, will force reloading of the bucket's keys from Riak
     # @return [Array<String>] Keys in this bucket
-    def keys(options={}, &block)
+    # @note This operation has serious performance implications and
+    #    should not be used in production applications.
+    def keys(&block)
       if block_given?
         @client.backend.list_keys(self, &block)
-        @keys = nil
-      elsif @keys.nil? || options[:reload]
-        @keys = @client.backend.list_keys(self)
+      else
+        @client.backend.list_keys(self)
       end
-      @keys
     end
 
     # Sets internal properties on the bucket

@@ -258,11 +258,6 @@ describe Riak::Client do
       @client.bucket("foo", :props => true)
     end
 
-    it "should fetch keys if asked" do
-      @backend.should_receive(:list_keys) {|b| b.name.should == "foo"; ["bar"] }
-      @client.bucket("foo", :keys => true)
-    end
-
     it "should memoize bucket parameters" do
       @bucket = mock("Bucket")
       Riak::Bucket.should_receive(:new).with(@client, "baz").once.and_return(@bucket)
