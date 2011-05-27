@@ -84,7 +84,9 @@ module Ripple
         # @overload list() {|doc| ... }
         #   Stream all documents in the bucket through the block.
         #   @yield [Document] doc a found document
-        def list(options={})
+        # @note This operation is incredibly expensive and should not
+        #     be used in production applications.
+        def list
           if block_given?
             bucket.keys do |keys|
               keys.each do |key|
@@ -94,7 +96,7 @@ module Ripple
             end
             []
           else
-            bucket.keys(options).inject([]) do |acc, k|
+            bucket.keys.inject([]) do |acc, k|
               obj = find_one(k)
               obj ? acc << obj : acc
             end

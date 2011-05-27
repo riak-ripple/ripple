@@ -25,15 +25,9 @@ describe Riak::Bucket do
   end
 
   describe "accessing keys" do
-    it "should load the keys if not present" do
+    it "should list the keys" do
       @backend.should_receive(:list_keys).with(@bucket).and_return(["bar"])
       @bucket.keys.should == ["bar"]
-    end
-
-    it "should allow reloading of the keys" do
-      @backend.should_receive(:list_keys).with(@bucket).and_return(["bar"])
-      @bucket.instance_variable_set(:@keys, ["foo"])
-      @bucket.keys(:reload => true).should == ["bar"]
     end
 
     it "should allow streaming keys through block" do
@@ -45,15 +39,17 @@ describe Riak::Bucket do
       all_keys.should == ["bar", "baz"]
     end
 
-    it "should invalidate the key cache when streaming" do
-      @backend.should_receive(:list_keys).once.and_return(['a'])
-      @backend.should_receive(:list_keys).once.and_yield(['b'])
-      @backend.should_receive(:list_keys).once.and_return(['c'])
-      @bucket.keys.should == ['a']
-      keys = []
-      @bucket.keys {|kl| keys.concat(kl) }
-      keys.should == ['b']
-      @bucket.keys.should == ['c']
+    it "should not cache the list of keys" do
+      @backend.should_receive(:list_keys).with(@bucket).twice.and_return(["bar"])
+      2.times { @bucket.keys.should == ['bar'] }
+    end
+
+    it "should warn about the expense of list-keys when warnings are not disabled" do
+      Riak.disable_list_keys_warnings = false
+      @backend.stub!(:list_keys).and_return(%w{test test2})
+      @bucket.should_receive(:warn)
+      @bucket.keys
+      Riak.disable_list_keys_warnings = true
     end
   end
 

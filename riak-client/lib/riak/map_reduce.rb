@@ -68,16 +68,19 @@ module Riak
         p = params.first
         case p
         when Bucket
+          warn(t('full_bucket_mapred', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
           @inputs = escape(p.name)
         when RObject
           @inputs << [escape(p.bucket.name), escape(p.key)]
         when String
+          warn(t('full_bucket_mapred', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
           @inputs = escape(p)
         end
       when 2..3
         bucket = params.shift
         bucket = bucket.name if Bucket === bucket
         if Array === params.first
+          warn(t('full_bucket_mapred', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
           @inputs = {:bucket => escape(bucket), :key_filters => params.first }
         else
           key = params.shift

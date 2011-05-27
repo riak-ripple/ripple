@@ -279,17 +279,15 @@ module Riak
     # Retrieves a bucket from Riak.
     # @param [String] bucket the bucket to retrieve
     # @param [Hash] options options for retrieving the bucket
-    # @option options [Boolean] :keys (false whether to retrieve the bucket keys
     # @option options [Boolean] :props (false) whether to retreive the bucket properties
     # @return [Bucket] the requested bucket
     def bucket(name, options={})
-      unless (options.keys - [:keys, :props]).empty?
+      unless (options.keys - [:props]).empty?
         raise ArgumentError, "invalid options"
       end
       @bucket_cache ||= {}
       (@bucket_cache[name] ||= Bucket.new(self, name)).tap do |b|
         b.props if options[:props]
-        b.keys  if options[:keys]
       end
     end
     alias :[] :bucket
@@ -299,6 +297,7 @@ module Riak
     #       in development.
     # @return [Array<Bucket>] a list of buckets
     def buckets
+      warn(t('list_buckets', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
       backend.list_buckets.map {|name| Bucket.new(self, name) }
     end
     alias :list_buckets :buckets

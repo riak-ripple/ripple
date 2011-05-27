@@ -159,11 +159,6 @@ describe Ripple::Document::Finders do
         ["square", "rectangle"].should include(box.shape)
       end.should == []
     end
-
-    it "should pass any given options to the underlying Bucket#keys method" do
-      @bucket.should_receive(:keys).with(:reload => true).and_return([])
-      Box.list(:reload => true).should == []
-    end
   end
 
   describe "single-bucket inheritance" do

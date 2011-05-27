@@ -32,7 +32,7 @@ module Riak
     end
 
     def bucket
-      @bucket ||= @client.bucket(@bucket_name, :keys => false)
+      @bucket ||= @client.bucket(@bucket_name)
     end
 
     def delete_matched(matcher, options={})
