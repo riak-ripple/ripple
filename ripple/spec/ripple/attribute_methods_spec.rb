@@ -183,9 +183,20 @@ describe Ripple::AttributeMethods do
     @widget.manufactured.should be_false
   end
 
-  it "should allow protected attributes to be mass assigned" do
+  it "should allow protected attributes to be mass assigned via raw_attributes=" do
     @widget = Widget.new
-    @widget.send(:attributes=, { :manufactured => true }, false)
+    @widget.send(:raw_attributes=, { :manufactured => true })
     @widget.manufactured.should be_true
   end
+
+  it "should allow mass assigning arbitrary attributes via raw_attributes" do
+    @widget = Widget.new
+    @widget.__send__(:raw_attributes=, :explode => '?BOOM')
+    @widget[:explode].should eq('?BOOM')
+  end
+
+  it "should raise an ArgumentError with an undefined property message when mass assigning a property that doesn't exist" do
+    lambda { @widget = Widget.new(:explode => '?BOOM') }.should raise_error(ArgumentError, %q[Undefined property :explode for class 'Widget'])
+  end
+
 end

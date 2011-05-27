@@ -10,10 +10,12 @@ module Ripple
       module ClassMethods
         def instantiate(attrs)
           begin
-            klass = attrs['_type'].present? ? attrs['_type'].constantize : self
-            klass.new(attrs)
+            klass = attrs['_type'].present? ? attrs.delete('_type').constantize : self
           rescue NameError
-            new(attrs)
+            klass = self
+          end
+          klass.new.tap do |object|
+            object.raw_attributes = attrs
           end
         end
       end

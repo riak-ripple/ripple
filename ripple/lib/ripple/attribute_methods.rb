@@ -53,9 +53,21 @@ module Ripple
 
       # Mass assign the document's attributes.
       # @param [Hash] attrs the attributes to assign
-      def attributes=(attrs, guard_protected_attrs = true)
+      def attributes=(attrs)
         raise ArgumentError, t('attribute_hash') unless Hash === attrs
-        (guard_protected_attrs ? sanitize_for_mass_assignment(attrs) : attrs).each do |k,v|
+        sanitize_for_mass_assignment(attrs).each do |k,v|
+          if respond_to?("#{k}=")
+            __send__("#{k}=",v)
+          else
+            raise ArgumentError, t('undefined_property', :prop => k, :class => self.class.name)
+          end
+        end
+      end
+
+      # @private
+      def raw_attributes=(attrs)
+        raise ArgumentError, t('attribute_hash') unless Hash === attrs
+        attrs.each do |k,v|
           next if k.to_sym == :key
           if respond_to?("#{k}=")
             __send__("#{k}=",v)

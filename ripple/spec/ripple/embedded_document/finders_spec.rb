@@ -5,7 +5,7 @@ describe Ripple::EmbeddedDocument::Finders do
   require 'support/models/favorite'
 
   before :each do
-    @addr = Address.new
+    @address = Address.new
   end
 
   it "should instantiate a document" do
