@@ -92,7 +92,7 @@ describe Riak::Client do
 
       it "should require a valid protocol to be set" do
         lambda { @client.protocol = 'invalid-protocol' }.should(
-                                                                raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
+                                                           raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
       end
 
       it "should reset the unified backend when changing the protocol" do
@@ -266,16 +266,30 @@ describe Riak::Client do
     end
   end
 
-  it "should list buckets" do
-    @client = Riak::Client.new
-    @backend = mock("Backend")
-    @client.stub!(:backend).and_return(@backend)
-    @backend.should_receive(:list_buckets).and_return(%w{test test2})
-    buckets = @client.buckets
-    buckets.should have(2).items
-    buckets.should be_all {|b| b.is_a?(Riak::Bucket) }
-    buckets[0].name.should == "test"
-    buckets[1].name.should == "test2"
+  describe "listing buckets" do
+    before do
+      @client = Riak::Client.new
+      @backend = mock("Backend")
+      @client.stub!(:backend).and_return(@backend)
+    end
+
+    after { Riak.disable_list_keys_warnings = true }
+    
+    it "should list buckets" do
+      @backend.should_receive(:list_buckets).and_return(%w{test test2})
+      buckets = @client.buckets
+      buckets.should have(2).items
+      buckets.should be_all {|b| b.is_a?(Riak::Bucket) }
+      buckets[0].name.should == "test"
+      buckets[1].name.should == "test2"
+    end
+
+    it "should warn about the expense of list-buckets when warnings are not disabled" do
+      Riak.disable_list_keys_warnings = false
+      @backend.stub!(:list_buckets).and_return(%w{test test2})
+      @client.should_receive(:warn)
+      @client.buckets
+    end
   end
 
   describe "Luwak (large-files) support" do
