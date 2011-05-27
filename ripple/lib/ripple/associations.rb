@@ -12,6 +12,7 @@ require 'ripple/associations/one_embedded_proxy'
 require 'ripple/associations/many_embedded_proxy'
 require 'ripple/associations/one_linked_proxy'
 require 'ripple/associations/many_linked_proxy'
+require 'ripple/associations/one_key_proxy'
 
 module Ripple
   # Adds associations via links and embedding to {Ripple::Document}
@@ -50,6 +51,7 @@ module Ripple
     extend ActiveSupport::Concern
 
     module ClassMethods
+      include Translation
       # @private
       def inherited(subclass)
         super
@@ -68,12 +70,18 @@ module Ripple
 
       # Creates a singular association
       def one(name, options={})
+        configure_for_key_correspondence if options[:using] === :key
         create_association(:one, name, options)
       end
 
       # Creates a plural association
       def many(name, options={})
+        raise ArgumentError, t('many_key_association') if options[:using] === :key
         create_association(:many, name, options)
+      end
+
+      def configure_for_key_correspondence
+        include Ripple::Associations::KeyDelegator
       end
 
       private

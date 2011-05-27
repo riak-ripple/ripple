@@ -102,4 +102,19 @@ describe Ripple::Association do
   it "should determine an instance variable based on the name" do
     Ripple::Association.new(:many, :pages).ivar.should == "@_pages"
   end
+
+  describe "key correspondence" do
+    require 'support/models/profile'
+    require 'support/models/user'
+
+    it "should raise an exception if trying to use a many association when :using => :key" do
+      expect { Profile.many :user, :using => :key }.to raise_error(ArgumentError, "You cannot use a many association using :key")
+    end
+
+    it "should add the key_delegate attr_accessor to the model declaring the association" do
+      Profile.one :user, :using => :key
+      Profile.new.should respond_to(:key_delegate)
+      Profile.new.should respond_to(:key_delegate=)
+    end
+  end
 end
