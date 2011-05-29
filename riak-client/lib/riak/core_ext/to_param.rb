@@ -22,9 +22,9 @@ unless Object.new.respond_to? :to_query and Object.new.respond_to? :to_param
   end
 
   class Hash
-    def to_param
-      map do |key, value|
-        value.to_query(key)
+    def to_param(namespace = nil)
+      collect do |key, value|
+        value.to_query(namespace ? "#{namespace}[#{key}]" : key)
       end.sort * '&'
     end
   end
