@@ -16,6 +16,7 @@ module Ripple
           end
           klass.new.tap do |object|
             object.raw_attributes = attrs
+            object.changed_attributes.clear
           end
         end
       end
