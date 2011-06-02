@@ -97,6 +97,12 @@ describe Ripple::Document::Finders do
       box.should be_kind_of(Box)
       box.key.should == "square"
     end
+
+    it 'initializes the document with no changed attributes' do
+      box = Box.find("square")
+      box.should_not be_changed
+      box.changes.should be_empty
+    end
   end
 
   describe "finding multiple documents" do
