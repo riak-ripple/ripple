@@ -1,6 +1,7 @@
 source :rubygems
 
 gem 'bundler'
+gem 'riak-client', :path => '../riak-client'
 gemspec
 
 platforms :mri do
