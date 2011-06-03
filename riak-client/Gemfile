@@ -1,21 +1,13 @@
 source :rubygems
 
-gem 'i18n'
-gem 'builder'
-gem 'rspec', "~>2.4.0"
-gem 'fakeweb', ">=1.2"
-gem 'rack', '>=1.0'
-gem 'rake'
+gemspec
 gem 'bundler'
-gem 'excon', "~>0.6.1"
-gem 'beefcake', '~>0.3.1'
 
 platforms :mri do
   gem 'yajl-ruby'
 end
 
 platforms :jruby do
-  gem 'json'
   gem 'jruby-openssl'
 end
 

@@ -32,7 +32,7 @@ describe Riak::Util::Multipart::StreamParser do
     parser = klass.new do |result|
       block.ping
       result[:headers]['content-type'].should include("application/json")
-      lambda { JSON.parse(result[:body]) }.should_not raise_error
+      lambda { Riak::JSON.parse(result[:body]) }.should_not raise_error
     end
     File.open("spec/fixtures/multipart-mapreduce.txt", "r") do |f|
       while chunk = f.read(16)
@@ -46,7 +46,7 @@ describe Riak::Util::Multipart::StreamParser do
     parser = klass.new do |result|
       block.ping
       result[:headers]['content-type'].should include("application/json")
-      lambda { JSON.parse(result[:body]) }.should_not raise_error
+      lambda { Riak::JSON.parse(result[:body]) }.should_not raise_error
     end
     parser.accept File.read("spec/fixtures/multipart-mapreduce.txt")
   end

@@ -206,7 +206,7 @@ module Riak
     def deserialize(body)
       case @content_type
       when /json/
-        JSON.parse(body, Riak.json_options)
+        JSON.parse(body)
       when /yaml/
         YAML.load(body)
       when "application/x-ruby-marshal"

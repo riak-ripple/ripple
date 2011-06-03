@@ -1,15 +1,8 @@
 source :rubygems
 
+gemspec
 gem 'bundler'
 gem 'riak-client', :path => "../riak-client"
-gem 'activemodel', '~>3.0.0'
-gem 'rspec', '~>2.4.0'
-gem 'tzinfo'
-gem 'rake'
-
-platforms :mri do
-  gem 'yajl-ruby'
-end
 
 platforms :mri_18, :jruby do
   gem 'ruby-debug'
@@ -20,6 +13,5 @@ platforms :mri_19 do
 end
 
 platforms :jruby do
-  gem 'json'
   gem 'jruby-openssl'
 end

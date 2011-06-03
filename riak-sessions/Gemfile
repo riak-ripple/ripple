@@ -1,13 +1,8 @@
-
 source :rubygems
 
 gem 'bundler'
-gem 'riak-client', :path => "../riak-client"
-gem 'rack'
-gem 'rails', '~>3.0.0'
-gem 'rspec', '~>2.4.0'
-gem 'rspec-rails', '~>2.4.0'
-gem 'rake'
+gem 'riak-client', :path => '../riak-client'
+gemspec
 
 platforms :mri do
   gem 'yajl-ruby'
