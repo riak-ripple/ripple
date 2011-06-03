@@ -13,6 +13,13 @@ describe Ripple::AttributeMethods::Dirty do
       company.should be_changed
     end
 
+    it "should capture previous changes when saving" do
+      company.robject.stub!(:store).and_return(true)
+      company.name = 'Fizz Buzz, Inc.'
+      company.save
+      company.previous_changes.should include('name')
+    end
+    
     context "when the document's attributes have not changed" do
       it 'returns false if it has no embedded associated documents' do
         company.should_not be_changed
