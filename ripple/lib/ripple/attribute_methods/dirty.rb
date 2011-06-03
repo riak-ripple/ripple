@@ -8,7 +8,7 @@ module Ripple
       include ActiveModel::Dirty
 
       # @private
-      def save(*args)
+      def really_save(*args)
         if result = super
           @previously_changed = changes
           changed_attributes.clear
