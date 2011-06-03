@@ -24,10 +24,11 @@ gemspec = Gem::Specification.new do |gem|
   gem.email = "sean@basho.com"
   gem.homepage = "http://seancribbs.github.com/ripple"
   gem.authors = ["Sean Cribbs"]
-  gem.add_development_dependency "rspec", "~>2.4.0"
+  gem.add_development_dependency "rspec", "~>2.6.0"
   gem.add_dependency "riak-client", "~>#{version}"
   gem.add_dependency "activesupport", [">= 3.0.0", "< 3.2.0"]
   gem.add_dependency "activemodel", [">= 3.0.0", "< 3.2.0"]
+  gem.add_dependency "tzinfo"  
 
   files = FileList["**/*"]
   # Editor and O/S files
@@ -78,9 +79,10 @@ namespace :spec do
   end
 
   desc "Run All Specs"
-  RSpec::Core::RakeTask.new(:all) do |spec|
-    spec.pattern = "spec/{ripple,integration}/**/*_spec.rb"
-  end
+  # RSpec::Core::RakeTask.new(:all) do |spec|
+  #   spec.pattern = "spec/{ripple,integration}/**/*_spec.rb"
+  # end
+  task :all => [:spec, "spec:integration"]
 end
 
-task :default => :spec
+task :default => "spec:all"
