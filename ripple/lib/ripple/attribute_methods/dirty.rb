@@ -24,6 +24,7 @@ module Ripple
       # @private
       def save(*args)
         if result = super
+          @previously_changed = changes
           changed_attributes.clear
         end
         result
@@ -44,7 +45,9 @@ module Ripple
 
       private
       def attribute=(attr_name, value)
-        attribute_will_change!(attr_name) if @attributes[attr_name] != value
+        if self.class.properties.include?(attr_name.intern) && @attributes[attr_name] != value
+          attribute_will_change!(attr_name)
+        end
         super
       end
     end
