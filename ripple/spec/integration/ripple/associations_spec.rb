@@ -12,6 +12,7 @@ describe "Ripple Associations" do
         property :email, String, :presence => true
         many :friends, :class_name => "User"
         one :emergency_contact, :class_name => "User"
+        one :credit_card, :using => :key
       end
       class Profile
         include Ripple::EmbeddedDocument
@@ -24,6 +25,11 @@ describe "Ripple Associations" do
         property :kind,   String, :presence => true
         embedded_in :user
       end
+      class CreditCard
+        include Ripple::Document
+        one :user, :using => :key
+        property :number, Integer
+      end
     end
   end
 
@@ -32,8 +38,9 @@ describe "Ripple Associations" do
     @profile  = Profile.new(:name => 'Ripple')
     @billing  = Address.new(:street => '123 Somewhere Dr', :kind => 'billing')
     @shipping = Address.new(:street => '321 Anywhere Pl', :kind => 'shipping')
-    @friend1 = User.create(:email => "friend@ripple.com")
-    @friend2 = User.create(:email => "friend2@ripple.com")
+    @friend1  = User.create(:email => "friend@ripple.com")
+    @friend2  = User.create(:email => "friend2@ripple.com")
+    @cc       = CreditCard.new(:number => '12345')
   end
 
   it "should save one embedded associations" do
@@ -135,6 +142,23 @@ describe "Ripple Associations" do
     found_friend.friends.should == [found_user]
   end
 
+  it "should find the object associated by key after saving" do
+    @user.key = 'paying-user'
+    @user.credit_card = @cc
+    @user.save && @cc.save
+    @found = User.find(@user.key)
+    @found.reload
+    @found.credit_card.should eq(@cc)
+  end
+
+  it "should assign the generated riak key to the associated object using key" do
+    @user.key.should be_nil
+    @user.credit_card = @cc
+    @user.save
+    @cc.key.should_not be_blank
+    @cc.key.should eq(@user.key)
+  end
+
   after :each do
     User.destroy_all
   end
@@ -143,6 +167,7 @@ describe "Ripple Associations" do
     Object.send(:remove_const, :User)
     Object.send(:remove_const, :Profile)
     Object.send(:remove_const, :Address)
+    Object.send(:remove_const, :CreditCard)
   end
 
 end

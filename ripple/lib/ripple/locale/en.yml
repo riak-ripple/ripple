@@ -14,4 +14,5 @@ en:
     many_association_validation_error: "are invalid (%{association_errors})"
     associated_document_error_summary: "for %{doc_type} %{doc_id}: %{errors}"
     undefined_property: "Undefined property :%{prop} for class '%{class}'"
+    many_key_association: "You cannot use a many association using :key"
 
