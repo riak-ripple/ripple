@@ -248,6 +248,10 @@ describe Ripple::Property do
         prop.type_cast([1]).to_a.should == [1]
       end
 
+      it "does not cast nil" do
+        prop.type_cast(nil).should be_nil
+      end
+
       it "raises an error when casting a non-enumerable" do
         expect {
           prop.type_cast(1)

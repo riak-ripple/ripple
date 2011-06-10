@@ -141,6 +141,7 @@ class Set
   end
 
   def self.ripple_cast(value)
+    return nil if value.nil?
     value.is_a?(Enumerable) && new(value) or raise Ripple::PropertyTypeMismatch.new(self, value)
   end
 end
