@@ -27,6 +27,7 @@ namespace :spec do
     desc "Run specs for sub-project #{dir}."
     task dir do
       Dir.chdir(dir) do
+        system 'bundle'
         system 'rake spec'
       end
     end

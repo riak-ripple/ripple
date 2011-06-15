@@ -1,5 +1,19 @@
 h1. Ripple Release Notes
 
+h2. 0.9.5 Patch Release - 2011-06-14
+
+Release 0.9.5 is a minor bugfix release but also includes some small features.
+
+Full notes:
+
+* Allow IO-like objects to be used as RObject data. [Josh Nichols]
+* Set the content-length or transfer-encoding appropriately for Net::HTTP. Fixes #162.
+* Fix MapReduce jobs on PBC when keep=false on certain phases. [Alexander Lang]
+* Invalidate the key-cache for a bucket when streaming.
+* Pass options through Document#all to Bucket#keys.
+* Make Hash#to_param compatible with ActiveSupport. [Dave Perrett]
+* Add support for previous_changes functionality and make available to callbacks. [Nathaniel Talbott, Sean Cribbs]
+
 h2. 0.9.4 Patch Release - 2011-05-10
 
 Release 0.9.4 is a minor bugfix release.
