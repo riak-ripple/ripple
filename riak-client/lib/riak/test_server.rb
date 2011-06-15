@@ -25,8 +25,12 @@ module Riak
         :map_cache_size => 0,     # 0.14
         :vnode_cache_entries => 0 # 0.13
       },
+      :riak_search => {
+        :enabled => true,
+        :search_backend => :riak_search_test_backend
+      },
       :luwak => {
-        :enabled => false
+        :enabled => true
       }
     }
     VM_ARGS_DEFAULTS = {
