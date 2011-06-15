@@ -3,16 +3,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Class: Riak::Client</title>
-<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+<title>
+  Class: Riak::Client
+  
+    &mdash; Documentation by YARD 0.7.2
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   relpath = '..';
   if (relpath != '') relpath += '/';
 </script>
-<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
 
   </head>
   <body>
@@ -33,11 +43,14 @@
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Class List</a>
-  <a id="method_list_link" href="#">Method List</a>
-  <a id ="file_list_link" href="#">File List</a>
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
 </div>
-
       <div class="clear"></div>
     </div>
     
@@ -141,7 +154,7 @@ Array of valid protocols
   
 </div>
         </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w[</span><span class='tstring_end'>http</span></span></pre></dd>
+        <dd><pre class="code"><span class='qwords_beg'>%w[</span><span class='tstring_content'>http</span><span class='words_sep'> </span><span class='tstring_content'>https</span><span class='words_sep'> </span><span class='tstring_content'>pbc</span><span class='words_sep'>]</span></pre></dd>
       
         <dt id="HOST_REGEX-constant" class="">HOST_REGEX =
           <div class="docstring">
@@ -559,6 +572,14 @@ The SSL options that get built when using SSL.
     
   </ul>
 
+
+
+  
+  
+  
+  
+  
+  
 
   
     <h2>
@@ -1010,7 +1031,7 @@ Checks if SSL is enabled for HTTP.
 
   
     <span class="summary_desc"><div class='inline'><p>
-Stores a large file/IO object in Riak via the &#8220;Luwak&#8221;
+Stores a large file/IO-like object in Riak via the &#8220;Luwak&#8221;
 interface.
 </p>
 </div></span>
@@ -1066,10 +1087,10 @@ Creates a client connection to Riak
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
         <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -1092,8 +1113,8 @@ configuration options for the client
     <ul class="option">
       
         <li>
-          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:host</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -1107,8 +1128,8 @@ The host or IP address for the Riak endpoint
         </tr>
       
         <li>
-          <span class="type">(<tt>Fixnum</tt>)</span>
           <span class="name">:port</span>
+          <span class="type">(<tt>Fixnum</tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -1122,8 +1143,8 @@ The port of the Riak HTTP endpoint
         </tr>
       
         <li>
-          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:prefix</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -1137,8 +1158,8 @@ The URL path prefix to the main HTTP endpoint
         </tr>
       
         <li>
-          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:mapred</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -1152,8 +1173,8 @@ The path to the map-reduce HTTP endpoint
         </tr>
       
         <li>
-          <span class="type">(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="name">:client_id</span>
+          <span class="type">(<tt>Fixnum</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -1167,8 +1188,8 @@ The internal client ID used by Riak to route responses
         </tr>
       
         <li>
-          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
           <span class="name">:http_backend</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -1182,8 +1203,8 @@ which  HTTP backend to use
         </tr>
       
         <li>
-          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
           <span class="name">:protobuffs_backend</span>
+          <span class="type">(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -1203,8 +1224,8 @@ which Protocol Buffers backend to use
   
     <li>
       
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
       
       
@@ -1299,8 +1320,8 @@ The user:pass for http basic authentication
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1360,8 +1381,8 @@ The internal client ID used by Riak to route responses
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1421,8 +1442,8 @@ The host or IP address for the Riak endpoint
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1482,8 +1503,8 @@ The HTTP backend/client to use
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
       
       
       
@@ -1543,8 +1564,8 @@ The HTTP(S) port for the Riak endpoint
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
       
+        <span class='type'>(<tt>Fixnum</tt>)</span>
       
       
       
@@ -1604,8 +1625,8 @@ The URL path to the luwak HTTP endpoint
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1665,8 +1686,8 @@ The URL path to the map-reduce HTTP endpoint
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1726,8 +1747,8 @@ The Protocol Buffers port for the Riak endpoint
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
       
+        <span class='type'>(<tt>Fixnum</tt>)</span>
       
       
       
@@ -1787,8 +1808,8 @@ The URL path prefix to the &#8220;raw&#8221; HTTP endpoint
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1848,8 +1869,8 @@ The Protocol Buffers backend/client to use
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../Symbol.html" title="Symbol (class)">Symbol</a></span></tt>)</span>
       
       
       
@@ -1909,8 +1930,8 @@ The protocol to use for the Riak endpoint
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -1970,8 +1991,8 @@ The URL path prefix to the Solr HTTP endpoint
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -2075,8 +2096,8 @@ The SSL options that get built when using SSL
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>|nil</tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>|nil</tt>)</span>
       
       
       
@@ -2141,8 +2162,8 @@ change which type of backend is used by setting the <span class='object_link'><a
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>, <tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>, <tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>)</span>
       
       
       
@@ -2213,10 +2234,10 @@ Retrieves a bucket from Riak.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>bucket</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -2230,10 +2251,10 @@ the bucket to retrieve
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
         <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
@@ -2258,8 +2279,8 @@ options for retrieving the bucket
     <ul class="option">
       
         <li>
-          <span class="type">(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
           <span class="name">:keys</span>
+          <span class="type">(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -2273,8 +2294,8 @@ false whether to retrieve the bucket keys
         </tr>
       
         <li>
-          <span class="type">(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
           <span class="name">:props</span>
+          <span class="type">(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
           <span class="default">
             
               &mdash; default:
@@ -2294,8 +2315,8 @@ whether to retreive the bucket properties
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span></tt>)</span>
       
       
       
@@ -2379,8 +2400,8 @@ Lists buckets which have keys stored in them.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span>&gt;</tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="Bucket.html" title="Riak::Bucket (class)">Bucket</a></span>&gt;</tt>)</span>
       
       
       
@@ -2437,10 +2458,10 @@ Deletes a file stored via the &#8220;Luwak&#8221; interface
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>filename</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -2503,10 +2524,10 @@ Checks whether a file exists in &#8220;Luwak&#8221;.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -2524,8 +2545,8 @@ the key to check
   
     <li>
       
-        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
       
@@ -2585,10 +2606,10 @@ interface. Streams the data to a temporary file unless a block is given.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>filename</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -2606,8 +2627,8 @@ the key/filename for the object
   
     <li>
       
-        <span class='type'>(<tt>chunk</tt>)</span>
       
+        <span class='type'>(<tt>chunk</tt>)</span>
       
       
       
@@ -2626,10 +2647,10 @@ result in nil being returned from the method.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>chunk</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -2647,8 +2668,8 @@ a single chunk of the object&#8217;s data
   
     <li>
       
-        <span class='type'>(<tt>IO</tt>, <tt>nil</tt>)</span>
       
+        <span class='type'>(<tt>IO</tt>, <tt>nil</tt>)</span>
       
       
       
@@ -2737,8 +2758,8 @@ access the server directly.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="Client/HTTPBackend.html" title="Riak::Client::HTTPBackend (class)">HTTPBackend</a></span></tt>)</span>
       
       
       
@@ -2834,10 +2855,10 @@ Adds documents to the specified search index
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>index</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -2851,10 +2872,10 @@ the index in which to add/update the given documents
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
         <span class='name'>docs</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
       
@@ -2889,10 +2910,10 @@ Adds documents to the default search index
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
         <span class='name'>docs</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
       
@@ -2915,8 +2936,8 @@ unnested document hashes, with one key per field
   
     <li>
       
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
       
       
@@ -3001,8 +3022,8 @@ A representation suitable for IRB and debugging output.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3059,8 +3080,8 @@ Pings the Riak server to check for liveness.
   
     <li>
       
-        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
+        <span class='type'>(<tt>true</tt>, <tt>false</tt>)</span>
       
       
       
@@ -3122,8 +3143,8 @@ The port of the Riak endpoint
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
       
+        <span class='type'>(<tt>Fixnum</tt>)</span>
       
       
       
@@ -3198,10 +3219,10 @@ and 65535.
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
-      
-      
         <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Fixnum</tt>)</span>
       
       
       
@@ -3219,8 +3240,8 @@ The port number of the Riak endpoint
   
     <li>
       
-        <span class='type'>(<tt>Fixnum</tt>)</span>
       
+        <span class='type'>(<tt>Fixnum</tt>)</span>
       
       
       
@@ -3238,8 +3259,8 @@ the assigned port number
   
     <li>
       
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
       
       
@@ -3312,8 +3333,8 @@ also be used to access the server directly.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="Client/ProtobuffsBackend.html" title="Riak::Client::ProtobuffsBackend (class)">ProtobuffsBackend</a></span></tt>)</span>
       
       
       
@@ -3409,10 +3430,10 @@ Removes documents from the specified index
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>index</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3426,10 +3447,10 @@ the index from which to remove documents
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
         <span class='name'>specs</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
       
@@ -3465,10 +3486,10 @@ Removes documents from the default index
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
-      
-      
         <span class='name'>specs</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span>&gt;</tt>)</span>
       
       
       
@@ -3492,8 +3513,8 @@ the specification of documents to remove (must contain &#8216;id&#8217; or
   
     <li>
       
-        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
       
       
       
@@ -3567,9 +3588,9 @@ if any document specs don&#8217;t include &#8216;id&#8217; or
   <p class="signature " id="search-instance_method">
   
     
-      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(index, query, options = {}) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>search</strong>(index, query, options = {}) </span>
     
-      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(query, options = {}) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>search</strong>(query, options = {}) </span>
     
   
 
@@ -3594,7 +3615,7 @@ Performs a search via the Solr interface.
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(index, query, options = {}) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>search</strong>(index, query, options = {}) </span>
         <div class="docstring">
   <div class="discussion">
     
@@ -3607,10 +3628,10 @@ Performs a search via the Solr interface.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>index</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3624,10 +3645,10 @@ the index to query on
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>query</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3646,7 +3667,7 @@ a Lucene query string
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>search</strong>(query, options = {}) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>) <strong>search</strong>(query, options = {}) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -3662,10 +3683,10 @@ Queries the default index
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>query</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3688,10 +3709,10 @@ a Lucene query string
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
-      
-      
         <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -3713,8 +3734,8 @@ extra options for the Solr query
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
       
       
       
@@ -3788,8 +3809,8 @@ Checks if SSL is enabled for HTTP
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../Boolean.html" title="Boolean (module)">Boolean</a></span></tt>)</span>
       
       
       
@@ -3822,9 +3843,9 @@ Checks if SSL is enabled for HTTP
   <p class="signature " id="store_file-instance_method">
   
     
-      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(filename, content_type, data) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>store_file</strong>(filename, content_type, data) </span>
     
-      <span class="overload">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(content_type, data) </span>
+      <span class="overload">- (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>store_file</strong>(content_type, data) </span>
     
   
 
@@ -3832,7 +3853,7 @@ Checks if SSL is enabled for HTTP
 </p><div class="docstring">
   <div class="discussion">
     <p>
-Stores a large file/IO object in Riak via the &#8220;Luwak&#8221;
+Stores a large file/IO-like object in Riak via the &#8220;Luwak&#8221;
 interface.
 </p>
 
@@ -3846,7 +3867,7 @@ interface.
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(filename, content_type, data) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>store_file</strong>(filename, content_type, data) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -3862,10 +3883,10 @@ Stores the file at the given key/filename
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>filename</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3879,10 +3900,10 @@ the key/filename for the object
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>content_type</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3896,10 +3917,10 @@ the MIME Content-Type for the data
   
     <li>
       
-        <span class='type'>(<tt>IO</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>data</span>
+      
+      
+        <span class='type'>(<tt>IO</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3918,7 +3939,7 @@ the contents of the file
     
       
       <li class="overload_item">
-        <span class="signature">- (<tt><span class='object_link'><a href="../Object.html" title="Object (class)">Object</a></span></tt>) <strong>store_file</strong>(content_type, data) </span>
+        <span class="signature">- (<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>) <strong>store_file</strong>(content_type, data) </span>
         <div class="docstring">
   <div class="discussion">
     <p>
@@ -3934,10 +3955,10 @@ Stores the file with a server-determined key/filename
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>content_type</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -3951,10 +3972,10 @@ the MIME Content-Type for the data
   
     <li>
       
-        <span class='type'>(<tt>IO</tt>, <tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>data</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>, <tt>#read</tt>)</span>
       
       
       
@@ -3977,8 +3998,8 @@ the contents of the file
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -4032,9 +4053,9 @@ the key/filename where the object was stored
 </div>
     
     <div id="footer">
-  Generated on Sun Apr 17 20:28:49 2011 by 
+  Generated on Wed Jun 15 08:56:40 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.7 (ruby-1.9.2).
+  0.7.2 (ruby-1.9.2).
 </div>
 
   </body>

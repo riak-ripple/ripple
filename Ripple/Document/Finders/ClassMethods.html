@@ -3,16 +3,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Module: Ripple::Document::Finders::ClassMethods</title>
-<link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+<title>
+  Module: Ripple::Document::Finders::ClassMethods
+  
+    &mdash; Documentation by YARD 0.7.2
+  
+</title>
+
+  <link rel="stylesheet" href="../../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   relpath = '../../..';
   if (relpath != '') relpath += '/';
 </script>
-<script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+
 
   </head>
   <body>
@@ -33,11 +43,14 @@
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Class List</a>
-  <a id="method_list_link" href="#">Method List</a>
-  <a id ="file_list_link" href="#">File List</a>
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
 </div>
-
       <div class="clear"></div>
     </div>
     
@@ -67,6 +80,8 @@
 
 
 
+
+
   
     <h2>
       Instance Method Summary
@@ -78,7 +93,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#all-instance_method" title="#all (instance method)">- (Object) <strong>all</strong> </a>
+      <a href="#all-instance_method" title="#all (instance method)">- (Object) <strong>all</strong>(options = {}) </a>
     
 
     
@@ -245,13 +260,34 @@ Get all documents and return them in an array.
   </div>
 </div>
 <div class="tags">
-  <h3>Returns:</h3>
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../../Hash.html" title="Hash (class)">Hash</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+options to be passed to the underlying Bucket#keys method.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
 <ul class="return">
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span>&gt;</tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span>&gt;</tt>)</span>
       
       
       
@@ -286,8 +322,8 @@ Stream all documents in the bucket through the block.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span></tt>)</span>
       
       
       
@@ -312,8 +348,6 @@ doc a found document
       <pre class="lines">
 
 
-99
-100
 101
 102
 103
@@ -327,12 +361,14 @@ doc a found document
 111
 112
 113
-114</pre>
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/finders.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'ripple/lib/ripple/document/finders.rb', line 101</span>
 
-<span class='kw'>def</span> <span class='id all'>all</span>
+<span class='kw'>def</span> <span class='id all'>all</span><span class='lparen'>(</span><span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id block_given?'>block_given?</span>
     <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id keys'>keys</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id keys'>keys</span><span class='op'>|</span>
       <span class='id keys'>keys</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id key'>key</span><span class='op'>|</span>
@@ -342,7 +378,7 @@ doc a found document
     <span class='kw'>end</span>
     <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='kw'>else</span>
-    <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id acc'>acc</span><span class='comma'>,</span> <span class='id k'>k</span><span class='op'>|</span>
+    <span class='id bucket'>bucket</span><span class='period'>.</span><span class='id keys'>keys</span><span class='lparen'>(</span><span class='id options'>options</span><span class='rparen'>)</span><span class='period'>.</span><span class='id inject'>inject</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id acc'>acc</span><span class='comma'>,</span> <span class='id k'>k</span><span class='op'>|</span>
       <span class='id obj'>obj</span> <span class='op'>=</span> <span class='id find_one'>find_one</span><span class='lparen'>(</span><span class='id k'>k</span><span class='rparen'>)</span>
       <span class='id obj'>obj</span> <span class='op'>?</span> <span class='id acc'>acc</span> <span class='op'>&lt;&lt;</span> <span class='id obj'>obj</span> <span class='op'>:</span> <span class='id acc'>acc</span>
     <span class='kw'>end</span>
@@ -398,10 +434,10 @@ Find a single document.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -419,8 +455,8 @@ the key of a document to find
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span></tt>)</span>
       
       
       
@@ -455,10 +491,10 @@ Find a list of documents.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>key1</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -472,10 +508,10 @@ the key of a document to find
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span></tt>)</span>
-      
-      
         <span class='name'>key2</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span></tt>)</span>
       
       
       
@@ -493,8 +529,8 @@ the key of a document to find
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span>&gt;</tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span>&gt;</tt>)</span>
       
       
       
@@ -529,10 +565,10 @@ Find a list of documents.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
-      
-      
         <span class='name'>keylist</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../../String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
       
       
       
@@ -550,8 +586,8 @@ an array of keys to find
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span>&gt;</tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../../../Array.html" title="Array (class)">Array</a></span>&lt;<span class='object_link'><a href="../../Document.html" title="Ripple::Document (module)">Document</a></span>&gt;</tt>)</span>
       
       
       
@@ -620,8 +656,8 @@ Ripple::DocumentNotFound if a key can not be found in the bucket.
   
     <li>
       
-        <span class='type'>(<tt><span class='object_link'><a href="../../DocumentNotFound.html" title="Ripple::DocumentNotFound (class)">DocumentNotFound</a></span></tt>)</span>
       
+        <span class='type'>(<tt><span class='object_link'><a href="../../DocumentNotFound.html" title="Ripple::DocumentNotFound (class)">DocumentNotFound</a></span></tt>)</span>
       
       
       
@@ -740,9 +776,9 @@ find!
 </div>
     
     <div id="footer">
-  Generated on Sun Apr 17 20:28:50 2011 by 
+  Generated on Wed Jun 15 08:56:42 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.7 (ruby-1.9.2).
+  0.7.2 (ruby-1.9.2).
 </div>
 
   </body>

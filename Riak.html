@@ -3,16 +3,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Module: Riak</title>
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+<title>
+  Module: Riak
+  
+    &mdash; Documentation by YARD 0.7.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   relpath = '';
   if (relpath != '') relpath += '/';
 </script>
-<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
 
   </head>
   <body>
@@ -33,11 +43,14 @@
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Class List</a>
-  <a id="method_list_link" href="#">Method List</a>
-  <a id ="file_list_link" href="#">File List</a>
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
 </div>
-
       <div class="clear"></div>
     </div>
     
@@ -60,7 +73,7 @@
   
     <dt class="r1 last">Defined in:</dt>
     <dd class="r1 last">riak-client/lib/riak.rb<span class="defines">,<br />
-  riak-client/lib/riak/link.rb,<br /> riak-client/lib/riak/search.rb,<br /> riak-client/lib/riak/bucket.rb,<br /> riak-client/lib/riak/client.rb,<br /> riak-client/lib/riak/robject.rb,<br /> riak-client/lib/riak/walk_spec.rb,<br /> riak-client/lib/riak/map_reduce.rb,<br /> riak-client/lib/riak/cache_store.rb,<br /> riak-client/lib/riak/client/pump.rb,<br /> riak-client/lib/riak/test_server.rb,<br /> riak-client/lib/riak/util/escape.rb,<br /> riak-client/lib/riak/util/multipart.rb,<br /> riak-client/lib/riak/failed_request.rb,<br /> riak-sessions/lib/riak/session_store.rb,<br /> riak-client/lib/riak/map_reduce_error.rb,<br /> riak-client/lib/riak/util/translation.rb,<br /> riak-client/lib/riak/map_reduce/phase.rb,<br /> riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/excon_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb,<br /> riak-client/lib/riak/client/beefcake/messages.rb,<br /> riak-client/lib/riak/map_reduce/filter_builder.rb,<br /> riak-client/lib/riak/client/protobuffs_backend.rb,<br /> riak-client/lib/riak/util/multipart/stream_parser.rb,<br /> riak-client/lib/riak/client/beefcake/object_methods.rb,<br /> riak-client/lib/riak/client/http_backend/key_streamer.rb,<br /> riak-client/lib/riak/client/http_backend/configuration.rb,<br /> riak-client/lib/riak/client/http_backend/object_methods.rb,<br /> riak-client/lib/riak/client/beefcake_protobuffs_backend.rb,<br /> riak-client/lib/riak/client/http_backend/request_headers.rb,<br /> riak-client/lib/riak/client/http_backend/transport_methods.rb,<br /> riak-client/lib/riak/util/headers.rb</span>
+  riak-client/lib/riak/link.rb,<br /> riak-client/lib/riak/json.rb,<br /> riak-client/lib/riak/search.rb,<br /> riak-client/lib/riak/bucket.rb,<br /> riak-client/lib/riak/client.rb,<br /> riak-client/lib/riak/robject.rb,<br /> riak-client/lib/riak/walk_spec.rb,<br /> riak-client/lib/riak/map_reduce.rb,<br /> riak-client/lib/riak/cache_store.rb,<br /> riak-client/lib/riak/client/pump.rb,<br /> riak-client/lib/riak/test_server.rb,<br /> riak-client/lib/riak/util/escape.rb,<br /> riak-client/lib/riak/util/multipart.rb,<br /> riak-client/lib/riak/failed_request.rb,<br /> riak-sessions/lib/riak/session_store.rb,<br /> riak-client/lib/riak/map_reduce_error.rb,<br /> riak-client/lib/riak/util/translation.rb,<br /> riak-client/lib/riak/map_reduce/phase.rb,<br /> riak-client/lib/riak/client/curb_backend.rb,<br /> riak-client/lib/riak/client/http_backend.rb,<br /> riak-client/lib/riak/client/excon_backend.rb,<br /> riak-client/lib/riak/client/net_http_backend.rb,<br /> riak-client/lib/riak/client/beefcake/messages.rb,<br /> riak-client/lib/riak/map_reduce/filter_builder.rb,<br /> riak-client/lib/riak/client/protobuffs_backend.rb,<br /> riak-client/lib/riak/util/multipart/stream_parser.rb,<br /> riak-client/lib/riak/client/beefcake/object_methods.rb,<br /> riak-client/lib/riak/client/http_backend/key_streamer.rb,<br /> riak-client/lib/riak/client/http_backend/configuration.rb,<br /> riak-client/lib/riak/client/http_backend/object_methods.rb,<br /> riak-client/lib/riak/client/beefcake_protobuffs_backend.rb,<br /> riak-client/lib/riak/client/http_backend/request_headers.rb,<br /> riak-client/lib/riak/client/http_backend/transport_methods.rb,<br /> riak-client/lib/riak/util/headers.rb</span>
 </dd>
   
 </dl>
@@ -91,15 +104,97 @@ The Riak module contains all aspects of the client interface to Riak.
 </p>
 
 
+  <h2>Class Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#json_options-class_method" title="json_options (class method)">+ (Object) <strong>json_options</strong> </a>
+    
 
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Options that will be passed to the JSON parser and encoder.
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+
+  <div id="class_attr_details" class="attr_details">
+    <h2>Class Attribute Details</h2>
+    
+      
+      <span id="json_options=-class_method"></span>
+      <span id="json_options-class_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="json_options-class_method">
+  
+    + (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>json_options</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Options that will be passed to the JSON parser and encoder. Defaults to
+=> 20
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+14
+15
+16</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'riak-client/lib/riak/json.rb', line 14</span>
+
+<span class='kw'>def</span> <span class='id json_options'>json_options</span>
+  <span class='ivar'>@json_options</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
 
 
 </div>
     
     <div id="footer">
-  Generated on Sun Apr 17 20:28:48 2011 by 
+  Generated on Wed Jun 15 08:56:40 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.7 (ruby-1.9.2).
+  0.7.2 (ruby-1.9.2).
 </div>
 
   </body>

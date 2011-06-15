@@ -2,17 +2,27 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>File: RELEASE_NOTES</title>
-<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: RELEASE_NOTES
+  
+    &mdash; Documentation by YARD 0.7.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
   relpath = '';
   if (relpath != '') relpath += '/';
 </script>
-<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
 
   </head>
   <body>
@@ -31,17 +41,40 @@
 </div>
 
       <div id="search">
-  <a id="class_list_link" href="#">Class List</a>
-  <a id="method_list_link" href="#">Method List</a>
-  <a id ="file_list_link" href="#">File List</a>
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
 </div>
-
       <div class="clear"></div>
     </div>
     
     <iframe id="search_frame"></iframe>
     
     <div id="content"><div id='filecontents'><h1>Ripple Release Notes</h1>
+<h2>0.9.5 Patch Release &#8211; 2011-06-14</h2>
+<p>Release 0.9.5 is a minor bugfix release but also includes some small features.</p>
+<p>Full notes:</p>
+<ul>
+	<li>Allow IO-like objects to be used as RObject data. [Josh Nichols]</li>
+	<li>Set the content-length or transfer-encoding appropriately for Net::<span class="caps">HTTP</span>. Fixes #162.</li>
+	<li>Fix MapReduce jobs on <span class="caps">PBC</span> when keep=false on certain phases. [Alexander Lang]</li>
+	<li>Invalidate the key-cache for a bucket when streaming.</li>
+	<li>Pass options through Document#all to Bucket#keys.</li>
+	<li>Make Hash#to_param compatible with ActiveSupport. [Dave Perrett]</li>
+	<li>Add support for previous_changes functionality and make available to callbacks. [Nathaniel Talbott, Sean Cribbs]</li>
+</ul>
+<h2>0.9.4 Patch Release &#8211; 2011-05-10</h2>
+<p>Release 0.9.4 is a minor bugfix release.</p>
+<p>Full notes:</p>
+<ul>
+	<li>Allow global <span class="caps">JSON</span> options to be set so that deeply nested objects can be serialized.</li>
+	<li>Set TCP_NODELAY on <span class="caps">PBC</span> sockets and send messages in a single write to reduce latency. [Technorama, Dan Hodge]</li>
+	<li>X510 should be X509 in OpenSSL. [Adam Hunter]</li>
+</ul>
 <h2>0.9.3 Patch Release &#8211; 2011-04-18</h2>
 <p>Release 0.9.3 is a minor bugfix release.</p>
 <p>Full notes:</p>
@@ -284,9 +317,9 @@ It includes:</p>
 </ul></div></div>
     
     <div id="footer">
-  Generated on Sun Apr 17 20:28:48 2011 by 
+  Generated on Wed Jun 15 08:56:39 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.6.7 (ruby-1.9.2).
+  0.7.2 (ruby-1.9.2).
 </div>
 
   </body>
