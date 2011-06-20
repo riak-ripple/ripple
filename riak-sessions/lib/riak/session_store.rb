@@ -30,7 +30,6 @@ module Riak
     :last_write_wins => false,
     :content_type => "application/x-ruby-marshal"
 
-
     attr_reader :bucket
 
     # Creates a new Riak::SessionStore middleware
@@ -39,6 +38,7 @@ module Riak
     # @see Rack::Session::Abstract::ID#initialize
     def initialize(app, options={})
       super
+      @riak_options = options.merge(DEFAULT_OPTIONS)
       @client = Riak::Client.new(@default_options.slice(*Riak::Client::VALID_OPTIONS))
       @bucket = @client.bucket(default_options[:bucket])
       set_bucket_defaults
@@ -107,7 +107,7 @@ module Riak
     def fresh_session
       session_id, robject = generate_sid, bucket.new
       robject.key = session_id
-      robject.content_type = options[:content_type]
+      robject.content_type = @riak_options[:content_type]
       robject.data = {}
       robject.store
       [session_id, robject.data]
