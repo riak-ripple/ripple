@@ -73,6 +73,10 @@ module Riak
         return false if options[:drop]
         session_id = generate_sid
       elsif session_id.nil?
+        # Rails 2.3 kills the session id from the request when
+        # reset_session is called. Working around that by temp.
+        # storing it in the middleware and explicitly destroying it
+        # as it's not guaranteed that Riak expiry is enabled
         session_id = if @session_id
                        destroy_session(env, @session_id, options)
                      else

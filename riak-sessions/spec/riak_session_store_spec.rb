@@ -24,6 +24,11 @@ describe Riak::SessionStore do
     env['rack.session.options'][:defer] = true
     incrementor.call(env)
   end
+  reset_session = proc do |env|
+    env['rack.session.options'].delete(:id)
+    env['rack.session'] = {}
+    incrementor.call(env)
+  end
 
   it "creates a new cookie" do
     pool = Riak::SessionStore.new(incrementor)
@@ -44,7 +49,7 @@ describe Riak::SessionStore do
   end
 
   it "survives nonexistant cookies" do
-    bad_cookie = "rack.session=blarghfasel"
+    bad_cookie = "rack.session=#{Digest::SHA1.hexdigest(Time.now.to_s)}"
     pool = Riak::SessionStore.new(incrementor)
     res = Rack::MockRequest.new(pool).
       get("/", "HTTP_COOKIE" => bad_cookie)
@@ -90,6 +95,7 @@ describe Riak::SessionStore do
     res3["Set-Cookie"][session_match].should_not == session
     res3.body.should == '{"counter"=>1}'
   end
+
   it "provides new session id with :renew option" do
     pool = Riak::SessionStore.new(incrementor)
     req = Rack::MockRequest.new(pool)
@@ -137,4 +143,55 @@ describe Riak::SessionStore do
     res3["Set-Cookie"][session_match].should == session
     res3.body.should == '{"counter"=>4}'
   end
+
+  it "should store the session as marshaled Ruby" do
+    client = Riak::Client.new(Riak::SessionStore::DEFAULT_OPTIONS.slice(*Riak::Client::VALID_OPTIONS))
+    pool = Riak::SessionStore.new(incrementor)
+    res = Rack::MockRequest.new(pool).get("/")
+    session_id = res["Set-Cookie"].gsub(/rack\.session=([a-z0-9]+);.+$/, '\1')
+    session = client.bucket('_sessions').get(session_id)
+    session.content_type.should == "application/x-ruby-marshal"
+  end
+
+  it "should create a new session when the session is harshly reset" do
+    pool = Riak::SessionStore.new(incrementor)
+    req = Rack::MockRequest.new(pool)
+    reset_session = Rack::Utils::Context.new(pool, reset_session)
+    reset_req = Rack::MockRequest.new(reset_session)
+
+    res0 = req.get("/")
+    session = (cookie = res0["Set-Cookie"])[session_match]
+    res0.body.should == '{"counter"=>1}'
+
+    res1 = req.get("/", "HTTP_COOKIE" => cookie)
+    res1["Set-Cookie"][session_match].should == session
+    res1.body.should == '{"counter"=>2}'
+
+    res2 = reset_req.get("/", "HTTP_COOKIE" => cookie)
+    res2["Set-Cookie"][session_match].should_not == session
+    res2.body.should == '{"counter"=>1}'
+  end
+
+  it "should delete the old session when the session is harshly reset" do
+    pool = Riak::SessionStore.new(incrementor)
+    req = Rack::MockRequest.new(pool)
+    reset_session = Rack::Utils::Context.new(pool, reset_session)
+    reset_req = Rack::MockRequest.new(reset_session)
+
+    res0 = req.get("/")
+    session = (cookie = res0["Set-Cookie"])[session_match]
+    res0.body.should == '{"counter"=>1}'
+
+    res1 = req.get("/", "HTTP_COOKIE" => cookie)
+    res1["Set-Cookie"][session_match].should == session
+    res1.body.should == '{"counter"=>2}'
+
+    res2 = reset_req.get("/", "HTTP_COOKIE" => cookie)
+
+    client = Riak::Client.new(Riak::SessionStore::DEFAULT_OPTIONS.slice(*Riak::Client::VALID_OPTIONS))
+    expect {
+      client.bucket('_session').get(session)
+    }.to raise_error(Riak::HTTPFailedRequest)
+  end
+
 end
