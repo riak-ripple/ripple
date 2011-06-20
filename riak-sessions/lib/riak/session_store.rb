@@ -13,6 +13,9 @@ module Riak
   # Usage (Rails):
   #   config.middleware.use Riak::SessionStore
   #
+  # Usage (Rails 2.3), requires you to swap out the default store:
+  #   config.middleware.swap ActionController::Session::CookieStore, Riak::SessionStore
+  #
   # For configuration options, see #initialize.
   class SessionStore < Rack::Session::Abstract::ID
     DEFAULT_OPTIONS = Rack::Session::Abstract::ID::DEFAULT_OPTIONS.merge \
@@ -24,8 +27,8 @@ module Riak
     :dw => 0,
     :rw => 1,
     :n_val => 2,
-    :last_write_wins => false
-
+    :last_write_wins => false,
+    :content_type => "application/x-ruby-marshal"
 
     attr_reader :bucket
 
@@ -35,6 +38,7 @@ module Riak
     # @see Rack::Session::Abstract::ID#initialize
     def initialize(app, options={})
       super
+      @riak_options = options.merge(DEFAULT_OPTIONS)
       @client = Riak::Client.new(@default_options.slice(*Riak::Client::VALID_OPTIONS))
       @bucket = @client.bucket(default_options[:bucket])
       set_bucket_defaults
@@ -51,6 +55,7 @@ module Riak
     private
     def get_session(env, session_id)
       if session_id && robject = (bucket.get(session_id) rescue nil)
+        @session_id = session_id
         if stale?(robject)
           bucket.delete(session_id)
           fresh_session
@@ -67,8 +72,20 @@ module Riak
         bucket.delete(session_id)
         return false if options[:drop]
         session_id = generate_sid
+      elsif session_id.nil?
+        # Rails 2.3 kills the session id from the request when
+        # reset_session is called. Working around that by temp.
+        # storing it in the middleware and explicitly destroying it
+        # as it's not guaranteed that Riak expiry is enabled
+        session_id = if @session_id
+                       destroy_session(env, @session_id, options)
+                     else
+                       generate_sid
+                     end
       end
+
       robject = bucket.get_or_new(session_id)
+      robject.content_type = options[:content_type]
       robject.meta['expire-after'] = (Time.now + options[:expire_after]).httpdate if options[:expire_after]
       robject.data = session
       robject.store
@@ -94,6 +111,7 @@ module Riak
     def fresh_session
       session_id, robject = generate_sid, bucket.new
       robject.key = session_id
+      robject.content_type = @riak_options[:content_type]
       robject.data = {}
       robject.store
       [session_id, robject.data]
