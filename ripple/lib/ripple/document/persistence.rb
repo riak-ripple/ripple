@@ -61,6 +61,7 @@ module Ripple
 
         def really_save(*args)
           robject.key = key if robject.key != key
+          robject.content_type = 'application/json'
           robject.data = attributes_for_persistence
           robject.store(self.class.quorums.slice(:w,:dw))
           self.key = robject.key

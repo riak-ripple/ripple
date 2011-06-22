@@ -11,6 +11,16 @@ describe Ripple::Document::Persistence do
     @widget = Widget.new(:size => 1000)
   end
 
+  it "forces the content type to 'application/json'" do
+    @widget.robject.content_type = 'application/not-json'
+
+    @backend.should_receive(:store_object) do |obj, *_|
+      obj.content_type.should == 'application/json'
+    end
+
+    @widget.save
+  end
+
   it "should save a new object to Riak" do
     json = @widget.attributes.merge("_type" => "Widget").to_json
     @backend.should_receive(:store_object) do |obj, _, _, _|
@@ -99,7 +109,7 @@ describe Ripple::Document::Persistence do
   end
 
   it "should allow unexpected exceptions to be raised" do
-    robject = mock("robject", :key => @widget.key, "data=" => true)
+    robject = mock("robject", :key => @widget.key, "data=" => true, "content_type=" => true)
     robject.should_receive(:store).and_raise(Riak::HTTPFailedRequest.new(:post, 200, 404, {}, "404 not found"))
     @widget.stub!(:robject).and_return(robject)
     lambda { @widget.save }.should raise_error(Riak::FailedRequest)
