@@ -76,6 +76,11 @@ describe Riak::Client do
     it "should default the luwak path to /luwak if not specified" do
       Riak::Client.new.luwak.should == "/luwak"
     end
+
+    it "should accept a solr path" do
+      client = Riak::Client.new(:solr => "/solar")
+      client.solr.should == "/solar"
+    end
   end
 
   describe "reconfiguring" do

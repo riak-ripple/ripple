@@ -25,8 +25,12 @@ module Riak
         :map_cache_size => 0,     # 0.14
         :vnode_cache_entries => 0 # 0.13
       },
+      :riak_search => {
+        :enabled => true,
+        :search_backend => :riak_search_test_backend
+      },
       :luwak => {
-        :enabled => false
+        :enabled => true
       }
     }
     VM_ARGS_DEFAULTS = {
@@ -117,6 +121,11 @@ module Riak
               @cin.puts "riak_kv_test_backend:reset()."
               @cin.flush
               wait_for_erlang_prompt
+              if search_enabled?
+                @cin.puts "riak_search_test_backend:reset()."
+                @cin.flush
+                wait_for_erlang_prompt
+              end
             else
               @cin.puts "init:restart()."
               @cin.flush
@@ -221,6 +230,10 @@ module Riak
       _cpid = @cpid; @cpid = nil
       at_exit { _cpid.join if _cpid && _cpid.alive? }
       @started = false
+    end
+
+    def search_enabled?
+      @app_config[:riak_search][:enabled]
     end
   end
 end

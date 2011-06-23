@@ -82,11 +82,9 @@ p results # => ["Please Please Me", "With The Beatles", "A Hard Day's Night",
 
 ## Riak Search Examples
 
-For more information about Riak Search, see [the Basho wiki](http://wiki.basho.com/display/RIAK/Riak+Search).
+For more information about Riak Search, see [the Basho wiki](http://wiki.basho.com/Riak-Search.html).
 
 ``` ruby
-require 'riak/search' # optional riak_search additions
-
 # Create a client, specifying the Solr-compatible endpoint
 client = Riak::Client.new :solr => "/solr"
 
