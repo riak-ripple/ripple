@@ -37,6 +37,16 @@ describe Ripple::Associations::OneLinkedProxy do
     @person.profile.should be_present
   end
 
+  it "handles conflict appropriately by selecting the linked-walk robject that matches the link" do
+    @person.robject.links << @profile.robject.to_link("profile")
+    @person.robject.
+      should_receive(:walk).
+      with(Riak::WalkSpec.new(:bucket => "profiles", :tag => "profile")).
+      and_return([[@other_profile.robject, @profile.robject]])
+
+    @person.profile.should == @profile
+  end
+
   it "should return nil immediately if the association link is missing" do
     @person.robject.links.should be_empty
     @person.profile.should be_nil

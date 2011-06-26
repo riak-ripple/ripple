@@ -39,9 +39,18 @@ module Ripple
       end
 
       def robjects
-        @owner.robject.walk(*Array(@reflection.link_spec)).first || []
-      rescue
-        []
+        walk_result = begin
+          @owner.robject.walk(*Array(@reflection.link_spec)).first || []
+        rescue
+          []
+        end
+
+        # We can get more robject results that we have links when there is conflict,
+        # since link-walking returns the robjects for the union of all sibling links.
+        # Here, we filter out robjects that should not be included.
+        walk_result.select do |robject|
+          links.include?(robject.to_link(@reflection.link_tag))
+        end
       end
     end
   end
