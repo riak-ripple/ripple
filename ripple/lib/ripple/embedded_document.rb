@@ -50,6 +50,16 @@ module Ripple
         _parent_document == other._parent_document &&
         attributes.except('_type') == other.attributes.except('_type')
       end
+      alias eql? ==
+
+      def hash
+        [
+          _parent_document.class,
+          _parent_document.key,
+          self.class,
+          *attributes.except('_type').values
+        ].hash
+      end
     end
   end
 end
