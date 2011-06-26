@@ -1,5 +1,6 @@
 require 'active_support/concern'
 require 'active_model/naming'
+require 'ripple/conflict/document_hooks'
 require 'ripple/document/bucket_access'
 require 'ripple/document/key'
 require 'ripple/document/persistence'
@@ -62,6 +63,7 @@ module Ripple
       include Ripple::Inspection
       include Ripple::NestedAttributes
       include Ripple::Serialization
+      include Ripple::Conflict::DocumentHooks
     end
 
     module ClassMethods
