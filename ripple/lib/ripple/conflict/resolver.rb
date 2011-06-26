@@ -15,6 +15,7 @@ module Ripple
       end
 
       def resolve
+        assert_conflict_block
         basic_resolver.perform
         assert_no_unexpected_conflicts
         document.instance_exec(siblings, basic_resolver.remaining_conflicts, &on_conflict_block)
@@ -35,6 +36,12 @@ module Ripple
 
       def basic_resolver
         @basic_resolver ||= BasicResolver.new(self)
+      end
+
+      def assert_conflict_block
+        return if on_conflict_block
+
+        raise NotImplementedError, t('conflict_handler_not_implemented', :document => document)
       end
 
       def assert_no_unexpected_conflicts

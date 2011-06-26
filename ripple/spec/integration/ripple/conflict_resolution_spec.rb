@@ -55,6 +55,15 @@ describe "Ripple conflict resolution" do
         lambda { |p| p.favorite_colors << 'red' }
     end
 
+    it 'raises a NotImplementedError when there is no on_conflict handler' do
+      ConflictedPerson.instance_variable_get(:@on_conflict_block).should_not be_nil
+      ConflictedPerson.instance_variable_set(:@on_conflict_block, nil)
+
+      expect {
+        ConflictedPerson.find('John')
+      }.to raise_error(NotImplementedError)
+    end
+
     it 'invokes the on_conflict block with the siblings and the list of conflicted attributes' do
       siblings = conflicts = nil
       ConflictedPerson.on_conflict { |s, c| siblings = s; conflicts = c }
