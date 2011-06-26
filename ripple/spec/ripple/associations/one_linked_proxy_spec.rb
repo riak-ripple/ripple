@@ -47,6 +47,14 @@ describe Ripple::Associations::OneLinkedProxy do
     @person.profile.should == @profile
   end
 
+  it "allows the links to be replaced directly" do
+    @person.profile = @profile
+    @person.profile.__send__(:should_receive, :reset)
+    @person.profile.__send__(:links).should == [@profile.robject.to_link("profile")]
+    @person.profile.replace_links(@other_profile.robject.to_link("profile"))
+    @person.profile.__send__(:links).should == [@other_profile.robject.to_link("profile")]
+  end
+
   it "should return nil immediately if the association link is missing" do
     @person.robject.links.should be_empty
     @person.profile.should be_nil

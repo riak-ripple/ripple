@@ -15,6 +15,14 @@ module Ripple
         @target = value
       end
 
+      def replace_links(value)
+        @owner.robject.links -= links
+        Array(value).each do |link|
+          @owner.robject.links << link
+        end
+        reset
+      end
+
       def keys
         @keys ||= Set.new(links.map { |l| l.key })
       end

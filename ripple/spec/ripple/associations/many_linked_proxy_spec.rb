@@ -53,6 +53,14 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.tasks.should == [@task, @other_task]
   end
 
+  it "allows the links to be replaced directly" do
+    @person.tasks = [@task]
+    @person.tasks.__send__(:should_receive, :reset)
+    @person.tasks.__send__(:links).should == [@task.robject.to_link("tasks")]
+    @person.tasks.replace_links([@other_task, @third_task].map { |t| t.robject.to_link("tasks") })
+    @person.tasks.__send__(:links).should == [@other_task, @third_task].map { |t| t.robject.to_link("tasks") }
+  end
+
   it "should replace associated documents with a new set" do
     @person.tasks = [@task]
     @person.tasks = [@other_task]
