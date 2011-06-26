@@ -22,6 +22,7 @@ module Ripple
       def perform
         process_properties
         process_embedded_associations
+        process_linked_associations
       end
 
       private
@@ -34,7 +35,13 @@ module Ripple
 
       def process_embedded_associations
         model_class.embedded_associations.each do |assoc|
-          document.send(:"#{assoc.name}=", resolved_embedded_association_value_for(assoc))
+          document.send(:"#{assoc.name}=", resolved_association_value_for(assoc, :load_target))
+        end
+      end
+
+      def process_linked_associations
+        model_class.linked_associations.each do |assoc|
+          document.send(assoc.name).replace_links(resolved_association_value_for(assoc, :links))
         end
       end
 
@@ -53,9 +60,9 @@ module Ripple
         end
       end
 
-      def resolved_embedded_association_value_for(association)
-        # the association proxy doesn't uniquify well, so we have to use the target directly
-        uniq_values = siblings.map { |s| s.send(association.name).__send__(:load_target) }.uniq
+      def resolved_association_value_for(association, proxy_value_method)
+        # the association proxy doesn't uniquify well, so we have to use the target or links directly
+        uniq_values = siblings.map { |s| s.send(association.name).__send__(proxy_value_method) }.uniq
 
         return uniq_values.first if uniq_values.size == 1
         remaining_conflicts << association.name

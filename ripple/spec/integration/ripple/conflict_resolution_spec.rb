@@ -12,8 +12,13 @@ describe "Ripple conflict resolution" do
     property :updated_at, DateTime
     key_on   :name
 
+    # embedded
     one :address, :class_name => 'ConflictedAddress'
     many :jobs, :class_name => 'ConflictedJob'
+
+    # linked
+    one :spouse, :class_name => 'ConflictedPerson'
+    many :friends, :class_name => 'ConflictedPerson'
 
     bucket.allow_mult = true
   end
@@ -54,6 +59,8 @@ describe "Ripple conflict resolution" do
       :favorite_colors => ['green'],
       :address         => ConflictedAddress.new(:city => 'Seattle'),
       :jobs            => [ConflictedJob.new(:title => 'Engineer')],
+      :spouse          => ConflictedPerson.create!(:name => 'Jill', :gender => 'female'),
+      :friends         => [ConflictedPerson.create!(:name => 'Quinn', :gender => 'male')],
       :created_at      => created_at,
       :updated_at      => updated_at
     )
@@ -194,6 +201,52 @@ describe "Ripple conflict resolution" do
       record.jobs.should == []
       conflicts.should == [:jobs]
       siblings.map { |s| s.jobs.map(&:title) }.should =~ [["Engineer", "CEO"], ["Engineer", "CTO"]]
+    end
+  end
+
+  context 'when there are conflicts on a one linked association' do
+    before(:each) do
+      create_conflict original_person,
+        lambda { |p| p.spouse = ConflictedPerson.create!(:name => 'Renee', :gender => 'female') },
+        lambda { |p| p.spouse = ConflictedPerson.create!(:name => 'Sharon', :gender => 'female') }
+    end
+
+    it 'sets the association to nil and includes its name in the list of conflicts passed to the on_conflict block' do
+      record_spouse = conflicts = sibling_spouse_names = nil
+
+      ConflictedPerson.on_conflict do |siblings, c|
+        record_spouse = spouse
+        conflicts = c
+        sibling_spouse_names = siblings.map { |s| s.spouse.name }
+      end
+
+      ConflictedPerson.find('John')
+      record_spouse.should be_nil
+      conflicts.should == [:spouse]
+      sibling_spouse_names.should =~ %w[ Sharon Renee ]
+    end
+  end
+
+  context 'when there are conflicts on a many linked association' do
+    before(:each) do
+      create_conflict original_person,
+        lambda { |p| p.friends << ConflictedPerson.new(:name => 'Luna', :gender => 'female') },
+        lambda { |p| p.friends << ConflictedPerson.new(:name => 'Molly', :gender => 'female') }
+    end
+
+    it 'sets the association to a blank array and includes its name in the list of conflicts passed to the on_conflict block' do
+      record_friends = conflicts = sibling_friend_names = nil
+
+      ConflictedPerson.on_conflict do |siblings, c|
+        record_friends = friends
+        conflicts = c
+        sibling_friend_names = siblings.map { |s| s.friends.map(&:name) }
+      end
+
+      ConflictedPerson.find('John')
+      record_friends.should == []
+      conflicts.should == [:friends]
+      sibling_friend_names.map(&:sort).should =~ [['Luna', 'Quinn'], ['Molly', 'Quinn']]
     end
   end
 end
