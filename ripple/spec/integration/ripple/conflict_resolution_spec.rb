@@ -12,7 +12,20 @@ describe "Ripple conflict resolution" do
     property :updated_at, DateTime
     key_on   :name
 
+    one :address, :class_name => 'ConflictedAddress'
+    many :jobs, :class_name => 'ConflictedJob'
+
     bucket.allow_mult = true
+  end
+
+  class ConflictedAddress
+    include Ripple::EmbeddedDocument
+    property :city, String
+  end
+
+  class ConflictedJob
+    include Ripple::EmbeddedDocument
+    property :title, String
   end
 
   before(:each) do
@@ -30,23 +43,25 @@ describe "Ripple conflict resolution" do
     end
   end
 
-  context 'for a document that has conflicted attributes' do
-    let(:created_at) { DateTime.new(2011, 5, 12, 8, 30, 0) }
-    let(:updated_at) { DateTime.new(2011, 5, 12, 8, 30, 0) }
+  let(:created_at) { DateTime.new(2011, 5, 12, 8, 30, 0) }
+  let(:updated_at) { DateTime.new(2011, 5, 12, 8, 30, 0) }
 
+  let(:original_person) do
+    ConflictedPerson.create!(
+      :name            => 'John',
+      :age             => 25,
+      :gender          => 'male',
+      :favorite_colors => ['green'],
+      :address         => ConflictedAddress.new(:city => 'Seattle'),
+      :jobs            => [ConflictedJob.new(:title => 'Engineer')],
+      :created_at      => created_at,
+      :updated_at      => updated_at
+    )
+  end
+
+  context 'for a document that has conflicted attributes' do
     let(:most_recent_updated_at) { DateTime.new(2011, 6, 4, 12, 30) }
     let(:earliest_created_at)    { DateTime.new(2010, 5, 3, 12, 30) }
-
-    let(:original_person) do
-      ConflictedPerson.create!(
-        :name            => 'John',
-        :age             => 25,
-        :gender          => 'male',
-        :favorite_colors => ['green'],
-        :created_at      => created_at,
-        :updated_at      => updated_at
-      )
-    end
 
     before(:each) do
       create_conflict original_person,
@@ -145,6 +160,40 @@ describe "Ripple conflict resolution" do
         ConflictedPerson.on_conflict(:age, :favorite_colors) { }
         ConflictedPerson.find('John')
       end
+    end
+  end
+
+  context 'when there are conflicts on a one embedded association' do
+    before(:each) do
+      create_conflict original_person,
+        lambda { |p| p.address.city = 'San Francisco' },
+        lambda { |p| p.address.city = 'Portland' }
+    end
+
+    it 'sets the association to nil and includes its name in the list of conflicts passed to the on_conflict block' do
+      siblings = conflicts = record = nil
+      ConflictedPerson.on_conflict { |*a| siblings, conflicts = *a; record = self }
+      ConflictedPerson.find('John')
+      record.address.should be_nil
+      conflicts.should == [:address]
+      siblings.map { |s| s.address.city }.should =~ ['Portland', 'San Francisco']
+    end
+  end
+
+  context 'when there are conflicts on a many embedded association' do
+    before(:each) do
+      create_conflict original_person,
+        lambda { |p| p.jobs << ConflictedJob.new(:title => 'CEO') },
+        lambda { |p| p.jobs << ConflictedJob.new(:title => 'CTO') }
+    end
+
+    it 'sets the association to an empty array and includes its name in the list of conflicts passed to the on_conflict block' do
+      siblings = conflicts = record = nil
+      ConflictedPerson.on_conflict { |*a| siblings, conflicts = *a; record = self }
+      ConflictedPerson.find('John')
+      record.jobs.should == []
+      conflicts.should == [:jobs]
+      siblings.map { |s| s.jobs.map(&:title) }.should =~ [["Engineer", "CEO"], ["Engineer", "CTO"]]
     end
   end
 end

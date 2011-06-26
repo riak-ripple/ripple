@@ -20,14 +20,25 @@ module Ripple
       end
 
       def perform
-        model_class.properties.each do |name, property|
-          document.send(:"#{name}=", resolved_value_for(property))
-        end
+        process_properties
+        process_embedded_associations
       end
 
       private
 
-      def resolved_value_for(property)
+      def process_properties
+        model_class.properties.each do |name, property|
+          document.send(:"#{name}=", resolved_property_value_for(property))
+        end
+      end
+
+      def process_embedded_associations
+        model_class.embedded_associations.each do |assoc|
+          document.send(:"#{assoc.name}=", resolved_embedded_association_value_for(assoc))
+        end
+      end
+
+      def resolved_property_value_for(property)
         uniq_values = siblings.map(&property.key).uniq
 
         value = if uniq_values.size == 1
@@ -40,6 +51,16 @@ module Ripple
           remaining_conflicts << property.key
           property.default
         end
+      end
+
+      def resolved_embedded_association_value_for(association)
+        # the association proxy doesn't uniquify well, so we have to use the target directly
+        uniq_values = siblings.map { |s| s.send(association.name).__send__(:load_target) }.uniq
+
+        return uniq_values.first if uniq_values.size == 1
+        remaining_conflicts << association.name
+
+        association.many? ? [] : nil # default value
       end
     end
   end
