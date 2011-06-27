@@ -14,16 +14,6 @@ module Ripple
         def expected_conflicts
           @expected_conflicts ||= []
         end
-
-        private
-
-        def instantiate(robject)
-          return super unless robject.conflict?
-
-          resolver = Ripple::Conflict::Resolver.new(robject, self)
-          resolver.resolve
-          resolver.document
-        end
       end
     end
   end

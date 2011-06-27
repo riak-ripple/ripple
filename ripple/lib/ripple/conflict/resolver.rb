@@ -9,6 +9,17 @@ module Ripple
 
       delegate :expected_conflicts, :on_conflict_block, :to => :model_class
 
+      def self.call(robject)
+        possible_model_classes = robject.siblings.map { |s| s.data['_type'] }.uniq
+        return nil unless possible_model_classes.size == 1
+
+        resolver = new(robject, possible_model_classes.first.constantize)
+        resolver.resolve
+        resolver.document.robject
+      end
+
+      Riak::RObject.register_conflict_resolver(self)
+
       def initialize(robject, model_class)
         @robject = robject
         @model_class = model_class
