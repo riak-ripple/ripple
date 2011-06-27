@@ -56,6 +56,17 @@ module Riak
       @conflict_resolvers ||= []
     end
 
+    def resolve_conflict
+      return self unless conflict?
+
+      self.class.conflict_resolvers.each do |resolver|
+        result = resolver.call(self)
+        return result if result.is_a?(RObject)
+      end
+
+      self
+    end
+
     # Loads a list of RObjects that were emitted from a MapReduce
     # query.
     # @param [Client] client A Riak::Client with which the results will be associated

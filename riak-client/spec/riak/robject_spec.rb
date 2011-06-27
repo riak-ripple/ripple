@@ -421,5 +421,47 @@ describe Riak::RObject do
       described_class.conflict_resolvers.should == [callable]
     end
   end
+
+  describe '#resolve_conflict' do
+    let(:conflicted_robject) { Riak::RObject.new(@bucket, "conflicted") { |r| r.conflict = true } }
+    let(:resolved_robject) { Riak::RObject.new(@bucket, "resolved") }
+    let(:invoked_resolvers) { [] }
+    let(:resolver_1) { lambda { |r| invoked_resolvers << :resolver_1; nil } }
+    let(:resolver_2) { lambda { |r| invoked_resolvers << :resolver_2; :not_an_robject } }
+    let(:resolver_3) { lambda { |r| invoked_resolvers << :resolver_3; r } }
+    let(:resolver_4) { lambda { |r| invoked_resolvers << :resolver_4; resolved_robject } }
+
+    before(:each) do
+      described_class.register_conflict_resolver(resolver_1)
+      described_class.register_conflict_resolver(resolver_2)
+    end
+
+    it 'calls each resolver until one of them returns an robject' do
+      described_class.register_conflict_resolver(resolver_3)
+      described_class.register_conflict_resolver(resolver_4)
+      conflicted_robject.resolve_conflict
+      invoked_resolvers.should == [:resolver_1, :resolver_2, :resolver_3]
+    end
+
+    it 'returns the robject returned by the last invoked resolver' do
+      described_class.register_conflict_resolver(resolver_4)
+      conflicted_robject.resolve_conflict.should be(resolved_robject)
+    end
+
+    it 'allows the resolver to return the original robject' do
+      described_class.register_conflict_resolver(resolver_3)
+      conflicted_robject.resolve_conflict.should be(conflicted_robject)
+    end
+
+    it 'returns the robject and does not call any resolvers if the robject is not in conflict' do
+      resolved_robject.resolve_conflict.should be(resolved_robject)
+      invoked_resolvers.should == []
+    end
+
+    it 'returns the original robject if none of the resolvers returns an robject' do
+      conflicted_robject.resolve_conflict.should be(conflicted_robject)
+      invoked_resolvers.should == [:resolver_1, :resolver_2]
+    end
+  end
 end
 
