@@ -2,6 +2,7 @@ en:
   riak:
     bucket_link_conversion: "Can't convert a bucket link to a walk spec"
     client_type: "invalid argument %{client} is not a Riak::Client"
+    conflict_resolver_invalid: "The given resolver (%{resolver}) did not respond to :call"
     content_type_undefined: "content_type is not defined!"
     deprecated:
       port: "DEPRECATION: Riak::Client#port has been deprecated, use #http_port or #pb_port for the appropriate protocol.\n%{backtrace}"

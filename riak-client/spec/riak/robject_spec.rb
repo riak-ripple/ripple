@@ -403,4 +403,23 @@ describe Riak::RObject do
     lambda { @object.inspect }.should_not raise_error
     @object.inspect.should be_kind_of(String)
   end
+
+  describe '.register_conflict_resolver' do
+    let(:uncallable) { Object.new }
+    let(:callable)   { lambda { |robject| } }
+
+    it 'raises an argument error when given an object that does not respond to :call' do
+      uncallable.should_not respond_to(:call)
+      expect {
+        described_class.register_conflict_resolver(uncallable)
+      }.to raise_error(ArgumentError)
+    end
+
+    it 'adds the object to the list of conflict resolvers' do
+      described_class.conflict_resolvers.should be_empty
+      described_class.register_conflict_resolver(callable)
+      described_class.conflict_resolvers.should == [callable]
+    end
+  end
 end
+

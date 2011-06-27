@@ -29,6 +29,7 @@ RSpec.configure do |config|
   config.mock_with :rspec
   
   config.before(:each) do
+    Riak::RObject.conflict_resolvers.clear
     FakeWeb.clean_registry
   end
 
