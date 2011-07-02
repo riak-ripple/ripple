@@ -137,24 +137,6 @@ describe "Ripple conflict resolution" do
       person.age.should == (20 + 25 + 30)
     end
 
-    it 'saves the resolved record so that it is no longer in conflict' do
-      ConflictedPerson.on_conflict do |siblings, _|
-        self.age = siblings.map(&:age).inject(&:+)
-      end
-
-      ConflictedPerson.find('John')
-      ConflictedPerson.on_conflict { raise "The record should no longer be in confict" }
-      person = ConflictedPerson.find('John')
-      person.age.should == (20 + 25 + 30)
-    end
-
-    it 'raises a DocumentInvalid error if the on_conflict block sets the record to an invalid state' do
-      ConflictedPerson.on_conflict { self.age = -10 }
-      expect {
-        ConflictedPerson.find('John')
-      }.to raise_error(Ripple::DocumentInvalid)
-    end
-
     context 'when .on_conflict is given a list of attributes' do
       it 'raises an error if attributes not mentioned in the list are in conflict' do
         ConflictedPerson.on_conflict(:age) { }

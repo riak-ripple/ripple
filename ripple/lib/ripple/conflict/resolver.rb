@@ -30,7 +30,7 @@ module Ripple
         basic_resolver.perform
         assert_no_unexpected_conflicts
         document.instance_exec(siblings, basic_resolver.remaining_conflicts, &on_conflict_block)
-        document.save!
+        document.update_robject
       end
 
       def siblings
