@@ -2,10 +2,10 @@ module Ripple
   module Conflict
     module TestHelper
       def create_conflict(main_record, *modifiers)
-        # We have to disable all conflict resolvers while we create conflict
+        # We have to disable all on conflict resolvers while we create conflict
         # so that they don't auto-resolve it.
-        orig_resolvers = Riak::RObject.conflict_resolvers.dup
-        Riak::RObject.conflict_resolvers.clear
+        orig_hooks = Riak::RObject.on_conflict_hooks.dup
+        Riak::RObject.on_conflict_hooks.clear
 
         begin
           klass, key = main_record.class, main_record.key
@@ -22,8 +22,8 @@ module Ripple
           robject = klass.bucket.get(key)
           raise "#{robject} is not in conflict as expected." unless robject.conflict?
         ensure
-          orig_resolvers.each do |resolver|
-            Riak::RObject.register_conflict_resolver(resolver)
+          orig_hooks.each do |hook|
+            Riak::RObject.on_conflict(&hook)
           end
         end
       end

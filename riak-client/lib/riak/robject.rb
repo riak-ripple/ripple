@@ -44,23 +44,19 @@ module Riak
     # @see http://wiki.basho.com/display/RIAK/REST+API#RESTAPI-Storeaneworexistingobjectwithakey Riak Rest API Docs
     attr_accessor :prevent_stale_writes
 
-    def self.register_conflict_resolver(resolver)
-      unless resolver.respond_to?(:call)
-        raise ArgumentError.new(t('conflict_resolve_invalid', :resolver => resolver.inspect))
-      end
-
-      conflict_resolvers << resolver
+    def self.on_conflict(&conflict_hook)
+      on_conflict_hooks << conflict_hook
     end
 
-    def self.conflict_resolvers
-      @conflict_resolvers ||= []
+    def self.on_conflict_hooks
+      @on_conflict_hooks ||= []
     end
 
     def resolve_conflict
       return self unless conflict?
 
-      self.class.conflict_resolvers.each do |resolver|
-        result = resolver.call(self)
+      self.class.on_conflict_hooks.each do |hook|
+        result = hook.call(self)
         return result if result.is_a?(RObject)
       end
 

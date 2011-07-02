@@ -3,11 +3,11 @@ require 'spec_helper'
 module Ripple
   module Conflict
     describe Resolver do
-      it 'is registered as a conflict resolver with Riak::RObject' do
-        Riak::RObject.conflict_resolvers.should include(described_class)
+      it 'is registered as an on conflict hook with Riak::RObject' do
+        Riak::RObject.on_conflict_hooks.should include(described_class.to_proc)
       end
 
-      describe '.call' do
+      describe 'calling the lambda returned by .to_proc' do
         let(:sibling_1) { stub(:data => { '_type' => 'User' } ) }
         let(:sibling_2) { stub(:data => { '_type' => 'User' } ) }
         let(:user_siblings) { [sibling_1, sibling_2] }
@@ -27,13 +27,13 @@ module Ripple
           resolver.should_receive(:resolve)
           resolver.stub(:document => resolved_document)
 
-          described_class.call(robject).should be(resolved_robject)
+          described_class.to_proc.call(robject).should be(resolved_robject)
         end
 
         it 'returns nil and does not attempt resolution when given an robject with siblings of different types' do
           user_siblings << wheel_sibling
           described_class.should_not_receive(:new)
-          described_class.call(robject).should be_nil
+          described_class.to_proc.call(robject).should be_nil
         end
       end
     end

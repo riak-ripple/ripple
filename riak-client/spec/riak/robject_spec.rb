@@ -404,21 +404,14 @@ describe Riak::RObject do
     @object.inspect.should be_kind_of(String)
   end
 
-  describe '.register_conflict_resolver' do
-    let(:uncallable) { Object.new }
-    let(:callable)   { lambda { |robject| } }
-
-    it 'raises an argument error when given an object that does not respond to :call' do
-      uncallable.should_not respond_to(:call)
-      expect {
-        described_class.register_conflict_resolver(uncallable)
-      }.to raise_error(ArgumentError)
-    end
-
-    it 'adds the object to the list of conflict resolvers' do
-      described_class.conflict_resolvers.should be_empty
-      described_class.register_conflict_resolver(callable)
-      described_class.conflict_resolvers.should == [callable]
+  describe '.on_conflict' do
+    it 'adds the hook to the list of on conflict hooks' do
+      hook_run = false
+      described_class.on_conflict_hooks.should be_empty
+      described_class.on_conflict { hook_run = true }
+      described_class.on_conflict_hooks.size.should == 1
+      described_class.on_conflict_hooks.first.call
+      hook_run.should == true
     end
   end
 
@@ -432,24 +425,24 @@ describe Riak::RObject do
     let(:resolver_4) { lambda { |r| invoked_resolvers << :resolver_4; resolved_robject } }
 
     before(:each) do
-      described_class.register_conflict_resolver(resolver_1)
-      described_class.register_conflict_resolver(resolver_2)
+      described_class.on_conflict(&resolver_1)
+      described_class.on_conflict(&resolver_2)
     end
 
     it 'calls each resolver until one of them returns an robject' do
-      described_class.register_conflict_resolver(resolver_3)
-      described_class.register_conflict_resolver(resolver_4)
+      described_class.on_conflict(&resolver_3)
+      described_class.on_conflict(&resolver_4)
       conflicted_robject.resolve_conflict
       invoked_resolvers.should == [:resolver_1, :resolver_2, :resolver_3]
     end
 
     it 'returns the robject returned by the last invoked resolver' do
-      described_class.register_conflict_resolver(resolver_4)
+      described_class.on_conflict(&resolver_4)
       conflicted_robject.resolve_conflict.should be(resolved_robject)
     end
 
     it 'allows the resolver to return the original robject' do
-      described_class.register_conflict_resolver(resolver_3)
+      described_class.on_conflict(&resolver_3)
       conflicted_robject.resolve_conflict.should be(conflicted_robject)
     end
 
