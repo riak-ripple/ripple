@@ -52,7 +52,7 @@ module Riak
       @on_conflict_hooks ||= []
     end
 
-    def resolve_conflict
+    def attempt_conflict_resolution
       return self unless conflict?
 
       self.class.on_conflict_hooks.each do |hook|

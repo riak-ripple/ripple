@@ -36,7 +36,7 @@ module Riak
               load_content(c, sibling)
             end
 
-            return robject.resolve_conflict
+            return robject.attempt_conflict_resolution
           else
             load_content(pbuf.content.first, robject)
           end

@@ -62,7 +62,7 @@ module Riak
           robject.siblings = robject.conflict? ? extract_siblings(robject, response[:body]) : nil
           robject.raw_data = response[:body] if response[:body].present? && !robject.conflict?
 
-          robject.conflict? ? robject.resolve_conflict : robject
+          robject.conflict? ? robject.attempt_conflict_resolution : robject
         end
 
         private

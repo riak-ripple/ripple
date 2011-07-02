@@ -86,8 +86,8 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
       end
 
       it 'attempts to resolve the conflict' do
-        @object.should respond_to(:resolve_conflict)
-        @object.should_receive(:resolve_conflict).and_return(other_object)
+        @object.should respond_to(:attempt_conflict_resolution)
+        @object.should_receive(:attempt_conflict_resolution).and_return(other_object)
         @backend.load_object(@object, http_response).should be(other_object)
       end
     end

@@ -415,7 +415,7 @@ describe Riak::RObject do
     end
   end
 
-  describe '#resolve_conflict' do
+  describe '#attempt_conflict_resolution' do
     let(:conflicted_robject) { Riak::RObject.new(@bucket, "conflicted") { |r| r.conflict = true } }
     let(:resolved_robject) { Riak::RObject.new(@bucket, "resolved") }
     let(:invoked_resolvers) { [] }
@@ -432,27 +432,27 @@ describe Riak::RObject do
     it 'calls each resolver until one of them returns an robject' do
       described_class.on_conflict(&resolver_3)
       described_class.on_conflict(&resolver_4)
-      conflicted_robject.resolve_conflict
+      conflicted_robject.attempt_conflict_resolution
       invoked_resolvers.should == [:resolver_1, :resolver_2, :resolver_3]
     end
 
     it 'returns the robject returned by the last invoked resolver' do
       described_class.on_conflict(&resolver_4)
-      conflicted_robject.resolve_conflict.should be(resolved_robject)
+      conflicted_robject.attempt_conflict_resolution.should be(resolved_robject)
     end
 
     it 'allows the resolver to return the original robject' do
       described_class.on_conflict(&resolver_3)
-      conflicted_robject.resolve_conflict.should be(conflicted_robject)
+      conflicted_robject.attempt_conflict_resolution.should be(conflicted_robject)
     end
 
     it 'returns the robject and does not call any resolvers if the robject is not in conflict' do
-      resolved_robject.resolve_conflict.should be(resolved_robject)
+      resolved_robject.attempt_conflict_resolution.should be(resolved_robject)
       invoked_resolvers.should == []
     end
 
     it 'returns the original robject if none of the resolvers returns an robject' do
-      conflicted_robject.resolve_conflict.should be(conflicted_robject)
+      conflicted_robject.attempt_conflict_resolution.should be(conflicted_robject)
       invoked_resolvers.should == [:resolver_1, :resolver_2]
     end
   end
