@@ -15,4 +15,6 @@ en:
     associated_document_error_summary: "for %{doc_type} %{doc_id}: %{errors}"
     undefined_property: "Undefined property :%{prop} for class '%{class}'"
     many_key_association: "You cannot use a many association using :key"
+    unexpected_conflicts: "Conflict cannot be resolved for %{conflicts} (for %{document})"
+    conflict_handler_not_implemented: "No on_conflict handler has been implemented for %{document}"
 

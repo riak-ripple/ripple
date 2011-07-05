@@ -18,4 +18,5 @@ end
 class WidgetPart
   include Ripple::Document
   property :name, String
+  key_on :name
 end

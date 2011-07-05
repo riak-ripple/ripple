@@ -60,9 +60,7 @@ module Ripple
         end
 
         def really_save(*args)
-          robject.key = key if robject.key != key
-          robject.content_type = 'application/json'
-          robject.data = attributes_for_persistence
+          update_robject
           robject.store(self.class.quorums.slice(:w,:dw))
           self.key = robject.key
           @new = false
@@ -99,6 +97,12 @@ module Ripple
           @robject ||= Riak::RObject.new(self.class.bucket, key).tap do |obj|
             obj.content_type = "application/json"
           end
+        end
+
+        def update_robject
+          robject.key = key if robject.key != key
+          robject.content_type = 'application/json'
+          robject.data = attributes_for_persistence
         end
 
         private

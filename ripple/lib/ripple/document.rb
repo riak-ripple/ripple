@@ -1,5 +1,6 @@
 require 'active_support/concern'
 require 'active_model/naming'
+require 'ripple/conflict/document_hooks'
 require 'ripple/document/bucket_access'
 require 'ripple/document/key'
 require 'ripple/document/persistence'
@@ -62,6 +63,7 @@ module Ripple
       include Ripple::Inspection
       include Ripple::NestedAttributes
       include Ripple::Serialization
+      include Ripple::Conflict::DocumentHooks
     end
 
     module ClassMethods
@@ -79,7 +81,23 @@ module Ripple
       def ==(comparison_object)
         comparison_object.equal?(self) ||
           (comparison_object.class < Document && (comparison_object.instance_of?(self.class) || comparison_object.class.bucket.name == self.class.bucket.name) &&
-           comparison_object.key == key && !comparison_object.new?)
+           !new? && comparison_object.key == key && !comparison_object.new?)
+      end
+
+      def eql?(other)
+        return true if other.equal?(self)
+
+        (other.class.equal?(self.class)) &&
+        !other.new? && !new? &&
+        (other.key == key)
+      end
+
+      def hash
+        if new?
+          super # every new document should be treated as a different doc
+        else
+          [self.class, key].hash
+        end
       end
     end
   end

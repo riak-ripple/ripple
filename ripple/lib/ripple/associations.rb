@@ -68,6 +68,11 @@ module Ripple
         associations.values.select(&:embeddable?)
       end
 
+      # Associations of linked documents
+      def linked_associations
+        associations.values.select(&:linked?)
+      end
+
       # Creates a singular association
       def one(name, options={})
         configure_for_key_correspondence if options[:using] === :key

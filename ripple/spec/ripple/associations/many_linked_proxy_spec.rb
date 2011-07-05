@@ -7,6 +7,7 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person = Person.new {|p| p.key = "riak-user" }
     @task = Task.new {|t| t.key = "one" }
     @other_task = Task.new {|t| t.key = "two" }
+    @third_task = Task.new {|t| t.key = "three" }
     [@person, @task, @other_task].each do |doc|
       doc.stub!(:new?).and_return(false)
     end
@@ -40,6 +41,24 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.robject.links << @task.to_link("tasks")
     @person.robject.should_receive(:walk).with(Riak::WalkSpec.new(:bucket => "tasks", :tag => "tasks")).and_return([])
     @person.tasks.should == []
+  end
+
+  it "handles conflict appropriately by selecting the linked-walk robjects that match the links" do
+    @person.robject.links << @task.to_link("tasks") << @other_task.to_link("tasks")
+    @person.robject.
+      should_receive(:walk).
+      with(Riak::WalkSpec.new(:bucket => "tasks", :tag => "tasks")).
+      and_return([[@task.robject, @other_task.robject, @third_task.robject]])
+
+    @person.tasks.should == [@task, @other_task]
+  end
+
+  it "allows the links to be replaced directly" do
+    @person.tasks = [@task]
+    @person.tasks.__send__(:should_receive, :reset)
+    @person.tasks.__send__(:links).should == [@task.robject.to_link("tasks")]
+    @person.tasks.replace_links([@other_task, @third_task].map { |t| t.robject.to_link("tasks") })
+    @person.tasks.__send__(:links).should == [@other_task, @third_task].map { |t| t.robject.to_link("tasks") }
   end
 
   it "should replace associated documents with a new set" do

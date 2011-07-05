@@ -4,6 +4,7 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
   before :each do
     @client = Riak::Client.new
     @backend = Riak::Client::HTTPBackend.new(@client)
+    @bucket = Riak::Bucket.new(@client, "bucket")
     @object = Riak::RObject.new(@bucket, "bar")
   end
 
@@ -75,9 +76,20 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
       @object.key.should == "[baz]"
     end
 
-    it "should be in conflict when the response code is 300 and the content-type is multipart/mixed" do
-      @backend.load_object(@object, {:headers => {"content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300 })
-      @object.should be_conflict
+    context "when the response code is 300 and the content-type is multipart/mixed" do
+      let(:http_response) { {:headers => {"content-type" => ["multipart/mixed; boundary=foo"]}, :code => 300 } }
+      let(:other_object) { Riak::RObject.new(@bucket, "bar2") }
+
+      it 'marks the object as in conflict' do
+        @backend.load_object(@object, http_response)
+        @object.should be_conflict
+      end
+
+      it 'attempts to resolve the conflict' do
+        @object.should respond_to(:attempt_conflict_resolution)
+        @object.should_receive(:attempt_conflict_resolution).and_return(other_object)
+        @backend.load_object(@object, http_response).should be(other_object)
+      end
     end
 
     it "should unescape the key given in the location header" do

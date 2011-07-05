@@ -4,6 +4,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', 'riak-client','
 
 require 'rubygems' # Use the gems path only for the spec suite
 require 'ripple'
+require 'ripple/conflict/test_helper'
 require 'rspec'
 
 # Only the tests should really get away with this.
@@ -20,4 +21,5 @@ RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
   config.debug = true
+  config.include Ripple::Conflict::TestHelper
 end

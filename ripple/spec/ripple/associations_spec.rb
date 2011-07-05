@@ -14,6 +14,10 @@ describe Ripple::Associations do
     Invoice.embedded_associations.should == Array(Invoice.associations[:note])
   end
 
+  it "should collect the linked associations" do
+    Invoice.linked_associations.should == Array(Invoice.associations[:customer])
+  end
+
   it "should copy associations to a subclass" do
     Invoice.associations[:foo] = "bar"
     class SubInvoice < Invoice; end

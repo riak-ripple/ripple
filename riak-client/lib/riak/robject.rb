@@ -12,6 +12,7 @@ module Riak
   # the Riak database, the base unit of data manipulation.
   class RObject
     include Util::Translation
+    extend  Util::Translation
     include Util::Escape
     extend Util::Escape
 
@@ -42,6 +43,25 @@ module Riak
     # @return [Boolean] whether to attempt to prevent stale writes using conditional PUT semantics, If-None-Match: * or If-Match: {#etag}
     # @see http://wiki.basho.com/display/RIAK/REST+API#RESTAPI-Storeaneworexistingobjectwithakey Riak Rest API Docs
     attr_accessor :prevent_stale_writes
+
+    def self.on_conflict(&conflict_hook)
+      on_conflict_hooks << conflict_hook
+    end
+
+    def self.on_conflict_hooks
+      @on_conflict_hooks ||= []
+    end
+
+    def attempt_conflict_resolution
+      return self unless conflict?
+
+      self.class.on_conflict_hooks.each do |hook|
+        result = hook.call(self)
+        return result if result.is_a?(RObject)
+      end
+
+      self
+    end
 
     # Loads a list of RObjects that were emitted from a MapReduce
     # query.

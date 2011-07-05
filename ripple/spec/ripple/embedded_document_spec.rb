@@ -13,7 +13,7 @@ describe Ripple::EmbeddedDocument do
     Address.should be_embeddable
   end
 
-  describe "#==" do
+  describe "equality" do
     let(:user_1) { User.create! }
     let(:user_2) { User.create! }
     let(:street_1) { '123 Somewhere St' }
@@ -26,36 +26,52 @@ describe Ripple::EmbeddedDocument do
       address_2._parent_document = user_1
     end
 
-    it "returns true when the documents have the same classes, parents and attributes" do
+    def should_be_equal
       (address_1 == address_2).should be_true
+      address_1.eql?(address_2).should be_true
+
       (address_2 == address_1).should be_true
+      address_2.eql?(address_1).should be_true
+
+      address_1.hash.should == address_2.hash
     end
 
-    it "returns true when the documents match and only one of them includes the _type attribute" do
+    def should_not_be_equal(other_address = address_2)
+      (address_1 == other_address).should be_false
+      address_1.eql?(other_address).should be_false
+
+      (other_address == address_1).should be_false
+      address_1.eql?(other_address).should be_false
+
+      address_1.hash.should_not == other_address.hash
+    end
+
+    specify "two document are equal when they have the same classes, parents and attributes" do
+      should_be_equal
+    end
+
+    specify "two documents are equal when they match and only one of them includes the _type attribute" do
       attrs = address_1.attributes
       address_1.stub(:attributes => attrs.merge('_type' => 'Address'))
 
-      (address_1 == address_2).should be_true
-      (address_2 == address_1).should be_true
+      should_be_equal
     end
 
-    it "returns false when the parents are different (even if the attributes and classes are the same)" do
+    specify "two documents are not equal when the parents are different (even if the attributes and classes are the same)" do
       address_2._parent_document = user_2
-      (address_1 == address_2).should be_false
-      (address_2 == address_1).should be_false
+      should_not_be_equal
     end
 
-    it "returns false when the attributes are different (even if the parents and classes are the same)" do
+    specify "two documents are not equal when the attributes are different (even if the parents and classes are the same)" do
       address_2.street = street_2
-      (address_1 == address_2).should be_false
-      (address_2 == address_1).should be_false
+      should_not_be_equal
     end
 
-    it "returns false then the classes are different (even if the parents and attributes are the same)" do
+    specify "two documents are not equal when the classes are different (even if the parents and attributes are the same)" do
       special_address = SpecialAddress.new(address_1.attributes)
       special_address._parent_document = address_1._parent_document
-      (address_1 == special_address).should be_false
-      (special_address == address_1).should be_false
+
+      should_not_be_equal(special_address)
     end
   end
 end

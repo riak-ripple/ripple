@@ -35,6 +35,8 @@ module Riak
               sibling.vclock = robject.vclock
               load_content(c, sibling)
             end
+
+            return robject.attempt_conflict_resolution
           else
             load_content(pbuf.content.first, robject)
           end

@@ -403,4 +403,58 @@ describe Riak::RObject do
     lambda { @object.inspect }.should_not raise_error
     @object.inspect.should be_kind_of(String)
   end
+
+  describe '.on_conflict' do
+    it 'adds the hook to the list of on conflict hooks' do
+      hook_run = false
+      described_class.on_conflict_hooks.should be_empty
+      described_class.on_conflict { hook_run = true }
+      described_class.on_conflict_hooks.size.should == 1
+      described_class.on_conflict_hooks.first.call
+      hook_run.should == true
+    end
+  end
+
+  describe '#attempt_conflict_resolution' do
+    let(:conflicted_robject) { Riak::RObject.new(@bucket, "conflicted") { |r| r.conflict = true } }
+    let(:resolved_robject) { Riak::RObject.new(@bucket, "resolved") }
+    let(:invoked_resolvers) { [] }
+    let(:resolver_1) { lambda { |r| invoked_resolvers << :resolver_1; nil } }
+    let(:resolver_2) { lambda { |r| invoked_resolvers << :resolver_2; :not_an_robject } }
+    let(:resolver_3) { lambda { |r| invoked_resolvers << :resolver_3; r } }
+    let(:resolver_4) { lambda { |r| invoked_resolvers << :resolver_4; resolved_robject } }
+
+    before(:each) do
+      described_class.on_conflict(&resolver_1)
+      described_class.on_conflict(&resolver_2)
+    end
+
+    it 'calls each resolver until one of them returns an robject' do
+      described_class.on_conflict(&resolver_3)
+      described_class.on_conflict(&resolver_4)
+      conflicted_robject.attempt_conflict_resolution
+      invoked_resolvers.should == [:resolver_1, :resolver_2, :resolver_3]
+    end
+
+    it 'returns the robject returned by the last invoked resolver' do
+      described_class.on_conflict(&resolver_4)
+      conflicted_robject.attempt_conflict_resolution.should be(resolved_robject)
+    end
+
+    it 'allows the resolver to return the original robject' do
+      described_class.on_conflict(&resolver_3)
+      conflicted_robject.attempt_conflict_resolution.should be(conflicted_robject)
+    end
+
+    it 'returns the robject and does not call any resolvers if the robject is not in conflict' do
+      resolved_robject.attempt_conflict_resolution.should be(resolved_robject)
+      invoked_resolvers.should == []
+    end
+
+    it 'returns the original robject if none of the resolvers returns an robject' do
+      conflicted_robject.attempt_conflict_resolution.should be(conflicted_robject)
+      invoked_resolvers.should == [:resolver_1, :resolver_2]
+    end
+  end
 end
+

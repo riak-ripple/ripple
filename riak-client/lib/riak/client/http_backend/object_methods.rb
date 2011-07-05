@@ -61,7 +61,8 @@ module Riak
           robject.conflict = (response[:code] && response[:code].to_i == 300 && robject.content_type =~ /multipart\/mixed/)
           robject.siblings = robject.conflict? ? extract_siblings(robject, response[:body]) : nil
           robject.raw_data = response[:body] if response[:body].present? && !robject.conflict?
-          robject
+
+          robject.conflict? ? robject.attempt_conflict_resolution : robject
         end
 
         private
