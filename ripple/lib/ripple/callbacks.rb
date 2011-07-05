@@ -7,9 +7,11 @@ module Ripple
   module Callbacks
     extend ActiveSupport::Concern
 
+    CALLBACK_TYPES = [:create, :update, :save, :destroy, :validation]
+
     included do
       extend ActiveModel::Callbacks
-      define_model_callbacks :create, :update, :save, :destroy
+      define_model_callbacks *(CALLBACK_TYPES - [:validation])
       define_callbacks :validation, :terminator => "result == false", :scope => [:kind, :name]
     end
 

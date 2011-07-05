@@ -70,6 +70,12 @@ describe Ripple::Callbacks do
       callbacks.should == [:before_save, :save, :after_save]
     end
 
+    it 'does not allow around callbacks on embedded associated documents' do
+      expect {
+        BoxSide.around_save { }
+      }.to raise_error(/around_save callbacks are not supported/)
+    end
+
     it 'does not propagate validation callbacks multiple times' do
       Box.before_validation { $pinger.ping }
       BoxSide.before_validation { $pinger.ping }

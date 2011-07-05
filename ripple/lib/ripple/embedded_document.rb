@@ -1,6 +1,7 @@
 require 'active_support/concern'
 require 'active_support/core_ext/hash/except'
 require 'ripple/translation'
+require 'ripple/embedded_document/around_callbacks'
 require 'ripple/embedded_document/finders'
 require 'ripple/embedded_document/persistence'
 require 'ripple/properties'
@@ -31,6 +32,7 @@ module Ripple
       include Ripple::Validations
       include Ripple::Associations
       include Ripple::Callbacks
+      include Ripple::EmbeddedDocument::AroundCallbacks
       include Ripple::Conversion
       include Finders
       include Ripple::Inspection

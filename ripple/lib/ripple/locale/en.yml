@@ -1,5 +1,6 @@
 en:
   ripple:
+    around_callbacks_not_supported: "around_%{type} callbacks are not supported on embedded documents.  See https://github.com/seancribbs/ripple/issues/188 for more detail."
     associated_document_error_summary: "for %{doc_type} %{doc_id}: %{errors}"
     attribute_hash: "value of attributes must be a Hash"
     conflict_handler_not_implemented: "No on_conflict handler has been implemented for %{document}"
