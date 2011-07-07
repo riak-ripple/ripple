@@ -43,7 +43,7 @@ describe "Ripple conflict resolution" do
 
       # no errors should be raised by the hook above
       ConflictedPerson.find('Noone')
-      ConflictedPerson.create!(name: 'John')
+      ConflictedPerson.create!(:name => 'John')
       ConflictedPerson.find('John').should_not be_nil
     end
   end
