@@ -63,6 +63,4 @@ describe Ripple::Associations::OneStoredKeyProxy do
   it "should refuse assigning a document of the wrong type" do
     lambda { @transaction.account = @transaction }.should raise_error
   end
-
-  it "should resolve conflicts"
 end
