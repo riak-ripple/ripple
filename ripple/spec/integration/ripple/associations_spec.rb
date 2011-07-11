@@ -30,6 +30,12 @@ describe "Ripple Associations" do
         one :user, :using => :key
         property :number, Integer
       end
+      class Post
+        include Ripple::Document
+        one :user, :using => :stored_key
+        property :user_key, String
+        property :title, String
+      end
     end
   end
 
@@ -41,6 +47,7 @@ describe "Ripple Associations" do
     @friend1  = User.create(:email => "friend@ripple.com")
     @friend2  = User.create(:email => "friend2@ripple.com")
     @cc       = CreditCard.new(:number => '12345')
+    @post1    = Post.new(:title => "Hello, world!")
   end
 
   it "should save one embedded associations" do
@@ -159,6 +166,16 @@ describe "Ripple Associations" do
     @cc.key.should eq(@user.key)
   end
 
+  it "should save one association by storing key" do
+    @user.save!
+    @post1.user = @user
+    @post1.save!
+    @post1.user_key.should == @user.key
+    @found = Post.find(@post1.key)
+    @found.user.email.should == 'riak@ripple.com'
+    @found.user.should be_a(User)
+  end
+
   after :each do
     User.destroy_all
   end
@@ -168,6 +185,7 @@ describe "Ripple Associations" do
     Object.send(:remove_const, :Profile)
     Object.send(:remove_const, :Address)
     Object.send(:remove_const, :CreditCard)
+    Object.send(:remove_const, :Post)
   end
 
 end

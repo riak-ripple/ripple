@@ -13,6 +13,7 @@ require 'ripple/associations/many_embedded_proxy'
 require 'ripple/associations/one_linked_proxy'
 require 'ripple/associations/many_linked_proxy'
 require 'ripple/associations/one_key_proxy'
+require 'ripple/associations/one_stored_key_proxy'
 
 module Ripple
   # Adds associations via links and embedding to {Ripple::Document}
