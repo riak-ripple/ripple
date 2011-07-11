@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Kill the whole script on error
+set -e
+
+projects=( riak-client riak-sessions ripple )
+
+for p in "${projects[@]}"
+do
+  pushd "./$p"
+  echo
+  echo
+  echo "------------------ $p --------------------"
+  echo
+  bundle install
+  bundle exec rake
+  popd
+done

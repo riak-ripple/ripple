@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+
+settings = {
+  'host'      => 'localhost',
+  'http_port' => 9000,
+  'pb_port'   => 9002,
+  'temp_dir'  => './.riaktest',
+  'bin_dir'   => ENV['RIAK_BIN_DIR']
+}
+
+settings_string = settings.to_yaml
+
+projects = %w[ riak-client riak-sessions ripple ]
+
+projects.each do |project|
+  File.open("#{project}/spec/support/test_server.yml", 'w') do |f|
+    f.write(settings_string)
+  end
+end
+
