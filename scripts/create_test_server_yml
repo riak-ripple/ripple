@@ -3,9 +3,6 @@
 require 'yaml'
 
 settings = {
-  'host'      => 'localhost',
-  'http_port' => 9000,
-  'pb_port'   => 9002,
   'temp_dir'  => './.riaktest',
   'bin_dir'   => ENV['RIAK_BIN_DIR']
 }
