@@ -6,7 +6,6 @@ PROJECTS = %w{riak-client ripple riak-sessions}
 
 begin
   require 'yard'
-rescue LoadError, NameError
   desc "Generate YARD documentation."
   YARD::Rake::YardocTask.new do |yard|
     docfiles = FileList['{riak-client,ripple,riak-sessions}/lib/**/*.rb']
@@ -23,6 +22,7 @@ rescue LoadError, NameError
     cp_r File.join(original_dir, "doc", "."), docs_dir
     touch File.join(docs_dir, '.nojekyll')
   end
+rescue LoadError, NameError
 end
 
 namespace :spec do
