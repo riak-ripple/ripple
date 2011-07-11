@@ -6,10 +6,12 @@ module Ripple
     class OneStoredKeyProxy < Proxy
       include One
 
-      def replace(doc)
-        @reflection.verify_type!(doc, owner)
+      def replace(value)
+        @reflection.verify_type!(value, owner)
 
-        assign_key(doc.key)
+        assign_key(value.key)
+        @target = value
+        loaded
       end
 
       protected

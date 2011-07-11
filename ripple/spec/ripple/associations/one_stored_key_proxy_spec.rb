@@ -2,10 +2,12 @@ require File.expand_path("../../../spec_helper", __FILE__)
 
 describe Ripple::Associations::OneStoredKeyProxy do
   require 'support/models/transactions'
+  require 'support/models/family'
 
   before :each do
-    @account = Account.new {|p| p.key = "accounty" }
-    @transaction = Transaction.new
+    @account = Account.new {|e| e.key = "accounty" }
+    @other_account = Account.new{|e| e.key = "ickycount" }
+    @transaction = Transaction.new{|e| e.key = "transacty" }
   end
 
   it "should be blank before the associated document is set" do
@@ -35,6 +37,31 @@ describe Ripple::Associations::OneStoredKeyProxy do
   it "should return nil immediately if the association link is missing" do
     @transaction.account_key.should be_nil
     @transaction.account.should be_nil
+  end
+
+  it "should replace associated document with a new one" do
+    @transaction.account = @account
+    @transaction.account = @other_account
+    @transaction.account.should == @other_account
+    @transaction.account_key.should == "ickycount"
+  end
+
+  it "should replace the associated document with the target of the proxy" do
+    other_transaction = Transaction.new {|e| e.key = "ickytrans" }
+    other_transaction.account = @other_account
+
+    @transaction.account = other_transaction.account
+    @transaction.account.should == @other_account
+  end
+
+  it "refuses assigning a proxy if its target is the wrong type" do
+    parent = Parent.new{|e| e.child = Child.new}
+
+    lambda { @transaction.account = parent.child }.should raise_error
+  end
+
+  it "should refuse assigning a document of the wrong type" do
+    lambda { @transaction.account = @transaction }.should raise_error
   end
 
   it "should resolve conflicts"
