@@ -1,25 +1,28 @@
 require 'rubygems'
 require 'rake'
 require 'rake/clean'
-require 'yard'
 
 PROJECTS = %w{riak-client ripple riak-sessions}
 
-desc "Generate YARD documentation."
-YARD::Rake::YardocTask.new do |yard|
-  docfiles = FileList['{riak-client,ripple,riak-sessions}/lib/**/*.rb']
-  docfiles.exclude '**/generators/**/templates/*'
-  yard.files = docfiles.to_a + ['-','RELEASE_NOTES.textile']
-  yard.options = ["--no-private"]
-end
+begin
+  require 'yard'
+rescue LoadError, NameError
+  desc "Generate YARD documentation."
+  YARD::Rake::YardocTask.new do |yard|
+    docfiles = FileList['{riak-client,ripple,riak-sessions}/lib/**/*.rb']
+    docfiles.exclude '**/generators/**/templates/*'
+    yard.files = docfiles.to_a + ['-','RELEASE_NOTES.textile']
+    yard.options = ["--no-private"]
+  end
 
-desc "Generate YARD documentation into a repo on the gh-pages branch."
-task :doc => :yard do
-  original_dir = Dir.pwd
-  docs_dir = File.expand_path(File.join(original_dir, "..", "ripple-docs"))
-  rm_rf File.join(docs_dir, "*")
-  cp_r File.join(original_dir, "doc", "."), docs_dir
-  touch File.join(docs_dir, '.nojekyll')
+  desc "Generate YARD documentation into a repo on the gh-pages branch."
+  task :doc => :yard do
+    original_dir = Dir.pwd
+    docs_dir = File.expand_path(File.join(original_dir, "..", "ripple-docs"))
+    rm_rf File.join(docs_dir, "*")
+    cp_r File.join(original_dir, "doc", "."), docs_dir
+    touch File.join(docs_dir, '.nojekyll')
+  end
 end
 
 namespace :spec do
