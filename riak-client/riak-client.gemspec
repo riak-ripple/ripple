@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<fakeweb>, [">= 1.2"])
       s.add_development_dependency(%q<rack>, [">= 1.0"])
       s.add_development_dependency(%q<excon>, ["~> 0.6.1"])
+      s.add_development_dependency(%q<rake>, [">= 0.8.7"])
       s.add_runtime_dependency(%q<i18n>, [">= 0.4.0"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<beefcake>, ["~> 0.3.0"])
