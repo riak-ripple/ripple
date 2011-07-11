@@ -1,8 +1,8 @@
 source :rubygems
 
 gemspec
-gem 'bundler'
 gem 'riak-client', :path => "../riak-client"
+gem 'builder', '2.1.2'
 
 platforms :mri_18, :jruby do
   gem 'ruby-debug'
