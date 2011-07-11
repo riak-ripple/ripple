@@ -21,12 +21,14 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
+      s.add_development_dependency(%q<rake>, ["~> 0.8.7"])
       s.add_runtime_dependency(%q<riak-client>, ["~> 1.0.0.pre"])
       s.add_runtime_dependency(%q<activesupport>, ["< 3.2.0", ">= 3.0.0"])
       s.add_runtime_dependency(%q<activemodel>, ["< 3.2.0", ">= 3.0.0"])
       s.add_runtime_dependency(%q<tzinfo>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
+      s.add_dependency(%q<rake>, ["~> 0.8.7"])
       s.add_dependency(%q<riak-client>, ["~> 1.0.0.pre"])
       s.add_dependency(%q<activesupport>, ["< 3.2.0", ">= 3.0.0"])
       s.add_dependency(%q<activemodel>, ["< 3.2.0", ">= 3.0.0"])
@@ -34,6 +36,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])
+    s.add_dependency(%q<rake>, ["~> 0.8.7"])
     s.add_dependency(%q<riak-client>, ["~> 1.0.0.pre"])
     s.add_dependency(%q<activesupport>, ["< 3.2.0", ">= 3.0.0"])
     s.add_dependency(%q<activemodel>, ["< 3.2.0", ">= 3.0.0"])
