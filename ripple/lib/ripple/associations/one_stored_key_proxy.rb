@@ -9,7 +9,12 @@ module Ripple
       def replace(value)
         @reflection.verify_type!(value, owner)
 
-        assign_key(value.key)
+        if value
+          assign_key(value.key)
+        else
+          assign_key(nil)
+        end
+
         @target = value
         loaded
       end

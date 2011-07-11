@@ -56,11 +56,17 @@ describe Ripple::Associations::OneStoredKeyProxy do
 
   it "refuses assigning a proxy if its target is the wrong type" do
     parent = Parent.new{|e| e.child = Child.new}
-
     lambda { @transaction.account = parent.child }.should raise_error
   end
 
   it "should refuse assigning a document of the wrong type" do
     lambda { @transaction.account = @transaction }.should raise_error
+  end
+
+  it "should nil out the association if nil is assigned" do
+    @transaction.account = @account
+    @transaction.account = nil
+    @transaction.account.should be_nil
+    @transaction.account_key.should be_nil
   end
 end
