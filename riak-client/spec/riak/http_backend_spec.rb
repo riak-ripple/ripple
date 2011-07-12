@@ -7,6 +7,20 @@ describe Riak::Client::HTTPBackend do
     @backend.instance_variable_set(:@server_config, {})
   end
 
+  let(:retryable_exception){ Riak::HTTPFailedRequest.new(:get, 200, 404, {}, {}) }
+
+  def cause_retries(method, times, success, failure)
+    call_count = 0
+    @backend.stub(method) do |*args|
+      call_count += 1
+      if call_count < times
+        raise failure.dup
+      else
+        success
+      end
+    end
+  end
+
   it "should take the Riak::Client when creating" do
     lambda { Riak::Client::HTTPBackend.new(nil) }.should raise_error(ArgumentError)
     lambda { Riak::Client::HTTPBackend.new(@client) }.should_not raise_error
@@ -24,7 +38,12 @@ describe Riak::Client::HTTPBackend do
 
     it "should fail on any other code or error" do
       @backend.should_receive(:get).and_raise("socket closed")
-      @backend.ping.should be_false
+      @backend.ping(:retries => 0).should be_false
+    end
+
+    it "should retry a failed request a number of times" do
+      cause_retries(:get, 3, {:code => 200, :body => "OK"}, retryable_exception)
+      @backend.ping(:retries => 4).should be_true
     end
   end
 
@@ -42,6 +61,11 @@ describe Riak::Client::HTTPBackend do
     it "should escape the bucket and key names" do
       @backend.should_receive(:get).with([200,300], "/riak/","foo%20", "%20bar", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @backend.fetch_object('foo ',' bar').should be_kind_of(Riak::RObject)
+    end
+
+    it "should retry a number of times" do
+      cause_retries(:get, 2, {:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'}, retryable_exception)
+      @backend.fetch_object("foo", "db").should be_kind_of(Riak::RObject)
     end
   end
 
@@ -62,8 +86,8 @@ describe Riak::Client::HTTPBackend do
       @backend.reload_object(@object)
     end
 
-    it "should raise an exception when the response code is not 200 or 304" do
-      @backend.should_receive(:get).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 500, {}, ''))
+    it "should raise an exception when tkhe response code is not 200 or 304" do
+      @backend.should_receive(:get).at_least(:once).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 500, {}, ''))
       lambda { @backend.reload_object(@object) }.should raise_error(Riak::FailedRequest)
     end
 
@@ -73,6 +97,11 @@ describe Riak::Client::HTTPBackend do
       @object.key = "another/deep/path"
       @backend.should_receive(:get).with([200,300,304], "/riak/", "some%2Fdeep%2Fpath", "another%2Fdeep%2Fpath", {}, {}).and_return({:code => 304})
       @backend.reload_object(@object)
+    end
+
+    it "should retry a number of times" do
+      cause_retries(:get, 2, {:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'}, retryable_exception)
+      @backend.reload_object(@object).should be_kind_of(Riak::RObject)
     end
   end
 
@@ -92,7 +121,13 @@ describe Riak::Client::HTTPBackend do
       @object.should_not_receive(:serialize)
       @backend.store_object(@object, false)
     end
-    
+
+    it "should retry a number of times" do
+      @object.key = "bar"
+      cause_retries(:put, 2, {:code => 204, :headers => {}}, Riak::HTTPFailedRequest.new(:put, [201,204], 503, {}, "Timeout"))
+      @backend.store_object(@object, false)
+    end
+
     context "when the object has no key" do
       it "should issue a POST request to the bucket, and update the object properties (returning the body by default)" do
         @backend.should_receive(:post).with(201, "/riak/", "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 201})
@@ -124,7 +159,7 @@ describe Riak::Client::HTTPBackend do
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
-      
+
       it "should include persistence-tuning parameters in the query string" do
         @backend.should_receive(:put).with([200,204,300], "/riak/", "foo/bar", {:w => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @backend.store_object(@object, true, 2, nil)
@@ -149,6 +184,11 @@ describe Riak::Client::HTTPBackend do
       @backend.should_receive(:delete).with([204,404], "/riak/", "bucket%20spaces", "deep%2Fpath",{},{}).and_return({:code => 204, :headers => {}})
       @backend.delete_object("bucket spaces", "deep/path")
     end
+
+    it "should retry a number of times" do
+      cause_retries(:delete, 2, {:code => 204}, Riak::HTTPFailedRequest.new(:delete, [204,404], 500, {}, "Timeout"))
+      @backend.delete_object("foo", "bar")
+    end
   end
 
   context "fetching bucket properties" do
@@ -161,20 +201,30 @@ describe Riak::Client::HTTPBackend do
       @backend.should_receive(:get).with(200, "/riak/", "foo%20bar", {:keys => false, :props => true}, {}).and_return({:body => '{"props":{"n_val":3}}'})
       @backend.get_bucket_props("foo bar")
     end
+
+    it "should retry a number of times" do
+      cause_retries(:get, 2, {:code => 200, :body => "{}"}, Riak::HTTPFailedRequest.new(:get, 200, 500, {}, "Timeout"))
+      @backend.get_bucket_props("foo")
+    end
   end
-  
+
   context "setting bucket properties" do
     it "should PUT the properties to the bucket URL as JSON" do
       @backend.should_receive(:put).with(204, "/riak/","foo", '{"props":{"n_val":2}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
-      @backend.set_bucket_props("foo", {:n_val => 2})      
+      @backend.set_bucket_props("foo", {:n_val => 2})
     end
-    
+
     it "should escape the bucket name" do
       @backend.should_receive(:put).with(204, "/riak/","foo%20bar", '{"props":{"n_val":2}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
       @backend.set_bucket_props("foo bar", {:n_val => 2})
     end
+
+    it "should retry a number of times" do
+      cause_retries(:put, 2, {:code => 204}, Riak::HTTPFailedRequest.new(:put, 204, 500, {}, "Timeout"))
+      @backend.set_bucket_props("foo", {:n_val => 5})
+    end
   end
-  
+
   context "listing keys" do
     it "should unescape key names" do
       @backend.should_receive(:get).with(200, "/riak/","foo", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
@@ -185,6 +235,11 @@ describe Riak::Client::HTTPBackend do
       @backend.should_receive(:get).with(200, "/riak/","unescaped%20", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
       @backend.list_keys("unescaped ").should == ["bar"]
     end
+
+    it "should retry a number of times" do
+      cause_retries(:get, 2, {:code => 200, :body => '{"keys":["a","b"]}'}, Riak::HTTPFailedRequest.new(:get, 200, 503, {}, "No"))
+      @backend.list_keys("foo").should == ["a", "b"]
+    end
   end
 
   context "listing buckets" do
@@ -192,8 +247,13 @@ describe Riak::Client::HTTPBackend do
       @backend.should_receive(:get).with(200, "/riak/", {:buckets => true}, {}).and_return({:body => '{"buckets":["foo", "bar", "baz"]}'})
       @backend.list_buckets.should == ["foo", "bar", "baz"]
     end
+
+    it "should retry a number of times" do
+      cause_retries(:get, 2, {:code => 200, :body => '{"buckets":["a","b"]}'}, Riak::HTTPFailedRequest.new(:get, 200, 503, {}, "No"))
+      @backend.list_buckets.should == ["a", "b"]
+    end
   end
-  
+
   context "performing a MapReduce query" do
     before do
       @mr = Riak::MapReduce.new(@client).map("Riak.mapValues", :keep => true)
@@ -226,6 +286,11 @@ describe Riak::Client::HTTPBackend do
         data.should have(1).item
       end
     end
+
+    it "should retry a number of times" do
+      cause_retries(:post, 2, {:code => 200, :body => '["ok"]', :headers => {"content-type" => ["application/json"]}}, Riak::HTTPFailedRequest.new(:post, 200, 500, {}, "No"))
+      @backend.mapred(@mr).should == ["ok"]
+    end
   end
 
   context "getting statistics" do
@@ -233,8 +298,13 @@ describe Riak::Client::HTTPBackend do
       @backend.should_receive(:get).with(200, "/stats", {}, {}).and_return({:body => '{"vnode_gets":20348}'})
       @backend.stats.should == {"vnode_gets" => 20348}
     end
+
+    it "should retry a number of times" do
+      cause_retries(:get, 2, {:body => '{"vnode_gets":20348}'}, Riak::HTTPFailedRequest.new(:get, 200, 503, {}, ""))
+      @backend.stats.should == {"vnode_gets" => 20348}
+    end
   end
-  
+
   context "performing a link-walking query" do
     before do
       @bucket = Riak::Bucket.new(@client, "foo")
@@ -265,5 +335,10 @@ describe Riak::Client::HTTPBackend do
       @client.should_receive(:bucket).with("foo").and_return(@bucket)
       @backend.link_walk(@object, @specs)
     end
+
+    it "should retry a number of times" do
+      cause_retries(:get, 2, {:headers => {"content-type" => ["multipart/mixed; boundary=5EiMOjuGavQ2IbXAqsJPLLfJNlA"]}, :body => @body}, Riak::HTTPFailedRequest.new(:get, 200, 404, {}, ""))
+      @backend.link_walk(@object, @specs)
+    end    
   end
 end
