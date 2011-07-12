@@ -46,6 +46,13 @@ describe Ripple::AttributeMethods do
       @widget.manufactured.should == false
     end
 
+    it "dups the default if it is duplicable so that two document do not share the same mutable value" do
+      widget2 = Widget.new
+      @widget.name.should_not be(widget2.name)
+      widget2.name.gsub!("w", "f")
+      @widget.name.should == "widget"
+    end
+
     it "should allow raw attribute access when accessing the document with []" do
       @widget['name'].should == 'widget'
     end
