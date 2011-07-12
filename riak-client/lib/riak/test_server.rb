@@ -1,6 +1,11 @@
 
 require 'tempfile'
 require 'expect'
+
+if ENV['DEBUG_RIAK_TEST_SERVER']
+  $expect_verbose = true
+end
+
 require 'open3'
 require 'riak/util/tcp_socket_extensions'
 
