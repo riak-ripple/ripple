@@ -40,7 +40,7 @@ module Ripple
 
       private
       def attribute=(attr_name, value)
-        if self.class.properties.include?(attr_name.intern) && @attributes[attr_name] != value
+        if self.class.properties.include?(attr_name.to_sym) && @attributes[attr_name] != value
           attribute_will_change!(attr_name)
         end
         super
