@@ -63,6 +63,32 @@ task :release do
   end
 end
 
+desc "Cleans up white space for each project"
+task :clean_whitespace do
+  PROJECTS.each do |dir|
+    Dir.chdir(dir) do
+      no_file_cleaned = true
+      puts
+      puts ("=" * 20) + " #{dir} " + ("=" * 20)
+
+      Dir["**/*.rb"].each do |file|
+        contents = File.read(file)
+        cleaned_contents = contents.gsub(/([ \t]+)$/, '')
+
+        unless cleaned_contents == contents
+          no_file_cleaned = false
+          puts " - Cleaned #{file}"
+          File.open(file, 'w') { |f| f.write(cleaned_contents) }
+        end
+      end
+
+      if no_file_cleaned
+        puts "No files with trailing whitespace found"
+      end
+    end
+  end
+end
+
 desc "Run all sub-project specs."
 task :spec => ["spec:riak-client", "spec:ripple", "spec:riak-sessions"]
 
