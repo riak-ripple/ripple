@@ -6,6 +6,8 @@ end
 class Account
   include Ripple::Document
   many :payment_methods, :using => :reference
+  property :transaction_keys, Array
+  many :transactions, :using => :stored_key
 end
 
 class Transaction
