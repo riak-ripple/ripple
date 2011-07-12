@@ -19,11 +19,14 @@ describe Ripple::AttributeMethods::Dirty do
     end
 
     it "should make previous changes available to after callbacks" do
-      class << company
+      my_class = Class.new(Company) do
         after_save {|c| c['pc'] = previous_changes }
       end
-      company.save
-      company['pc'].should include('name')
+      comp = my_class.new
+      comp.robject.stub!(:store).and_return(true)
+      comp.name = 'Fizz Buzz, Inc.'
+      comp.save
+      comp['pc'].should include('name')
     end
   end
 
