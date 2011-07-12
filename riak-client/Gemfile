@@ -2,6 +2,9 @@ source :rubygems
 
 gemspec
 gem 'bundler'
+gem 'guard-rspec'
+gem 'rb-fsevent'
+gem 'growl'
 
 platforms :mri do
   gem 'yajl-ruby'
