@@ -316,7 +316,11 @@ module Ripple
     def setup_on(target)
       define_callbacks_on(target)
       if uses_search?
-        klass.bucket.enable_index!
+        klass.before_save do |o|
+          unless o.class.bucket.is_indexed?
+            o.class.bucket.enable_index!
+          end
+        end
       end
     end
 
