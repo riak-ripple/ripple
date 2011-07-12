@@ -93,8 +93,7 @@ module Ripple
       private
       def create_association(type, name, options={})
         association = associations[name] = Association.new(type, name, options)
-        association.setup
-        association.define_callbacks_on(self)
+        association.setup_on(self)
 
         define_method(name) do
           get_proxy(association)
@@ -313,7 +312,8 @@ module Ripple
       (options[:using] == :reference)
     end
 
-    def setup
+    def setup_on(target)
+      define_callbacks_on(target)
       if uses_search?
         klass.bucket.enable_index!
       end

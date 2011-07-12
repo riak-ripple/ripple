@@ -13,7 +13,7 @@ describe "Ripple Search Associations" do
         end
         class Account
           include Ripple::Document
-          many :transactions, using: :reference
+          many :transactions, :using => :reference
           property :email, String
         end
       end
