@@ -16,7 +16,7 @@ gemspec = Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake', '~> 0.8.7'
   gem.add_dependency "i18n", ">=0.4.0"
   gem.add_dependency "builder", ">= 2.1.2"
-  gem.add_dependency "beefcake", "~>0.3.0"
+  gem.add_dependency "beefcake", "0.3.2"
   gem.add_dependency "multi_json", "~>1.0.0"
 
   files = FileList["**/*"]
