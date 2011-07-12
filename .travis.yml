@@ -1,6 +1,7 @@
 env: "RIAK_BIN_DIR=/usr/sbin"
 rvm:
   - 1.9.2
+  - 1.8.7
 
 before_script: "scripts/create_test_server_yml"
 script: "scripts/build_all"
