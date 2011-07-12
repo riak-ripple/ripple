@@ -30,3 +30,5 @@ Gemfile.lock
 **/bin
 *.rbc
 .rvmrc
+
+**/.riaktest

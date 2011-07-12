@@ -47,10 +47,14 @@ module Ripple
         #   @param [Array<String>] keylist an array of keys to find
         #   @return [Array<Document>] a list of found documents, including nil for missing documents
         def find(*args)
-          args.flatten!
-          return nil if args.empty? || args.all?(&:blank?)
-          return find_one(args.first) if args.size == 1
-          args.map {|key| find_one(key) }
+          if args.first.is_a?(Array)
+            args.flatten.map {|key| find_one(key) }
+          else
+            args.flatten!
+            return nil if args.empty? || args.all?(&:blank?)
+            return find_one(args.first) if args.size == 1
+            args.map {|key| find_one(key) }
+          end
         end
 
         # Retrieve single or multiple documents from Riak

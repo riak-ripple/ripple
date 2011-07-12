@@ -1,6 +1,11 @@
 
 require 'tempfile'
 require 'expect'
+
+if ENV['DEBUG_RIAK_TEST_SERVER']
+  $expect_verbose = true
+end
+
 require 'open3'
 require 'riak/util/tcp_socket_extensions'
 
@@ -68,7 +73,7 @@ module Riak
     def prepare!
       unless @prepared
         create_temp_directories
-        @riak_script = File.join(@temp_bin, 'riak')
+        @riak_script = File.join(@temp_bin, bin_filename)
         write_riak_script
         write_vm_args
         write_app_config
@@ -162,7 +167,7 @@ module Riak
 
     def write_riak_script
       File.open(@riak_script, 'wb') do |f|
-        File.readlines(File.join(@bin_dir, 'riak')).each do |line|
+        File.readlines(File.join(@bin_dir, bin_filename)).each do |line|
           line.sub!(/(RUNNER_SCRIPT_DIR=)(.*)/, '\1' + @temp_bin)
           line.sub!(/(RUNNER_ETC_DIR=)(.*)/, '\1' + @temp_etc)
           line.sub!(/(RUNNER_USER=)(.*)/, '\1')
@@ -175,6 +180,10 @@ module Riak
         end
       end
       FileUtils.chmod(0755,@riak_script)
+    end
+
+    def bin_filename
+      File.exists?(File.join(@bin_dir, 'riaksearch')) ? 'riaksearch' : 'riak'
     end
 
     def write_vm_args

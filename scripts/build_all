@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 
-# Kill the whole script on error
-set -e
+retval=0
 
 projects=( riak-client riak-sessions ripple )
 
 for p in "${projects[@]}"
 do
-  pushd "./$p"
+  cd $p
+
   echo
   echo
   echo "------------------ $p --------------------"
   echo
+
+  export BUNDLE_GEMFILE=Gemfile
   bundle install
+  echo "--color" > .rspec
   bundle exec rake
-  popd
+
+  retval=$(($retval+$?))
+
+  cd ..
 done
+
+exit $retval
