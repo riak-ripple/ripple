@@ -14,6 +14,7 @@ require 'ripple/associations/one_linked_proxy'
 require 'ripple/associations/many_linked_proxy'
 require 'ripple/associations/one_key_proxy'
 require 'ripple/associations/one_stored_key_proxy'
+require 'ripple/associations/many_reference_proxy'
 
 module Ripple
   # Adds associations via links and embedding to {Ripple::Document}
@@ -93,7 +94,7 @@ module Ripple
       private
       def create_association(type, name, options={})
         association = associations[name] = Association.new(type, name, options)
-        association.define_callbacks_on(self)
+        association.setup_on(self)
 
         define_method(name) do
           get_proxy(association)
@@ -305,6 +306,17 @@ module Ripple
         Array === value && value.all? {|d| (embeddable? && Hash === d) || klass === d }
       when one?
         value.nil? || (embeddable? && Hash === value) || value.kind_of?(klass)
+      end
+    end
+
+    def uses_search?
+      (options[:using] == :reference)
+    end
+
+    def setup_on(target)
+      define_callbacks_on(target)
+      if uses_search?
+        klass.bucket.enable_index!
       end
     end
 
