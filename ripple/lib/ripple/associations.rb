@@ -173,9 +173,9 @@ module Ripple
         return super if name == :validation
 
         propagate_callbacks_to_embedded_associations(name, :before)
-        super.tap do |_|
-          propagate_callbacks_to_embedded_associations(name, :after)
-        end
+        return_value = super
+        propagate_callbacks_to_embedded_associations(name, :after)
+        return_value
       end
     end
   end
