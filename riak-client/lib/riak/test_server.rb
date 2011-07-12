@@ -157,6 +157,10 @@ module Riak
       @prepared = false
     end
 
+    def riak_search?
+      File.exists?(File.join(@bin_dir, 'riaksearch'))
+    end
+
     private
     def create_temp_directories
       %w{bin etc log data pipe}.each do |dir|
@@ -183,7 +187,7 @@ module Riak
     end
 
     def bin_filename
-      File.exists?(File.join(@bin_dir, 'riaksearch')) ? 'riaksearch' : 'riak'
+      riak_search? ? 'riaksearch' : 'riak'
     end
 
     def write_vm_args
