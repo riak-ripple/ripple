@@ -109,9 +109,6 @@ describe Ripple::Associations::ManyReferenceProxy do
     end
   end
 
-  it "should count efficiently"
-  it "should order efficiently"
-
   describe "#keys" do
     let(:ze_keys) { %w(1 2 3) }
     let(:search_results) do
