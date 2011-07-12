@@ -68,8 +68,9 @@ describe Ripple::AttributeMethods do
     end
 
     it "should allow assignment of undefined attributes when assigning to the document with []=" do
-      @widget['name'] = 'sprocket'
-      @widget.name.should == 'sprocket'
+      @widget.should_not respond_to(:shoe_size)
+      @widget['shoe_size'] = 8
+      @widget['shoe_size'].should == 8
     end
 
     it "should type cast assigned values automatically" do
