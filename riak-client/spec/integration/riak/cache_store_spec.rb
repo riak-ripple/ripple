@@ -1,4 +1,4 @@
-require File.expand_path("../../spec_helper", File.dirname(__FILE__))
+require 'spec_helper'
 require 'riak/cache_store'
 
 describe Riak::CacheStore do

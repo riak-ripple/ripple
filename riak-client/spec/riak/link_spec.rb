@@ -1,4 +1,4 @@
-require File.expand_path("../spec_helper", File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Riak::Link do
   describe "parsing a link header" do

@@ -1,4 +1,4 @@
-require File.expand_path("../../../spec_helper", __FILE__)
+require 'spec_helper'
 
 describe Ripple::Associations::Proxy do
   require 'support/associations/proxies'

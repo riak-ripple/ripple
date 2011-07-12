@@ -1,4 +1,4 @@
-require File.expand_path("../../../spec_helper", __FILE__)
+require 'spec_helper'
 
 describe Ripple::EmbeddedDocument::Persistence do
   require 'support/models/user'

@@ -1,4 +1,4 @@
-require File.expand_path("../spec_helper", File.dirname(__FILE__))
+require 'spec_helper'
 
 describe Riak::Util::Multipart do
   it "should extract the boundary string from a header value" do
