@@ -3,6 +3,9 @@ source :rubygems
 gemspec
 gem 'riak-client', :path => "../riak-client"
 gem 'builder', '2.1.2'
+gem 'guard-rspec'
+gem 'rb-fsevent'
+gem 'growl'
 
 platforms :mri_18, :jruby do
   gem 'ruby-debug'
