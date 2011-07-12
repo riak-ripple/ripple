@@ -105,7 +105,7 @@ describe Ripple::Document::Finders do
     end
   end
 
-  describe "finding multiple documents" do
+  describe "finding multiple documents when given a splat of keys" do
     it "should find multiple documents by the keys" do
       @bucket.should_receive(:get).with("square", {}).and_return(@plain)
       @bucket.should_receive(:get).with("rectangle", {}).and_return(@cb)
@@ -130,6 +130,42 @@ describe Ripple::Document::Finders do
 
       it "should raise Ripple::DocumentNotFound when calling find! if some of the documents do not exist" do
         lambda { Box.find!("square", "rectangle") }.should raise_error(Ripple::DocumentNotFound, "Couldn't find documents with keys: rectangle")
+      end
+    end
+  end
+
+  describe "finding multiple documents when given an array" do
+    it "should find multiple documents by the keys" do
+      @bucket.should_receive(:get).with("square", {}).and_return(@plain)
+      @bucket.should_receive(:get).with("rectangle", {}).and_return(@cb)
+      boxes = Box.find(["square", "rectangle"])
+      boxes.should have(2).items
+      boxes.first.shape.should == "square"
+      boxes.last.shape.should == "rectangle"
+    end
+
+    it "should return an array of docs when given an array of one key" do
+      @bucket.should_receive(:get).with("square", {}).and_return(@plain)
+      boxes = Box.find(["square"])
+      boxes.should have(1).items
+      boxes.first.shape.should == "square"
+    end
+
+    it "should return an empty array when given an empty array" do
+      Box.find([ ]).should == []
+    end
+
+    describe "when using find with missing keys" do
+      before :each do
+        @bucket.should_receive(:get).with("square", {}).and_return(@plain)
+        @bucket.should_receive(:get).with("rectangle", {}).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 404, {}, "404 not found"))
+      end
+
+      it "should return nil for documents that no longer exist" do
+        boxes = Box.find(["square", "rectangle"])
+        boxes.should have(2).items
+        boxes.first.shape.should == "square"
+        boxes.last.should be_nil
       end
     end
   end
