@@ -138,8 +138,28 @@ describe Ripple::AttributeMethods do
     Widget.properties.delete(:start_date) # cleanup
   end
 
-  it "should provide a hash representation of all of the attributes" do
-    @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil}
+  describe "#attributes" do
+    it "it returns a hash representation of all of the attributes" do
+      @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil}
+    end
+
+    it "does not include ghost attributes (attributes that do not have a defined property)" do
+      @widget['some_undefined_prop'] = 3.14159
+      @widget.attributes.should_not include('some_undefined_prop')
+    end
+  end
+
+  describe "#raw_attributes" do
+    it "returns a hash representation, including attributes for undefined properties" do
+      @widget['some_undefined_prop'] = 17
+      @widget.raw_attributes.should == {
+        'name'                => 'widget',
+        'size'                => nil,
+        'manufactured'        => false,
+        'shipped_at'          => nil,
+        'some_undefined_prop' => 17
+      }
+    end
   end
 
   it "should load attributes from mass assignment" do

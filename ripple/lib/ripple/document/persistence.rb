@@ -107,7 +107,7 @@ module Ripple
 
         private
         def attributes_for_persistence
-          attributes.merge("_type" => self.class.name)
+          raw_attributes.merge("_type" => self.class.name)
         end
       end
     end

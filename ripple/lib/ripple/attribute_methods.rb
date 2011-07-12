@@ -45,6 +45,10 @@ module Ripple
       # nor embedded documents.
       # @return [Hash] all document attributes, by key
       def attributes
+        raw_attributes.reject { |k, v| !respond_to?(k) }
+      end
+
+      def raw_attributes
         self.class.properties.values.inject(@attributes.with_indifferent_access) do |hash, prop|
           hash[prop.key] = attribute(prop.key)
           hash
