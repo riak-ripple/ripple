@@ -14,3 +14,11 @@ end
 group :integration do
   gem 'activesupport', '~>3.0'
 end
+
+platforms :mri_18, :jruby do
+  gem 'ruby-debug'
+end
+
+platforms :mri_19 do
+  gem 'ruby-debug19'
+end
