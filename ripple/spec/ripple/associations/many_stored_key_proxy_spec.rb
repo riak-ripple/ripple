@@ -15,8 +15,8 @@ describe Ripple::Associations::ManyStoredKeyProxy do
 
   it "should allow appending" do
     @account.transactions << @transaction_one
-    @account.transaction_keys.should == ["one"]
     @account.transactions.should == [@transaction_one]
+    @account.transaction_keys.should == ["one"]
   end
 
   it "should be able to chain calls to adding documents" do
@@ -83,6 +83,14 @@ describe Ripple::Associations::ManyStoredKeyProxy do
       @account.transactions.reset
       @account.transactions.should == []
     end
+
+    it "resets to the saved state of the proxy" do
+      @account.transactions << @transaction_one
+      @account.save
+      @account.transactions << @transaction_two
+      @account.transactions.reset
+      @account.transactions.should == [ @transaction_one ]
+    end
   end
 
   it "can save and restore" do
@@ -91,7 +99,7 @@ describe Ripple::Associations::ManyStoredKeyProxy do
 
     account = Account.find(@account.key)
     account.transaction_keys.should == [ 'one', 'two' ]
-    account.transactions.keys.should == Set.new([ 'one', 'two' ])
+    account.transactions.keys.should == [ 'one', 'two' ]
     account.transactions.should == [ @transaction_one, @transaction_two ]
   end
 
@@ -131,7 +139,7 @@ describe Ripple::Associations::ManyStoredKeyProxy do
     end
 
     it "returns a set of keys" do
-      @account.transactions.keys.should be_a(Set)
+      @account.transactions.keys.should be_a(Array)
       @account.transactions.keys.to_a.should == %w(one two)
     end
 
@@ -143,7 +151,7 @@ describe Ripple::Associations::ManyStoredKeyProxy do
       orig_set = @account.transactions.keys
       @account.transactions.reset
       @account.transactions.keys.should_not equal(orig_set)
-      @account.transactions.keys.should == orig_set
+      @account.transactions.keys.should == []
     end
 
     it "is cleared when the association is replaced" do

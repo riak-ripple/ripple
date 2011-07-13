@@ -7,14 +7,14 @@ module Ripple
       include Many
 
       def count
-        owner_keys.size
+        keys.size
       end
 
       def <<(value)
         @reflection.verify_type!([value], @owner)
 
         raise "Unable to append if the document isn't first saved." if value.new_record?
-        append_key_for(value)
+        keys << value.key
 
         self
       end
@@ -22,26 +22,26 @@ module Ripple
       def replace(value)
         @reflection.verify_type!(value, @owner)
 
-        reset_keys
-        value.each do |doc|
-          append_key_for(doc)
-          doc.save!
-        end
+        reset_owner_keys
+        value.each { |doc| self << doc }
       end
 
       def delete(value)
         keys.delete(value.key)
-        owner_keys.delete(value.key)
         self
       end
 
       def keys
-        @keys ||= Set.new(owner_keys)
+        if @owner.send(keys_name).nil?
+          reset_owner_keys
+        end
+
+        @owner.send(keys_name)
       end
 
       def reset
-        @keys = nil
         super
+        set_owner_keys(@owner.robject.data ? @owner.robject.data[keys_name] : [])
       end
 
       def include?(document)
@@ -56,25 +56,16 @@ module Ripple
         klass.find(keys.to_a)
       end
 
-      def append_key_for(value)
-        keys << value.key
-        owner_keys << value.key
-      end
-
       def keys_name
         "#{@reflection.name.to_s.singularize}_keys"
       end
 
-      def reset_keys
-        @owner.send("#{keys_name}=", @owner.class.properties[keys_name].type.new)
-        @keys = nil
+      def reset_owner_keys
+        set_owner_keys([])
       end
 
-      def owner_keys
-        if @owner.send(keys_name).nil?
-          reset_keys
-        end
-        @owner.send(keys_name)
+      def set_owner_keys(new_keys)
+        @owner.send("#{keys_name}=", @owner.class.properties[keys_name].type.new(new_keys))
       end
     end
   end
