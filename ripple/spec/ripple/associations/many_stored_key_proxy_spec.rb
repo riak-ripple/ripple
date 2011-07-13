@@ -41,12 +41,14 @@ describe Ripple::Associations::ManyStoredKeyProxy do
   it "should accept an array of documents" do
     @account.transactions = [@transaction_one]
     @account.transactions.should == [@transaction_one]
+    @account.transaction_keys.should == %w(one)
   end
 
   it "should be able to replace the entire collection of documents (even appended ones)" do
     @account.transactions << @transaction_one
     @account.transactions = [@transaction_two]
     @account.transactions.should == [@transaction_two]
+    @account.transaction_keys.should == %w(two)
   end
 
   it "should return the assigned documents when assigning" do
@@ -141,12 +143,14 @@ describe Ripple::Associations::ManyStoredKeyProxy do
       orig_set = @account.transactions.keys
       @account.transactions.reset
       @account.transactions.keys.should_not equal(orig_set)
+      @account.transactions.keys.should == orig_set
     end
 
     it "is cleared when the association is replaced" do
       orig_set = @account.transactions.keys
       @account.transactions.replace([@transaction_one])
       @account.transactions.keys.should_not equal(orig_set)
+      @account.transactions.keys.to_a.should == %w(one)
     end
 
     it "maintains the list of keys properly as new documents are appended" do
