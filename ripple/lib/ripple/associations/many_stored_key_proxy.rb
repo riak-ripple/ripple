@@ -13,7 +13,7 @@ module Ripple
       def <<(value)
         @reflection.verify_type!([value], @owner)
 
-        value.save! if value.new_record?
+        raise "Unable to append if the document isn't first saved." if value.new_record?
         append_key_for(value)
 
         self
