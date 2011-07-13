@@ -76,6 +76,11 @@ module Ripple
         associations.values.select(&:linked?)
       end
 
+      # Associations of stored_key documents
+      def stored_key_associations
+        associations.values.select(&:stored_key?)
+      end
+
       # Creates a singular association
       def one(name, options={})
         configure_for_key_correspondence if options[:using] === :key
@@ -239,6 +244,11 @@ module Ripple
     # @return [true,false] Does the association use links
     def linked?
       using == :linked
+    end
+
+    # @return [true,false] Does the association use stored_key
+    def stored_key?
+      using == :stored_key
     end
 
     # @return [String] the instance variable in the owner where the association will be stored

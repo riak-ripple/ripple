@@ -50,6 +50,10 @@ module Ripple
         keys.include?(document.key)
       end
 
+      def reset_owner_keys
+        self.owner_keys = []
+      end
+
 
       protected
       def find_target
@@ -58,10 +62,6 @@ module Ripple
 
       def keys_name
         "#{@reflection.name.to_s.singularize}_keys"
-      end
-
-      def reset_owner_keys
-        self.owner_keys = []
       end
 
       def owner_keys=(new_keys)
