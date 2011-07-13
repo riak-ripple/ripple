@@ -137,7 +137,7 @@ end
 # @private
 class Set
   def as_json(options = {})
-    to_a
+    map { |e| e.as_json(options) }
   end
 
   def self.ripple_cast(value)
