@@ -6,6 +6,7 @@ require 'riak/util/escape'
 require 'riak/bucket'
 require 'riak/link'
 require 'riak/walk_spec'
+require 'riak/serializers'
 
 module Riak
   # Represents the data and metadata stored in a bucket/key pair in

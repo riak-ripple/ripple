@@ -37,6 +37,7 @@ en:
     resource_path_short: "Resource path too short"
     search_docs_require_id: "Search index documents must include the 'id' field."
     search_remove_requires_id_or_query: "Search index documents to be removed must have 'id' or 'query' keys."
+    serializer_not_implemented: "No serializer has been registered for content type %{content_type}"
     stale_write_prevented: "Stale write prevented by client."
     stored_function_invalid: "function must have :bucket and :key when a hash"
     string_type: "invalid_argument %{string} is not a String"
