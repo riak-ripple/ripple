@@ -48,7 +48,7 @@ module Ripple
 
       def process_stored_key_associations
         model_class.stored_key_associations.each do |assoc|
-          document.send(assoc.name).reset_owner_keys
+          document.send(assoc.name).reset_owner_keys if (assoc.type == :many)
         end
       end
 
