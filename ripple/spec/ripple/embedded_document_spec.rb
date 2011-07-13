@@ -14,8 +14,8 @@ describe Ripple::EmbeddedDocument do
   end
 
   describe "equality" do
-    let(:user_1) { User.create! }
-    let(:user_2) { User.create! }
+    let(:user_1) { User.new {|u| u.key = "u1"} }
+    let(:user_2) { User.new {|u| u.key = "u2"} }
     let(:street_1) { '123 Somewhere St' }
     let(:street_2) { '123 Somewhere Ave' }
     let(:address_1) { Address.new(:street => street_1) }

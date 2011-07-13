@@ -1,12 +1,14 @@
 require 'spec_helper'
 
-describe Ripple::Associations::ManyStoredKeyProxy do
+describe Ripple::Associations::ManyStoredKeyProxy, :focus => true do
   require 'support/models/transactions'
 
   before :each do
     @account = Account.new {|t| t.key = "accounty" }
-    @transaction_one = Transaction.create {|t| t.key = "one" }
-    @transaction_two = Transaction.create {|t| t.key = "two" }
+    @transaction_one = Transaction.new {|t| t.key = "one" }
+    @transaction_two = Transaction.new {|t| t.key = "two" }
+    @transaction_one.stub(:new_record?).and_return(false)
+    @transaction_two.stub(:new_record?).and_return(false)
   end
 
   it "should be empty before any associated documents are set" do
@@ -85,6 +87,7 @@ describe Ripple::Associations::ManyStoredKeyProxy do
     end
 
     it "resets to the saved state of the proxy" do
+      Transaction.stub(:find => [@transaction_one])
       @account.transactions << @transaction_one
       @account.save
       @account.transactions << @transaction_two
