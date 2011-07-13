@@ -34,8 +34,8 @@ module Riak
     module TextPlain
       extend self
 
-      def dump(string)
-        string
+      def dump(object)
+        object.to_s
       end
 
       def load(string)

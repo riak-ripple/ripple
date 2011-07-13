@@ -36,6 +36,11 @@ describe Riak::Serializers do
     end
   end
 
+  describe "plain text serializer" do
+    it 'calls #to_s to convert the object to a string' do
+      described_class.serialize("text/plain", :a_string).should == "a_string"
+    end
+  end
 
   describe "JSON serializer" do
     it "respects the max nesting option" do
