@@ -164,7 +164,7 @@ module Ripple
 
       def assign_nested_attributes_for_one_association(association_name, attributes)
         association = self.class.associations[association_name]
-        if association.embeddable?
+        if association.embedded?
           assign_nested_attributes_for_one_embedded_association(association_name, attributes)
         else
           self.autosave[association_name] = true
@@ -201,7 +201,7 @@ module Ripple
         end
 
         association = self.class.associations[association_name]
-        if association.embeddable?
+        if association.embedded?
           assign_nested_attributes_for_many_embedded_association(association_name, attributes_collection)
         else
           self.autosave[association_name] = true

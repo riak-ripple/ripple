@@ -294,7 +294,7 @@ describe Ripple::Document::Persistence do
     before(:all) do
       # check assumptions of these examples
       Clock.associations[:modes].should be_many
-      Clock.associations[:modes].should be_embeddable
+      Clock.associations[:modes].should be_embedded
     end
 
     it_behaves_like "embedded association persistence logic" do
@@ -311,7 +311,7 @@ describe Ripple::Document::Persistence do
     before(:all) do
       # check assumptions of these examples
       Parent.associations[:child].should be_one
-      Parent.associations[:child].should be_embeddable
+      Parent.associations[:child].should be_embedded
     end
 
     it_behaves_like "embedded association persistence logic" do
