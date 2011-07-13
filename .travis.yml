@@ -5,3 +5,15 @@ rvm:
   - jruby
 before_script: "ci/create_test_server_yml"
 script: "ci/build_all"
+notifications:
+  recipients:
+    - sean@basho.com
+    - duff@omelia.org
+    - myron.marston@gmail.com
+    - nathaniel@spreedly.com
+    - aphyr@aphyr.com
+branches:
+  only:
+    - travis-ci
+    # - master
+    # - 0.9-stable

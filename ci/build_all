@@ -4,6 +4,8 @@ retval=0
 
 projects=( riak-client riak-sessions ripple )
 
+ulimit -n 1024
+
 for p in "${projects[@]}"
 do
   cd $p
