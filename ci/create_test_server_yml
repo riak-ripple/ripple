@@ -6,6 +6,10 @@ settings = {
   'temp_dir'  => './.riaktest',
   'bin_dir'   => ENV['RIAK_BIN_DIR'],
   :app_config => {
+    :riak_kv => {
+      :riak_kv_stat => false  # Temporarily ignore stats-related
+                              # crashes in test server
+    },
     :riak_search => {
       :enabled => false
     }
