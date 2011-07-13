@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+retval=0
+
+projects=( riak-client riak-sessions ripple )
+
+ulimit -n 1024
+
+for p in "${projects[@]}"
+do
+  cd $p
+
+  echo
+  echo
+  echo "------------------ $p --------------------"
+  echo
+
+  export BUNDLE_GEMFILE=Gemfile
+  bundle install
+  echo "--color" > .rspec
+  bundle exec rake
+
+  retval=$(($retval+$?))
+
+  cd ..
+done
+
+exit $retval

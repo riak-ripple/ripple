@@ -1,0 +1,18 @@
+env: "RIAK_BIN_DIR=/usr/sbin"
+rvm:
+  - 1.8.7
+  - 1.9.2
+  - jruby
+before_script: "ci/create_test_server_yml"
+script: "ci/build_all"
+notifications:
+  recipients:
+    - sean@basho.com
+    - duff@omelia.org
+    - myron.marston@gmail.com
+    - nathaniel@spreedly.com
+    - aphyr@aphyr.com
+branches:
+  only:
+    - master
+    - 0.9-stable

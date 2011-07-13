@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+
+settings = {
+  'temp_dir'  => './.riaktest',
+  'bin_dir'   => ENV['RIAK_BIN_DIR'],
+  :app_config => {
+    :riak_kv => {
+      :riak_kv_stat => false  # Temporarily ignore stats-related
+                              # crashes in test server
+    },
+    :riak_search => {
+      :enabled => false
+    }
+  }
+}
+
+settings_string = settings.to_yaml
+
+projects = %w[ riak-client riak-sessions ripple ]
+
+projects.each do |project|
+  File.open("#{project}/spec/support/test_server.yml", 'w') do |f|
+    f.write(settings_string)
+  end
+end
+
