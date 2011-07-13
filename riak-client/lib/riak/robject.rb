@@ -111,7 +111,8 @@ module Riak
     # @return [Object] the unmarshaled form of {#raw_data} stored in riak at this object's key
     def data
       if @raw_data && !@data
-        @data = deserialize(@raw_data)
+        raw = @raw_data.respond_to?(:read) ? @raw_data.read : @raw_data
+        @data = deserialize(raw)
         @raw_data = nil
       end
       @data
@@ -120,6 +121,10 @@ module Riak
     # @param [Object] unmarshaled form of the data to be stored in riak. Object will be serialized using {#serialize} if a known content_type is used. Setting this overrides values stored with {#raw_data=}
     # @return [Object] the object stored
     def data=(new_data)
+      if new_data.respond_to?(:read)
+        raise ArgumentError.new(t("invalid_io_object"))
+      end
+
       @raw_data = nil
       @data = new_data
     end
@@ -204,17 +209,7 @@ module Riak
     # be done.
     # @param [Object] payload the data to serialize
     def serialize(payload)
-      return payload if payload.respond_to?(:read)
-      case @content_type
-      when /json/
-        payload.to_json(Riak.json_options)
-      when /yaml/
-        YAML.dump(payload)
-      when "application/x-ruby-marshal"
-        Marshal.dump(payload)
-      else
-        payload.to_s
-      end
+      Serializers.serialize(@content_type, payload)
     end
 
     # Deserializes the internal object data from a Riak response. Differs based on the content-type.
@@ -225,21 +220,12 @@ module Riak
     # * Marshal (application/x-ruby-marshal)
     # @param [String] body the serialized response body
     def deserialize(body)
-      case @content_type
-      when /json/
-        JSON.parse(body)
-      when /yaml/
-        YAML.load(body)
-      when "application/x-ruby-marshal"
-        Marshal.load(body)
-      else
-        body
-      end
+      Serializers.deserialize(@content_type, body)
     end
 
     # @return [String] A representation suitable for IRB and debugging output
     def inspect
-      body = if @data || content_type =~ /json|yaml|marshal/
+      body = if @data || Serializers[content_type]
                data.inspect
              else
                @raw_data && "(#{@raw_data.size} bytes)"

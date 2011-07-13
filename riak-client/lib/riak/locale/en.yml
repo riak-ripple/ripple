@@ -19,6 +19,7 @@ en:
     protocol_invalid: "'%{invalid}' is not a valid protocol, valid values are %{valid}"
     invalid_basic_auth: "basic auth must be set using 'user:pass'"
     invalid_client_id: "Invalid client ID, must be a string or between 0 and %{max_id}"
+    invalid_io_object: "Invalid IO-like object assigned to RObject#data.  It should be assigned to raw_object instead."
     invalid_function_value: "invalid value for function: %{value}"
     invalid_options: "Invalid configuration options given."
     invalid_phase_type: "type must be :map, :reduce, or :link"

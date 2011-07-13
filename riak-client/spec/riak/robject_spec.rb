@@ -39,80 +39,18 @@ describe Riak::RObject do
       @object = Riak::RObject.new(@bucket, "bar")
     end
 
-    it "should change the data into a string by default when serializing" do
-      @object.serialize("foo").should == "foo"
-      @object.serialize(2).should == "2"
+    it 'delegates #serialize to the appropriate serializer for the content type' do
+      @object.content_type = 'text/plain'
+      Riak::Serializers.should respond_to(:serialize).with(2).arguments
+      Riak::Serializers.should_receive(:serialize).with('text/plain', "foo").and_return("serialized foo")
+      @object.serialize("foo").should == "serialized foo"
     end
 
-    it "should not change the data when it is an IO" do
-      file = File.open("#{File.dirname(__FILE__)}/../fixtures/cat.jpg", "r")
-      file.should_not_receive(:to_s)
-      @object.serialize(file).should == file
-    end
-
-    it "should not modify the data by default when deserializing" do
-      @object.deserialize("foo").should == "foo"
-    end
-
-    describe "when the content type is YAML" do
-      before :each do
-        @object.content_type = "text/x-yaml"
-      end
-
-      it "should serialize into a YAML stream" do
-        @object.serialize({"foo" => "bar"}).should == YAML.dump({"foo" => "bar"})
-      end
-
-      it "should deserialize a YAML stream" do
-        @object.deserialize(YAML.dump({"foo" => "bar"})).should == {"foo" => "bar"}
-      end
-    end
-
-    describe "when the content type is JSON" do
-      before :each do
-        @object.content_type = "application/json"
-      end
-
-      it "should serialize into a JSON blob" do
-        @object.serialize({"foo" => "bar"}).should == '{"foo":"bar"}'
-        @object.serialize([1,2,3]).should == "[1,2,3]"
-      end
-
-      it "should deserialize a JSON blob" do
-        @object.deserialize('{"foo":"bar"}').should == {"foo" => "bar"}
-        @object.deserialize('[1,2,3]').should == [1,2,3]
-      end
-
-      it "should respect the max nesting option" do
-        # Sadly, this spec will not fail for me when using yajl-ruby
-        # on Ruby 1.9, even when passing the options to #to_json is
-        # not implemented.
-        Riak.json_options = {:max_nesting => 51}
-        h = {}
-        p = h
-        (1..50).each do |i|
-          p['a'] = {}
-          p = p['a']
-        end
-        s = h.to_json(Riak.json_options)
-        lambda { @object.serialize(h) }.should_not raise_error
-        lambda { @object.deserialize(s) }.should_not raise_error
-      end
-    end
-
-    describe "when the content type is application/x-ruby-marshal" do
-      before :each do
-        @object.content_type = "application/x-ruby-marshal"
-        @payload = Marshal.dump({"foo" => "bar"})
-      end
-
-      it "should dump via Marshal" do
-        @object.serialize({"foo" => "bar"}).should == @payload
-      end
-
-      it "should load from Marshal" do
-        @object.deserialize(@payload).should == {"foo" => "bar"}
-      end
+    it 'delegates #deserialize to the appropriate serializer for the content type' do
+      @object.content_type = 'text/plain'
+      Riak::Serializers.should respond_to(:deserialize).with(2).arguments
+      Riak::Serializers.should_receive(:deserialize).with('text/plain', "foo").and_return("deserialized foo")
+      @object.deserialize("foo").should == "deserialized foo"
     end
   end
 
@@ -162,6 +100,22 @@ describe Riak::RObject do
 
         it "should lazily deserialize when read" do
           @object.data.should == { "some" => "data" }
+        end
+
+        context 'for an IO-like object' do
+          let(:io_object) { stub(:read => 'the io object') }
+
+          it 'reads the object before deserializing it' do
+            @object.should_receive(:deserialize).with('the io object').and_return('deserialized')
+            @object.raw_data = io_object
+            @object.data.should == 'deserialized'
+          end
+
+          it 'does not allow it to be assigned directly to data since it should be assigned to raw_data instead' do
+            expect {
+              @object.data = io_object
+            }.to raise_error(ArgumentError)
+          end
         end
       end
 
@@ -398,10 +352,23 @@ describe Riak::RObject do
     @object.to_link("bar").url.should == "/riak/bucket%20spaces/deep%2Fpath"
   end
 
-  it "should provide a useful inspect output even when the key is nil" do
-    @object = Riak::RObject.new(@bucket)
-    lambda { @object.inspect }.should_not raise_error
-    @object.inspect.should be_kind_of(String)
+  describe "#inspect" do
+    let(:object) { Riak::RObject.new(@bucket) }
+
+    it "provides useful output even when the key is nil" do
+      expect { object.inspect }.not_to raise_error
+      object.inspect.should be_kind_of(String)
+    end
+
+    it 'uses the serializer output in inspect' do
+      object.raw_data = { 'a' => 7 }
+      object.content_type = 'inspect/type'
+      Riak::Serializers['inspect/type'] = Object.new.tap do |o|
+        def o.load(object); "serialize for inspect"; end
+      end
+
+      object.inspect.should =~ /serialize for inspect/
+    end
   end
 
   describe '.on_conflict' do
