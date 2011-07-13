@@ -63,7 +63,7 @@ describe Riak::RObject do
     describe "for raw data" do
       describe "when unserialized data was already provided" do
         before do
-          @object.data = { :some => :data }
+          @object.data = { 'some' => 'data' }
         end
 
         it "should reset unserialized forms when stored" do
