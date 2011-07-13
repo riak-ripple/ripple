@@ -14,6 +14,8 @@ module Ripple
         @reflection.verify_type!([value], @owner)
 
         raise "Unable to append if the document isn't first saved." if value.new_record?
+        load_target
+        @target << value
         keys << value.key
 
         self
@@ -24,6 +26,8 @@ module Ripple
 
         reset_owner_keys
         value.each { |doc| self << doc }
+        @target = value
+        loaded
       end
 
       def delete(value)

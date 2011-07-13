@@ -87,23 +87,12 @@ describe Ripple::Associations::ManyStoredKeyProxy, :focus => true do
     end
 
     it "resets to the saved state of the proxy" do
-      Transaction.stub(:find => [@transaction_one])
-      @account.transactions << @transaction_one
-      @account.save
+      Transaction.stub(:find).and_return([@transaction_one])
       @account.transactions << @transaction_two
       @account.transactions.reset
+      Transaction.stub(:find).and_return([@transaction_one])
       @account.transactions.should == [ @transaction_one ]
     end
-  end
-
-  it "can save and restore" do
-    @account.transactions << @transaction_one << @transaction_two
-    @account.save!
-
-    account = Account.find(@account.key)
-    account.transaction_keys.should == [ 'one', 'two' ]
-    account.transactions.keys.should == [ 'one', 'two' ]
-    account.transactions.should == [ @transaction_one, @transaction_two ]
   end
 
   describe "#include?" do
@@ -122,18 +111,6 @@ describe Ripple::Associations::ManyStoredKeyProxy, :focus => true do
       other_account = Account.new { |p| p.key = @transaction_one.key }
       @account.transactions.include?(other_account).should be_false
     end
-  end
-
-  it "can remove a document from the list" do
-    @account.transactions << @transaction_one
-    @account.transactions << @transaction_two
-    @account.save!
-    @account.transactions.delete(@transaction_one)
-    @account.save!
-
-    @account = Account.find(@account.key)
-    @account.transaction_keys.should == [ 'two' ]
-    @account.transactions.should == [ @transaction_two ]
   end
 
   describe "#keys" do
