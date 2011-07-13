@@ -41,7 +41,7 @@ module Ripple
 
       def reset
         super
-        set_owner_keys(@owner.robject.data ? @owner.robject.data[keys_name] : [])
+        self.owner_keys = @owner.robject.data ? @owner.robject.data[keys_name] : []
       end
 
       def include?(document)
@@ -61,10 +61,10 @@ module Ripple
       end
 
       def reset_owner_keys
-        set_owner_keys([])
+        self.owner_keys = []
       end
 
-      def set_owner_keys(new_keys)
+      def owner_keys=(new_keys)
         @owner.send("#{keys_name}=", @owner.class.properties[keys_name].type.new(new_keys))
       end
     end
