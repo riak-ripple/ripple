@@ -7,6 +7,7 @@ describe Ripple::Associations::ManyReferenceProxy do
     @account = Account.new {|e| e.key = "accounty"}
     @payment_method = PaymentMethod.new {|e| e.key = "paymadoo"}
     @other_payment_method = PaymentMethod.new {|e| e.key = "otherpaym"}
+    Ripple.client.stub(:search => {"response" => {"docs" => []}})
   end
 
   it "should be empty before any associated documents are set" do
