@@ -1,4 +1,4 @@
-env: "RIAK_BIN_DIR=/usr/sbin DEBUG_RIAK_TEST_SERVER=true"
+env: "RIAK_BIN_DIR=/usr/sbin"
 rvm:
   - 1.8.7
   - 1.9.2
