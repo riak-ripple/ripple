@@ -5,9 +5,9 @@ require 'yaml'
 settings = {
   'temp_dir'  => './.riaktest',
   'bin_dir'   => ENV['RIAK_BIN_DIR'],
-  'app_config' => {
-    'riak_search' => {
-      'enabled' => false
+  :app_config => {
+    :riak_search => {
+      :enabled => false
     }
   }
 }
