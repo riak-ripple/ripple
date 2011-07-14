@@ -42,7 +42,7 @@ module Ripple
 
         hash = super(options)
 
-        hash['key'] = key if respond_to?(:key) and key.present?
+        hash['key'] = key if respond_to?(:key) && key.present? && (!options[:except] || !options[:except].map(&:to_s).include?("key"))
 
         serializable_add_includes(options) do |association, records, opts|
           hash[association.to_s] = records.is_a?(Enumerable) ? records.map {|r| r.serializable_hash(opts) } : records.serializable_hash(opts)
