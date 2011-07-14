@@ -7,8 +7,10 @@ describe Ripple::Associations::ManyStoredKeyProxy do
     @account = Account.new {|t| t.key = "accounty" }
     @transaction_one = Transaction.new {|t| t.key = "one" }
     @transaction_two = Transaction.new {|t| t.key = "two" }
+    @transaction_three = Transaction.new {|t| t.key = "three" }    
     @transaction_one.stub(:new_record?).and_return(false)
     @transaction_two.stub(:new_record?).and_return(false)
+    @transaction_three.stub(:new_record?).and_return(false)
   end
 
   it "should be empty before any associated documents are set" do
@@ -143,7 +145,7 @@ describe Ripple::Associations::ManyStoredKeyProxy do
 
     it "maintains the list of keys properly as new documents are appended" do
       @account.transactions.keys.size.should == 2
-      @account.transactions << Transaction.create {|t| t.key = "three" }
+      @account.transactions << @transaction_three
       @account.transactions.keys.size.should == 3
     end
 
