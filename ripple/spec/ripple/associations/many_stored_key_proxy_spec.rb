@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Ripple::Associations::ManyStoredKeyProxy, :focus => true do
+describe Ripple::Associations::ManyStoredKeyProxy do
   require 'support/models/transactions'
 
   before :each do
