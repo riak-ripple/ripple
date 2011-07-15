@@ -47,6 +47,7 @@ module Ripple
     # @return [Object] The default value for this property if defined, or nil.
     def default
       default = options[:default]
+      default = default.dup if default.duplicable?
 
       return nil if default.nil?
       type_cast(default.respond_to?(:call) ? default.call : default)

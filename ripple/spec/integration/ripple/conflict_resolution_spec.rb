@@ -10,6 +10,8 @@ describe "Ripple conflict resolution" do
     property :favorite_colors, Set, :default => lambda { Set.new }
     property :created_at, DateTime
     property :updated_at, DateTime
+    property :coworker_keys, Array
+    property :mother_key, String
     key_on   :name
 
     # embedded
@@ -19,6 +21,10 @@ describe "Ripple conflict resolution" do
     # linked
     one :spouse, :class_name => 'ConflictedPerson'
     many :friends, :class_name => 'ConflictedPerson'
+
+    #stored_key
+    one :mother, :using => :stored_key, :class_name => 'ConflictedPerson'
+    many :coworkers, :using => :stored_key, :class_name => 'ConflictedPerson'
 
     bucket.allow_mult = true
   end
@@ -32,6 +38,7 @@ describe "Ripple conflict resolution" do
     include Ripple::EmbeddedDocument
     property :title, String
   end
+
 
   before(:each) do
     ConflictedPerson.on_conflict { } # reset to no-op
@@ -61,6 +68,8 @@ describe "Ripple conflict resolution" do
       :jobs            => [ConflictedJob.new(:title => 'Engineer')],
       :spouse          => ConflictedPerson.create!(:name => 'Jill', :gender => 'female'),
       :friends         => [ConflictedPerson.create!(:name => 'Quinn', :gender => 'male')],
+      :coworkers       => [ConflictedPerson.create!(:name => 'Horace', :gender => 'male')],
+      :mother          => ConflictedPerson.create!(:name => 'Serena', :gender => 'female'),
       :created_at      => created_at,
       :updated_at      => updated_at
     )
@@ -231,4 +240,54 @@ describe "Ripple conflict resolution" do
       sibling_friend_names.map(&:sort).should =~ [['Luna', 'Quinn'], ['Molly', 'Quinn']]
     end
   end
+
+  context 'when there are conflicts on a many stored_key association' do
+    before(:each) do
+      create_conflict original_person,
+        lambda { |p| p.coworkers << ConflictedPerson.create!(:name => 'Colleen', :gender => 'female') },
+        lambda { |p| p.coworkers = [ ConflictedPerson.create!(:name => 'Russ', :gender => 'male'),
+                                      ConflictedPerson.create!(:name => 'Denise', :gender => 'female') ] }
+    end
+
+    it 'sets the association to a blank array and includes the owner_keys in the list of conflicts passed to the on_conflict block' do
+      record_coworkers = record_coworker_keys = conflicts = sibling_coworker_keys = nil
+
+      ConflictedPerson.on_conflict do |siblings, c|
+        record_coworkers = coworkers
+        record_coworker_keys = coworker_keys
+        conflicts = c
+        sibling_coworker_keys = siblings.map { |s| s.coworker_keys }
+      end
+
+      ConflictedPerson.find('John')
+      record_coworker_keys.should == []
+      record_coworkers.should == []
+      conflicts.should == [:coworker_keys]
+      sibling_coworker_keys.map(&:sort).should =~ [['Colleen', 'Horace'], ['Denise', 'Russ']]
+    end
+  end
+
+  context 'when there are conflicts on a one stored_key association' do
+    before(:each) do
+      create_conflict original_person,
+        lambda { |p| p.mother = ConflictedPerson.new(:name => 'Nancy', :gender => 'female') },
+        lambda { |p| p.mother = ConflictedPerson.new(:name => 'Sherry', :gender => 'male') }
+    end
+
+    it 'sets the association to nil and includes its name in the list of conflicts passed to the on_conflict block' do
+      record_mother = conflicts = sibling_mother_keys = nil
+
+      ConflictedPerson.on_conflict do |siblings, c|
+        record_mother = mother
+        conflicts = c
+        sibling_mother_keys = siblings.map { |s| s.mother_key }
+      end
+
+      ConflictedPerson.find('John')
+      record_mother.should be_nil
+      conflicts.should == [:mother_key]
+      sibling_mother_keys.sort.should == %w(Nancy Sherry)
+    end
+  end
+
 end

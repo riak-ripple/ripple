@@ -1,20 +1,33 @@
-# ripple
+# ripple [![Build Status](http://travis-ci.org/seancribbs/ripple.png)](https://secure.travis-ci.org/seancribbs/ripple)
 
-ripple is a rich Ruby toolkit for Riak, Basho's distributed database. It consists of three gems:
+ripple is a rich Ruby toolkit for Riak, Basho's distributed
+database. It consists of three gems:
 
-* `riak-client` (`Riak` namespace) contains a basic wrapper around typical operations, including bucket manipulation, object CRUD, link-walking, and map-reduce.
-* `ripple` (`Ripple` namespace) contains an ActiveModel-compatible modeling layer that is inspired by ActiveRecord, DataMapper, and MongoMapper.
-* `riak-sessions` contains session stores for Rack and Rails 3 applications.
+* `riak-client` (`Riak` namespace) contains a basic wrapper around
+  typical operations, including bucket manipulation, object CRUD,
+  link-walking, and map-reduce.
+* `ripple` (`Ripple` namespace) contains an ActiveModel-compatible
+  modeling layer that is inspired by ActiveRecord, DataMapper, and
+  MongoMapper.
+* `riak-sessions` contains session stores for Rack and Rails 3
+  applications.
 
 ## Dependencies
 
-`riak-client` requires i18n and either json or yajl-ruby. For higher performance on HTTP requests, install the 'curb' or 'excon' gems. The cache store implementation requires ActiveSupport 3 or later.
+`riak-client` requires i18n and either json or yajl-ruby. For higher
+performance on HTTP requests, install the 'curb' or 'excon' gems. The
+cache store implementation requires ActiveSupport 3 or later.
 
-`ripple` requires Ruby 1.8.7 or later and versions 3 or above of ActiveModel and ActiveSupport (and their dependencies, including i18n).
+`ripple` requires Ruby 1.8.7 or later and versions 3 or above of
+ActiveModel and ActiveSupport (and their dependencies, including
+i18n).
 
-`riak-sessions` requires Rack (any version > 1.0), and Rails 3.0 if you want the Rails-specific session store.
+`riak-sessions` requires Rack (any version > 1.0), and Rails 3.0 if
+you want the Rails-specific session store.
 
-Development dependencies are handled with bundler. Install bundler (`gem install bundler`) and run this command in each sub-project to get started:
+Development dependencies are handled with bundler. Install bundler
+(`gem install bundler`) and run this command in each sub-project to
+get started:
 
 ``` bash
 $ bundle install

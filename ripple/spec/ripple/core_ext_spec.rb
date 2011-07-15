@@ -96,7 +96,7 @@ describe Set do
   describe "#as_json" do
     it 'returns an array of the #as_json result of each element' do
       set = Set.new([stub(:as_json => 's1'), stub(:as_json => 's2')])
-      set.as_json.should == ['s1', 's2']
+      set.as_json.should =~ ['s1', 's2']
     end
   end
 end

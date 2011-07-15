@@ -46,6 +46,13 @@ describe Ripple::AttributeMethods do
       @widget.manufactured.should == false
     end
 
+    it "dups the default if it is duplicable so that two document do not share the same mutable value" do
+      widget2 = Widget.new
+      @widget.name.should_not be(widget2.name)
+      widget2.name.gsub!("w", "f")
+      @widget.name.should == "widget"
+    end
+
     it "should allow raw attribute access when accessing the document with []" do
       @widget['name'].should == 'widget'
     end
@@ -68,8 +75,9 @@ describe Ripple::AttributeMethods do
     end
 
     it "should allow assignment of undefined attributes when assigning to the document with []=" do
-      @widget['name'] = 'sprocket'
-      @widget.name.should == 'sprocket'
+      @widget.should_not respond_to(:shoe_size)
+      @widget['shoe_size'] = 8
+      @widget['shoe_size'].should == 8
     end
 
     it "should type cast assigned values automatically" do
@@ -130,8 +138,28 @@ describe Ripple::AttributeMethods do
     Widget.properties.delete(:start_date) # cleanup
   end
 
-  it "should provide a hash representation of all of the attributes" do
-    @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil}
+  describe "#attributes" do
+    it "it returns a hash representation of all of the attributes" do
+      @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil}
+    end
+
+    it "does not include ghost attributes (attributes that do not have a defined property)" do
+      @widget['some_undefined_prop'] = 3.14159
+      @widget.attributes.should_not include('some_undefined_prop')
+    end
+  end
+
+  describe "#raw_attributes" do
+    it "returns a hash representation, including attributes for undefined properties" do
+      @widget['some_undefined_prop'] = 17
+      @widget.raw_attributes.should == {
+        'name'                => 'widget',
+        'size'                => nil,
+        'manufactured'        => false,
+        'shipped_at'          => nil,
+        'some_undefined_prop' => 17
+      }
+    end
   end
 
   it "should load attributes from mass assignment" do

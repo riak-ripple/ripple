@@ -23,6 +23,7 @@ module Ripple
         process_properties
         process_embedded_associations
         process_linked_associations
+        process_stored_key_associations
       end
 
       private
@@ -42,6 +43,12 @@ module Ripple
       def process_linked_associations
         model_class.linked_associations.each do |assoc|
           document.send(assoc.name).replace_links(resolved_association_value_for(assoc, :links))
+        end
+      end
+
+      def process_stored_key_associations
+        model_class.stored_key_associations.each do |assoc|
+          document.send(assoc.name).reset_owner_keys if (assoc.type == :many)
         end
       end
 

@@ -1,12 +1,16 @@
-require File.expand_path("../../../spec_helper", __FILE__)
+require 'spec_helper'
 
 describe Ripple::Associations::ManyStoredKeyProxy do
   require 'support/models/transactions'
 
   before :each do
     @account = Account.new {|t| t.key = "accounty" }
-    @transaction_one = Transaction.create {|t| t.key = "one" }
-    @transaction_two = Transaction.create {|t| t.key = "two" }
+    @transaction_one = Transaction.new {|t| t.key = "one" }
+    @transaction_two = Transaction.new {|t| t.key = "two" }
+    @transaction_three = Transaction.new {|t| t.key = "three" }    
+    @transaction_one.stub(:new_record?).and_return(false)
+    @transaction_two.stub(:new_record?).and_return(false)
+    @transaction_three.stub(:new_record?).and_return(false)
   end
 
   it "should be empty before any associated documents are set" do
@@ -85,22 +89,12 @@ describe Ripple::Associations::ManyStoredKeyProxy do
     end
 
     it "resets to the saved state of the proxy" do
-      @account.transactions << @transaction_one
-      @account.save
+      Transaction.stub(:find).and_return([@transaction_one])
       @account.transactions << @transaction_two
       @account.transactions.reset
+      Transaction.stub(:find).and_return([@transaction_one])
       @account.transactions.should == [ @transaction_one ]
     end
-  end
-
-  it "can save and restore" do
-    @account.transactions << @transaction_one << @transaction_two
-    @account.save!
-
-    account = Account.find(@account.key)
-    account.transaction_keys.should == [ 'one', 'two' ]
-    account.transactions.keys.should == [ 'one', 'two' ]
-    account.transactions.should == [ @transaction_one, @transaction_two ]
   end
 
   describe "#include?" do
@@ -119,18 +113,6 @@ describe Ripple::Associations::ManyStoredKeyProxy do
       other_account = Account.new { |p| p.key = @transaction_one.key }
       @account.transactions.include?(other_account).should be_false
     end
-  end
-
-  it "can remove a document from the list" do
-    @account.transactions << @transaction_one
-    @account.transactions << @transaction_two
-    @account.save!
-    @account.transactions.delete(@transaction_one)
-    @account.save!
-
-    @account = Account.find(@account.key)
-    @account.transaction_keys.should == [ 'two' ]
-    @account.transactions.should == [ @transaction_two ]
   end
 
   describe "#keys" do
@@ -163,7 +145,7 @@ describe Ripple::Associations::ManyStoredKeyProxy do
 
     it "maintains the list of keys properly as new documents are appended" do
       @account.transactions.keys.size.should == 2
-      @account.transactions << Transaction.create {|t| t.key = "three" }
+      @account.transactions << @transaction_three
       @account.transactions.keys.size.should == 3
     end
 

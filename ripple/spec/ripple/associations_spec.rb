@@ -18,6 +18,11 @@ describe Ripple::Associations do
     Invoice.linked_associations.should == Array(Invoice.associations[:customer])
   end
 
+  it "should collect the stored_key associations" do
+    Account.stored_key_associations.should == Array(Account.associations[:transactions])
+    Transaction.stored_key_associations.should == Array(Transaction.associations[:account])
+  end
+
   it "should copy associations to a subclass" do
     Invoice.associations[:foo] = "bar"
     class SubInvoice < Invoice; end

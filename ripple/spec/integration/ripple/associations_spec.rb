@@ -33,21 +33,50 @@ describe "Ripple Associations" do
       class Post
         include Ripple::Document
         one :user, :using => :stored_key
+        many :comments, :using => :stored_key
+        property :comment_keys, Array
         property :user_key, String
         property :title, String
+      end
+      class Comment
+        include Ripple::Document
       end
     end
   end
 
   before :each do
-    @user     = User.new(:email => 'riak@ripple.com')
-    @profile  = Profile.new(:name => 'Ripple')
-    @billing  = Address.new(:street => '123 Somewhere Dr', :kind => 'billing')
-    @shipping = Address.new(:street => '321 Anywhere Pl', :kind => 'shipping')
-    @friend1  = User.create(:email => "friend@ripple.com")
-    @friend2  = User.create(:email => "friend2@ripple.com")
-    @cc       = CreditCard.new(:number => '12345')
-    @post1    = Post.new(:title => "Hello, world!")
+    @user        = User.new(:email => 'riak@ripple.com')
+    @profile     = Profile.new(:name => 'Ripple')
+    @billing     = Address.new(:street => '123 Somewhere Dr', :kind => 'billing')
+    @shipping    = Address.new(:street => '321 Anywhere Pl', :kind => 'shipping')
+    @friend1     = User.create(:email => "friend@ripple.com")
+    @friend2     = User.create(:email => "friend2@ripple.com")
+    @cc          = CreditCard.new(:number => '12345')
+    @post        = Post.new(:title => "Hello, world!")
+    @comment_one = Comment.new.tap{|c| c.key = "one"; c.save! }
+    @comment_two = Comment.new.tap{|c| c.key = "two"; c.save! }
+  end
+
+  it "should save and restore a many stored key association" do
+    @post.comments << @comment_one << @comment_two
+    @post.save!
+
+    post = Post.find(@post.key)
+    post.comment_keys.should == [ 'one', 'two' ]
+    post.comments.keys.should == [ 'one', 'two' ]
+    post.comments.should == [ @comment_one, @comment_two ]
+  end
+
+  it "should remove a document from a many stored key association" do
+    @post.comments << @comment_one
+    @post.comments << @comment_two
+    @post.save!
+    @post.comments.delete(@comment_one)
+    @post.save!
+
+    @post = Post.find(@post.key)
+    @post.comment_keys.should == [ @comment_two.key ]
+    @post.comments.should == [ @comment_two ]
   end
 
   it "should save one embedded associations" do
@@ -168,10 +197,10 @@ describe "Ripple Associations" do
 
   it "should save one association by storing key" do
     @user.save!
-    @post1.user = @user
-    @post1.save!
-    @post1.user_key.should == @user.key
-    @found = Post.find(@post1.key)
+    @post.user = @user
+    @post.save!
+    @post.user_key.should == @user.key
+    @found = Post.find(@post.key)
     @found.user.email.should == 'riak@ripple.com'
     @found.user.should be_a(User)
   end

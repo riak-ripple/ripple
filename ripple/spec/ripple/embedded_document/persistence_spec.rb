@@ -59,6 +59,13 @@ describe Ripple::EmbeddedDocument::Persistence do
     @root.attributes_for_persistence.should == {'_type' => 'User', 'addresses' => [{'_type' => 'Address', 'street' => nil}]}
   end
 
+  it "includes undefined properties in the attributes for persistence" do
+    addr = Address.new
+    addr['some_undefined_prop'] = 17
+    @root.addresses << addr
+    @root.attributes_for_persistence['addresses'].first.should include('some_undefined_prop' => 17)
+  end
+
   it "should modify its attributes and save" do
     @addr.should_receive(:save).and_return(true)
     @addr.update_attributes(:street => "4 Folsom Ave")

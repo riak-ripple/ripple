@@ -68,12 +68,17 @@ module Ripple
 
       # Associations of embedded documents
       def embedded_associations
-        associations.values.select(&:embeddable?)
+        associations.values.select(&:embedded?)
       end
 
       # Associations of linked documents
       def linked_associations
         associations.values.select(&:linked?)
+      end
+
+      # Associations of stored_key documents
+      def stored_key_associations
+        associations.values.select(&:stored_key?)
       end
 
       # Creates a singular association
@@ -226,7 +231,7 @@ module Ripple
     end
 
     # @return [true,false] Is the associated class an EmbeddedDocument
-    def embeddable?
+    def embedded?
       klass.embeddable?
     end
 
@@ -239,6 +244,11 @@ module Ripple
     # @return [true,false] Does the association use links
     def linked?
       using == :linked
+    end
+
+    # @return [true,false] Does the association use stored_key
+    def stored_key?
+      using == :stored_key
     end
 
     # @return [String] the instance variable in the owner where the association will be stored
@@ -284,7 +294,7 @@ module Ripple
 
     # @return [Symbol] which method is used for representing the association - currently only supports :embedded and :linked
     def using
-      @using ||= options[:using] || (embeddable? ? :embedded : :linked)
+      @using ||= options[:using] || (embedded? ? :embedded : :linked)
     end
 
     # @raise [ArgumentError] if the value does not match the class of the association
@@ -304,9 +314,9 @@ module Ripple
       when polymorphic?
         one? || Array === value
       when many?
-        Array === value && value.all? {|d| (embeddable? && Hash === d) || klass === d }
+        Array === value && value.all? {|d| (embedded? && Hash === d) || klass === d }
       when one?
-        value.nil? || (embeddable? && Hash === value) || value.kind_of?(klass)
+        value.nil? || (embedded? && Hash === value) || value.kind_of?(klass)
       end
     end
 
