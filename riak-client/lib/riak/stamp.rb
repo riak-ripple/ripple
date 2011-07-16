@@ -10,9 +10,9 @@ module Riak
   class Stamp
     attr_reader :client
 
-    CLIENT_ID_MASK = 0x3f
-    SEQUENCE_MASK = 0x0aff
-    TIMESTAMP_MASK = 0x3ffffffffff
+    CLIENT_ID_MASK = (1 << 10) - 1
+    SEQUENCE_MASK = (1 << 12) - 1
+    TIMESTAMP_MASK = (1 << 41) - 1
     SEQUENCE_SHIFT = 10
     TIMESTAMP_SHIFT = 22
 
@@ -22,7 +22,7 @@ module Riak
     def initialize(client)
       @client = client
       @mutex = Mutex.new
-      @timestamp = timestamp
+      @timestamp = time_gen
       @sequence = 0
     end
 
@@ -30,17 +30,17 @@ module Riak
     # disambiguation purposes.
     def next
       @mutex.synchronize do
-        new_stamp = timestamp
-        if @timestamp == new_stamp
-          @sequence += 1 & SEQUENCE_MASK
-          new_stamp = wait_for_next_ms(@timestamp) if @sequence == 0
+        now = time_gen
+        if @timestamp == now
+          @sequence = (@sequence + 1) & SEQUENCE_MASK
+          now = wait_for_next_ms(@timestamp) if @sequence == 0
         else
           @sequence = 0
         end
 
-        raise BackwardsClockError.new(@timestamp - new_stamp) if new_stamp < @timestamp
+        raise BackwardsClockError.new(@timestamp - now) if now < @timestamp
 
-        @timestamp = new_stamp
+        @timestamp = now
         @timestamp << TIMESTAMP_SHIFT | @sequence << SEQUENCE_SHIFT | client_id
       end
     end
@@ -55,8 +55,14 @@ module Riak
       end
     end
 
-    def timestamp
+    def time_gen
       (Time.now.to_f * 1000).floor & TIMESTAMP_MASK
+    end
+
+    def wait_for_next_ms(start)
+      now = time_gen
+      now = time_gen while now <= start
+      now
     end
   end
 

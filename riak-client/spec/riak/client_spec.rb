@@ -83,6 +83,11 @@ describe Riak::Client do
     end
   end
 
+  it "should expose a Stamp object" do
+    subject.should respond_to(:stamp)
+    subject.stamp.should be_kind_of(Riak::Stamp)
+  end
+  
   describe "reconfiguring" do
     before :each do
       @client = Riak::Client.new

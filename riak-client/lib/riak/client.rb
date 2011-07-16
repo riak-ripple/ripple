@@ -1,4 +1,3 @@
-
 require 'tempfile'
 require 'delegate'
 require 'riak'
@@ -12,6 +11,7 @@ require 'riak/client/excon_backend'
 require 'riak/client/protobuffs_backend'
 require 'riak/client/beefcake_protobuffs_backend'
 require 'riak/bucket'
+require 'riak/stamp'
 
 module Riak
   # A client connection to Riak.
@@ -302,6 +302,14 @@ module Riak
     end
     alias :list_buckets :buckets
 
+    # Exposes a {Stamp} object for use in generating unique
+    # identifiers.
+    # @return [Stamp] an ID generator
+    # @see Stamp#next
+    def stamp
+      @stamp ||= Riak::Stamp.new(self)
+    end
+    
     # Stores a large file/IO-like object in Riak via the "Luwak" interface.
     # @overload store_file(filename, content_type, data)
     #   Stores the file at the given key/filename
