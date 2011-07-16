@@ -1,4 +1,4 @@
-# ripple [![Build Status](http://travis-ci.org/seancribbs/ripple.png)](https://secure.travis-ci.org/seancribbs/ripple)
+# ripple [![Build Status](http://secure.travis-ci.org/seancribbs/ripple.png)](https://travis-ci.org/seancribbs/ripple)
 
 ripple is a rich Ruby toolkit for Riak, Basho's distributed
 database. It consists of three gems:
