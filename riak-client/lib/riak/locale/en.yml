@@ -1,5 +1,6 @@
 en:
   riak:
+    backwards_clock: "System clock moved backwards, ID generation will fail for %{delay} more milliseconds."
     bucket_link_conversion: "Can't convert a bucket link to a walk spec"
     client_type: "invalid argument %{client} is not a Riak::Client"
     conflict_resolver_invalid: "The given resolver (%{resolver}) did not respond to :call"
