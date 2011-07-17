@@ -1,7 +1,5 @@
-
 require 'spec_helper'
 require 'rack/mock'
-
 
 describe Riak::SessionStore do
   Riak::SessionStore::DEFAULT_OPTIONS[:http_port] = 9000 if $test_server
@@ -59,6 +57,9 @@ describe Riak::SessionStore do
   end
   
   it "maintains freshness" do
+    now = Time.now
+    old_now = Time.method(:now)
+    Time.stub(:now).and_return(now)
     pool = Riak::SessionStore.new(incrementor, :expire_after => 3)
     res = Rack::MockRequest.new(pool).get('/')
     res.body.should include '"counter"=>1'
@@ -68,6 +69,7 @@ describe Riak::SessionStore do
     res.body.should include '"counter"=>2'
     puts 'Sleeping to expire session' if $DEBUG
     sleep 4
+    Time.stub(:now, &old_now)
     res = Rack::MockRequest.new(pool).get('/', "HTTP_COOKIE" => cookie)
     res["Set-Cookie"].should_not == cookie
     res.body.should include '"counter"=>1'
