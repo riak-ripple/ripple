@@ -1,5 +1,9 @@
 h1. Ripple Release Notes
 
+h2. 0.9.7 Repackaging - 2011-07-26
+
+Release 0.9.7 is a repackaging of the 0.9.6 release due to problems with Rubygems.
+
 h2. 0.9.6 Patch Release - 2011-07-26
 
 Release 0.9.6 is a minor bugfix release.
