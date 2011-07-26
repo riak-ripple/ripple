@@ -113,6 +113,12 @@ Usage (Rails):
   <span class='id config'>config</span><span class='period'>.</span><span class='id middleware'>middleware</span><span class='period'>.</span><span class='id use'>use</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>SessionStore</span>
 </pre>
 <p>
+Usage (Rails 2.3), requires you to swap out the default store:
+</p>
+<pre class="code">
+  <span class='id config'>config</span><span class='period'>.</span><span class='id middleware'>middleware</span><span class='period'>.</span><span class='id swap'>swap</span> <span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Session</span><span class='op'>::</span><span class='const'>CookieStore</span><span class='comma'>,</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>SessionStore</span>
+</pre>
+<p>
 For configuration options, see #initialize.
 </p>
 
@@ -138,7 +144,8 @@ For configuration options, see #initialize.
 <span class='symbol'>:dw</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
 <span class='symbol'>:rw</span> <span class='op'>=&gt;</span> <span class='int'>1</span><span class='comma'>,</span>
 <span class='symbol'>:n_val</span> <span class='op'>=&gt;</span> <span class='int'>2</span><span class='comma'>,</span>
-<span class='symbol'>:last_write_wins</span> <span class='op'>=&gt;</span> <span class='kw'>false</span></pre></dd>
+<span class='symbol'>:last_write_wins</span> <span class='op'>=&gt;</span> <span class='kw'>false</span><span class='comma'>,</span>
+<span class='symbol'>:content_type</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/x-ruby-marshal</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
     </dl>
   
@@ -314,19 +321,21 @@ configuration options
       <pre class="lines">
 
 
-48
-49
-50
 51
 52
 53
-54</pre>
+54
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-sessions/lib/riak/session_store.rb', line 48</span>
+      <pre class="code"><span class="info file"># File 'riak-sessions/lib/riak/session_store.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id app'>app</span><span class='comma'>,</span> <span class='id options'>options</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>super</span>
+  <span class='ivar'>@riak_options</span> <span class='op'>=</span> <span class='id options'>options</span><span class='period'>.</span><span class='id merge'>merge</span><span class='lparen'>(</span><span class='const'>DEFAULT_OPTIONS</span><span class='rparen'>)</span>
   <span class='ivar'>@client</span> <span class='op'>=</span> <span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='ivar'>@default_options</span><span class='period'>.</span><span class='id slice'>slice</span><span class='lparen'>(</span><span class='op'>*</span><span class='const'>Riak</span><span class='op'>::</span><span class='const'>Client</span><span class='op'>::</span><span class='const'>VALID_OPTIONS</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='ivar'>@bucket</span> <span class='op'>=</span> <span class='ivar'>@client</span><span class='period'>.</span><span class='id bucket'>bucket</span><span class='lparen'>(</span><span class='id default_options'>default_options</span><span class='lbracket'>[</span><span class='symbol'>:bucket</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id set_bucket_defaults'>set_bucket_defaults</span>
@@ -369,12 +378,12 @@ Returns the value of attribute bucket
       <pre class="lines">
 
 
-42
-43
-44</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-sessions/lib/riak/session_store.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'riak-sessions/lib/riak/session_store.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id bucket'>bucket</span>
   <span class='ivar'>@bucket</span>
@@ -404,15 +413,15 @@ Returns the value of attribute bucket
       <pre class="lines">
 
 
-56
-57
-58
-59
 60
-61</pre>
+61
+62
+63
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'riak-sessions/lib/riak/session_store.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'riak-sessions/lib/riak/session_store.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id generate_sid'>generate_sid</span>
   <span class='id loop'>loop</span> <span class='kw'>do</span>
@@ -430,7 +439,7 @@ Returns the value of attribute bucket
 </div>
     
     <div id="footer">
-  Generated on Wed Jun 15 08:56:43 2011 by 
+  Generated on Tue Jul 26 11:05:52 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.7.2 (ruby-1.9.2).
 </div>
