@@ -16,13 +16,13 @@ gemspec = Gem::Specification.new do |gem|
   gem.add_development_dependency "excon", "~>0.5.7"
   gem.add_dependency "i18n", ">=0.4.0"
   gem.add_dependency "builder", "~>2.1.2"
-  gem.add_dependency "beefcake", "~>0.3.0"
+  gem.add_dependency "beefcake", "=0.3.2"
 
   files = FileList["**/*"]
   # Editor and O/S files
-  files.exclude ".DS_Store", "*~", "\#*", ".\#*", "*.swp", "*.tmproj", "tmtags"
+  files.exclude ".DS_Store", "*~", /#/, "*.swp", "*.tmproj", "tmtags"
   # Generated artifacts
-  files.exclude "coverage", "rdoc", "pkg", "doc", ".bundle", "*.rbc", ".rvmrc", ".watchr", ".rspec"
+  files.exclude "coverage/*", "rdoc/*", "pkg/*", "doc/*", ".bundle", "*.rbc", ".rvmrc", ".watchr", ".rspec"
   # Project-specific
   files.exclude "Gemfile.lock", %r{spec/support/test_server.yml$}, "bin"
   # Remove directories
@@ -30,7 +30,7 @@ gemspec = Gem::Specification.new do |gem|
 
   gem.files = files.to_a
 
-  gem.test_files = gem.files.grep(/_spec\.rb$/)
+  gem.test_files = gem.files.grep(/spec\/.*_spec\.rb$/)
 end
 
 # Gem packaging tasks

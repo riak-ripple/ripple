@@ -1,5 +1,15 @@
 h1. Ripple Release Notes
 
+h2. 0.9.6 Patch Release - 2011-07-26
+
+Release 0.9.6 is a minor bugfix release.
+
+Full notes:
+
+* Riak::SessionStore (Rack-based) now works with Rails 2.3.x. [Mathias Meyer]
+* Added Travis CI support. [Myron Marston]
+* Pinned beefcake dependency to 0.3.2 to prevent bug around booleans.
+
 h2. 0.9.5 Patch Release - 2011-06-14
 
 Release 0.9.5 is a minor bugfix release but also includes some small features.
