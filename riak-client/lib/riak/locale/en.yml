@@ -40,6 +40,7 @@ en:
     search_docs_require_id: "Search index documents must include the 'id' field."
     search_remove_requires_id_or_query: "Search index documents to be removed must have 'id' or 'query' keys."
     serializer_not_implemented: "No serializer has been registered for content type %{content_type}"
+    source_and_root_required: "Riak::Node configuration must include :source and :root keys."
     stale_write_prevented: "Stale write prevented by client."
     stored_function_invalid: "function must have :bucket and :key when a hash"
     string_type: "invalid_argument %{string} is not a String"
