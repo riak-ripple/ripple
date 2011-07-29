@@ -18,6 +18,7 @@ module Riak
       def initialize(stdin, stdout, stderr, thr=nil)
         @cin, @cout, @cerr, @cthread = stdin, stdout, stderr, thr
         @mutex = Mutex.new
+        2.times { @cin.puts }
         wait_for_erlang_prompt
       end
 

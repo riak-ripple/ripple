@@ -9,21 +9,20 @@ require 'fakeweb'
 # Only the tests should really get away with this.
 Riak.disable_list_keys_warnings = true
 
-begin
-  require 'yaml'
-  require 'riak/test_server'
-  config = YAML.load_file("spec/support/test_server.yml")
-  $test_server = Riak::TestServer.new(config.symbolize_keys)
-  $test_server.prepare!
-  $test_server.start
-  at_exit { $test_server.cleanup }
-rescue => e
-  warn "Can't run Riak::TestServer specs. Specify the location of your Riak installation in spec/support/test_server.yml. See Riak::TestServer docs for more info."
-  warn e.inspect
-end
+# begin
+#   require 'yaml'
+#   require 'riak/test_server'
+#   config = YAML.load_file("spec/support/test_server.yml")
+#   $test_server = Riak::TestServer.new(config.symbolize_keys)
+#   $test_server.prepare!
+#   $test_server.start
+#   at_exit { $test_server.cleanup }
+# rescue => e
+#   warn "Can't run Riak::TestServer specs. Specify the location of your Riak installation in spec/support/test_server.yml. See Riak::TestServer docs for more info."
+#   warn e.inspect
+# end
 
 Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].sort.each {|f| require f }
-
 
 RSpec.configure do |config|
   config.debug = true

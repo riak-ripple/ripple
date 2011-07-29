@@ -74,7 +74,7 @@ module Riak
         console = attach
         yield console
       ensure
-        console.close
+        console.close if console
       end
     end
 

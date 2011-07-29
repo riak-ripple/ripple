@@ -6,6 +6,16 @@ module Riak
     # under the generated node.
     NODE_DIRECTORIES = [:bin, :etc, :log, :data, :ring, :pipe]
 
+    NODE_DIRECTORIES.each do |dir|
+      # Makes accessor methods for all the node directories that
+      # return Pathname objects.
+      class_eval %Q{
+        def #{dir}
+          root + '#{dir}'
+        end
+      }
+    end
+
     # @return [Hash] the contents of the Erlang environment, which will
     #   be created into the app.config file.
     attr_reader :env
@@ -127,6 +137,8 @@ module Riak
       configure_name(hash[:interface])
     end
 
+    # Sets the data directories for the various on-disk backends and
+    # the ring state.
     def configure_data
       [:bitcask, :eleveldb, :merge_index].each {|k| @env[k] ||= {} }
       @env[:bitcask][:data_root] ||= (data + 'bitcask').expand_path.to_s
@@ -134,6 +146,7 @@ module Riak
       @env[:riak_core][:ring_state_dir] ||= ring.expand_path.to_s
     end
 
+    # Sets directories and handlers for logging.
     def configure_logging
       if @env[:lager]
         @env[:lager][:handlers] = {
@@ -162,22 +175,26 @@ module Riak
       end
     end
 
+    # Sets the node name and cookie for distributed Erlang.
     def configure_name(interface)
       interface ||= "127.0.0.1"
       @vm["-name"] = @configuration[:name] || "riak#{rand(1000000).to_s}@#{interface}"
-      @vm["-setcookie"] = @configuration[:cookie] || "riak"
+      @vm["-setcookie"] = @configuration[:cookie] || "#{rand(100000).to_s}_#{rand(1000000).to_s}"
     end
 
+    # Merges input configuration with the defaults.
     def configure_settings
       @env = deep_merge(@env, @configuration[:env]) if @configuration[:env]
       @vm = @vm.merge(@configuration[:vm]) if @configuration[:vm]
     end
 
+    # Sets the source directory and root directory of the generated node.
     def configure_paths
       @source = Pathname.new(@configuration[:source]).expand_path
       @root = Pathname.new(@configuration[:root]).expand_path
     end
 
+    # Sets ports and interfaces for http, protocol buffers, and handoff.
     def configure_ports(interface, min_port)
       interface ||= "127.0.0.1"
       min_port ||= 8080
@@ -186,7 +203,7 @@ module Riak
         min_port += 1
       end
       @env[:riak_kv][:pb_ip] = interface unless @env[:riak_kv][:pb_ip]
-      unless @env[:riak_kv][:pb_ip]
+      unless @env[:riak_kv][:pb_port]
         @env[:riak_kv][:pb_port] = min_port
         min_port += 1
       end
@@ -210,6 +227,9 @@ module Riak
       end
     end
 
+    # This class lets us specify that some settings should be emitted
+    # as Erlang tuples, even though the first element is not
+    # necessarily a Symbol.
     class Tuple < Array; end
 
     # Recursively converts a {Hash} into an Erlang configuration
@@ -243,16 +263,6 @@ module Riak
       else
         v.to_s
       end
-    end
-
-    NODE_DIRECTORIES.each do |dir|
-      # Makes accessor methods for all the node directories that
-      # return Pathname objects.
-      class_eval %Q{
-        def #{dir}
-          root + '#{dir}'
-        end
-      }
     end
   end
 end

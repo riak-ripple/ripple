@@ -29,7 +29,7 @@ module Riak
     def drop
       was_started = started?
       stop if was_started
-      data_dir.entries.each {|path| path.rmtree; path.mkpath }
+      data.children.each {|dir| dir.children.each {|c| c.rmtree } }
       start if was_started
     end
 
