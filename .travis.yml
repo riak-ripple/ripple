@@ -2,9 +2,9 @@ env: "RIAK_BIN_DIR=/usr/sbin"
 rvm:
   - 1.8.7
   - 1.9.2
-  - jruby
+#  - jruby
 before_script:
-  - "ci/disable_jruby_native"
+# - "ci/disable_jruby_native"
   - "ci/create_test_server_yml"
 script: "ci/build_all"
 notifications:
