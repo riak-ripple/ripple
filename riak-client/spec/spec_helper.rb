@@ -22,7 +22,7 @@ RSpec.configure do |config|
         config = YAML.load_file("spec/support/test_server.yml")
         $test_server = Riak::TestServer.create(:root => config['root'],
                                                :source => config['source'],
-                                               :min_port => 15000)
+                                               :min_port => config['min_port'] || 15000)
         at_exit { $test_server.stop }
       end
       if example.metadata[:test_server] == false
@@ -37,7 +37,9 @@ RSpec.configure do |config|
   end
 
   config.after(:each, :integration => true) do
-    $test_server.drop if $test_server && $test_server.started?
+    if $test_server && example.metadata[:test_server] != false
+      $test_server.drop
+    end
   end
 
   config.before(:each) do

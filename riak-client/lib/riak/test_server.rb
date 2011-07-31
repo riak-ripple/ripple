@@ -20,19 +20,32 @@ module Riak
       configuration[:env][:riak_kv][:storage_backend] = :riak_kv_test_backend
       configuration[:env][:riak_search] ||= {}
       configuration[:env][:riak_search][:search_backend] = :riak_search_test_backend
-      super configuration      
+      super configuration
     end
 
+    # Overrides the default {Node#started?} to simply return true if the
+    # console is still attached.
+    def started?
+      (@console && !@console.frozen?) || super
+    end
+
+    # Overrides the default {Node#start} to return early if the
+    # console is still attached. Otherwise, starts and immediately
+    # attaches the console.
     def start
-      super
-      @console = attach
+      unless @console && !@console.frozen?
+        super
+        @console = attach
+      end
     end
 
+    # Overrides the default {Node#stop} to close the console before
+    # stopping the node.
     def stop
       @console.close unless @console.frozen?
       super
     end
-    
+
     # Overrides the default {Node#drop} to simply clear the in-memory
     # backends.
     def drop
