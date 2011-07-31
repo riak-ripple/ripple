@@ -2,7 +2,9 @@ require 'spec_helper'
 require 'rack/mock'
 
 describe Riak::SessionStore do
-  Riak::SessionStore::DEFAULT_OPTIONS[:http_port] = 9000 if $test_server
+  before do
+    Riak::SessionStore::DEFAULT_OPTIONS[:http_port] = $test_server.http_port
+  end
   session_key = Riak::SessionStore::DEFAULT_OPTIONS[:key]
   session_match = /#{session_key}=([0-9a-fA-F]+);/
   incrementor = lambda do |env|

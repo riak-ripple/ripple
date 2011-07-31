@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe "Ripple Persistence" do
-  require 'support/test_server'
+describe "Ripple Persistence", :integration => true do
 
   before :all do    
     Object.module_eval do
@@ -41,7 +40,7 @@ describe "Ripple Persistence" do
   
 end
 
-describe Ripple::Document do
+describe Ripple::Document, :integration => true do
   let(:custom_data)        { Subscription::MyCustomType.new('bar') }
   let(:days_of_month)      { Set.new([1, 7, 15, 23]) }
   let(:subscription)       { Subscription.create!(:custom_data => custom_data, :days_of_month => days_of_month) }

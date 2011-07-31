@@ -1,14 +1,13 @@
 require 'spec_helper'
 require 'active_support/core_ext/array'
 
-describe Ripple::NestedAttributes do
+describe Ripple::NestedAttributes, :integration => true do
   require 'support/models/car'
   require 'support/models/driver'
   require 'support/models/passenger'
   require 'support/models/engine'
   require 'support/models/seat'
   require 'support/models/wheel'
-  require 'support/test_server'
 
   context "one :driver (link)" do
     subject { Car.new }

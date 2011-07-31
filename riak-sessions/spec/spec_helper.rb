@@ -12,7 +12,4 @@ Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].sort.each {|f| require
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.after(:each) do
-    $test_server.recycle if $test_server
-  end
 end

@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-describe "Ripple Associations" do
-  require 'support/test_server'
-
+describe "Ripple Associations", :integration => true do
   before :all do
     Object.module_eval do
       class User

@@ -1,4 +1,3 @@
-require 'io/wait'
 require 'expect'
 require 'pathname'
 require 'riak/util/translation'

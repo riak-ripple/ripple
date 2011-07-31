@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-describe "Ripple Search Associations" do
-  require 'support/test_server'
-
+describe "Ripple Search Associations", :integration => true, :search => true do
   before :all do
     Object.module_eval do
       class Transaction
@@ -19,7 +17,6 @@ describe "Ripple Search Associations" do
   end
 
   before :each do
-    pending("depends upon riak search, which is not available") unless $test_server.riak_search?
     @account      = Account.new(:email => 'riak@ripple.com')
     @transaction1 = Transaction.new(:name => 'One')
     @transaction2 = Transaction.new(:name => 'Two')
