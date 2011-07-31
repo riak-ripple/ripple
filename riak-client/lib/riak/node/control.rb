@@ -62,7 +62,7 @@ module Riak
     #    commands to the Riak node
     # @see #with_console
     def attach
-      Console.open "#{control_script} attach"
+      Console.open self
     end
 
     # Execute the block against the Riak node's console.

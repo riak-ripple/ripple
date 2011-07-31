@@ -1,4 +1,5 @@
 require 'pathname'
+require 'yaml'
 
 module Riak
   class Node
@@ -23,6 +24,10 @@ module Riak
     # @return [Hash] the command-line switches for the Erlang virtual
     #   machine, which will be created into the vm.args file
     attr_reader :vm
+
+    # @return [Hash] the configuration that was passed to the Node
+    #   when initialized
+    attr_reader :configuration
 
     # @return [Array<Pathname>] where user Erlang code will be loaded from
     def erlang_sources
@@ -127,45 +132,52 @@ module Riak
     protected
     # Populates the proper node configuration from the input config.
     def configure(hash)
-      raise ArgumentError.new(t('source_and_root_required')) unless hash[:source] && hash[:root]
+      raise ArgumentError, t('source_and_root_required') unless hash[:source] && hash[:root]
       @configuration = hash
-      configure_settings
       configure_paths
+      configure_manifest
+      configure_settings
       configure_logging
       configure_data
       configure_ports(hash[:interface], hash[:min_port])
       configure_name(hash[:interface])
     end
 
+    # Reads the manifest if it exists, overrides the passed configuration.
+    def configure_manifest
+      @configuration = YAML.load_file(manifest.to_s) if exist?
+    end
+
     # Sets the data directories for the various on-disk backends and
     # the ring state.
     def configure_data
-      [:bitcask, :eleveldb, :merge_index].each {|k| @env[k] ||= {} }
-      @env[:bitcask][:data_root] ||= (data + 'bitcask').expand_path.to_s
-      @env[:eleveldb][:data_root] ||= (data + 'leveldb').expand_path.to_s
-      @env[:riak_core][:ring_state_dir] ||= ring.expand_path.to_s
+      [:bitcask, :eleveldb, :merge_index].each {|k| env[k] ||= {} }
+      env[:bitcask][:data_root] ||= (data + 'bitcask').expand_path.to_s
+      env[:eleveldb][:data_root] ||= (data + 'leveldb').expand_path.to_s
+      env[:merge_index][:data_root] ||= (data + 'merge_index').expand_path.to_s
+      env[:riak_core][:ring_state_dir] ||= ring.expand_path.to_s
     end
 
     # Sets directories and handlers for logging.
     def configure_logging
-      if @env[:lager]
-        @env[:lager][:handlers] = {
+      if env[:lager]
+        env[:lager][:handlers] = {
           :lager_file_backend => [
                                   Tuple[(log+"error.log").expand_path.to_s, :error],
                                   Tuple[(log+"console.log").expand_path.to_s, :info]
                                  ]
         }
-        @env[:lager][:crash_log] = (log+"crash.log").to_s
+        env[:lager][:crash_log] = (log+"crash.log").to_s
       else
         # TODO: Need a better way to detect this, the defaults point
         # to 1.0-style configs. Maybe there should be some kind of
         # detection routine.
         # Use sasl error logger for 0.14.
-        @env[:riak_err] ||= {
+        env[:riak_err] ||= {
           :term_max_size => 65536,
           :fmt_max_bytes => 65536
         }
-        @env[:sasl] = {
+        env[:sasl] = {
           :sasl_error_logger => Tuple[:file, (log+"sasl-error.log").expand_path.to_s],
           :errlog_type => :error,
           :error_logger_mf_dir => (log+"sasl").expand_path.to_s,
@@ -178,37 +190,37 @@ module Riak
     # Sets the node name and cookie for distributed Erlang.
     def configure_name(interface)
       interface ||= "127.0.0.1"
-      @vm["-name"] = @configuration[:name] || "riak#{rand(1000000).to_s}@#{interface}"
-      @vm["-setcookie"] = @configuration[:cookie] || "#{rand(100000).to_s}_#{rand(1000000).to_s}"
+      vm["-name"] ||= configuration[:name] || "riak#{rand(1000000).to_s}@#{interface}"
+      vm["-setcookie"] ||= configuration[:cookie] || "#{rand(100000).to_s}_#{rand(1000000).to_s}"
     end
 
     # Merges input configuration with the defaults.
     def configure_settings
-      @env = deep_merge(@env, @configuration[:env]) if @configuration[:env]
-      @vm = @vm.merge(@configuration[:vm]) if @configuration[:vm]
+      @env = deep_merge(env.dup, configuration[:env]) if configuration[:env]
+      @vm = vm.merge(configuration[:vm]) if configuration[:vm]
     end
 
     # Sets the source directory and root directory of the generated node.
     def configure_paths
-      @source = Pathname.new(@configuration[:source]).expand_path
-      @root = Pathname.new(@configuration[:root]).expand_path
+      @source = Pathname.new(configuration[:source]).expand_path
+      @root = Pathname.new(configuration[:root]).expand_path
     end
 
     # Sets ports and interfaces for http, protocol buffers, and handoff.
     def configure_ports(interface, min_port)
       interface ||= "127.0.0.1"
       min_port ||= 8080
-      unless @env[:riak_core][:http]
-        @env[:riak_core][:http] = [Tuple[interface, min_port]]
+      unless env[:riak_core][:http]
+        env[:riak_core][:http] = [Tuple[interface, min_port]]
         min_port += 1
       end
-      @env[:riak_kv][:pb_ip] = interface unless @env[:riak_kv][:pb_ip]
-      unless @env[:riak_kv][:pb_port]
-        @env[:riak_kv][:pb_port] = min_port
+      env[:riak_kv][:pb_ip] = interface unless env[:riak_kv][:pb_ip]
+      unless env[:riak_kv][:pb_port]
+        env[:riak_kv][:pb_port] = min_port
         min_port += 1
       end
-      unless @env[:riak_core][:handoff_port]
-        @env[:riak_core][:handoff_port] = min_port
+      unless env[:riak_core][:handoff_port]
+        env[:riak_core][:handoff_port] = min_port
         min_port += 1
       end
     end
@@ -257,9 +269,9 @@ module Riak
       when String
         "\"#{v}\""
       when Tuple
-        "{" << v.map {|i| value_to_erlang(i) }.join(", ") << "}"
+        "{" << v.map {|i| value_to_erlang(i, depth+1) }.join(", ") << "}"
       when Array
-        "[" << v.map {|i| value_to_erlang(i) }.join(", ") << "]"
+        "[" << v.map {|i| value_to_erlang(i, depth+1) }.join(", ") << "]"
       else
         v.to_s
       end

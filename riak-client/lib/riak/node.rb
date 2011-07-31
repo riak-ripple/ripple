@@ -1,6 +1,4 @@
-# require 'riak/util/tcp_socket_extensions'
 require 'riak/util/translation'
-
 require 'riak/node/defaults'
 require 'riak/node/configuration'
 require 'riak/node/generation'
@@ -28,6 +26,11 @@ module Riak
     def initialize(configuration={})
       set_defaults
       configure configuration
+    end
+
+    protected
+    def debug(msg)
+      $stderr.puts msg if ENV["DEBUG_RIAK_NODE"]
     end
   end
 end

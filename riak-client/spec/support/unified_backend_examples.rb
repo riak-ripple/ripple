@@ -248,8 +248,4 @@ shared_examples_for "Unified backend API" do
       end
     end
   end
-
-  after do
-    $test_server.recycle if $test_server.started?
-  end
 end

@@ -46,7 +46,7 @@ module Riak
       :sasl => {
         :sasl_error_logger => false
       }
-    }
+    }.freeze
 
     # Based on Riak master/1.0, but should work for 0.14.
     VM_DEFAULTS = {
@@ -56,13 +56,13 @@ module Riak
       "+W" => "w",
       "-env ERL_MAX_PORTS" => 4096,
       "-env ERL_FULLSWEEP_AFTER" => 0
-    }
+    }.freeze
 
     protected
     # Populates the defaults
     def set_defaults
-      @env = ENV_DEFAULTS.dup
-      @vm = VM_DEFAULTS.dup
+      @env = ENV_DEFAULTS.deep_dup
+      @vm = VM_DEFAULTS.deep_dup
     end
   end
 end

@@ -2,11 +2,12 @@ require 'spec_helper'
 require 'riak/node'
 require 'yaml'
 
-describe Riak::Node do
+describe Riak::Node, :test_server => false do
   let(:test_server_config){ YAML.load_file("spec/support/test_server.yml") }
-  subject { described_class.new(:root => "/tmp/.ripplenode", :source => test_server_config['source']) }
+  subject { described_class.new(:root => ".ripplenode", :source => test_server_config['source']) }
   after { subject.stop if subject.started? }
-
+  after(:all) { subject.destroy }
+  
   context "creation" do
     before { subject.create }
     after { subject.destroy }
@@ -18,8 +19,9 @@ describe Riak::Node do
     end
 
     describe "generating app.config" do
-      let(:file) { subject.root + 'etc/app.config'}
+      let(:file) { subject.etc + 'app.config'}
       let(:contents) { file.read }
+
       it "should create the app.config file in the node directory" do
         file.should be_exist
       end
@@ -40,7 +42,7 @@ describe Riak::Node do
     end
 
     describe "generating vm.args" do
-      let(:file){ subject.root + 'etc/vm.args' }
+      let(:file){ subject.etc + 'vm.args' }
       let(:contents) { file.read }
 
       it "should create the vm.args file in the node directory" do
@@ -88,7 +90,7 @@ describe Riak::Node do
       end
 
       it "should modify the PIPE_DIR to point to the node directory" do
-        contents.should match(/PIPE_DIR=#{subject.pipe.to_s}/)
+        contents.should match(/PIPE_DIR=#{subject.pipe.to_s}\//)
       end
     end
   end
