@@ -24,14 +24,17 @@ module Riak
     # Starts the node.
     # @return [String] the output of the 'riak start' command
     def start
-      riak 'start'
+      res = riak 'start'
       wait_for_startup
+      res
     end
 
     # Stops the node
     # @return [String] the output of the 'riak stop' command
     def stop
-      riak 'stop'
+      res = riak 'stop'
+      wait_for_shutdown
+      res
     end
 
     # Restarts the node
@@ -131,6 +134,12 @@ module Riak
       TCPSocket.wait_for_service_with_timeout(:host => http_ip,
                                               :port => http_port,
                                               :timeout => 10)
+    end
+
+    def wait_for_shutdown
+      TCPSocket.wait_for_service_termination_with_timeout(:host => http_ip,
+                                                          :port => http_port,
+                                                          :timeout => 10)
     end
   end
 end
