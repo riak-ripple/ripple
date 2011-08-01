@@ -1,4 +1,5 @@
 require 'riak/node/console'
+require 'riak/util/tcp_socket_extensions'
 
 module Riak
   class Node
@@ -10,7 +11,7 @@ module Riak
     # Is the node running?
     # @return [true, false] If the node is running
     def started?
-      ping.chomp == 'pong' || $?.success?      
+      ping.chomp == 'pong' || $?.success?
     end
 
     # Is the node stopped? (opposite of {#started?}).
@@ -24,6 +25,7 @@ module Riak
     # @return [String] the output of the 'riak start' command
     def start
       riak 'start'
+      wait_for_startup
     end
 
     # Stops the node
@@ -111,7 +113,7 @@ module Riak
       output = riak_admin 'ringready'
       output =~ /^TRUE/ || $?.success?
     end
-    
+
     protected
     # Runs a command using the 'riak' control script.
     def riak(*commands)
@@ -121,6 +123,14 @@ module Riak
     # Runs a command using the 'riak-admin' script.
     def riak_admin(*commands)
       `#{admin_script} #{commands.join(' ')} 2>&1`
+    end
+
+    # Waits for the HTTP port to become available, which is a better
+    # indication of readiness than the start script finishing.
+    def wait_for_startup
+      TCPSocket.wait_for_service_with_timeout(:host => http_ip,
+                                              :port => http_port,
+                                              :timeout => 10)
     end
   end
 end

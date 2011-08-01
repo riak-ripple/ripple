@@ -91,8 +91,8 @@ module Riak
 
       # Closes the console by detaching from the pipes.
       def close
-        @r.close
-        @w.close
+        @r.close unless @r.closed?
+        @w.close unless @w.closed?
         Signal.trap("WINCH", @winch)
         freeze
       end

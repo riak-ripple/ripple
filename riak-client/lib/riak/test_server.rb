@@ -1,4 +1,3 @@
-require 'riak/util/tcp_socket_extensions'
 require 'riak/node'
 
 if ENV['DEBUG_RIAK_TEST_SERVER']
@@ -36,7 +35,6 @@ module Riak
     def start
       unless open?
         super
-        wait_for_startup
         maybe_attach
       end
     end
@@ -72,14 +70,6 @@ module Riak
 
     def open?
       @console && @console.open?
-    end
-
-    # Waits for the HTTP port to become available, which is a better
-    # indication of readiness than the start script finishing.
-    def wait_for_startup
-      TCPSocket.wait_for_service_with_timeout(:host => http_ip,
-                                              :port => http_port,
-                                              :timeout => 10)
     end
   end
 end
