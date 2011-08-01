@@ -99,7 +99,7 @@ module Riak
     # @return [Hash] a collection of information about the node
     def status
       output = riak_admin 'status'
-      if $? == 0
+      if $?.success?
         result = {}
         Hash[output.scan(STATS_REGEXP)]
       end
@@ -115,12 +115,12 @@ module Riak
     protected
     # Runs a command using the 'riak' control script.
     def riak(*commands)
-      `#{control_script} #{commands.join(' ')}`
+      `#{control_script} #{commands.join(' ')} 2>&1`
     end
 
     # Runs a command using the 'riak-admin' script.
     def riak_admin(*commands)
-      `#{admin_script} #{commands.join(' ')}`
+      `#{admin_script} #{commands.join(' ')} 2>&1`
     end
   end
 end

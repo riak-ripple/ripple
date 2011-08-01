@@ -4,7 +4,6 @@ RSpec.configure do |config|
   config.before(:each, :integration => true) do
     unless $test_server
       begin
-
         require 'yaml'
         config = YAML.load_file("spec/support/test_server.yml")
         $test_server = Riak::TestServer.create(:root => config['root'],

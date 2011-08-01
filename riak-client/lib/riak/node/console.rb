@@ -67,6 +67,13 @@ module Riak
           end
         end
       end
+
+      # Detects whether the console connection is still open, that is,
+      # if the node hasn't disconnected from the other side of the
+      # pipe.
+      def open?
+        !@r.closed? && !@w.closed?
+      end
       
       # Scans the output of the console until an Erlang shell prompt
       # is found. Called by {#command} to ensure that the submitted

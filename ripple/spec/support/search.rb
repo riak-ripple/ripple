@@ -1,4 +1,5 @@
-require 'riak/test_server'
+require 'support/test_server'
+
 class Riak::TestServer
   # For now this is a local hack - later we'll make it global.
   def riak_search?
