@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Ripple::Associations do
-  require 'support/models/invoice'
-  require 'support/models/customer'
-  require 'support/models/note'
+  # require 'support/models/invoice'
+  # require 'support/models/customer'
+  # require 'support/models/note'
 
   it "should provide access to the associations hash" do
     Invoice.should respond_to(:associations)

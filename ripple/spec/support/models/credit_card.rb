@@ -1,7 +1,5 @@
-class Profile
+class CreditCard
   include Ripple::Document
-
   one :user, :using => :key
-
-  property :color, String
+  property :number, Integer
 end

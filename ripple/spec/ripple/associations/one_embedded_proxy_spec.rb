@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Ripple::Associations::OneEmbeddedProxy do
-  require 'support/models/family'
-  require 'support/models/user'
-  require 'support/models/address'
+  # require 'support/models/family'
+  # require 'support/models/user'
+  # require 'support/models/address'
   
   before :each do
     @parent = Parent.new

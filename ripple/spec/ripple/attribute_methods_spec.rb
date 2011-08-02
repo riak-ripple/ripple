@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ripple::AttributeMethods do
-  require 'support/models/widget'
+  # require 'support/models/widget'
 
   before :each do
     @widget = Widget.new

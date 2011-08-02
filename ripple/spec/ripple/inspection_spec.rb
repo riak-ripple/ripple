@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::Inspection do
-  require 'support/models/box'
-  require 'support/models/address'
+  # require 'support/models/box'
+  # require 'support/models/address'
 
   before :each do
     @box = Box.new

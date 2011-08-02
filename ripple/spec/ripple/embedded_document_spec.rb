@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::EmbeddedDocument do
-  require 'support/models/address'
-  require 'support/models/user'
+  # require 'support/models/address'
+  # require 'support/models/user'
 
   it "should have a model name when included" do
     Address.should respond_to(:model_name)

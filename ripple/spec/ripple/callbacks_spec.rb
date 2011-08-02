@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ripple::Callbacks do
-  require 'support/models/box'
+  # require 'support/models/box'
 
   it "should add create, update, save, and destroy callback declarations" do
     [:save, :create, :update, :destroy].each do |event|

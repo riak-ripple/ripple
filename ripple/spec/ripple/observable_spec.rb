@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::Observable do
-  require 'support/models/clock'
-  require 'support/models/clock_observer'
+  # require 'support/models/clock'
+  # require 'support/models/clock_observer'
 
   before :each do
     @client   = Ripple.client

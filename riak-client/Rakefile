@@ -58,19 +58,19 @@ require 'rspec/core/rake_task'
 
 desc "Run Unit Specs Only"
 RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = "spec/riak/**/*_spec.rb"
-  spec.rspec_opts = %w[--profile]
+  spec.rspec_opts = %w[--profile --tag ~integration]
 end
 
 namespace :spec do
   desc "Run Integration Specs Only"
   RSpec::Core::RakeTask.new(:integration) do |spec|
-    spec.pattern = "spec/integration/**/*_spec.rb"
-    spec.rspec_opts = %w[--profile]
+    spec.rspec_opts = %w[--profile --tag integration]
   end
 
   desc "Run All Specs"
-  task :all => %w[ spec spec:integration ]
+  RSpec::Core::RakeTask.new(:all) do |spec|
+    spec.rspec_opts = %w[--profile]
+  end
 end
 
 task :default => "spec:all"

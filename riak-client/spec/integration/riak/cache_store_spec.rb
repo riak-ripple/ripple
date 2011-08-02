@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'riak/cache_store'
 
-describe Riak::CacheStore, :integration => true do
+describe Riak::CacheStore do
   before do
     @web_port = $test_server.http_port
     @cache = ActiveSupport::Cache.lookup_store(:riak_store, :http_port => @web_port)

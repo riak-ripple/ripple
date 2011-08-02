@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Ripple::Document::BucketAccess do
-  require 'support/models/invoice'
-  require 'support/models/late_invoice'
-  require 'support/models/paid_invoice'
+  # require 'support/models/invoice'
+  # require 'support/models/late_invoice'
+  # require 'support/models/paid_invoice'
 
   it "should use the plural model name as the bucket name" do
     Invoice.bucket_name.should == "invoices"

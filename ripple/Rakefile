@@ -29,7 +29,7 @@ gemspec = Gem::Specification.new do |gem|
   gem.add_dependency "riak-client", "~>#{version}"
   gem.add_dependency "activesupport", [">= 3.0.0", "< 3.2.0"]
   gem.add_dependency "activemodel", [">= 3.0.0", "< 3.2.0"]
-  gem.add_dependency "tzinfo"  
+  gem.add_dependency "tzinfo"
 
   files = FileList["**/*"]
   # Editor and O/S files
@@ -70,19 +70,19 @@ require 'rspec/core/rake_task'
 
 desc "Run Unit Specs Only"
 RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = "spec/ripple/**/*_spec.rb"
-  spec.rspec_opts = %w[--profile]
+  spec.rspec_opts = %w[--profile --tag ~integration]
 end
 
 namespace :spec do
   desc "Run Integration Specs Only"
   RSpec::Core::RakeTask.new(:integration) do |spec|
-    spec.pattern = "spec/integration/**/*_spec.rb"
-    spec.rspec_opts = %w[--profile]
+    spec.rspec_opts = %w[--profile --tag integration]
   end
 
   desc "Run All Specs"
-  task :all => [:spec, "spec:integration"]
+  RSpec::Core::RakeTask.new(:all) do |spec|
+    spec.rspec_opts = %w[--profile]
+  end
 end
 
 task :default => "spec:all"

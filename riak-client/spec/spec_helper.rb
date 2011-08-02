@@ -9,7 +9,15 @@ require 'fakeweb'
 # Only the tests should really get away with this.
 Riak.disable_list_keys_warnings = true
 
-Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].sort.each {|f| require f }
+%w[integration_setup
+   http_backend_implementation_examples
+   unified_backend_examples
+   mocks
+   mock_server
+   drb_mock_server
+   test_server].each do |file|
+  require File.join("support", file)
+end
 
 RSpec.configure do |config|
   config.debug = true

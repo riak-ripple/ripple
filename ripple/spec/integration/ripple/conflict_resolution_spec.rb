@@ -290,5 +290,4 @@ describe "Ripple conflict resolution", :integration => true do
       sibling_mother_keys.sort.should == %w(Nancy Sherry)
     end
   end
-
 end

@@ -10,7 +10,16 @@ require 'rspec'
 # Only the tests should really get away with this.
 Riak.disable_list_keys_warnings = true
 
-Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].sort.each {|f| require f }
+%w[
+   integration_setup
+   mocks
+   test_server
+   search
+   models
+   associations
+  ].each do |file|
+  require File.join("support", file)
+end
 
 RSpec.configure do |config|
   config.mock_with :rspec

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ripple::Document do
-  require 'support/models/page'
+  # require 'support/models/page'
 
   it "should add bucket access methods to classes when included" do
     (class << Page; self; end).included_modules.should include(Ripple::Document::BucketAccess)

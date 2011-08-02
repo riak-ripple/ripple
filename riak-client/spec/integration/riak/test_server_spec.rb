@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'riak/test_server'
 
-describe Riak::TestServer, :integration => true do
+describe Riak::TestServer do
   subject { $test_server }
   let(:app_config) { (subject.etc + 'app.config').read }
 

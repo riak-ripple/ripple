@@ -1,4 +1,3 @@
-
 class Person
   include Ripple::Document
   many :tasks
@@ -6,9 +5,5 @@ class Person
 end
 
 class Task
-  include Ripple::Document
-end
-
-class Profile
   include Ripple::Document
 end

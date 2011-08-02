@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ripple::Validations::AssociatedValidator do
   context 'for a one association' do
-    require 'support/models/family'
+    # require 'support/models/family'
 
     let(:child)  { Child.new  }
     let(:parent) { Parent.new }
@@ -28,7 +28,7 @@ describe Ripple::Validations::AssociatedValidator do
   end
 
   context 'for a many association' do
-    require 'support/models/team'
+    # require 'support/models/team'
 
     let(:team) { Team.new }
     let(:ichiro) { Player.new(:name => 'Ichiro', :position => 'Right Field') }

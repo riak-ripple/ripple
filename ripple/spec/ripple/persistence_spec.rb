@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ripple::Document::Persistence do
-  require 'support/models/widget'
+  # require 'support/models/widget'
 
   before :each do
     @backend = mock("Backend")

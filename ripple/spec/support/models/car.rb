@@ -1,3 +1,28 @@
+class Driver
+  include Ripple::Document
+  property :name, String
+  key_on :name
+end
+
+class Passenger
+  include Ripple::Document
+  property :name, String
+end
+
+class Engine
+  include Ripple::EmbeddedDocument
+  property :displacement, String  
+end
+
+class Wheel
+  include Ripple::Document
+  property :diameter, Integer
+end
+
+class Seat
+  include Ripple::EmbeddedDocument
+  property :color, String
+end
 
 class Car
   include Ripple::Document

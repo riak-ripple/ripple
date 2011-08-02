@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe Ripple::Associations::ManyEmbeddedProxy do
-  require 'support/models/user'
-  require 'support/models/address'
-  require 'support/models/note'
+  # require 'support/models/user'
+  # require 'support/models/address'
+  # require 'support/models/note'
     
   before :each do
-    @user    = User.new
+    @user    = User.new(:email => "riak@ripple.com")
     @address = Address.new
     @addr    = Address.new(:street => '123 Somewhere')
     @note    = Note.new

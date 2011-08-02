@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::EmbeddedDocument::Finders do
-  require 'support/models/address'
-  require 'support/models/favorite'
+  # require 'support/models/address'
+  # require 'support/models/favorite'
 
   before :each do
     @address = Address.new

@@ -53,6 +53,7 @@ describe Riak::Client::BeefcakeProtobuffsBackend, '#mapred' do
     message.stub(:done).and_return(false, true)
     Riak::Client::BeefcakeProtobuffsBackend::RpbMapRedResp.stub(:decode => message)
     TCPSocket.stub(:new => socket)
+    @backend.send(:reset_socket)
     
     @backend.mapred('').should == [{}]
   end
