@@ -23,13 +23,13 @@ RSpec.configure do |config|
   config.debug = true
   config.mock_with :rspec
 
-  # config.before(:all, :integration => true) do
-  #   FakeWeb.allow_net_connect = true
-  # end
+  config.before(:all, :integration => true) do
+    FakeWeb.allow_net_connect = true
+  end
 
-  # config.after(:all, :integration => true) do
-  #   FakeWeb.allow_net_connect = false
-  # end
+  config.after(:all, :integration => true) do
+    FakeWeb.allow_net_connect = false
+  end
 
   config.before(:each) do
     Riak::RObject.on_conflict_hooks.clear
