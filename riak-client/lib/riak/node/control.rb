@@ -11,7 +11,8 @@ module Riak
     # Is the node running?
     # @return [true, false] If the node is running
     def started?
-      ping.chomp == 'pong' || $?.success?
+      pinged = ping
+      pinged.strip =~ /pong/ || pinged.strip !~ /Node '[^']+' not responding to pings/
     end
 
     # Is the node stopped? (opposite of {#started?}).
@@ -58,7 +59,7 @@ module Riak
         # If the control script doesn't exist or has the wrong
         # permissions, we should still return something sane so we can
         # do the right thing.
-        'pang'
+        "Node '#{name}' not responding to pings."
       end
     end
 
