@@ -324,9 +324,9 @@ module Ripple
       (options[:using] == :reference)
     end
 
-    def setup_on(owner)
-      @owner = owner
-      define_callbacks_on(owner)
+    def setup_on(model)
+      @model = model
+      define_callbacks_on(model)
       if uses_search?
         klass.before_save do |o|
           unless o.class.bucket.is_indexed?
@@ -356,7 +356,7 @@ module Ripple
 
     private
     def discover_class
-      options[:class] || (@owner && find_class(@owner, class_name)) || class_name.constantize
+      options[:class] || (@model && find_class(@model, class_name)) || class_name.constantize
     end
 
     def find_class(scope, class_name)
