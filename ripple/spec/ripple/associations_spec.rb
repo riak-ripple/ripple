@@ -78,7 +78,7 @@ describe Ripple::Association do
     it "should use the :class_name option when given" do
       @association = Ripple::Association.new(:many, :pages, :class_name => "Note")
       @association.class_name.should == "Note"
-    end
+    end    
   end
 
   describe "determining the target class" do
@@ -86,6 +86,15 @@ describe Ripple::Association do
       it "should find the target via the owner's module scope" do
         @association = Ripple::Association.new(:many, :children)
         @association.setup_on(Nested::Scope::Parent)
+        @association.klass.should == Nested::Scope::Child
+      end
+
+      it "should not try to find the target in the owner's scope when the class name is fully qualified" do
+        @association = Ripple::Association.new(:many, :children, :class_name => "Nested::Scope::Child")
+        @association.setup_on(Nested::Scope::Parent)
+        expect {
+          @association.klass
+        }.should_not raise_error
         @association.klass.should == Nested::Scope::Child
       end
     end
