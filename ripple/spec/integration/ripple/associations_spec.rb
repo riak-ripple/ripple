@@ -177,7 +177,7 @@ describe "Ripple Associations" do
     found_user.friends.should == [found_friend]
     found_friend.friends.should == [found_user]
   end
-
+  
   it "should find the object associated by key after saving" do
     @user.key = 'paying-user'
     @user.credit_card = @cc

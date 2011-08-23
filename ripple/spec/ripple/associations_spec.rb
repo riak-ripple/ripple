@@ -82,8 +82,14 @@ describe Ripple::Association do
   end
 
   describe "determining the target class" do
-    require 'support/models/tree'
-
+    context "when in a nested module scope" do
+      it "should find the target via the owner's module scope" do
+        @association = Ripple::Association.new(:many, :children)
+        @association.setup_on(Nested::Scope::Parent)
+        @association.klass.should == Nested::Scope::Child
+      end
+    end
+    
     it "should default to the constantized class name" do
       @association = Ripple::Association.new(:one, :t, :class_name => "Trunk")
       @association.klass.should == Trunk

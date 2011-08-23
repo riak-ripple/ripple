@@ -20,7 +20,7 @@ require 'ripple/associations/many_reference_proxy'
 module Ripple
   # Adds associations via links and embedding to {Ripple::Document}
   # models. Examples:
-  # 
+  #
   #   # Documents can contain embedded documents, and link to other standalone documents
   #   # via associations using the many and one class methods.
   #   class Person
@@ -30,14 +30,14 @@ module Ripple
   #     many :friends, :class_name => "Person"
   #     one :account
   #   end
-  #    
+  #
   #   # Account and Address are embeddable documents
   #   class Account
   #     include Ripple::EmbeddedDocument
   #     property :paid_until, Time
   #     embedded_in :person # Adds "person" method to get parent document
   #   end
-  #    
+  #
   #   class Address
   #     include Ripple::EmbeddedDocument
   #     property :street, String
@@ -45,7 +45,7 @@ module Ripple
   #     property :state, String
   #     property :zip, String
   #   end
-  #    
+  #
   #   person = Person.find("adamhunter")
   #   person.friends << Person.find("seancribbs") # Links to people/seancribbs with tag "friend"
   #   person.addresses << Address.new(:street => "100 Main Street") # Adds an embedded address
@@ -217,7 +217,7 @@ module Ripple
 
     # @return [Class] The class of the associated object(s)
     def klass
-      @klass ||= options[:class] || class_name.constantize
+      @klass ||= discover_class
     end
 
     # @return [true,false] Is the cardinality of the association > 1
@@ -324,8 +324,9 @@ module Ripple
       (options[:using] == :reference)
     end
 
-    def setup_on(target)
-      define_callbacks_on(target)
+    def setup_on(model)
+      @model = model
+      define_callbacks_on(model)
       if uses_search?
         klass.before_save do |o|
           unless o.class.bucket.is_indexed?
@@ -351,6 +352,17 @@ module Ripple
           end
         end
       end
+    end
+
+    private
+    def discover_class
+      options[:class] || (@model && find_class(@model, class_name)) || class_name.constantize
+    end
+
+    def find_class(scope, class_name)
+      class_sym = class_name.to_sym
+      parent_scope = scope.parents.unshift(scope).find {|s| ActiveSupport::Dependencies.local_const_defined?(s, class_sym) }
+      parent_scope.const_get(class_sym) if parent_scope
     end
   end
 end
