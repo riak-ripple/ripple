@@ -61,8 +61,8 @@ class String
   end
 end
 
-boolean_cast = proc do
-  def self.ripple_cast(value)
+BooleanCast = Module.new do
+  def ripple_cast(value)
     case value
     when NilClass
       nil
@@ -85,9 +85,9 @@ unless defined?(::Boolean)
   module ::Boolean; end
 end
 
-::Boolean.module_eval(&boolean_cast)
-TrueClass.module_eval(&boolean_cast)
-FalseClass.module_eval(&boolean_cast)
+::Boolean.send(:extend, BooleanCast)
+TrueClass.send(:extend, BooleanCast)
+FalseClass.send(:extend, BooleanCast)
 
 # @private
 class Time
