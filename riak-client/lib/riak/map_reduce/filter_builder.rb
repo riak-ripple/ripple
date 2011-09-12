@@ -53,15 +53,24 @@ module Riak
       LOGICAL_OPERATIONS = %w{and or not}
 
       FILTERS.each do |f,arity|
-        class_eval <<-CODE
-          def #{f}(*args)
-            raise ArgumentError.new(t("filter_arity_mismatch", :filter => :#{f}, :expected => #{arity.inspect}, :received => args.size)) unless #{arity.inspect} == -1 || Array(#{arity.inspect}).include?(args.size)
-            @filters << ([:#{f}] + args)
+        arities = [arity].flatten
+
+        define_method(f) { |*args|
+          unless arities.include?(-1) or arities.include?(args.size)
+            raise ArgumentError.new t("filter_arity_mismatch",
+              :filter => f,
+              :expected => arities,
+              :received => args.size
+            )
           end
-        CODE
+
+          @filters << [f, *args]
+        }
       end
 
       LOGICAL_OPERATIONS.each do |op|
+        # NB: string eval is needed here because in ruby 1.8, blocks can't yield to
+        # other blocks
         class_eval <<-CODE
           def _#{op}(&block)
             raise ArgumentError.new(t('filter_needs_block', :filter => '#{op}')) unless block_given?

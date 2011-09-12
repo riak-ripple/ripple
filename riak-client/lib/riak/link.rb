@@ -21,7 +21,10 @@ module Riak
     attr_accessor :key
 
     %w{bucket key}.each do |m|
-      class_eval %{ def #{m}=(value); @url = nil; @#{m} = value; end }
+      define_method("#{m}=") { |value|
+        @url = nil
+        instance_variable_set("@#{m}", value)
+      }
     end
 
     # @param [String] header_string the string value of the Link: HTTP header from a Riak response
