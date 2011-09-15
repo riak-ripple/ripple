@@ -34,6 +34,13 @@ RSpec.configure do |config|
     FakeWeb.clean_registry
   end
 
+  config.after(:suite) do
+    if errors = $test_server.console_log(:error)
+      warn "\n\nRiak console log errors:"
+      errors.each { |e| warn "  " + e.chomp }
+    end
+  end
+
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
 end
