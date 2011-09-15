@@ -235,7 +235,7 @@ module Riak
     end
 
     def wait_for_erlang_prompt
-      @cout.expect(/\(#{Regexp.escape(vm_args["-name"])}\)\d+>/)
+      @cout.expect(/\(#{Regexp.escape(vm_args["-name"])}\)\d+>/, 30)
     end
 
     def register_stop
