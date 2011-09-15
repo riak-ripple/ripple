@@ -36,6 +36,13 @@ module Riak
       },
       :luwak => {
         :enabled => true
+      },
+      :lager => {
+        :handlers => {
+          :lager_file_backend => {
+            "\"./log/console.log\"" => :info
+          }
+        }
       }
     }
     VM_ARGS_DEFAULTS = {
@@ -53,6 +60,16 @@ module Riak
       :vm_args => VM_ARGS_DEFAULTS,
       :temp_dir => File.join(Dir.tmpdir,'riaktest'),
     }
+    LAGER_LEVELS = [
+                    :debug,
+                    :info,
+                    :notice,
+                    :warning,
+                    :error,
+                    :critical,
+                    :alert,
+                    :emergency
+                   ]
     attr_accessor :temp_dir, :app_config, :vm_args, :cin, :cout, :cerr, :cpid
 
     def initialize(options={})
@@ -92,6 +109,16 @@ module Riak
           wait_for_erlang_prompt
           @started = true
         end
+      end
+    end
+
+    def console_log(level=:debug)
+      fname = "#{@temp_dir}/log/console.log"
+      if File.exists?(fname)
+        start = LAGER_LEVELS.index(level) || 0
+        levels = LAGER_LEVELS[start..-1]
+        pattern = /(#{levels.map { |level| "\\[#{level}\\]" }.join("|")})/
+        IO.readlines(fname).grep(pattern)
       end
     end
 
