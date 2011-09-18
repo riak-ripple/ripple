@@ -28,7 +28,7 @@ describe Riak::TestServer do
     client = Riak::Client.new(:http_port => subject.http_port)
     obj = client['test_bucket'].new("test_item")
     obj.data = {"data" => "testing"}
-    obj.store rescue nil
+    obj.store # rescue nil
 
     subject.drop
     expect {
