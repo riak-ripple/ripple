@@ -87,20 +87,25 @@ module Riak
     # Joins the node to another node to create a cluster.
     # @return [String] the output of the 'riak-admin join' command
     def join(node)
-      case node
-      when Node
-        riak_admin 'join', node.name
-      else
-        riak_admin 'join', name
-      end
+      node = node.name if Node === node
+      riak_admin 'join', node
     end
 
-    # Removes the node from its current cluster, handing off all data.
+    # Removes this node from its current cluster, handing off all data.
     # @return [String] the output of the 'riak-admin leave' command
     def leave
       riak_admin 'leave'
     end
 
+    # Forcibly removes a node from the current cluster without
+    # invoking handoff.
+    # @return [String] the output of the 'riak-admin remove <node>'
+    #   command
+    def remove(node)
+      node = node.name if Node === node
+      riak_admin 'remove', node
+    end
+    
     # Captures the status of the node.
     # @return [Hash] a collection of information about the node
     def status
@@ -118,6 +123,55 @@ module Riak
       output =~ /^TRUE/ || $?.success?
     end
 
+    # Lists riak_core applications that have registered as available,
+    # e.g.  ["riak_kv", "riak_search", "riak_pipe"]    
+    # @return [Array<String>] a list of running services
+    def services
+      output = riak_admin 'services'
+      if $?.success?
+        output.strip.match(/^\[(.*)\]$/)[1].split(/,/)
+      else
+        []
+      end
+    end
+
+    # Forces the node to restart/reload its JavaScript VMs,
+    # effectively reloading any user-provided code.
+    def js_reload
+      riak_admin 'js_reload'
+    end
+
+    # Provides the status of members of the ring.
+    # @return [Hash] a collection of stats about ring members
+    def member_status
+      output = riak_admin 'member_status'
+      result = {}
+      if $?.success?
+        output.each_line do |line|
+          next if line =~ /^(?:[=-]|Status)+/  # Skip the pretty headers          
+          if line =~ %r{^Valid:(\d+) / Leaving:(\d+) / Exiting:(\d+) / Joining:(\d+) / Down:(\d+)}
+            result.merge!(:valid =>   $1.to_i,
+                          :leaving => $2.to_i,
+                          :exiting => $3.to_i,
+                          :joining => $4.to_i,
+                          :down =>    $5.to_i)
+          else
+            result[:members] ||= {}
+            status, ring, pending, node = line.split(/\s+/)
+            node = $1 if node =~ /^'(.*)'$/
+            ring = $1.to_f if ring =~ /(\d+\.\d+)%/
+            result[:members][node] = {
+              :status => status,
+              :ring => ring,
+              :pending => (pending == '--') ? 0 : pending.to_i
+            }
+          end
+        end
+      end
+      result
+    end
+
+    
     protected
     # Runs a command using the 'riak' control script.
     def riak(*commands)
