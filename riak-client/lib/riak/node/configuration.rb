@@ -159,7 +159,7 @@ module Riak
     end
 
     # Sets directories and handlers for logging.
-    def configure_logging
+    def configure_logging     
       if env[:lager]
         env[:lager][:handlers] = {
           :lager_file_backend => [
@@ -185,6 +185,7 @@ module Riak
           :error_logger_mf_maxfiles => 5
         }
       end
+      vm['-env ERL_CRASH_DUMP'] =  (log + 'erl_crash.dump').to_s
     end
 
     # Sets the node name and cookie for distributed Erlang.

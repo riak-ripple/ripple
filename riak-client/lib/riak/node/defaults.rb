@@ -2,9 +2,7 @@ require 'riak/core_ext/deep_dup'
 
 module Riak
   class Node    
-    # Settings based on Riak master/1.0, but should work for 0.14.
-    # Note that lager is not available on 0.14 so some logging stuff
-    # may not work right.
+    # Settings based on Riak master/1.0.
     ENV_DEFAULTS = {
       :riak_core => {
         :ring_creation_size => 64
@@ -18,9 +16,11 @@ module Riak
         :js_max_vm_mem => 8,
         :js_thread_stack => 16,
         :riak_kv_stat => true,
-        :map_cache_size => 10000,
+        :legacy_stats => false,
+        :vnode_vclocks => true,
         :http_url_encoding => :on,
-        :legacy_keylisting => true,
+        :legacy_keylisting => false,
+        :mapred_system => :pipe,
         :add_paths => []
       },
       :riak_search => {
@@ -50,7 +50,7 @@ module Riak
       }
     }.freeze
 
-    # Based on Riak master/1.0, but should work for 0.14.
+    # Based on Riak master/1.0.
     VM_DEFAULTS = {
       "+K" => true,
       "+A" => 64,
