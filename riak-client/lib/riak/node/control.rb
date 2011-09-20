@@ -171,7 +171,14 @@ module Riak
       result
     end
 
-    
+    # @return [Array<String>] a list of node names that are also
+    #   members of this node's cluster, and empty list if the
+    #   {#member_status} fails or no other nodes are present
+    def peers
+      all_nodes = member_status[:members] && member_status[:members].keys.reject {|n| n == name }
+      all_nodes || []
+    end
+
     protected
     # Runs a command using the 'riak' control script.
     def riak(*commands)

@@ -13,6 +13,7 @@ RSpec.configure do |config|
       if example.metadata[:test_server] == false
         $test_server.stop
       else
+        $test_server.create unless $test_server.exist?
         $test_server.start
       end
     rescue => e
