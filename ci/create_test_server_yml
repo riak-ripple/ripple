@@ -4,12 +4,7 @@ require 'yaml'
 
 settings = {
   'root'  => File.expand_path('.riaktest'),
-  'source'   => ENV['RIAK_BIN_DIR'],
-  :env => {
-    :riak_kv => {
-      :riak_kv_stat => false
-    }
-  }
+  'source'   => ENV['RIAK_BIN_DIR']
 }
 
 settings_string = settings.to_yaml
