@@ -28,6 +28,7 @@
   tasks
   credit_card
   post
+  nested
   ].each do |file|
   require File.join("support", "models", file)
 end

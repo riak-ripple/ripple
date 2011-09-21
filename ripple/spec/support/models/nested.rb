@@ -1,4 +1,4 @@
-module Nested
+module ::Nested
   module Scope
     class Parent
       include Ripple::Document
