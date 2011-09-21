@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::Associations::OneLinkedProxy do
-  require 'support/models/tasks'
-  require 'support/models/family'
+  # require 'support/models/tasks'
+  # require 'support/models/family'
 
   before :each do
     @person = Person.new {|p| p.key = "riak-user" }

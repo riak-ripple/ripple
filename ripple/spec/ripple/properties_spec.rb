@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ripple::Properties do
-  require 'support/models/email'
+  # require 'support/models/email'
 
   it "should make the model class have a property definition method" do
     Email.should respond_to(:property)

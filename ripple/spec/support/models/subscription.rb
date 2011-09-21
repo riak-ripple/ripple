@@ -1,4 +1,3 @@
-
 class Subscription
   include Ripple::Document
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Ripple conflict resolution" do
+describe "Ripple conflict resolution", :integration => true do
   class ConflictedPerson
     include Ripple::Document
 
@@ -25,8 +25,6 @@ describe "Ripple conflict resolution" do
     #stored_key
     one :mother, :using => :stored_key, :class_name => 'ConflictedPerson'
     many :coworkers, :using => :stored_key, :class_name => 'ConflictedPerson'
-
-    bucket.allow_mult = true
   end
 
   class ConflictedAddress
@@ -39,6 +37,9 @@ describe "Ripple conflict resolution" do
     property :title, String
   end
 
+  before :all do
+    ConflictedPerson.bucket.allow_mult = true
+  end
 
   before(:each) do
     ConflictedPerson.on_conflict { } # reset to no-op
@@ -60,19 +61,19 @@ describe "Ripple conflict resolution" do
 
   let(:original_person) do
     ConflictedPerson.create!(
-      :name            => 'John',
-      :age             => 25,
-      :gender          => 'male',
-      :favorite_colors => ['green'],
-      :address         => ConflictedAddress.new(:city => 'Seattle'),
-      :jobs            => [ConflictedJob.new(:title => 'Engineer')],
-      :spouse          => ConflictedPerson.create!(:name => 'Jill', :gender => 'female'),
-      :friends         => [ConflictedPerson.create!(:name => 'Quinn', :gender => 'male')],
-      :coworkers       => [ConflictedPerson.create!(:name => 'Horace', :gender => 'male')],
-      :mother          => ConflictedPerson.create!(:name => 'Serena', :gender => 'female'),
-      :created_at      => created_at,
-      :updated_at      => updated_at
-    )
+                             :name            => 'John',
+                             :age             => 25,
+                             :gender          => 'male',
+                             :favorite_colors => ['green'],
+                             :address         => ConflictedAddress.new(:city => 'Seattle'),
+                             :jobs            => [ConflictedJob.new(:title => 'Engineer')],
+                             :spouse          => ConflictedPerson.create!(:name => 'Jill', :gender => 'female'),
+                             :friends         => [ConflictedPerson.create!(:name => 'Quinn', :gender => 'male')],
+                             :coworkers       => [ConflictedPerson.create!(:name => 'Horace', :gender => 'male')],
+                             :mother          => ConflictedPerson.create!(:name => 'Serena', :gender => 'female'),
+                             :created_at      => created_at,
+                             :updated_at      => updated_at
+                             )
   end
 
   context 'for a document that has conflicted attributes' do
@@ -81,9 +82,9 @@ describe "Ripple conflict resolution" do
 
     before(:each) do
       create_conflict original_person,
-        lambda { |p| p.age = 20; p.created_at = earliest_created_at },
-        lambda { |p| p.age = 30; p.updated_at = most_recent_updated_at },
-        lambda { |p| p.favorite_colors << 'red' }
+      lambda { |p| p.age = 20; p.created_at = earliest_created_at },
+      lambda { |p| p.age = 30; p.updated_at = most_recent_updated_at },
+      lambda { |p| p.favorite_colors << 'red' }
     end
 
     it 'raises a NotImplementedError when there is no on_conflict handler' do
@@ -164,8 +165,8 @@ describe "Ripple conflict resolution" do
   context 'when there are conflicts on a one embedded association' do
     before(:each) do
       create_conflict original_person,
-        lambda { |p| p.address.city = 'San Francisco' },
-        lambda { |p| p.address.city = 'Portland' }
+      lambda { |p| p.address.city = 'San Francisco' },
+      lambda { |p| p.address.city = 'Portland' }
     end
 
     it 'sets the association to nil and includes its name in the list of conflicts passed to the on_conflict block' do
@@ -181,8 +182,8 @@ describe "Ripple conflict resolution" do
   context 'when there are conflicts on a many embedded association' do
     before(:each) do
       create_conflict original_person,
-        lambda { |p| p.jobs << ConflictedJob.new(:title => 'CEO') },
-        lambda { |p| p.jobs << ConflictedJob.new(:title => 'CTO') }
+      lambda { |p| p.jobs << ConflictedJob.new(:title => 'CEO') },
+      lambda { |p| p.jobs << ConflictedJob.new(:title => 'CTO') }
     end
 
     it 'sets the association to an empty array and includes its name in the list of conflicts passed to the on_conflict block' do
@@ -198,8 +199,8 @@ describe "Ripple conflict resolution" do
   context 'when there are conflicts on a one linked association' do
     before(:each) do
       create_conflict original_person,
-        lambda { |p| p.spouse = ConflictedPerson.create!(:name => 'Renee', :gender => 'female') },
-        lambda { |p| p.spouse = ConflictedPerson.create!(:name => 'Sharon', :gender => 'female') }
+      lambda { |p| p.spouse = ConflictedPerson.create!(:name => 'Renee', :gender => 'female') },
+      lambda { |p| p.spouse = ConflictedPerson.create!(:name => 'Sharon', :gender => 'female') }
     end
 
     it 'sets the association to nil and includes its name in the list of conflicts passed to the on_conflict block' do
@@ -221,8 +222,8 @@ describe "Ripple conflict resolution" do
   context 'when there are conflicts on a many linked association' do
     before(:each) do
       create_conflict original_person,
-        lambda { |p| p.friends << ConflictedPerson.new(:name => 'Luna', :gender => 'female') },
-        lambda { |p| p.friends << ConflictedPerson.new(:name => 'Molly', :gender => 'female') }
+      lambda { |p| p.friends << ConflictedPerson.new(:name => 'Luna', :gender => 'female') },
+      lambda { |p| p.friends << ConflictedPerson.new(:name => 'Molly', :gender => 'female') }
     end
 
     it 'sets the association to a blank array and includes its name in the list of conflicts passed to the on_conflict block' do
@@ -244,9 +245,9 @@ describe "Ripple conflict resolution" do
   context 'when there are conflicts on a many stored_key association' do
     before(:each) do
       create_conflict original_person,
-        lambda { |p| p.coworkers << ConflictedPerson.create!(:name => 'Colleen', :gender => 'female') },
-        lambda { |p| p.coworkers = [ ConflictedPerson.create!(:name => 'Russ', :gender => 'male'),
-                                      ConflictedPerson.create!(:name => 'Denise', :gender => 'female') ] }
+      lambda { |p| p.coworkers << ConflictedPerson.create!(:name => 'Colleen', :gender => 'female') },
+      lambda { |p| p.coworkers = [ ConflictedPerson.create!(:name => 'Russ', :gender => 'male'),
+                                   ConflictedPerson.create!(:name => 'Denise', :gender => 'female') ] }
     end
 
     it 'sets the association to a blank array and includes the owner_keys in the list of conflicts passed to the on_conflict block' do
@@ -270,8 +271,8 @@ describe "Ripple conflict resolution" do
   context 'when there are conflicts on a one stored_key association' do
     before(:each) do
       create_conflict original_person,
-        lambda { |p| p.mother = ConflictedPerson.new(:name => 'Nancy', :gender => 'female') },
-        lambda { |p| p.mother = ConflictedPerson.new(:name => 'Sherry', :gender => 'male') }
+      lambda { |p| p.mother = ConflictedPerson.new(:name => 'Nancy', :gender => 'female') },
+      lambda { |p| p.mother = ConflictedPerson.new(:name => 'Sherry', :gender => 'male') }
     end
 
     it 'sets the association to nil and includes its name in the list of conflicts passed to the on_conflict block' do
@@ -289,5 +290,4 @@ describe "Ripple conflict resolution" do
       sibling_mother_keys.sort.should == %w(Nancy Sherry)
     end
   end
-
 end

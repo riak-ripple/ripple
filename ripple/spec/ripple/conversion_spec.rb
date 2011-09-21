@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ripple::Conversion do
-  require 'support/models/box'
+  # require 'support/models/box'
 
   before :each do
     @box = Box.new { |a| a.key = 'some-key' }

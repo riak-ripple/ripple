@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::Document::Finders do
-  require 'support/models/box'
-  require 'support/models/cardboard_box'
+  # require 'support/models/box'
+  # require 'support/models/cardboard_box'
   
   before :each do
     @backend = mock("Backend")

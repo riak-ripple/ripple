@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::Document::Key do
-  require 'support/models/box'
+  # require 'support/models/box'
+
   before do
     @box = Box.new
   end

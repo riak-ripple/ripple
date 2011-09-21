@@ -1,5 +1,3 @@
-
-
 class Clock
   include Ripple::Document
   timestamps!

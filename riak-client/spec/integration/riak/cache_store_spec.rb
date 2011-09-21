@@ -2,37 +2,12 @@ require 'spec_helper'
 require 'riak/cache_store'
 
 describe Riak::CacheStore do
-  before :all do
-    if $test_server
-      @web_port = 9000
-      $test_server.start
-    end
-  end
-
   before do
-    @web_port ||= 8098
+    @web_port = $test_server.http_port
     @cache = ActiveSupport::Cache.lookup_store(:riak_store, :http_port => @web_port)
-    @cleanup = true
-  end
-
-  after do
-    if @cleanup
-      if $test_server
-        $test_server.recycle
-        Thread.current[:curl_easy_handle] = nil
-      else
-        @cache.bucket.keys(:force => true).each do |k|
-          @cache.bucket.delete(k, :rw => 1) unless k.blank?
-        end
-      end
-    end
   end
 
   describe "Riak integration" do
-    before do
-      @cleanup = false
-    end
-
     it "should have a client" do
       @cache.should respond_to(:client)
       @cache.client.should be_kind_of(Riak::Client)

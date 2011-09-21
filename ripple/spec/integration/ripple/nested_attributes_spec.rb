@@ -1,14 +1,13 @@
 require 'spec_helper'
 require 'active_support/core_ext/array'
 
-describe Ripple::NestedAttributes do
-  require 'support/models/car'
-  require 'support/models/driver'
-  require 'support/models/passenger'
-  require 'support/models/engine'
-  require 'support/models/seat'
-  require 'support/models/wheel'
-  require 'support/test_server'
+describe Ripple::NestedAttributes, :integration => true do
+  # require 'support/models/car'
+  # require 'support/models/driver'
+  # require 'support/models/passenger'
+  # require 'support/models/engine'
+  # require 'support/models/seat'
+  # require 'support/models/wheel'
 
   context "one :driver (link)" do
     subject { Car.new }
@@ -258,7 +257,5 @@ describe Ripple::NestedAttributes do
       subject.save
       subject.wheels.should == []
     end
-
   end
-
 end

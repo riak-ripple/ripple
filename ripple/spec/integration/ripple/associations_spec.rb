@@ -1,52 +1,9 @@
 require 'spec_helper'
 
 describe "Ripple Associations" do
-  require 'support/test_server'
-
-  before :all do
-    Object.module_eval do
-      class User
-        include Ripple::Document
-        one  :profile
-        many :addresses
-        property :email, String, :presence => true
-        many :friends, :class_name => "User"
-        one :emergency_contact, :class_name => "User"
-        one :credit_card, :using => :key
-      end
-      class Profile
-        include Ripple::EmbeddedDocument
-        property :name, String, :presence => true
-        embedded_in :user
-      end
-      class Address
-        include Ripple::EmbeddedDocument
-        property :street, String, :presence => true
-        property :kind,   String, :presence => true
-        embedded_in :user
-      end
-      class CreditCard
-        include Ripple::Document
-        one :user, :using => :key
-        property :number, Integer
-      end
-      class Post
-        include Ripple::Document
-        one :user, :using => :stored_key
-        many :comments, :using => :stored_key
-        property :comment_keys, Array
-        property :user_key, String
-        property :title, String
-      end
-      class Comment
-        include Ripple::Document
-      end
-    end
-  end
-
   before :each do
     @user        = User.new(:email => 'riak@ripple.com')
-    @profile     = Profile.new(:name => 'Ripple')
+    @profile     = UserProfile.new(:name => 'Ripple')
     @billing     = Address.new(:street => '123 Somewhere Dr', :kind => 'billing')
     @shipping    = Address.new(:street => '321 Anywhere Pl', :kind => 'shipping')
     @friend1     = User.create(:email => "friend@ripple.com")
@@ -80,12 +37,12 @@ describe "Ripple Associations" do
   end
 
   it "should save one embedded associations" do
-    @user.profile = @profile
+    @user.user_profile = @profile
     @user.save
     @found = User.find(@user.key)
-    @found.profile.name.should == 'Ripple'
-    @found.profile.should be_a(Profile)
-    @found.profile.user.should == @found
+    @found.user_profile.name.should == 'Ripple'
+    @found.user_profile.should be_a(UserProfile)
+    @found.user_profile.user.should == @found
   end
 
   it "should not raise an error when a one linked associated record has been deleted" do
@@ -204,17 +161,4 @@ describe "Ripple Associations" do
     @found.user.email.should == 'riak@ripple.com'
     @found.user.should be_a(User)
   end
-
-  after :each do
-    User.destroy_all
-  end
-
-  after :all do
-    Object.send(:remove_const, :User)
-    Object.send(:remove_const, :Profile)
-    Object.send(:remove_const, :Address)
-    Object.send(:remove_const, :CreditCard)
-    Object.send(:remove_const, :Post)
-  end
-
 end

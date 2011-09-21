@@ -8,11 +8,14 @@ require 'riak'
 require 'riak-sessions'
 require 'rspec'
 
-Dir[File.join(File.dirname(__FILE__), "support", "*.rb")].sort.each {|f| require f }
+%w[
+  ripple_session_support
+  rspec-rails-neuter
+  test_server
+].each do |file|
+  require File.join("support", file)
+end
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.after(:each) do
-    $test_server.recycle if $test_server
-  end
 end

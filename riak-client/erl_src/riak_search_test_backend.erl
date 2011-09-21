@@ -24,19 +24,19 @@
          stream_results/3
         ]).
 
--include("riak_search.hrl").
+-include_lib("riak_search/include/riak_search.hrl").
 
 -record(state, {partition, table}).
 
 reset() ->
     {ok, Ring} = riak_core_ring_manager:get_my_ring(),
-    [ ets:delete_all_objects(list_to_atom(integer_to_list(P))) ||
+    [ ets:delete_all_objects(list_to_atom("rs" ++ integer_to_list(P))) ||
         P <- riak_core_ring:my_indices(Ring) ],
     riak_search_config:clear(),
     ok.
 
 start(Partition, _Config) ->
-    Table = ets:new(list_to_atom(integer_to_list(Partition)),
+    Table = ets:new(list_to_atom("rs" ++ integer_to_list(Partition)),
                     [named_table, public, ordered_set]),
     {ok, #state{partition=Partition, table=Table}}.
 

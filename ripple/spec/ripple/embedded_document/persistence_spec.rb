@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe Ripple::EmbeddedDocument::Persistence do
-  require 'support/models/user'
-  require 'support/models/address'
+  # require 'support/models/user'
+  # require 'support/models/address'
   
   before :each do
     @root = User.new
-    @addr = Address.new(:street => "196 Broadway")
+    @addr = Address.new(:street => "196 Broadway", :kind => "Home")
     @addr._parent_document = @root
   end
 
@@ -56,7 +56,7 @@ describe Ripple::EmbeddedDocument::Persistence do
   it "should properly create embedded attributes for persistence" do
     @addr = Address.new
     @root.addresses << @addr
-    @root.attributes_for_persistence.should == {'_type' => 'User', 'addresses' => [{'_type' => 'Address', 'street' => nil}]}
+    @root.attributes_for_persistence.should == {'_type' => 'User', 'email' => nil, 'addresses' => [{'_type' => 'Address', 'street' => nil, 'kind' => nil}]}
   end
 
   it "includes undefined properties in the attributes for persistence" do

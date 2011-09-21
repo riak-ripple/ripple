@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Ripple::Serialization do
-  require 'support/models/invoice'
-  require 'support/models/note'
-  require 'support/models/customer'
+  # require 'support/models/invoice'
+  # require 'support/models/note'
+  # require 'support/models/customer'
 
   it "should provide JSON serialization" do
     Invoice.new.should respond_to(:to_json)

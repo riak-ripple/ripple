@@ -3,15 +3,11 @@
 require 'yaml'
 
 settings = {
-  'temp_dir'  => './.riaktest',
-  'bin_dir'   => ENV['RIAK_BIN_DIR'],
-  :app_config => {
+  'root'  => File.expand_path('.riaktest'),
+  'source'   => ENV['RIAK_BIN_DIR'],
+  :env => {
     :riak_kv => {
-      :riak_kv_stat => false  # Temporarily ignore stats-related
-                              # crashes in test server
-    },
-    :riak_search => {
-      :enabled => false
+      :riak_kv_stat => false
     }
   }
 }

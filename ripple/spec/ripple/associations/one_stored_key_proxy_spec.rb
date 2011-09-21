@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Ripple::Associations::OneStoredKeyProxy do
-  require 'support/models/transactions'
-  require 'support/models/family'
+  # require 'support/models/transactions'
+  # require 'support/models/family'
 
   before :each do
     @account = Account.new {|e| e.key = "accounty" }

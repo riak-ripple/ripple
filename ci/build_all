@@ -18,9 +18,11 @@ do
   export BUNDLE_GEMFILE=Gemfile
   bundle install
   echo "--color" > .rspec
-  bundle exec rake
+  rake
+  thisretval=$?
+  retval=$(($retval+$thisretval))  
 
-  retval=$(($retval+$?))
+  echo "------------------ $p (Exit $thisretval) ------------------"
 
   cd ..
 done

@@ -1,4 +1,3 @@
-
 class Invoice
   include Ripple::Document
   one :customer

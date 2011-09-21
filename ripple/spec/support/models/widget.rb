@@ -1,4 +1,3 @@
-
 class Widget
   include Ripple::Document
   property :size, Integer

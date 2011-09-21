@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ripple::Associations::ManyStoredKeyProxy do
-  require 'support/models/transactions'
+  # require 'support/models/transactions'
 
   before :each do
     @account = Account.new {|t| t.key = "accounty" }

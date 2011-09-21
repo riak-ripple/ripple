@@ -72,7 +72,7 @@ module Riak
       end
 
       def reset_socket
-        socket.close
+        socket.close if !socket.closed?
         Thread.current[:riakpbc_socket] = nil
       end
 

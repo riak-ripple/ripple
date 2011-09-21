@@ -1,4 +1,3 @@
-
 class Box
   include Ripple::Document
   property :shape, String
