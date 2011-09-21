@@ -3,6 +3,7 @@ en:
     around_callbacks_not_supported: "around_%{type} callbacks are not supported on embedded documents.  See https://github.com/seancribbs/ripple/issues/188 for more detail."
     associated_document_error_summary: "for %{doc_type} %{doc_id}: %{errors}"
     attribute_hash: "value of attributes must be a Hash"
+    cluster_not_created: "The cluster for the current environment is not created yet. Run `rake riak:create` first."
     conflict_handler_not_implemented: "No on_conflict handler has been implemented for %{document}"
     document_invalid: "Validation failed: %{errors}"
     document_not_found: 

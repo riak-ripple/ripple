@@ -11,4 +11,8 @@ module Ripple
       :ripple
     end
   end
+
+  # A dummy object so translations can be accessed without module
+  # inclusion.
+  Translator = Object.new.tap {|o| o.extend Translation }
 end
