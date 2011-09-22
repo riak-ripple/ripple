@@ -82,7 +82,7 @@ module Riak
         end
 
         def maybe_encode(string)
-          ENCODING ? string.encode('BINARY') : string
+          ENCODING ? string.force_encoding('BINARY') : string
         end
       end
 
