@@ -9,17 +9,11 @@ module Ripple
         # Defines the key to be derived from a property.
         # @param [String,Symbol] prop the property to derive the key from
         def key_on(prop)
-          class_eval <<-CODE
-          def key
-            #{prop}.to_s
-          end
-          def key=(value)
-            self.#{prop} = value
-          end
-          def key_attr
-            :#{prop}
-          end          
-          CODE
+          prop = prop.to_sym
+
+          define_method(:key) { send(prop).to_s }
+          define_method(:key=) { |v| send(:"#{prop}=", v) }
+          define_method(:key_attr) { prop }
         end
       end
       

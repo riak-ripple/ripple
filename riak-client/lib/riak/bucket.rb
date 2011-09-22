@@ -166,17 +166,12 @@ module Riak
     end
     alias :'n_val=' :'n_value='
 
-    [:r,:w,:dw,:rw].each do |q|
-      class_eval <<-CODE
-        def #{q}
-          props["#{q}"]
-        end
-
-        def #{q}=(value)
-          self.props = {"#{q}" => value}
-          value
-        end
-      CODE
+    %w(r w dw rw).each do |q|
+      define_method(q) { props[q] }
+      define_method("#{q}=") { |v|
+        self.props = { q => value }
+        value
+      }
     end
 
     # (Riak Search) Installs a precommit hook that automatically indexes objects

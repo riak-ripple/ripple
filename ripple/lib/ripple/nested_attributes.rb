@@ -107,21 +107,25 @@ module Ripple
         attr_names.each do |association_name|
           if association = self.associations[association_name]
             nested_attributes_options[association_name.to_sym] = options
-         
-            class_eval %{
-              def #{association_name}_attributes=(attributes)
-                assign_nested_attributes_for_#{association.type}_association(:#{association_name}, attributes)
+
+            define_method "#{association_name}_attributes=" do |attributes|
+              send("assign_nested_attributes_for_#{association.type}_association",
+                association_name, attributes
+              )
+            end
+
+            before_save :"autosave_nested_attributes_for_#{association_name}"
+            before_save :destroy_marked_for_destruction
+
+            define_method "autosave_nested_attributes_for_#{association_name}" do
+              if self.autosave[association_name]
+                send("save_nested_attributes_for_#{association.type}_association",
+                  association_name
+                )
               end
+            end
+            private :"autosave_nested_attributes_for_#{association_name}"
 
-              before_save :autosave_nested_attributes_for_#{association_name}
-              before_save :destroy_marked_for_destruction
-
-              private
-
-              def autosave_nested_attributes_for_#{association_name}
-                save_nested_attributes_for_#{association.type}_association(:#{association_name}) if self.autosave[:#{association_name}]
-              end
-            }, __FILE__, __LINE__
           else
             raise ArgumentError, "Association #{association_name} not found!"
           end
