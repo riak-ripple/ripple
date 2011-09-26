@@ -168,7 +168,7 @@ module Riak
 
     %w(r w dw rw).each do |q|
       define_method(q) { props[q] }
-      define_method("#{q}=") { |v|
+      define_method("#{q}=") { |value|
         self.props = { q => value }
         value
       }
