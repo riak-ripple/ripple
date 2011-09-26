@@ -178,7 +178,7 @@ module Riak
     # into riak_search.
     def enable_index!
       unless is_indexed?
-        self.props = {"precommit" => (props['precommit'] + [SEARCH_PRECOMMIT_HOOK])}
+        self.props = {"precommit" => (props['precommit'] + [SEARCH_PRECOMMIT_HOOK]), "search" => true}
       end
     end
 
@@ -186,7 +186,7 @@ module Riak
     # into riak_search.
     def disable_index!
       if is_indexed?
-        self.props = {"precommit" => (props['precommit'] - [SEARCH_PRECOMMIT_HOOK])}
+        self.props = {"precommit" => (props['precommit'] - [SEARCH_PRECOMMIT_HOOK]), "search" => false}
       end
     end
 
@@ -194,7 +194,7 @@ module Riak
     # riak_search.
     # @return [true,false] whether the bucket includes the search indexing hook
     def is_indexed?
-      props['precommit'].include?(SEARCH_PRECOMMIT_HOOK)
+      props['search'] == true || props['precommit'].include?(SEARCH_PRECOMMIT_HOOK)
     end
 
     # @return [String] a representation suitable for IRB and debugging output

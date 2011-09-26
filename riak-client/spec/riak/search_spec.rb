@@ -105,11 +105,11 @@ describe "Search features" do
     end
 
     def load_without_index_hook
-      @bucket.instance_variable_set(:@props, {"precommit" => []})
+      @bucket.instance_variable_set(:@props, {"precommit" => [], "search" => false})
     end
 
     def load_with_index_hook
-      @bucket.instance_variable_set(:@props, {"precommit" => [{"mod" => "riak_search_kv_hook", "fun" => "precommit"}]})
+      @bucket.instance_variable_set(:@props, {"precommit" => [{"mod" => "riak_search_kv_hook", "fun" => "precommit"}], "search" => true})
     end
 
     it "should detect whether the indexing hook is installed" do
@@ -123,7 +123,7 @@ describe "Search features" do
     describe "enabling indexing" do
       it "should add the index hook when not present" do
         load_without_index_hook
-        @bucket.should_receive(:props=).with({"precommit" => [Riak::Bucket::SEARCH_PRECOMMIT_HOOK]})
+        @bucket.should_receive(:props=).with({"precommit" => [Riak::Bucket::SEARCH_PRECOMMIT_HOOK], "search" => true})
         @bucket.enable_index!
       end
 
@@ -137,7 +137,7 @@ describe "Search features" do
     describe "disabling indexing" do
       it "should remove the index hook when present" do
         load_with_index_hook
-        @bucket.should_receive(:props=).with({"precommit" => []})
+        @bucket.should_receive(:props=).with({"precommit" => [], "search" => false})
         @bucket.disable_index!
       end
 
