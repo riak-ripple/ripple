@@ -57,7 +57,7 @@ client = Riak::Client.new(:protocol => "pbc")
 bucket = client.bucket("doc")  # a Riak::Bucket
 
 # Get an object from the bucket
-object = bucket.get("index.html")   # a Riak::RObject
+object = bucket.get_or_new("index.html")   # a Riak::RObject
 
 # Change the object's data and save
 object.data = "<html><body>Hello, world!</body></html>"
