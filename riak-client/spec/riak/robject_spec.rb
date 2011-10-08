@@ -319,7 +319,7 @@ describe Riak::RObject do
     end
 
     it "should make a DELETE request to the Riak server and freeze the object" do
-      @backend.should_receive(:delete_object).with(@bucket, "bar", nil)
+      @backend.should_receive(:delete_object).with(@bucket, "bar", {})
       @object.delete
       @object.should be_frozen
     end
@@ -333,6 +333,12 @@ describe Riak::RObject do
     it "should pass through a failed request exception" do
       @backend.should_receive(:delete_object).and_raise(Riak::HTTPFailedRequest.new(:delete, [204,404], 500, {}, ""))
       lambda { @object.delete }.should raise_error(Riak::FailedRequest)
+    end
+
+    it "should send the vector clock if present" do
+      @object.vclock = "somevclock"
+      @backend.should_receive(:delete_object).with(@bucket, "bar", {:vclock => "somevclock"})
+      @object.delete
     end
   end
 

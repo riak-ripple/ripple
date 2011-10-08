@@ -93,14 +93,18 @@ module Riak
 
       # Deletes an object
       # @param [Bucket, String] bucket the bucket where the object
-      #        lives
+      #    lives
       # @param [String] key the key where the object lives
-      # @param [Fixnum, String, Symbol] rw the read/write quorum for
-      #        the request
-      def delete_object(bucket, key, rw=nil)
+      # @param [Hash] options quorum and delete options
+      # @options options [Fixnum, String, Symbol] :rw the read/write quorum for
+      #   the request
+      # @options options [String] :vclock the vector clock of the
+      #   object to be deleted
+      def delete_object(bucket, key, options={})
         bucket = bucket.name if Bucket === bucket
-        options = rw ? {:rw => rw} : {}
-        delete([204, 404], riak_kv_wm_raw, escape(bucket), escape(key), options, {})
+        vclock = options.delete(:vclock)
+        headers = vclock ? {"X-Riak-VClock" => vclock} : {}
+        delete([204, 404], riak_kv_wm_raw, escape(bucket), escape(key), options, headers)
       end
 
       # Fetches bucket properties

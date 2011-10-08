@@ -178,8 +178,10 @@ module Riak
 
     # Delete the object from Riak and freeze this instance.  Will work whether or not the object actually
     # exists in the Riak database.
+    # @see Bucket#delete
     def delete(options={})
       return if key.blank?
+      options[:vclock] = vclock if vclock
       @bucket.delete(key, options)
       freeze
     end

@@ -131,9 +131,12 @@ module Riak
     # Deletes a key from the bucket
     # @param [String] key the key to delete
     # @param [Hash] options quorum options
-    # @option options [Fixnum] :rw - the read/write quorum for the delete
+    # @option options [Fixnum] :rw - the read/write quorum for the
+    #   delete
+    # @option options [String] :vclock - the vector clock of the
+    #   object being deleted
     def delete(key, options={})
-      client.backend.delete_object(self, key, options[:rw])
+      client.backend.delete_object(self, key, options)
     end
 
     # @return [true, false] whether the bucket allows divergent siblings

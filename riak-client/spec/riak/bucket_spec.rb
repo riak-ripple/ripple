@@ -193,12 +193,12 @@ describe Riak::Bucket do
 
   describe "deleting an object" do
     it "should delete a key from within the bucket" do
-      @backend.should_receive(:delete_object).with(@bucket, "bar", nil)
+      @backend.should_receive(:delete_object).with(@bucket, "bar", {})
       @bucket.delete('bar')
     end
 
     it "should use the specified RW quorum" do
-      @backend.should_receive(:delete_object).with(@bucket, "bar", "all")
+      @backend.should_receive(:delete_object).with(@bucket, "bar", {:rw => "all"})
       @bucket.delete('bar', :rw => "all")
     end
   end
