@@ -156,10 +156,14 @@ module Riak
       env[:eleveldb][:data_root] ||= (data + 'leveldb').expand_path.to_s
       env[:merge_index][:data_root] ||= (data + 'merge_index').expand_path.to_s
       env[:riak_core][:ring_state_dir] ||= ring.expand_path.to_s
+      NODE_DIRECTORIES.each do |dir|
+        next if [:ring, :pipe].include?(dir)
+        env[:riak_core][:"platform_#{dir}_dir"] ||= send(dir).to_s
+      end
     end
 
     # Sets directories and handlers for logging.
-    def configure_logging     
+    def configure_logging
       if env[:lager]
         env[:lager][:handlers] = {
           :lager_file_backend => [
@@ -215,6 +219,7 @@ module Riak
         env[:riak_core][:http] = [Tuple[interface, min_port]]
         min_port += 1
       end
+      env[:riak_core][:http] = env[:riak_core][:http].map {|pair| Tuple[*pair] }
       env[:riak_kv][:pb_ip] = interface unless env[:riak_kv][:pb_ip]
       unless env[:riak_kv][:pb_port]
         env[:riak_kv][:pb_port] = min_port
