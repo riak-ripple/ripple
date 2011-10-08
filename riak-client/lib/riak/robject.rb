@@ -259,7 +259,7 @@ module Riak
     alias :vector_clock :vclock
     alias :vector_clock= :vclock=
 
-      protected
+    protected
     def load_map_reduce_value(hash)
       metadata = hash['metadata']
       extract_if_present(metadata, 'X-Riak-VTag', :etag)

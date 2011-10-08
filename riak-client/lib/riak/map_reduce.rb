@@ -1,4 +1,3 @@
-
 require 'riak/util/translation'
 require 'riak/util/escape'
 require 'riak/json'
@@ -69,22 +68,22 @@ module Riak
         case p
         when Bucket
           warn(t('full_bucket_mapred', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
-          @inputs = escape(p.name)
+          @inputs = maybe_escape(p.name)
         when RObject
-          @inputs << [escape(p.bucket.name), escape(p.key)]
+          @inputs << [maybe_escape(p.bucket.name), maybe_escape(p.key)]
         when String
           warn(t('full_bucket_mapred', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
-          @inputs = escape(p)
+          @inputs = maybe_escape(p)
         end
       when 2..3
         bucket = params.shift
         bucket = bucket.name if Bucket === bucket
         if Array === params.first
           warn(t('full_bucket_mapred', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
-          @inputs = {:bucket => escape(bucket), :key_filters => params.first }
+          @inputs = {:bucket => maybe_escape(bucket), :key_filters => params.first }
         else
           key = params.shift
-          @inputs << params.unshift(escape(key)).unshift(escape(bucket))
+          @inputs << params.unshift(maybe_escape(key)).unshift(maybe_escape(bucket))
         end
       end
       self

@@ -1,6 +1,4 @@
-
 require 'riak/util/translation'
-require 'riak/util/escape'
 require 'riak/client'
 require 'riak/robject'
 require 'riak/failed_request'
@@ -10,7 +8,6 @@ module Riak
   # using {Client#bucket}, or create it manually and retrieve its meta-information later.
   class Bucket
     include Util::Translation
-    include Util::Escape
 
     # (Riak Search) The precommit specification for kv/search integration
     SEARCH_PRECOMMIT_HOOK = {"mod" => "riak_search_kv_hook", "fun" => "precommit"}

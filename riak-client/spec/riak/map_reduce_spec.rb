@@ -77,33 +77,73 @@ describe Riak::MapReduce do
     describe "escaping" do
       before { @oldesc, Riak.escaper = Riak.escaper, CGI }
       after { Riak.escaper = @oldesc }
-      it "should add bucket/key pairs to the inputs with bucket and key escaped" do
-        @mr.add("[foo]","(bar)")
-        @mr.inputs.should == [["%5Bfoo%5D","%28bar%29"]]
+
+      context "when url_decoding is false" do
+        before { @urldecode, Riak.url_decoding = Riak.url_decoding, false }
+        after { Riak.url_decoding = @urldecode }
+
+        it "should add bucket/key pairs to the inputs with bucket and key escaped" do
+          @mr.add("[foo]","(bar)")
+          @mr.inputs.should == [["%5Bfoo%5D","%28bar%29"]]
+        end
+
+        it "should add an escaped array containing a bucket/key pair to the inputs" do
+          @mr.add(["[foo]","(bar)"])
+          @mr.inputs.should == [["%5Bfoo%5D","%28bar%29"]]
+        end
+
+        it "should add an object to the inputs by its escaped bucket and key" do
+          bucket = Riak::Bucket.new(@client, "[foo]")
+          obj = Riak::RObject.new(bucket, "(bar)")
+          @mr.add(obj)
+          @mr.inputs.should == [["%5Bfoo%5D", "%28bar%29"]]
+        end
+
+        it "should add an escaped array containing a bucket/key/key-data triple to the inputs" do
+          @mr.add(["[foo]","(bar)","[]()"])
+          @mr.inputs.should == [["%5Bfoo%5D", "%28bar%29","[]()"]]
+        end
+
+        it "should use an escaped bucket name as the single input" do
+          @mr.add(Riak::Bucket.new(@client, "[foo]"))
+          @mr.inputs.should == "%5Bfoo%5D"
+          @mr.add("docs")
+          @mr.inputs.should == "docs"
+        end
       end
 
-      it "should add an escaped array containing a bucket/key pair to the inputs" do
-        @mr.add(["[foo]","(bar)"])
-        @mr.inputs.should == [["%5Bfoo%5D","%28bar%29"]]
-      end
+      context "when url_decoding is true" do
+        before { @urldecode, Riak.url_decoding = Riak.url_decoding, true }
+        after { Riak.url_decoding = @urldecode }
 
-      it "should add an object to the inputs by its escaped bucket and key" do
-        bucket = Riak::Bucket.new(@client, "[foo]")
-        obj = Riak::RObject.new(bucket, "(bar)")
-        @mr.add(obj)
-        @mr.inputs.should == [["%5Bfoo%5D", "%28bar%29"]]
-      end
+        it "should add bucket/key pairs to the inputs with bucket and key unescaped" do
+          @mr.add("[foo]","(bar)")
+          @mr.inputs.should == [["[foo]","(bar)"]]
+        end
 
-      it "should add an escaped array containing a bucket/key/key-data triple to the inputs" do
-        @mr.add(["[foo]","(bar)","[]()"])
-        @mr.inputs.should == [["%5Bfoo%5D", "%28bar%29","[]()"]]
-      end
+        it "should add an unescaped array containing a bucket/key pair to the inputs" do
+          @mr.add(["[foo]","(bar)"])
+          @mr.inputs.should == [["[foo]","(bar)"]]
+        end
 
-      it "should use an escaped bucket name as the single input" do
-        @mr.add(Riak::Bucket.new(@client, "[foo]"))
-        @mr.inputs.should == "%5Bfoo%5D"
-        @mr.add("docs")
-        @mr.inputs.should == "docs"
+        it "should add an object to the inputs by its unescaped bucket and key" do
+          bucket = Riak::Bucket.new(@client, "[foo]")
+          obj = Riak::RObject.new(bucket, "(bar)")
+          @mr.add(obj)
+          @mr.inputs.should == [["[foo]","(bar)"]]
+        end
+
+        it "should add an unescaped array containing a bucket/key/key-data triple to the inputs" do
+          @mr.add(["[foo]","(bar)","[]()"])
+          @mr.inputs.should == [["[foo]","(bar)","[]()"]]
+        end
+
+        it "should use an unescaped bucket name as the single input" do
+          @mr.add(Riak::Bucket.new(@client, "[foo]"))
+          @mr.inputs.should == "[foo]"
+          @mr.add("docs")
+          @mr.inputs.should == "docs"
+        end
       end
     end
 

@@ -1,4 +1,3 @@
-
 require 'riak/util/escape'
 require 'riak/util/translation'
 require 'riak/util/multipart'

@@ -33,7 +33,7 @@ module Riak
          def stream(str)
            obj = JSON.parse(str) rescue nil
            if obj && obj['keys']
-             @block.call obj['keys'].map(&method(:unescape))
+             @block.call obj['keys'].map(&method(:maybe_unescape))
            end
          end
        end
