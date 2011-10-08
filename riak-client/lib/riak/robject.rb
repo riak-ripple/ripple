@@ -156,7 +156,7 @@ module Riak
     def store(options={})
       raise ArgumentError, t("content_type_undefined") unless @content_type.present?
       params = {:returnbody => true}.merge(options)
-      @bucket.client.backend.store_object(self, params[:returnbody], params[:w], params[:dw])
+      @bucket.client.backend.store_object(self, params)
       self
     end
 

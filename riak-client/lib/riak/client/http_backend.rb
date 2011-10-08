@@ -49,19 +49,21 @@ module Riak
       # @param [Bucket, String] bucket the bucket where the object is
       #        stored
       # @param [String] key the key of the object
-      # @param [Fixnum, String, Symbol] r the read quorum for the
-      #         request - how many nodes should concur on the read
+      # @param [Hash] options request quorums
+      # @option options [Fixnum, String, Symbol] :r the read quorum for the
+      #   request - how many nodes should concur on the read
+      # @option options [Fixnum, String, Symbol] :pr the "primary"
+      #   read quorum for the request - how many primary partitions
+      #   must be available
       # @return [RObject] the fetched object
-      def fetch_object(bucket, key, r=nil)
+      def fetch_object(bucket, key, options={})
         bucket = Bucket.new(client, bucket) if String === bucket
-        options = r ? {:r => r} : {}
         response = get([200,300],riak_kv_wm_raw, escape(bucket.name), escape(key), options, {})
         load_object(RObject.new(bucket, key), response)
       end
 
       # Reloads the data for a given RObject, a special case of {#fetch_object}.
-      def reload_object(robject, r = nil)
-        options = r ? {:r => r} : {}
+      def reload_object(robject, options={})
         response = get([200,300,304], riak_kv_wm_raw, escape(robject.bucket.name), escape(robject.key), options, reload_headers(robject))
         if response[:code].to_i == 304
           robject
@@ -72,23 +74,21 @@ module Riak
 
       # Stores an object
       # @param [RObject] robject the object to store
-      # @param [true,false] returnbody (false) whether to update the object
+      # @param [Hash] options quorum and storage options
+      # @option options [true,false] :returnbody (false) whether to update the object
       #        after write with the new value
-      # @param [Fixnum, String, Symbol] w the write quorum
-      # @param [Fixnum, String, Symbol] dw the durable write quorum
-      def store_object(robject, returnbody=false, w=nil, dw=nil)
-        query = {}.tap do |q|
-          q[:returnbody] = returnbody unless returnbody.nil?
-          q[:w] = w unless w.nil?
-          q[:dw] = dw unless dw.nil?
-        end
+      # @option options [Fixnum, String, Symbol] :w the write quorum
+      # @option options [Fixnum, String, Symbol] :pw the "primary"
+      #   write quorum - how many primary partitions must be available
+      # @option options [Fixnum, String, Symbol] :dw the durable write quorum
+      def store_object(robject, options={})
         method, codes, path = if robject.key.present?
                                 [:put, [200,204,300], "#{escape(robject.bucket.name)}/#{escape(robject.key)}"]
                               else
                                 [:post, 201, escape(robject.bucket.name)]
                               end
-        response = send(method, codes, riak_kv_wm_raw, path, query, robject.raw_data, store_headers(robject))
-        load_object(robject, response) if returnbody
+        response = send(method, codes, riak_kv_wm_raw, path, options, robject.raw_data, store_headers(robject))
+        load_object(robject, response) if options[:returnbody]
       end
 
       # Deletes an object

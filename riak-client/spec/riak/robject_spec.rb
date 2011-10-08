@@ -252,7 +252,7 @@ describe Riak::RObject do
     end
 
     it "should pass along quorum parameters and returnbody to the backend" do
-      @backend.should_receive(:store_object).with(@object, false, 3, 2).and_return(true)
+      @backend.should_receive(:store_object).with(@object, :returnbody => false, :w => 3, :dw => 2).and_return(true)
       @object.store(:returnbody => false, :w => 3, :dw => 2)
     end
   end

@@ -32,7 +32,13 @@ shared_examples_for "Unified backend API" do
 
     [1,2,3,:one,:quorum,:all,:default].each do |q|
       it "should accept a R value of #{q.inspect} for the request" do
-        robj = @backend.fetch_object("test", "fetch", q)
+        robj = @backend.fetch_object("test", "fetch", :r => q)
+        robj.should be_kind_of(Riak::RObject)
+        robj.data.should == { "test" => "pass" }
+      end
+
+      it "should accept a PR value of #{q.inspect} for the request" do
+        robj = @backend.fetch_object("test", "fetch", :pr => q)
         robj.should be_kind_of(Riak::RObject)
         robj.data.should == { "test" => "pass" }
       end
@@ -48,7 +54,7 @@ shared_examples_for "Unified backend API" do
       @backend.store_object(@robject)
       @robject2 = @backend.fetch_object("test", "reload")
       @robject2.data["test"] = "second"
-      @backend.store_object(@robject2, true)
+      @backend.store_object(@robject2, :returnbody => true)
     end
 
     it "should modify the object with the reloaded data" do
@@ -57,7 +63,11 @@ shared_examples_for "Unified backend API" do
 
     [1,2,3,:one,:quorum,:all,:default].each do |q|
       it "should accept a valid R value of #{q.inspect} for the request" do
-        @backend.reload_object(@robject, q)
+        @backend.reload_object(@robject, :r => q)
+      end
+
+      it "should accept a valid PR value of #{q.inspect} for the request" do
+        @backend.reload_object(@robject, :pr => q)
       end
     end
 
@@ -80,18 +90,22 @@ shared_examples_for "Unified backend API" do
     end
 
     it "should modify the object with the returned data if returnbody" do
-      @backend.store_object(@robject, true)
+      @backend.store_object(@robject, :returnbody => true)
       @robject.vclock.should be_present
     end
 
     [1,2,3,:one,:quorum,:all,:default].each do |q|
       it "should accept a W value of #{q.inspect} for the request" do
-        @backend.store_object(@robject, false, q)
+        @backend.store_object(@robject, :returnbody => false, :w => q)
         @client.bucket("test").exists?("store").should be_true
       end
 
       it "should accept a DW value of #{q.inspect} for the request" do
-        @backend.store_object(@robject, false, nil, q)
+        @backend.store_object(@robject, :returnbody => false, :w => :all, :dw => q)
+      end
+
+      it "should accept a PW value of #{q.inspect} for the request" do
+        @backend.store_object(@robject, :returnbody => false, :pw => q)
       end
     end
 
@@ -116,10 +130,14 @@ shared_examples_for "Unified backend API" do
 
     [1,2,3,:one,:quorum,:all,:default].each do |q|
       it "should accept an RW value of #{q.inspect} for the request" do
-        @backend.delete_object("test", "delete", q)
+        @backend.delete_object("test", "delete", :rw => q)
       end
     end
 
+    it "should accept a vclock value for the request" do
+      @backend.delete_object("test", "delete", :vclock => @obj.vclock)
+    end
+    
     after do
       @obj.bucket.exists?("delete").should be_false
     end
