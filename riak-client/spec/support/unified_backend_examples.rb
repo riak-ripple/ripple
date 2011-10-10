@@ -110,7 +110,7 @@ shared_examples_for "Unified backend API" do
     end
 
     after do
-      @client.bucket("test").exists?("store").should be_true
+      expect { @backend.fetch_object("test", "store") }.should_not raise_error(Riak::FailedRequest)
     end
   end
 

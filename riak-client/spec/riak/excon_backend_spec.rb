@@ -41,7 +41,7 @@ else
       # can it?
       setup_http_mock(:put, @backend.path("/riak/","foo").to_s, :body => "ok")
       lambda do
-        @backend.put(200, "/riak/", "foo", "body",{"Long-Header" => (["12345678"*10]*100).join(", ") })
+        @backend.put(200, @backend.path("/riak", "foo"), "body", {"Long-Header" => (["12345678"*10]*100).join(", ") })
       end.should_not raise_error
     end
 
@@ -49,13 +49,13 @@ else
       file = File.open(File.expand_path("../../fixtures/cat.jpg", __FILE__), 'rb')
       lambda do
         setup_http_mock(:put, @backend.path("/riak/","foo").to_s, :body => "ok")
-        @backend.put(200, "/riak/", "foo", file, {})
+        @backend.put(200, @backend.path("/riak/","foo"), file)
         $mock_server.satisfied.should be_true
       end.should_not raise_error
       file.rewind # Have to rewind the file or we hang
       lambda do
         setup_http_mock(:post, @backend.path("/riak/","foo").to_s, :body => "ok")
-        @backend.post(200, "/riak/", "foo", file, {})
+        @backend.post(200, @backend.path("/riak/", "foo"), file)
         $mock_server.satisfied.should be_true
       end.should_not raise_error
     end

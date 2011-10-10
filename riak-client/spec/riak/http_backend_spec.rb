@@ -18,7 +18,7 @@ describe Riak::Client::HTTPBackend do
 
   context "pinging the server" do
     it "should succeed on 200" do
-      @backend.should_receive(:get).with(200, "/ping", {}, {}).and_return({:code => 200, :body => "OK"})
+      @backend.should_receive(:get).with(200, @backend.ping_path).and_return({:code => 200, :body => "OK"})
       @backend.ping.should be_true
     end
 
@@ -30,17 +30,17 @@ describe Riak::Client::HTTPBackend do
 
   context "fetching an object" do
     it "should perform a GET request and return an RObject" do
-      @backend.should_receive(:get).with([200,300], "/riak/","foo", "db", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @backend.should_receive(:get).with([200,300], @backend.object_path('foo', 'db')).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @backend.fetch_object("foo", "db").should be_kind_of(Riak::RObject)
     end
 
     it "should pass the R quorum as a query parameter" do
-      @backend.should_receive(:get).with([200,300], "/riak/","foo", "db", {:r => 2}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
-      @backend.fetch_object("foo", "db", 2)
+      @backend.should_receive(:get).with([200,300], @backend.object_path("foo", "db", {:r => 2})).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @backend.fetch_object("foo", "db", :r => 2)
     end
 
     it "should escape the bucket and key names" do
-      @backend.should_receive(:get).with([200,300], "/riak/","foo%20", "%20bar", {}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
+      @backend.should_receive(:get).with([200,300], @backend.object_path('foo ', ' bar')).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"name":"Riak","company":"Basho"}'})
       @backend.fetch_object('foo ',' bar').should be_kind_of(Riak::RObject)
     end
   end
@@ -52,7 +52,7 @@ describe Riak::Client::HTTPBackend do
 
     it "should use conditional request headers" do
       @object.etag = "etag"
-      @backend.should_receive(:get).with([200,300,304], "/riak/", "foo", "bar", {}, {'If-None-Match' => "etag"}).and_return({:code => 304})
+      @backend.should_receive(:get).with([200,300,304], @backend.object_path('foo', 'bar'), {'If-None-Match' => "etag"}).and_return({:code => 304})
       @backend.reload_object(@object)
     end
 
@@ -71,7 +71,7 @@ describe Riak::Client::HTTPBackend do
       # @bucket.should_receive(:name).and_return("some/deep/path")
       @object.bucket = @client.bucket("some/deep/path")
       @object.key = "another/deep/path"
-      @backend.should_receive(:get).with([200,300,304], "/riak/", "some%2Fdeep%2Fpath", "another%2Fdeep%2Fpath", {}, {}).and_return({:code => 304})
+      @backend.should_receive(:get).with([200,300,304], @backend.object_path(@object.bucket.name, @object.key), {}).and_return({:code => 304})
       @backend.reload_object(@object)
     end
   end
@@ -90,26 +90,20 @@ describe Riak::Client::HTTPBackend do
       body = @object.raw_data = "{this is probably invalid json!}}"
       @backend.stub(:post).and_return({})
       @object.should_not_receive(:serialize)
-      @backend.store_object(@object, false)
+      @backend.store_object(@object, :returnbody => false)
     end
     
     context "when the object has no key" do
       it "should issue a POST request to the bucket, and update the object properties (returning the body by default)" do
-        @backend.should_receive(:post).with(201, "/riak/", "foo", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 201})
-        @backend.store_object(@object, true, nil, nil)
+        @backend.should_receive(:post).with(201, @backend.object_path("foo", nil, {:returnbody => true}), "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 201})
+        @backend.store_object(@object, :returnbody => true)
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
 
       it "should include persistence-tuning parameters in the query string" do
-        @backend.should_receive(:post).with(201, "/riak/", "foo", {:dw => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 201})
-        @backend.store_object(@object, true, nil, 2)
-      end
-
-      it "should escape the bucket name" do
-        @object.bucket = @client.bucket("foo ")
-        @backend.should_receive(:post).with(201, "/riak/", "foo%20", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 201})
-        @backend.store_object(@object, true)
+        @backend.should_receive(:post).with(201, @backend.object_path("foo", nil, {:dw => 2, :returnbody => true}), "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 201})
+        @backend.store_object(@object, :returnbody => true, :dw => 2)
       end
     end
 
@@ -119,77 +113,60 @@ describe Riak::Client::HTTPBackend do
       end
 
       it "should issue a PUT request to the bucket, and update the object properties (returning the body by default)" do
-        @backend.should_receive(:put).with([200,204,300], "/riak/", "foo/bar", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
-        @backend.store_object(@object, true, nil, nil)
+        @backend.should_receive(:put).with([200,204,300], @backend.object_path("foo", "bar", {:returnbody => true}), "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
+        @backend.store_object(@object, :returnbody => true)
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
       
       it "should include persistence-tuning parameters in the query string" do
-        @backend.should_receive(:put).with([200,204,300], "/riak/", "foo/bar", {:w => 2, :returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
-        @backend.store_object(@object, true, 2, nil)
-      end
-
-      it "should escape the bucket and key names" do
-        @backend.should_receive(:put).with([200,204,300], "/riak/", "foo%20/bar%2Fbaz", {:returnbody => true}, "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
-        @bucket.instance_variable_set(:@name, "foo ")
-        @object.key = "bar/baz"
-        @backend.store_object(@object, true, nil, nil)
+        @backend.should_receive(:put).with([200,204,300], @backend.object_path("foo", "bar", {:w => 2, :returnbody => true}), "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
+        @backend.store_object(@object, :returnbody => true, :w => 2)
       end
     end
   end
 
   context "deleting an object" do
     it "should perform a DELETE request" do
-      @backend.should_receive(:delete).with([204,404], "/riak/", "foo", 'bar',{},{}).and_return(:code => 204)
+      @backend.should_receive(:delete).with([204,404], @backend.object_path("foo", 'bar'), {}).and_return(:code => 204)
       @backend.delete_object("foo", "bar")
     end
 
-    it "should escape the bucket and key names" do
-      @backend.should_receive(:delete).with([204,404], "/riak/", "bucket%20spaces", "deep%2Fpath",{},{}).and_return({:code => 204, :headers => {}})
-      @backend.delete_object("bucket spaces", "deep/path")
+    it "should perform a DELETE request with the provided vclock" do
+      @backend.should_receive(:delete).with([204,404], @backend.object_path("foo", 'bar'), {'X-Riak-VClock' => "myvclock"}).and_return(:code => 204)
+      @backend.delete_object('foo', 'bar', :vclock => "myvclock")
     end
+
+    it "should perform a DELETE request with the requested quorum value" do
+      @backend.should_receive(:delete).with([204,404], @backend.object_path("foo", 'bar', {:rw => 2}), {'X-Riak-VClock' => "myvclock"}).and_return(:code => 204)
+      @backend.delete_object('foo', 'bar', :vclock => "myvclock", :rw => 2)
+    end    
   end
 
   context "fetching bucket properties" do
     it "should GET the bucket URL and parse the response as JSON" do
-      @backend.should_receive(:get).with(200, "/riak/", "foo", {:keys => false, :props => true}, {}).and_return({:body => '{"props":{"n_val":3}}'})
+      @backend.should_receive(:get).with(200, @backend.bucket_properties_path('foo')).and_return({:body => '{"props":{"n_val":3}}'})
       @backend.get_bucket_props("foo").should == {"n_val" => 3}
-    end
-
-    it "should escape the bucket name" do
-      @backend.should_receive(:get).with(200, "/riak/", "foo%20bar", {:keys => false, :props => true}, {}).and_return({:body => '{"props":{"n_val":3}}'})
-      @backend.get_bucket_props("foo bar")
     end
   end
   
   context "setting bucket properties" do
     it "should PUT the properties to the bucket URL as JSON" do
-      @backend.should_receive(:put).with(204, "/riak/","foo", '{"props":{"n_val":2}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
+      @backend.should_receive(:put).with(204, @backend.bucket_properties_path('foo'), '{"props":{"n_val":2}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
       @backend.set_bucket_props("foo", {:n_val => 2})      
-    end
-    
-    it "should escape the bucket name" do
-      @backend.should_receive(:put).with(204, "/riak/","foo%20bar", '{"props":{"n_val":2}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
-      @backend.set_bucket_props("foo bar", {:n_val => 2})
     end
   end
   
   context "listing keys" do
     it "should unescape key names" do
-      @backend.should_receive(:get).with(200, "/riak/","foo", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
+      @backend.should_receive(:get).with(200, @backend.key_list_path('foo')).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
       @backend.list_keys("foo").should == ["bar baz"]
-    end
-
-    it "should escape the bucket name" do
-      @backend.should_receive(:get).with(200, "/riak/","unescaped%20", {:props => false, :keys => true}, {}).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar"]}'})
-      @backend.list_keys("unescaped ").should == ["bar"]
     end
   end
 
   context "listing buckets" do
-    it "should GET the raw URL with ?buckets=true and parse the response as JSON" do
-      @backend.should_receive(:get).with(200, "/riak/", {:buckets => true}, {}).and_return({:body => '{"buckets":["foo", "bar", "baz"]}'})
+    it "should GET the bucket list URL and parse the response as JSON" do
+      @backend.should_receive(:get).with(200, @backend.bucket_list_path).and_return({:body => '{"buckets":["foo", "bar", "baz"]}'})
       @backend.list_buckets.should == ["foo", "bar", "baz"]
     end
   end
@@ -200,7 +177,7 @@ describe Riak::Client::HTTPBackend do
     end
 
     it "should issue POST request to the mapred endpoint" do
-      @backend.should_receive(:post).with(200, "/mapred", @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "[]"})
+      @backend.should_receive(:post).with(200, @backend.mapred_path, @mr.to_json, hash_including("Content-Type" => "application/json")).and_return({:headers => {'content-type' => ["application/json"]}, :body => "[]"})
       @backend.mapred(@mr)
     end
 
@@ -217,7 +194,7 @@ describe Riak::Client::HTTPBackend do
 
     it "should stream results through the block" do
       data = File.read("spec/fixtures/multipart-mapreduce.txt")
-      @backend.should_receive(:post).with(200, "/mapred", {:chunked => true}, @mr.to_json, hash_including("Content-Type" => "application/json")).and_yield(data)
+      @backend.should_receive(:post).with(200, @backend.mapred_path(:chunked => true), @mr.to_json, hash_including("Content-Type" => "application/json")).and_yield(data)
       block = mock
       block.should_receive(:ping).twice.and_return(true)
       @backend.mapred(@mr) do |phase, data|
@@ -230,7 +207,7 @@ describe Riak::Client::HTTPBackend do
 
   context "getting statistics" do
     it "should get the status URL and parse the response as JSON" do
-      @backend.should_receive(:get).with(200, "/stats", {}, {}).and_return({:body => '{"vnode_gets":20348}'})
+      @backend.should_receive(:get).with(200, @backend.stats_path).and_return({:body => '{"vnode_gets":20348}'})
       @backend.stats.should == {"vnode_gets" => 20348}
     end
   end
@@ -244,7 +221,7 @@ describe Riak::Client::HTTPBackend do
     end
 
     it "should perform a GET request for the given object and walk specs" do
-      @backend.should_receive(:get).with(200, "/riak/", "foo", "bar", "_,next,1").and_return(:headers => {"content-type" => ["multipart/mixed; boundary=12345"]}, :body => "\n--12345\nContent-Type: multipart/mixed; boundary=09876\n\n--09876--\n\n--12345--\n")
+      @backend.should_receive(:get).with(200, @backend.link_walk_path(@bucket.name, @object.key, @specs)).and_return(:headers => {"content-type" => ["multipart/mixed; boundary=12345"]}, :body => "\n--12345\nContent-Type: multipart/mixed; boundary=09876\n\n--09876--\n\n--12345--\n")
       @backend.link_walk(@object, @specs)
     end
 

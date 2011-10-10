@@ -39,9 +39,9 @@ describe "HTTP" do
     let(:sized) { Reader.new(["foo", "bar", "baz"]) }
     let(:sizeless) { SizelessReader.new(["foo", "bar", "baz"]) }
     it "should set the content-length or transfer-encoding properly on IO uploads" do
-      lambda { subject.put(204, "/riak/nethttp", "test-file", file, {"Content-Type" => "text/plain"}) }.should_not raise_error
-      lambda { subject.put(204, "/riak/nethttp", "test-sized", sized, {"Content-Type" => "text/plain"}) }.should_not raise_error
-      lambda { subject.put(204, "/riak/nethttp", "test-file", sizeless, {"Content-Type" => "text/plain"}) }.should_not raise_error
+      lambda { subject.put(204, subject.object_path('nethttp', 'test-file'), file, {"Content-Type" => "text/plain"}) }.should_not raise_error
+      lambda { subject.put(204, subject.object_path('nethttp', 'test-sized'), sized, {"Content-Type" => "text/plain"}) }.should_not raise_error
+      lambda { subject.put(204, subject.object_path('nethttp', 'test-sizeless'), sizeless, {"Content-Type" => "text/plain"}) }.should_not raise_error
     end
   end
 end

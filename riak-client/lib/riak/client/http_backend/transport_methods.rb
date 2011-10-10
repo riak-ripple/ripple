@@ -20,10 +20,9 @@ module Riak
         #   @param [Hash] headers custom headers to send with the request
         # @return [Hash] response data, containing only the :headers and :code keys
         # @raise [FailedRequest] if the response code doesn't match the expected response
-        def head(expect, *resource)
-          headers = default_headers.merge(resource.extract_options!)
-          verify_path!(resource)
-          perform(:head, path(*resource), headers, expect)
+        def head(expect, resource, headers={})
+          headers = default_headers.merge(headers)
+          perform(:head, resource, headers, expect)
         end
 
         # Performs a GET request to the specified resource on the Riak server.
@@ -40,10 +39,9 @@ module Riak
         #   @return [Hash] response data, containing only the :headers and :code keys
         # @return [Hash] response data, containing :headers, :body, and :code keys
         # @raise [FailedRequest] if the response code doesn't match the expected response
-        def get(expect, *resource, &block)
-          headers = default_headers.merge(resource.extract_options!)
-          verify_path!(resource)
-          perform(:get, path(*resource), headers, expect, &block)
+        def get(expect, resource, headers={}, &block)
+          headers = default_headers.merge(headers)
+          perform(:get, resource, headers, expect, &block)
         end
 
         # Performs a PUT request to the specified resource on the Riak server.
@@ -61,10 +59,10 @@ module Riak
         #   @return [Hash] response data, containing only the :headers and :code keys
         # @return [Hash] response data, containing :headers, :code, and :body keys
         # @raise [FailedRequest] if the response code doesn't match the expected response
-        def put(expect, *resource, &block)
-          headers = default_headers.merge(resource.extract_options!)
-          uri, data = verify_path_and_body!(resource)
-          perform(:put, path(*uri), headers, expect, data, &block)
+        def put(expect, resource, body, headers={}, &block)
+          headers = default_headers.merge(headers)
+          verify_body!(body)
+          perform(:put, resource, headers, expect, body, &block)
         end
 
         # Performs a POST request to the specified resource on the Riak server.
@@ -82,10 +80,10 @@ module Riak
         #   @return [Hash] response data, containing only the :headers and :code keys
         # @return [Hash] response data, containing :headers, :code and :body keys
         # @raise [FailedRequest] if the response code doesn't match the expected response
-        def post(expect, *resource, &block)
-          headers = default_headers.merge(resource.extract_options!)
-          uri, data = verify_path_and_body!(resource)
-          perform(:post, path(*uri), headers, expect, data, &block)
+        def post(expect, resource, body, headers={}, &block)
+          headers = default_headers.merge(headers)
+          verify_body!(body)
+          perform(:post, resource, headers, expect, body, &block)
         end
 
         # Performs a DELETE request to the specified resource on the Riak server.
@@ -102,10 +100,9 @@ module Riak
         #   @return [Hash] response data, containing only the :headers and :code keys
         # @return [Hash] response data, containing :headers, :code and :body keys
         # @raise [FailedRequest] if the response code doesn't match the expected response
-        def delete(expect, *resource, &block)
-          headers = default_headers.merge(resource.extract_options!)
-          verify_path!(resource)
-          perform(:delete, path(*resource), headers, expect, &block)
+        def delete(expect, resource, headers={}, &block)
+          headers = default_headers.merge(headers)
+          perform(:delete, resource, headers, expect, &block)
         end
 
         # Executes requests according to the underlying HTTP client library semantics.
@@ -156,35 +153,13 @@ module Riak
         # @param [Array<String,Hash>] segments a relative path or sequence of path segments and optional query params Hash that will be joined to the root URI
         # @return [URI] an absolute URI for the resource
         def path(*segments)
+          segments = segments.flatten
           query = segments.extract_options!.to_param
           root_uri.merge(segments.join("/").gsub(/\/+/, "/").sub(/^\//, '')).tap do |uri|
             uri.query = query if query.present?
           end
         end
-
-        # Verifies that both a resource path and body are present in the arguments
-        # @param [Array] args the arguments to verify
-        # @raise [ArgumentError] if the body or resource is missing, or if the body is not a String
-        def verify_path_and_body!(args)
-          body = args.pop
-          begin
-            verify_path!(args)
-          rescue ArgumentError
-            raise ArgumentError, t("path_and_body_required")
-          end
-
-          raise ArgumentError, t("request_body_type") unless String === body || body.respond_to?(:read)
-          [args, body]
-        end
-
-        # Verifies that the specified resource is valid
-        # @param [String, Array] resource the resource specification
-        # @raise [ArgumentError] if the resource path is too short
-        def verify_path!(resource)
-          resource = Array(resource).flatten
-          raise ArgumentError, t("resource_path_short") unless resource.length > 1 || resource.include?(@client.mapred)
-        end
-
+        
         # Checks the expected response codes against the actual response code. Use internally when
         # implementing {#perform}.
         # @param [String, Fixnum, Array<String,Fixnum>] expected the expected response code(s)
@@ -204,6 +179,14 @@ module Riak
           method != :head && !valid_response?([204,205,304], code) && !has_block
         end
 
+        # Checks whether the submitted body is valid. That is, it must
+        # be a String or respond to the 'read' method.
+        # @param [String, #read] body the body
+        # @raise [ArgumentError] if the body is of invalid type
+        def verify_body!(body)
+          raise ArgumentError, t('request_body_type') unless String === body || body.respond_to?(:read)
+        end
+        
         private
         def response_headers
           Thread.current[:response_headers] ||= Riak::Util::Headers.new

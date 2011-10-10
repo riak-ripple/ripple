@@ -64,12 +64,12 @@ end
 namespace :spec do
   desc "Run Integration Specs Only (without explicitly slow specs)"
   RSpec::Core::RakeTask.new(:integration) do |spec|
-    spec.rspec_opts = %w[--profile --tag integration ~slow]
+    spec.rspec_opts = %w[--profile --tag '~slow' --tag integration]
   end
 
   desc "Run All Specs (without explicitly slow specs)"
   RSpec::Core::RakeTask.new(:all) do |spec|
-    spec.rspec_opts = %w[--profile --tag ~slow]
+    spec.rspec_opts = %w[--profile --tag '~slow']
   end
 end
 

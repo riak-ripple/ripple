@@ -28,31 +28,11 @@ describe Riak::Client::HTTPBackend::TransportMethods do
     @backend.path("baz", :r => 2).to_s.should == "http://127.0.0.1:8098/baz?r=2"
   end
 
-  it "should raise an error if a resource path is too short" do
-    lambda { @backend.verify_path!(["/riak/"]) }.should raise_error(ArgumentError)
-    lambda { @backend.verify_path!(["/riak/", "foo"]) }.should_not raise_error
-    lambda { @backend.verify_path!(["/mapred"]) }.should_not raise_error
-  end
-
-  describe "verify_path_and_body!" do
-    it "should separate the path and body from given arguments" do
-      uri, data = @backend.verify_path_and_body!(["/riak/", "foo", "This is the body."])
-      uri.should == ["/riak/", "foo"]
-      data.should == "This is the body."
-    end
-
+  describe "verify_body!" do
     it "should raise an error if the body is not a string or IO or IO-like (responds to :read)" do
-      lambda { @backend.verify_path_and_body!(["/riak/", "foo", nil]) }.should raise_error(ArgumentError)
-      lambda { @backend.verify_path_and_body!(["/riak/", "foo", File.open("spec/fixtures/cat.jpg")]) }.should_not raise_error(ArgumentError)
-      lambda { @backend.verify_path_and_body!(["/riak/", "foo", Tempfile.new('riak-spec')]) }.should_not raise_error(ArgumentError)
-    end
-
-    it "should raise an error if a body is not given" do
-      lambda { @backend.verify_path_and_body!(["/riak/", "foo"])}.should raise_error(ArgumentError)
-    end
-
-    it "should raise an error if a path is not given" do
-      lambda { @backend.verify_path_and_body!(["/riak/"])}.should raise_error(ArgumentError)
+      lambda { @backend.verify_body!(nil) }.should raise_error(ArgumentError)
+      lambda { @backend.verify_body!(File.open("spec/fixtures/cat.jpg")) }.should_not raise_error(ArgumentError)
+      lambda { @backend.verify_body!(Tempfile.new('riak-spec')) }.should_not raise_error(ArgumentError)
     end
   end
 

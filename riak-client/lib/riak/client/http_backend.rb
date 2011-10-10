@@ -39,7 +39,7 @@ module Riak
       # Pings the server
       # @return [true,false] whether the server is available
       def ping
-        get(200, riak_kv_wm_ping, {}, {})
+        get(200, ping_path)
         true
       rescue
         false
@@ -58,13 +58,13 @@ module Riak
       # @return [RObject] the fetched object
       def fetch_object(bucket, key, options={})
         bucket = Bucket.new(client, bucket) if String === bucket
-        response = get([200,300],riak_kv_wm_raw, escape(bucket.name), escape(key), options, {})
+        response = get([200,300], object_path(bucket.name, key, options))
         load_object(RObject.new(bucket, key), response)
       end
 
       # Reloads the data for a given RObject, a special case of {#fetch_object}.
       def reload_object(robject, options={})
-        response = get([200,300,304], riak_kv_wm_raw, escape(robject.bucket.name), escape(robject.key), options, reload_headers(robject))
+        response = get([200,300,304], object_path(robject.bucket.name, robject.key, options), reload_headers(robject))
         if response[:code].to_i == 304
           robject
         else
@@ -82,12 +82,12 @@ module Riak
       #   write quorum - how many primary partitions must be available
       # @option options [Fixnum, String, Symbol] :dw the durable write quorum
       def store_object(robject, options={})
-        method, codes, path = if robject.key.present?
-                                [:put, [200,204,300], "#{escape(robject.bucket.name)}/#{escape(robject.key)}"]
-                              else
-                                [:post, 201, escape(robject.bucket.name)]
-                              end
-        response = send(method, codes, riak_kv_wm_raw, path, options, robject.raw_data, store_headers(robject))
+        method, codes = if robject.key.present?
+                          [:put, [200,204,300]]
+                        else
+                          [:post, 201]
+                        end
+        response = send(method, codes, object_path(robject.bucket.name, robject.key, options), robject.raw_data, store_headers(robject))
         load_object(robject, response) if options[:returnbody]
       end
 
@@ -104,7 +104,7 @@ module Riak
         bucket = bucket.name if Bucket === bucket
         vclock = options.delete(:vclock)
         headers = vclock ? {"X-Riak-VClock" => vclock} : {}
-        delete([204, 404], riak_kv_wm_raw, escape(bucket), escape(key), options, headers)
+        delete([204, 404], object_path(bucket, key, options), headers)
       end
 
       # Fetches bucket properties
@@ -112,7 +112,7 @@ module Riak
       # @return [Hash] bucket properties
       def get_bucket_props(bucket)
         bucket = bucket.name if Bucket === bucket
-        response = get(200, riak_kv_wm_raw, escape(bucket), {:keys => false, :props => true}, {})
+        response = get(200, bucket_properties_path(bucket))
         JSON.parse(response[:body])['props']
       end
 
@@ -122,7 +122,7 @@ module Riak
       def set_bucket_props(bucket, props)
         bucket = bucket.name if Bucket === bucket
         body = {'props' => props}.to_json
-        put(204, riak_kv_wm_raw, escape(bucket), body, {"Content-Type" => "application/json"})
+        put(204, bucket_properties_path(bucket), body, {"Content-Type" => "application/json"})
       end
 
       # List keys in a bucket
@@ -134,9 +134,9 @@ module Riak
       def list_keys(bucket, &block)
         bucket = bucket.name if Bucket === bucket
         if block_given?          
-          get(200, riak_kv_wm_raw, escape(bucket), {:props => false, :keys => 'stream'}, {}, &KeyStreamer.new(block))
+          get(200, key_list_path(bucket, :keys => 'stream'), {}, &KeyStreamer.new(block))
         else
-          response = get(200, riak_kv_wm_raw, escape(bucket), {:props => false, :keys => true}, {})
+          response = get(200, key_list_path(bucket))
           obj = JSON.parse(response[:body])
           obj && obj['keys'].map {|k| unescape(k) }
         end
@@ -145,7 +145,7 @@ module Riak
       # Lists known buckets
       # @return [Array<String>] the list of buckets
       def list_buckets
-        response = get(200, riak_kv_wm_raw, {:buckets => true}, {})
+        response = get(200, bucket_list_path)
         JSON.parse(response[:body])['buckets']
       end
 
@@ -161,10 +161,10 @@ module Riak
             result = JSON.parse(response[:body])
             yield result['phase'], result['data']
           end
-          post(200, riak_kv_wm_mapred, {:chunked => true}, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"}, &parser)
+          post(200, mapred_path({:chunked => true}), mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"}, &parser)
           nil
         else
-          response = post(200, riak_kv_wm_mapred, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
+          response = post(200, mapred_path, mr.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
           begin
             JSON.parse(response[:body])
           rescue
@@ -176,7 +176,7 @@ module Riak
       # Gets health statistics
       # @return [Hash] information about the server, including stats
       def stats
-        response = get(200, riak_kv_wm_stats, {}, {})
+        response = get(200, stats_path)
         JSON.parse(response[:body])
       end
 
@@ -187,7 +187,7 @@ module Riak
       # @return [Array<Array<RObject>>] a list of the matched objects,
       #         grouped by phase
       def link_walk(robject, walk_specs)
-        response = get(200, riak_kv_wm_link_walker, escape(robject.bucket.name), escape(robject.key), walk_specs.join("/"))
+        response = get(200, link_walk_path(robject.bucket.name, robject.key, walk_specs))
         if boundary = Util::Multipart.extract_boundary(response[:headers]['content-type'].first)
           Util::Multipart.parse(response[:body], boundary).map do |group|
             group.map do |obj|
