@@ -46,19 +46,16 @@ module Riak
             debug "Non-pipe found! #{path}"
           end
         end
-        raise ArgumentError, t('no_pipes', :path => pipedir.to_s) if [@rfile,@wfile].any? {|p| p.nil? }
+        raise ArgumentError, t('no_pipes', :path => pipedir.to_s) if [@rfile, @wfile].any? {|p| p.nil? }
         # We have to open the read pipe AFTER we have sent some data
         # to the write pipe, otherwise JRuby hangs.
         begin
           debug "Opening write pipe."
           @w = open_write_pipe
           @w.sync = true
-          debug "Sending carriage return."
-          @w.print "\n"
+          debug "Opening read pipe."
           @r = open_read_pipe
-          debug "Sending ok."
-          @w.puts "ok."
-          wait_for_erlang_prompt
+          command 'ok.'
           debug "Initialized console: #{@r.inspect} #{@w.inspect}"
         rescue => e
           debug e.message
@@ -124,7 +121,7 @@ module Riak
 
       def open_write_pipe
         if defined?(::Java)
-          IO.popen("cat > #{@wfile}", "wb")
+          java.io.FileOutputStream.new(@wfile.to_s).to_io
         else
           @wfile.open(File::WRONLY|File::NONBLOCK)
         end
