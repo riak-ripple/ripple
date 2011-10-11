@@ -35,6 +35,7 @@ module Riak
         optional :last_mod,         :uint32, 7
         optional :last_mod_usecs,   :uint32, 8
         repeated :usermeta,         RpbPair, 9
+        repeated :indexes,          RpbPair, 10
       end
 
       # Primary messages
@@ -62,40 +63,57 @@ module Riak
 
       class RpbGetReq
         include Beefcake::Message
-        required :bucket, :bytes,  1
-        required :key,    :bytes,  2
-        optional :r,      :uint32, 3
+        required :bucket,        :bytes,  1
+        required :key,           :bytes,  2
+        optional :r,             :uint32, 3
+        optional :pr,            :uint32, 4
+        optional :basic_quorum,  :bool,   5
+        optional :notfound_ok,   :bool,   6
+        optional :if_modified,   :bytes,  7
+        optional :head,          :bool,   8
+        optional :deletedvclock, :bool,   9
       end
 
       class RpbGetResp
         include Beefcake::Message
-        repeated :content, RpbContent, 1
-        optional :vclock,  :bytes,  2
+        repeated :content,   RpbContent, 1
+        optional :vclock,    :bytes,     2
+        optional :unchanged, :bool,      3
       end
 
       class RpbPutReq
         include Beefcake::Message
-        required :bucket,      :bytes,  1
-        required :key,         :bytes,  2
-        optional :vclock,      :bytes,  3
-        required :content,     RpbContent, 4
-        optional :w,           :uint32, 5
-        optional :dw,          :uint32, 6
-        optional :return_body, :bool,   7
+        required :bucket,          :bytes,     1
+        optional :key,             :bytes,     2
+        optional :vclock,          :bytes,     3
+        required :content,         RpbContent, 4
+        optional :w,               :uint32,    5
+        optional :dw,              :uint32,    6
+        optional :returnbody,     :bool,      7
+        optional :pw,              :uint32,    8
+        optional :if_not_modified, :bool,      9
+        optional :if_none_match,   :bool,      10
+        optional :return_head,     :bool,      11
       end
 
-      # Optional since it has the same structure as GetResp
-      # class RpbPutResp
-      #   include Beefcake::Message
-      #   repeated :content, RpbContent, 1
-      #   optional :vclock,  :bytes,  2
-      # end
+      class RpbPutResp
+        include Beefcake::Message
+        repeated :content, RpbContent, 1
+        optional :vclock,  :bytes,     2
+        optional :key,     :bytes,     3
+      end
 
       class RpbDelReq
         include Beefcake::Message
         required :bucket, :bytes,  1
         required :key,    :bytes,  2
         optional :rw,     :uint32, 3
+        optional :vclock, :bytes,  4
+        optional :r,      :uint32, 5
+        optional :w,      :uint32, 6
+        optional :pr,     :uint32, 7
+        optional :pw,     :uint32, 8
+        optional :dw,     :uint32, 9
       end
 
       class RpbListBucketsResp

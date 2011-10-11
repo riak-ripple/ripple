@@ -9,10 +9,10 @@ module Riak
         ENCODING = "Riak".respond_to?(:encoding)
 
         # Returns RpbPutReq
-        def dump_object(robject)
-          pbuf = RpbPutReq.new(:bucket => maybe_encode(robject.bucket.name))
-          pbuf.key = maybe_encode(robject.key ||= generate_key)
-          pbuf.vclock = maybe_encode Base64.decode64(robject.vclock) if robject.vclock
+        def dump_object(robject, options={})
+          pbuf = RpbPutReq.new(options.merge(:bucket => maybe_encode(robject.bucket.name)))
+          pbuf.key = maybe_encode(robject.key) if robject.key # Put w/o key supported!
+          pbuf.vclock = maybe_encode(Base64.decode64(robject.vclock)) if robject.vclock
           pbuf.content = RpbContent.new(:value => maybe_encode(robject.raw_data),
                                         :content_type => maybe_encode(robject.content_type),
                                         :links => robject.links.map {|l| encode_link(l) }.compact)
@@ -27,7 +27,9 @@ module Riak
 
         # Returns RObject
         def load_object(pbuf, robject)
+          return robject if pbuf.respond_to?(:unchanged) && pbuf.unchanged # Reloading
           robject.vclock = Base64.encode64(pbuf.vclock).chomp if pbuf.vclock
+          robject.key = maybe_unescape(pbuf.key) if pbuf.respond_to?(:key) && pbuf.key # Put w/o key
           if pbuf.content.size > 1
             robject.conflict = true
             robject.siblings = pbuf.content.map do |c|

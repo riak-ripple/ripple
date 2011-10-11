@@ -1,4 +1,4 @@
-
+require 'base64'
 require 'riak/json'
 require 'riak/client'
 require 'riak/failed_request'
@@ -31,45 +31,49 @@ module Riak
         decode_response
       end
 
-      def fetch_object(bucket, key, r=nil)
+      def fetch_object(bucket, key, options={})
+        options = normalize_quorums(options)
         bucket = Bucket === bucket ? bucket.name : bucket
-        req = RpbGetReq.new(:bucket => bucket, :key => key)
-        req.r = normalize_quorum_value(r) if r
+        req = RpbGetReq.new(options.merge(:bucket => maybe_encode(bucket), :key => maybe_encode(key)))
         write_protobuff(:GetReq, req)
         decode_response(RObject.new(client.bucket(bucket), key))
       end
 
-      def reload_object(robject, r=nil)
-        req = RpbGetReq.new(:bucket => robject.bucket.name, :key => robject.key)
-        req.r = normalize_quorum_value(r) if r
+      def reload_object(robject, options={})
+        options = normalize_quorums(options)
+        options[:bucket] = maybe_encode(robject.bucket.name)
+        options[:key] = maybe_encode(robject.key)
+        options[:if_modified] = maybe_encode Base64.decode64(robject.vclock) if robject.vclock
+        req = RpbGetReq.new(options)
         write_protobuff(:GetReq, req)
         decode_response(robject)
       end
 
-      def store_object(robject, returnbody=false, w=nil, dw=nil)
+      def store_object(robject, options={})
         if robject.prevent_stale_writes
           other = fetch_object(robject.bucket, robject.key)
           raise Riak::ProtobuffsFailedRequest(:stale_object, t("stale_write_prevented")) unless other.vclock == robject.vclock
         end
-        req = dump_object(robject)
-        req.w = normalize_quorum_value(w) if w
-        req.dw = normalize_quorum_value(dw) if dw
-        req.return_body = returnbody
+        options = normalize_quorums(options)
+        req = dump_object(robject, options)
         write_protobuff(:PutReq, req)
         decode_response(robject)
       end
 
-      def delete_object(bucket, key, rw=nil)
+      def delete_object(bucket, key, options={})        
         bucket = Bucket === bucket ? bucket.name : bucket
-        req = RpbDelReq.new(:bucket => bucket, :key => key)
-        req.rw = normalize_quorum_value(rw) if rw
+        options = normalize_quorums(options)
+        options[:bucket] = maybe_encode(bucket)
+        options[:key] = maybe_encode(key)
+        options[:vclock] = Base64.decode64(options[:vclock]) if options[:vclock]
+        req = RpbDelReq.new(options)
         write_protobuff(:DelReq, req)
         decode_response
       end
 
       def get_bucket_props(bucket)
         bucket = bucket.name if Bucket === bucket
-        req = RpbGetBucketReq.new(:bucket => bucket)
+        req = RpbGetBucketReq.new(:bucket => maybe_encode(bucket))
         write_protobuff(:GetBucketReq, req)
         decode_response
       end
@@ -77,14 +81,14 @@ module Riak
       def set_bucket_props(bucket, props)
         bucket = bucket.name if Bucket === bucket
         props = props.slice('n_val', 'allow_mult')
-        req = RpbSetBucketReq.new(:bucket => bucket, :props => RpbBucketProps.new(props))
+        req = RpbSetBucketReq.new(:bucket => maybe_encode(bucket), :props => RpbBucketProps.new(props))
         write_protobuff(:SetBucketReq, req)
         decode_response
       end
 
       def list_keys(bucket, &block)
         bucket = bucket.name if Bucket === bucket
-        req = RpbListKeysReq.new(:bucket => bucket)
+        req = RpbListKeysReq.new(:bucket => maybe_encode(bucket))
         write_protobuff(:ListKeysReq, req)
         keys = []
         pump = Pump.new(block) if block_given?
@@ -152,8 +156,11 @@ module Riak
           when :GetServerInfoResp
             res = RpbGetServerInfoResp.decode(message)
             {:node => res.node, :server_version => res.server_version}
-          when :GetResp, :PutResp
+          when :GetResp
             res = RpbGetResp.decode(message)
+            load_object(res, args.first)
+          when :PutResp
+            res = RpbPutResp.decode(message)
             load_object(res, args.first)
           when :ListBucketsResp
             res = RpbListBucketsResp.decode(message)
@@ -167,7 +174,7 @@ module Riak
             RpbMapRedResp.decode(message)
           end
         end
-      rescue SocketError => e
+      rescue SystemCallError, SocketError => e
         reset_socket
         raise Riak::ProtobuffsFailedRequest.new(:server_error, e.message)
       end

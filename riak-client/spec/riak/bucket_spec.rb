@@ -87,12 +87,12 @@ describe Riak::Bucket do
 
   describe "fetching an object" do
     it "should fetch the object via the backend" do
-      @backend.should_receive(:fetch_object).with(@bucket, "db", nil).and_return(nil)
+      @backend.should_receive(:fetch_object).with(@bucket, "db", {}).and_return(nil)
       @bucket.get("db")
     end
 
     it "should use the specified R quroum" do
-      @backend.should_receive(:fetch_object).with(@bucket, "db", 2).and_return(nil)
+      @backend.should_receive(:fetch_object).with(@bucket, "db", {:r => 2}).and_return(nil)
       @bucket.get("db", :r => 2)
     end
   end
@@ -109,7 +109,7 @@ describe Riak::Bucket do
   describe "fetching or creating a new object" do
     it "should return the existing object if present" do
       @object = mock("RObject")
-      @backend.should_receive(:fetch_object).with(@bucket,"db", nil).and_return(@object)
+      @backend.should_receive(:fetch_object).with(@bucket,"db", {}).and_return(@object)
       @bucket.get_or_new('db').should == @object
     end
 
@@ -127,7 +127,7 @@ describe Riak::Bucket do
 
     it "should pass along the given R quorum parameter" do
       @object = mock("RObject")
-      @backend.should_receive(:fetch_object).with(@bucket,"db", "all").and_return(@object)
+      @backend.should_receive(:fetch_object).with(@bucket,"db", {:r => "all"}).and_return(@object)
       @bucket.get_or_new('db', :r => "all").should == @object
     end
   end

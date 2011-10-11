@@ -84,13 +84,16 @@ module Riak
         "default" => UINTMAX - 4
       }.freeze
 
-      def normalize_quorum_value(q)
-        QUORUMS[q.to_s] || q.to_i
+      def normalize_quorums(options={})
+        options.dup.tap do |o|
+          [:r, :pr, :w, :pw, :dw, :rw].each do |k|
+            o[k] = normalize_quorum_value(o[k]) if o[k]
+          end
+        end
       end
 
-      # This doesn't give us exactly the keygen that Riak uses, but close.
-      def generate_key
-        Base64.encode64(Digest::SHA1.digest(Socket.gethostname + Time.now.iso8601(3))).tr("+/","-_").sub(/=+\n$/,'')
+      def normalize_quorum_value(q)
+        QUORUMS[q.to_s] || q.to_i
       end
     end
   end

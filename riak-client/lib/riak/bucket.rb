@@ -85,7 +85,7 @@ module Riak
     # @return [Riak::RObject] the object
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key, options={})
-      @client.backend.fetch_object(self, key, options[:r])
+      @client.backend.fetch_object(self, key, options)
     end
     alias :[] :get
 
