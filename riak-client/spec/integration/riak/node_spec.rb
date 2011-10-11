@@ -90,7 +90,7 @@ describe Riak::Node, :test_server => false do
       end
 
       it "should modify the PIPE_DIR to point to the node directory" do
-        contents.should match(/PIPE_DIR=#{subject.pipe.to_s}\//)
+        contents.should match(/PIPE_DIR=#{subject.pipe.to_s}\/?/)
       end
     end
   end

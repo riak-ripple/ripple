@@ -36,22 +36,34 @@ module Riak
         pipedir.children.each do |path|
           if path.pipe?
             if path.fnmatch("*.r") # Read pipe
-              debug "Found read pipe: #{path}"
-              @r ||= path.open(File::RDONLY|File::NONBLOCK)
+              # debug "Found read pipe: #{path}"
+              @rfile ||= path
             elsif path.fnmatch("*.w") # Write pipe
-              debug "Found write pipe: #{path}"
-              @w ||= path.open(File::WRONLY|File::NONBLOCK)
-              @w.sync = true
+              # debug "Found write pipe: #{path}"
+              @wfile ||= path
             end
           else
             debug "Non-pipe found! #{path}"
           end
         end
-        raise ArgumentError, t('no_pipes', :path => pipedir.to_s) if [@r,@w].any? {|p| p.nil? || p.closed? }
-        debug "Sending carriage return."
-        @w.print "\n"        
-        wait_for_erlang_prompt
-        debug "Initialized console: #{@r.inspect} #{@w.inspect}"
+        raise ArgumentError, t('no_pipes', :path => pipedir.to_s) if [@rfile,@wfile].any? {|p| p.nil? }
+        # We have to open the read pipe AFTER we have sent some data
+        # to the write pipe, otherwise JRuby hangs.
+        begin
+          debug "Opening write pipe."
+          @w = open_write_pipe
+          @w.sync = true
+          debug "Sending carriage return."
+          @w.print "\n"
+          @r = open_read_pipe
+          debug "Sending ok."
+          @w.puts "ok."
+          wait_for_erlang_prompt
+          debug "Initialized console: #{@r.inspect} #{@w.inspect}"
+        rescue => e
+          debug e.message
+          close
+        end
       end
 
       # Sends an Erlang command to the console
@@ -72,9 +84,9 @@ module Riak
       # if the node hasn't disconnected from the other side of the
       # pipe.
       def open?
-        !@r.closed? && !@w.closed?
+        (@r && !@r.closed?) && (@w && !@w.closed?)
       end
-      
+
       # Scans the output of the console until an Erlang shell prompt
       # is found. Called by {#command} to ensure that the submitted
       # command succeeds.
@@ -91,8 +103,8 @@ module Riak
 
       # Closes the console by detaching from the pipes.
       def close
-        @r.close unless @r.closed?
-        @w.close unless @w.closed?
+        @r.close if @r && !@r.closed?
+        @w.close if @w && !@w.closed?
         Signal.trap("WINCH", @winch)
         freeze
       end
@@ -105,8 +117,24 @@ module Riak
         Signal.trap("WINCH", &method(:handle_winch))
       end
 
-      def debug(msg)        
+      def debug(msg)
         $stderr.puts msg if ENV["DEBUG_RIAK_CONSOLE"]
+      end
+
+      def open_write_pipe
+        if defined?(::Java)
+          IO.popen("cat > #{@wfile}", "wb")
+        else
+          @wfile.open(File::WRONLY|File::NONBLOCK)
+        end
+      end
+
+      def open_read_pipe
+        if defined?(::Java)
+          IO.popen("cat #{@rfile}", "rb")
+        else
+          @rfile.open(File::RDONLY|File::NONBLOCK)
+        end
       end
     end
   end
