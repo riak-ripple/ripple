@@ -63,6 +63,7 @@ module Riak
         rescue => e
           debug e.message
           close
+          raise t('no_pipes', :path => pipedir.to_s) + "[ #{e.message} ]"
         end
       end
 
