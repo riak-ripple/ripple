@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'riak/node'
 require 'yaml'
 
-describe Riak::Node, :test_server => false do
+describe Riak::Node, :test_server => false, :slow => true do
   let(:test_server_config){ YAML.load_file("spec/support/test_server.yml") }
   subject { described_class.new(:root => ".ripplenode", :source => test_server_config['source']) }
   after { subject.stop if subject.started? }

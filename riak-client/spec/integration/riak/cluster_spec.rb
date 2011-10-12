@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'riak/cluster'
 
-describe Riak::Cluster, :test_server => false do
+describe Riak::Cluster, :test_server => false, :slow => true do
   let(:config) { YAML.load_file("spec/support/test_server.yml").symbolize_keys }
   subject { described_class.new(config) }
 
