@@ -77,6 +77,7 @@ module Riak
           line.sub!(/(RUNNER_USER=)(.*)/, '\1')
           line.sub!(/(RUNNER_LOG_DIR=)(.*)/, '\1' + log.to_s)
           line.sub!(/(PIPE_DIR=)(.*)/, '\1' + pipe.to_s)
+          line.sub!('grep "$RUNNER_BASE_DIR/.*/[b]eam"', 'grep "$RUNNER_ETC_DIR/app.config"')
           if line.strip == "RUNNER_BASE_DIR=${RUNNER_SCRIPT_DIR%/*}"
             line = "RUNNER_BASE_DIR=#{source.parent.to_s}\n"
           end
