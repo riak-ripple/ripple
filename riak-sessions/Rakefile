@@ -1,60 +1,28 @@
 require 'rubygems'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
-version = File.read('../VERSION').strip
-
-gemspec = Gem::Specification.new do |gem|
-  gem.name = "riak-sessions"
-  gem.summary = %Q{riak-sessions is a session store backed by Riak, the distributed database by Basho.}
-  gem.description = %Q{riak-sessions is a session store backed by Riak, the distributed database by Basho. It includes session implementations for both Rack and Rails 3.}
-  gem.version = version
-  gem.email = "sean@basho.com"
-  gem.homepage = "http://seancribbs.github.com/ripple"
-  gem.authors = ["Sean Cribbs"]
-  gem.add_development_dependency "rspec", "~>2.6.0"
-  gem.add_development_dependency "rspec-rails", "~>2.6.0"
-  gem.add_development_dependency "yajl-ruby"
-  gem.add_development_dependency "rails", "~>3.0.0"
-  gem.add_development_dependency "rake"
-  gem.add_dependency "riak-client", "~>#{version}"
-  gem.add_dependency "rack", ">=1.0"
-
-  files = FileList["**/*"]
-  # Editor and O/S files
-  files.exclude ".DS_Store", "*~", "\#*", ".\#*", "*.swp", "*.tmproj", "tmtags"
-  # Generated artifacts
-  files.exclude "coverage", "rdoc", "pkg", "doc", ".bundle", "*.rbc", ".rvmrc", ".watchr", ".rspec"
-  # Project-specific
-  files.exclude "Gemfile.lock", %r{spec/support/test_server.yml$}, "bin"
-  # Remove directories
-  files.exclude {|d| File.directory?(d) }
-
-  gem.files = files.to_a
-
-  gem.test_files = gem.files.grep(/_spec\.rb$/)
+def gemspec
+  $riaksessions_gemspec ||= Gem::Specification.load("riak-sessions.gemspec")
 end
 
-# Gem packaging tasks
-Rake::GemPackageTask.new(gemspec) do |pkg|
+Gem::PackageTask.new(gemspec) do |pkg|
   pkg.need_zip = false
   pkg.need_tar = false
 end
 
 task :gem => :gemspec
 
-desc %{Build the gemspec file.}
+desc %{Validate the gemspec file.}
 task :gemspec do
   gemspec.validate
-  File.open("#{gemspec.name}.gemspec", 'w'){|f| f.write gemspec.to_ruby }
 end
 
 desc %{Release the gem to RubyGems.org}
 task :release => :gem do
   system "gem push pkg/#{gemspec.name}-#{gemspec.version}.gem"
 end
-
-require 'rspec/core'
-require 'rspec/core/rake_task'
 
 desc "Run Specs"
 RSpec::Core::RakeTask.new(:spec) do |spec|
