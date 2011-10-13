@@ -9,6 +9,7 @@ shared_examples_for "Unified backend API" do
   context "fetching an object" do
     before do
       @robject = Riak::RObject.new(@client.bucket("test"), "fetch")
+      @robject.indexes['test_bin'] << 'pass'
       @robject.content_type = "application/json"
       @robject.data = { "test" => "pass" }
       @backend.store_object(@robject)
@@ -42,6 +43,13 @@ shared_examples_for "Unified backend API" do
         robj.should be_kind_of(Riak::RObject)
         robj.data.should == { "test" => "pass" }
       end
+    end
+
+    it "should marshal indexes properly" do
+      # This really tests both storing and fetching indexes, given the setup
+      robj = @backend.fetch_object('test', 'fetch')
+      robj.indexes['test_bin'].should be
+      robj.indexes['test_bin'].should include('pass')
     end
   end
 

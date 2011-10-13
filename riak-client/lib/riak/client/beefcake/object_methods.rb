@@ -15,7 +15,8 @@ module Riak
           pbuf.vclock = maybe_encode(Base64.decode64(robject.vclock)) if robject.vclock
           pbuf.content = RpbContent.new(:value => maybe_encode(robject.raw_data),
                                         :content_type => maybe_encode(robject.content_type),
-                                        :links => robject.links.map {|l| encode_link(l) }.compact)
+                                        :links => robject.links.map {|l| encode_link(l) }.compact,
+                                        :indexes => robject.indexes.map {|k,s| encode_index(k,s) }.flatten)
 
           pbuf.content.usermeta = robject.meta.map {|k,v| encode_meta(k,v)} if robject.meta.any?
           pbuf.content.vtag = maybe_encode(robject.etag) if robject.etag.present?
@@ -55,6 +56,10 @@ module Riak
           robject.content_type = pbuf.content_type if pbuf.content_type.present?
           robject.links = pbuf.links.map(&method(:decode_link)) if pbuf.links.present?
           pbuf.usermeta.each {|pair| decode_meta(pair, robject.meta) } if pbuf.usermeta.present?
+          if pbuf.indexes.present?
+            robject.indexes.clear
+            pbuf.indexes.each {|pair| decode_index(pair, robject.indexes) }
+          end
           if pbuf.last_mod.present?
             robject.last_modified = Time.at(pbuf.last_mod)
             robject.last_modified += pbuf.last_mod_usecs / 1000000 if pbuf.last_mod_usecs.present?
@@ -83,8 +88,20 @@ module Riak
                       :value => maybe_encode(value.to_s))
         end
 
+        def decode_index(pbuf, hash)
+          value = pbuf.key =~ /int$/ ? pbuf.value.to_i : pbuf.value
+          hash[pbuf.key] << value
+        end
+
+        def encode_index(key, set)
+          set.map do |v|
+            RpbPair.new(:key => maybe_encode(key),
+                        :value => maybe_encode(v.to_s))
+          end
+        end
+        
         def maybe_encode(string)
-          ENCODING ? string.force_encoding('BINARY') : string
+          ENCODING ? string.dup.force_encoding('BINARY') : string
         end
       end
 
