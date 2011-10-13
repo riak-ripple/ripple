@@ -50,13 +50,6 @@ describe Ripple::EmbeddedDocument do
       should_be_equal
     end
 
-    specify "two documents are equal when they match and only one of them includes the _type attribute" do
-      attrs = address_1.attributes
-      address_1.stub(:attributes => attrs.merge('_type' => 'Address'))
-
-      should_be_equal
-    end
-
     specify "two documents are not equal when the parents are different (even if the attributes and classes are the same)" do
       address_2._parent_document = user_2
       should_not_be_equal
@@ -72,6 +65,20 @@ describe Ripple::EmbeddedDocument do
       special_address._parent_document = address_1._parent_document
 
       should_not_be_equal(special_address)
+    end
+
+    specify "two documents are not equal when their embedded documents are not equal (even if they are identical otherwise)" do
+      address_1.notes << Note.new(:text => 'Bob lives here')
+      address_2.notes << Note.new(:text => 'Jill lives here')
+
+      should_not_be_equal
+    end
+
+    specify "two documents can be equal when their embedded doc objects are different instances but are equal" do
+      address_1.notes << Note.new(:text => 'Bob lives here')
+      address_2.notes << Note.new(:text => 'Bob lives here')
+
+      should_be_equal
     end
   end
 end

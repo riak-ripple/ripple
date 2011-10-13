@@ -50,17 +50,14 @@ module Ripple
       def ==(other)
         self.class == other.class &&
         _parent_document == other._parent_document &&
-        attributes.except('_type') == other.attributes.except('_type')
+        serializable_hash == other.serializable_hash
       end
       alias eql? ==
 
       def hash
-        [
-          _parent_document.class,
-          _parent_document.key,
-          self.class,
-          *attributes.except('_type').values
-        ].hash
+        parent = [_parent_document.class]
+        parent << [_parent_document.key] if _parent_document.respond_to?(:key)
+        [ self.class, parent, serializable_hash ].hash
       end
     end
   end
