@@ -27,6 +27,13 @@ describe Riak::RObject do
       @object.meta.should == {}
     end
 
+    it "should initialize indexes to an empty hash with a Set for the default value" do
+      @object = Riak::RObject.new(@bucket, "bar")
+      @object.indexes.should be_kind_of(Hash)
+      @object.indexes.should be_empty
+      @object.indexes['foo_bin'].should be_kind_of(Set)
+    end
+    
     it "should yield itself to a given block" do
       Riak::RObject.new(@bucket, "bar") do |r|
         r.key.should == "bar"
@@ -143,7 +150,12 @@ describe Riak::RObject do
                                             "X-Riak-VTag"=>"5bnavU3rrubcxLI8EvFXhB",
                                             "content-type"=>"application/json",
                                             "X-Riak-Last-Modified"=>"Mon, 12 Jul 2010 21:37:43 GMT",
-                                            "X-Riak-Meta"=>{"X-Riak-Meta-King-Of-Robots"=>"I"}},
+                                            "X-Riak-Meta"=>{"X-Riak-Meta-King-Of-Robots"=>"I"},
+                                            "index" => {
+                                              "email_bin" => ["sean@basho.com","seancribbs@gmail.com"],
+                                              "rank_int" => 50
+                                            }
+                                          },
                                           "data"=>
                                           "{\"email\":\"mail@test.com\",\"_type\":\"User\"}"
                                         }
@@ -176,6 +188,12 @@ describe Riak::RObject do
       @object.links.first.rel.should == "home_address"
     end
 
+    it "should load and parse indexes" do
+      @object.indexes.should have(2).items
+      @object.indexes['email_bin'].should have(2).items
+      @object.indexes['rank_int'].should have(1).item
+    end
+    
     it "should set the ETag" do
       @object.etag.should == "5bnavU3rrubcxLI8EvFXhB"
     end

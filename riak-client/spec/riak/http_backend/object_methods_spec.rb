@@ -66,6 +66,12 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
       @object.meta["some-kind-of-robot"].should == ["for AWESOME"]
     end
 
+    it "should load indexes from the headers" do
+      @backend.load_object(@object, {:headers => {"content-type" => ["application/json"], "x-riak-index-email_bin" => ["sean@basho.com"], "x-riak-index-rank_int" => ["50"]}, :body => "{}"})
+      @object.indexes['email_bin'].should include('sean@basho.com')
+      @object.indexes['rank_int'].should include(50)
+    end
+    
     it "should parse the location header into the key when present" do
       @backend.load_object(@object, {:headers => {"content-type" => ["application/json"], "location" => ["/riak/foo/baz"]}})
       @object.key.should == "baz"
@@ -119,7 +125,7 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
     end
   end
 
-  describe "headers used for storing the object" do    
+  describe "headers used for storing the object" do
     it "should include the content type" do
       @object.content_type = "application/json"
       @backend.store_headers(@object)["Content-Type"].should == "application/json"
@@ -192,6 +198,25 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
 
       it "should leave string meta values unchanged in the header" do
         @backend.store_headers(@object)["X-Riak-Meta-powers"].should == "for awesome"
+      end
+    end
+
+    describe "when indexes are present" do
+      before :each do
+        @object.indexes = {"email_bin" => Set.new(['sean@basho.com', 'seancribbs@gmail.com']), "rank_int" => Set.new([50])}
+      end
+
+      it "should include X-Riak-Index-* headers for each index key" do
+        @backend.store_headers(@object).should have_key('X-Riak-Index-email_bin')
+        @backend.store_headers(@object).should have_key('X-Riak-Index-rank_int')
+      end
+
+      it "should join multi-valued indexes into a single header" do
+        @backend.store_headers(@object)['X-Riak-Index-email_bin'].should == 'sean@basho.com, seancribbs@gmail.com'
+      end
+
+      it "should turn integer indexes into strings in the header" do
+        @backend.store_headers(@object)['X-Riak-Index-rank_int'].should == '50'
       end
     end
   end

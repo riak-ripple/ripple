@@ -40,6 +40,11 @@ module Riak
                 hash["X-Riak-Meta-#{k}"] = v.to_s
               end
             end
+            unless robject.indexes.blank?
+              robject.indexes.each do |k,v|
+                hash["X-Riak-Index-#{k}"] = v.to_a.sort.map {|i| i.to_s }.join(", ")
+              end
+            end
           end
         end
 
@@ -53,8 +58,15 @@ module Riak
           extract_header(robject, response, "etag", :etag)
           extract_header(robject, response, "last-modified", :last_modified) {|v| Time.httpdate(v) }
           robject.meta = response[:headers].inject({}) do |h,(k,v)|
-            if k =~ /x-riak-meta-(.*)/
+            if k =~ /x-riak-meta-(.*)/i
               h[$1] = v
+            end
+            h
+          end
+          robject.indexes = response[:headers].inject(Hash.new {|h,k| h[k] = Set.new }) do |h,(k,v)|
+            if k =~ /x-riak-index-((?:.*)_(?:int|bin))$/i
+              key = $1
+              h[key].merge Array(v).map {|vals| vals.split(/,\s*/).map {|i| key =~ /int$/ ? i.to_i : i } }.flatten
             end
             h
           end
