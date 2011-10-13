@@ -15,7 +15,7 @@ module Ripple
       def create_rspec_file
         if File.file?(Rails.root + 'spec/spec_helper.rb')
           inject_into_file 'spec/spec_helper.rb', :before => /R[Ss]pec\.configure do \|config\|/ do
-            "require 'ripple/test_server'"
+            "require 'ripple/test_server'\n"
           end
           inject_into_file 'spec/spec_helper.rb', :after => /R[Ss]pec\.configure do \|config\|/ do
             "\n  config.before(:all){ Ripple::TestServer.setup }" +
