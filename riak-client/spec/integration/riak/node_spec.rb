@@ -12,6 +12,18 @@ describe Riak::Node, :test_server => false, :slow => true do
     before { subject.create }
     after { subject.destroy }
 
+    describe "finding the base_dir" do
+      it "should return a valid directory" do
+        subject.base_dir.should be_exist
+      end
+    end
+
+    describe "finding the version" do
+      it "should read a version from the releases directory" do
+        subject.version.should match /\d+.\d+.\d+/
+      end
+    end
+
     describe "generating the manifest" do
       it "should store the configuration manifest in the node directory" do
         (subject.root + '.node.yml').should be_exist
