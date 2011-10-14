@@ -21,7 +21,7 @@ module Riak
     class HTTPBackend
       include Util::Escape
       include Util::Translation
-      
+
       include TransportMethods
       include ObjectMethods
       include Configuration
@@ -133,7 +133,7 @@ module Riak
       # @return [Array<String>] the list of keys, if no block was given
       def list_keys(bucket, &block)
         bucket = bucket.name if Bucket === bucket
-        if block_given?          
+        if block_given?
           get(200, key_list_path(bucket, :keys => 'stream'), {}, &KeyStreamer.new(block))
         else
           response = get(200, key_list_path(bucket))
@@ -200,6 +200,27 @@ module Riak
         else
           []
         end
+      end
+
+      # Performs a secondary-index query.
+      # @param [String, Bucket] bucket the bucket to query
+      # @param [String] index the index to query
+      # @param [String, Integer, Range] query the equality query or
+      #   range query to perform
+      # @return [Array<String>] a list of keys matching the query
+      def get_index(bucket, index, query)
+        bucket = bucket.name if Bucket === bucket
+        path = case query
+               when Range
+                 raise ArgumentError, t('invalid_index_query', :value => query.inspect) unless String === query.begin || Integer === query.end
+                 index_range_path(bucket, index, query.begin, query.end)
+               when String, Integer
+                 index_eq_path(bucket, index, query)
+               else
+                 raise ArgumentError, t('invalid_index_query', :value => query.inspect)
+               end
+        response = get(200, path)
+        JSON.parse(response[:body])['keys']
       end
     end
   end

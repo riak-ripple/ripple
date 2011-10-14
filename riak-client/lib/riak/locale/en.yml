@@ -25,6 +25,8 @@ en:
     invalid_options: "Invalid configuration options given."
     invalid_phase_type: "type must be :map, :reduce, or :link"
     invalid_ssl_verify_mode: "%{invalid} is not a valid :verify_mode option for SSL. Valid options are 'peer' and 'none'."
+    invalid_index_query: "%{value} is not a valid index query term, only Strings, Integers, and Ranges of those are allowed."
+    indexes_unsupported: "Riak server does not support secondary indexes."
     loading_bucket: "while loading bucket '%{name}'"    
     list_buckets: "Riak::Client#buckets is an expensive operation that should not be used in production.\n    %{backtrace}"
     list_keys: "Riak::Bucket#keys is an expensive operation that should not be used in production.\n    %{backtrace}"

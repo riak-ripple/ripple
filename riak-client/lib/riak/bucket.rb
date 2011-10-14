@@ -139,6 +139,17 @@ module Riak
       client.backend.delete_object(self, key, options)
     end
 
+    # Queries a secondary index on the bucket.
+    # @note This will only work if your Riak installation supports 2I.
+    # @param [String] index the name of the index
+    # @param [String,Integer,Range] query the value of the index, or a
+    #   Range of values to query
+    # @return [Array<String>] a list of keys that match the index
+    #   query
+    def get_index(index, query)
+      client.backend.get_index(self, index, query)
+    end
+
     # @return [true, false] whether the bucket allows divergent siblings
     def allow_mult
       props['allow_mult']

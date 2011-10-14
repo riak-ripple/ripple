@@ -11,23 +11,23 @@ module Riak
       # auto-discover those endpoints via the root URL. It also adds
       # methods for generating URL paths for specific resources.
       module Configuration
-        # @return [String] a URL path to the "ping" resource
+        # @return [URI] a URL path to the "ping" resource
         def ping_path
           path(riak_kv_wm_ping)
         end
         
-        # @return [String] a URL path to the "stats" resource
+        # @return [URI] a URL path to the "stats" resource
         def stats_path
           path(riak_kv_wm_stats)
         end
 
-        # @return [String] a URL path to the "mapred" resource
+        # @return [URI] a URL path to the "mapred" resource
         # @param options [Hash] query parameters, e.g. chunked=true
         def mapred_path(options={})
           path(riak_kv_wm_mapred, options)
         end
         
-        # @return [String] a URL path for the "buckets list" resource
+        # @return [URI] a URL path for the "buckets list" resource
         def bucket_list_path(options={})
           if new_scheme?
             path(riak_kv_wm_buckets, options.merge(:buckets => true))
@@ -36,7 +36,7 @@ module Riak
           end
         end
 
-        # @return [String] a URL path for the "bucket properties"
+        # @return [URI] a URL path for the "bucket properties"
         #   resource
         # @param [String] bucket the bucket name
         def bucket_properties_path(bucket, options={})
@@ -47,7 +47,7 @@ module Riak
           end
         end
 
-        # @return [String] a URL path for the "list keys" resource
+        # @return [URI] a URL path for the "list keys" resource
         # @param [String] bucket the bucket whose keys to list
         # @param [Hash] options query parameters, e.g. keys=stream        
         def key_list_path(bucket, options={:keys => true})
@@ -58,7 +58,7 @@ module Riak
           end
         end
 
-        # @return [String] a URL path for the "object" resource
+        # @return [URI] a URL path for the "object" resource
         # @param [String] bucket the bucket of the object
         # @param [String,nil] key the key of the object, or nil for a
         #   server-assigned key when using POST
@@ -71,7 +71,7 @@ module Riak
           end
         end
 
-        # @return [String] a URL path for the "link-walking" resource
+        # @return [URI] a URL path for the "link-walking" resource
         # @param [String] bucket the bucket of the origin object
         # @param [String] key the key of the origin object
         # @param [Array<WalkSpec>] specs a list of walk specifications
@@ -83,6 +83,28 @@ module Riak
           else
             path(riak_kv_wm_link_walker, escape(bucket), escape(key), *specs)
           end
+        end
+
+        # @return [URI] a URL path for the "index range query"
+        #   resource
+        # @param [String] bucket the bucket whose index to query
+        # @param [String] index the name of the index to query
+        # @param [String,Integer] start the start of the range
+        # @param [String,Integer] finish the end of the range
+        def index_range_path(bucket, index, start, finish, options={})
+          raise t('indexes_unsupported') unless new_scheme?
+          path(riak_kv_wm_buckets, escape(bucket), "index", escape(index), escape(start.to_s), escape(finish.to_s), options)
+        end
+
+        # @return [URI] a URL path for the "index range query"
+        #   resource
+        # @param [String] bucket the bucket whose index to query
+        # @param [String] index the name of the index to query
+        # @param [String,Integer] start the start of the range
+        # @param [String,Integer] finish the end of the range
+        def index_eq_path(bucket, index, value, options={})
+          raise t('indexes_unsupported') unless new_scheme?
+          path(riak_kv_wm_buckets, escape(bucket), "index", escape(index), escape(value.to_s), options)
         end
         
         private

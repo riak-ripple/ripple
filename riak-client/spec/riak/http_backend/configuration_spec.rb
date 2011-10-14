@@ -14,34 +14,34 @@ describe Riak::Client::HTTPBackend::Configuration do
         url.should be_kind_of(URI)
         url.path.should == '/ping'
       end
-      
+
       it "should generate a stats path" do
         url = subject.stats_path
         url.should be_kind_of(URI)
         url.path.should == '/stats'
       end
-      
+
       it "should generate a mapred path" do
         url = subject.mapred_path :chunked => true
         url.should be_kind_of(URI)
         url.path.should == '/mapred'
         url.query.should == "chunked=true"
       end
-      
+
       it "should generate a bucket list path" do
         url = subject.bucket_list_path
         url.should be_kind_of(URI)
         url.path.should == '/riak'
         url.query.should == 'buckets=true'
       end
-      
+
       it "should generate a bucket properties path" do
         url = subject.bucket_properties_path('test ')
         url.should be_kind_of(URI)
         url.path.should == '/riak/test%20'
         url.query.should == "keys=false&props=true"
       end
-      
+
       it "should generate a key list path" do
         url = subject.key_list_path('test ')
         url.should be_kind_of(URI)
@@ -51,57 +51,65 @@ describe Riak::Client::HTTPBackend::Configuration do
         url.path.should == '/riak/test%20'
         url.query.should == 'keys=stream&props=false'
       end
-      
+
       it "should generate an object path" do
         url = subject.object_path('test ', 'object/', :r => 3)
         url.should be_kind_of(URI)
         url.path.should == '/riak/test%20/object%2F'
         url.query.should == 'r=3'
       end
-      
+
       it "should generate a link-walking path" do
         url = subject.link_walk_path('test ', 'object/', [Riak::WalkSpec.new(:bucket => 'foo')])
         url.should be_kind_of(URI)
         url.path.should == '/riak/test%20/object%2F/foo,_,_'
       end
+
+      it "should raise an error when generating an index range path" do
+        expect { subject.index_range_path('test', 'index_bin', 'a', 'b') }.to raise_error
+      end
+
+      it "should raise an error when generating an index equal path" do
+        expect { subject.index_eq_path('test', 'index_bin', 'a') }.to raise_error
+      end
     end
-    
+
     context "when using the new scheme" do
-            before { subject.should_receive(:get).with(200, uri).and_return(:headers => {'link' => ['</buckets>; rel="riak_kv_wm_buckets", </ping>; rel="riak_kv_wm_ping", </stats>; rel="riak_kv_wm_stats", </mapred>; rel="riak_kv_wm_mapred"']}) }
+      before { subject.should_receive(:get).with(200, uri).and_return(:headers => {'link' => ['</buckets>; rel="riak_kv_wm_buckets", </ping>; rel="riak_kv_wm_ping", </stats>; rel="riak_kv_wm_stats", </mapred>; rel="riak_kv_wm_mapred"']}) }
 
       it "should generate a ping path" do
         url = subject.ping_path
         url.should be_kind_of(URI)
         url.path.should == '/ping'
       end
-      
+
       it "should generate a stats path" do
         url = subject.stats_path
         url.should be_kind_of(URI)
         url.path.should == '/stats'
       end
-      
+
       it "should generate a mapred path" do
         url = subject.mapred_path :chunked => true
         url.should be_kind_of(URI)
         url.path.should == '/mapred'
         url.query.should == "chunked=true"
       end
-      
+
       it "should generate a bucket list path" do
         url = subject.bucket_list_path
         url.should be_kind_of(URI)
         url.path.should == '/buckets'
         url.query.should == 'buckets=true'
       end
-      
+
       it "should generate a bucket properties path" do
         url = subject.bucket_properties_path('test ')
         url.should be_kind_of(URI)
         url.path.should == '/buckets/test%20/props'
         url.query.should be_nil
       end
-      
+
       it "should generate a key list path" do
         url = subject.key_list_path('test ')
         url.should be_kind_of(URI)
@@ -111,18 +119,30 @@ describe Riak::Client::HTTPBackend::Configuration do
         url.path.should == '/buckets/test%20/keys'
         url.query.should == 'keys=stream'
       end
-      
+
       it "should generate an object path" do
         url = subject.object_path('test ', 'object/', :r => 3)
         url.should be_kind_of(URI)
         url.path.should == '/buckets/test%20/keys/object%2F'
         url.query.should == 'r=3'
       end
-      
+
       it "should generate a link-walking path" do
         url = subject.link_walk_path('test ', 'object/', [Riak::WalkSpec.new(:bucket => 'foo')])
         url.should be_kind_of(URI)
         url.path.should == '/buckets/test%20/keys/object%2F/foo,_,_'
+      end
+
+      it "should generate an index range path" do
+        url = subject.index_range_path('test ', 'test_bin', 'a', 'b')
+        url.should be_kind_of(URI)
+        url.path.should == '/buckets/test%20/index/test_bin/a/b'
+      end
+
+      it "should generate an index equal path" do
+        url = subject.index_eq_path('test ', 'test_bin', 'a')
+        url.should be_kind_of(URI)
+        url.path.should == '/buckets/test%20/index/test_bin/a'
       end
     end
   end

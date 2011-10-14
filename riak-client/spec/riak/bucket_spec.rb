@@ -132,6 +132,13 @@ describe Riak::Bucket do
     end
   end
 
+  describe "querying an index" do
+    it "should list the matching keys" do
+      @backend.should_receive(:get_index).with(@bucket, "test_bin", "testing").and_return(["bar"])
+      @bucket.get_index("test_bin", "testing").should == ["bar"]
+    end
+  end
+  
   describe "get/set allow_mult property" do
     before :each do
       @backend.stub!(:get_bucket_props).and_return({"allow_mult" => false})
