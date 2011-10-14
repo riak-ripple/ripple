@@ -55,6 +55,18 @@ module Riak
       simple :server_info,   :GetServerInfoReq
       simple :list_buckets,  :ListBucketsReq
 
+      # Performs a secondary-index query via emulation through MapReduce.
+      # @param [String, Bucket] bucket the bucket to query
+      # @param [String] index the index to query
+      # @param [String, Integer, Range] query the equality query or
+      #   range query to perform
+      # @return [Array<String>] a list of keys matching the query
+      def get_index(bucket, index, query)
+        mapred(Riak::MapReduce.new(client).
+               index(bucket, index, query).
+               reduce(%w[riak_kv_mapreduce reduce_identity], :arg => {:reduce_phase_only_1 => true}, :keep => true)).map {|p| p.last }
+      end
+      
       private
       # Implemented by subclasses
       def decode_response
