@@ -111,6 +111,27 @@ module Riak
       self
     end
 
+    # (Secondary Indexes) Use a secondary index query to start a
+    # map/reduce job.
+    # @param [String, Bucket] bucket the bucket whose index to query
+    # @param [String] index the index to query
+    # @param [String, Integer, Range] query the value of the index, or
+    #   a range of values (of Strings or Integers)
+    # @return [MapReduce] self
+    def index(bucket, index, query)
+      bucket = bucket.name if bucket.respond_to?(:name)
+      case query
+      when String, Fixnum
+        @inputs = {:bucket => maybe_escape(bucket), :index => index, :key => query}
+      when Range
+        raise ArgumentError, t('invalid_index_query', :value => query.inspect) unless String === query.begin || Integer === query.begin
+        @inputs = {:bucket => maybe_escape(bucket), :index => index, :start => query.begin, :end => query.end}
+      else
+        raise ArgumentError, t('invalid_index_query', :value => query.inspect)
+      end
+      self
+    end
+    
     # Add a map phase to the job.
     # @overload map(function)
     #   @param [String, Array] function a Javascript function that represents the phase, or an Erlang [module,function] pair
