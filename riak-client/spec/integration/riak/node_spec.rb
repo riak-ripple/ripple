@@ -12,15 +12,23 @@ describe Riak::Node, :test_server => false, :slow => true do
     before { subject.create }
     after { subject.destroy }
 
-    describe "finding the base_dir" do
-      it "should return a valid directory" do
+    describe "finding the base_dir and version" do
+      it "should return a valid directory for base_dir" do
         subject.base_dir.should be_exist
       end
-    end
 
-    describe "finding the version" do
       it "should read a version from the releases directory" do
         subject.version.should match /\d+.\d+.\d+/
+      end
+
+      it "should return nil for base_dir if RUNNER_BASE_DIR is not found" do
+        Pathname.any_instance.stub(:readlines).and_return([])
+        subject.base_dir.should be_nil
+      end
+
+      it "should return nil for version if base_dir is nil" do
+        Pathname.any_instance.stub(:readlines).and_return([])
+        subject.version.should be_nil
       end
     end
 

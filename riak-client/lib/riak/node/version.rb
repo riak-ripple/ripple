@@ -7,8 +7,10 @@ module Riak
     end
     
     def configure_version
-      versions = IO.read(base_dir + 'releases' + 'start_erl.data')
-      versions.split(" ")[1]
+      if base_dir
+        versions = IO.read(base_dir + 'releases' + 'start_erl.data')
+        versions.split(" ")[1]
+      end
     end
 
     def base_dir
