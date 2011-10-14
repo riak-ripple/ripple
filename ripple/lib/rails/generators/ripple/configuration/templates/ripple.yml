@@ -2,7 +2,7 @@
 development:
   http_port: 8098
   pb_port: 8087
-  host: localhost
+  host: 127.0.0.1
 
 # The test environment has additional keys for configuring the
 # Riak::TestServer for your test/spec suite:
@@ -14,11 +14,11 @@ development:
 test:
   http_port: 9000
   pb_port: 9002
-  host: localhost
-  bin_dir: /usr/local/bin   # Default for Homebrew.
+  host: 127.0.0.1
+  source: /usr/local/bin   # Default for Homebrew.
   js_source_dir: <%%= Rails.root + "app/mapreduce" %>
 
 production:
   http_port: 8098
   pb_port: 8087
-  host: localhost
+  host: 127.0.0.1
