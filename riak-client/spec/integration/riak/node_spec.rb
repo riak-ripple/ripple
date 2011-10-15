@@ -12,6 +12,26 @@ describe Riak::Node, :test_server => false, :slow => true do
     before { subject.create }
     after { subject.destroy }
 
+    describe "finding the base_dir and version" do
+      it "should return a valid directory for base_dir" do
+        subject.base_dir.should be_exist
+      end
+
+      it "should read a version from the releases directory" do
+        subject.version.should match /\d+.\d+.\d+/
+      end
+
+      it "should return nil for base_dir if RUNNER_BASE_DIR is not found" do
+        Pathname.any_instance.stub(:readlines).and_return([])
+        subject.base_dir.should be_nil
+      end
+
+      it "should return nil for version if base_dir is nil" do
+        Pathname.any_instance.stub(:readlines).and_return([])
+        subject.version.should be_nil
+      end
+    end
+
     describe "generating the manifest" do
       it "should store the configuration manifest in the node directory" do
         (subject.root + '.node.yml').should be_exist
@@ -146,6 +166,19 @@ describe Riak::Node, :test_server => false, :slow => true do
         console.command "ok."
         console.close
       }.should_not raise_error
+    end
+  end
+
+  context "running" do
+    before { subject.create; subject.start; subject.stop }
+
+    it "should read the console log" do
+      if subject.version >= "1.0.0"
+        subject.read_console_log(:debug, :info, :notice).should_not be_empty
+        subject.read_console_log(:debug..:emergency).should_not be_empty
+        subject.read_console_log(:info).should_not be_empty
+        subject.read_console_log(:foo).should be_empty
+      end
     end
   end
 end

@@ -3,6 +3,8 @@ require 'riak/node/defaults'
 require 'riak/node/configuration'
 require 'riak/node/generation'
 require 'riak/node/control'
+require 'riak/node/version'
+require 'riak/node/log'
 
 module Riak
   # A Node encapsulates the generation and management of standalone
