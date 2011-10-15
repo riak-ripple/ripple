@@ -168,4 +168,17 @@ describe Riak::Node, :test_server => false, :slow => true do
       }.should_not raise_error
     end
   end
+
+  context "running" do
+    before { subject.create; subject.start; subject.stop }
+
+    it "should read the console log" do
+      if subject.version >= "1.0.0"
+        subject.read_console_log(:debug, :info, :notice).should_not be_empty
+        subject.read_console_log(:debug..:emergency).should_not be_empty
+        subject.read_console_log(:info).should_not be_empty
+        subject.read_console_log(:foo).should be_empty
+      end
+    end
+  end
 end
