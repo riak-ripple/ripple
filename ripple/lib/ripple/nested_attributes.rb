@@ -9,7 +9,11 @@ module Ripple
     TRUE_VALUES = [ true, "true", 1, "1", "yes", "ok", "y" ]
 
     included do
-      class_inheritable_accessor :nested_attributes_options, :instance_writer => false
+      if respond_to?(:class_attribute) # ActiveSupport 3.1
+        class_attribute :nested_attributes_options, :instance_writer => false
+      else
+        class_inheritable_accessor :nested_attributes_options, :instance_writer => false
+      end
       self.nested_attributes_options = {}
     end
     

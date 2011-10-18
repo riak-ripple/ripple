@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'active_support/dependencies'
 require 'riak/walk_spec'
 require 'ripple/translation'
 require 'ripple/associations/proxy'

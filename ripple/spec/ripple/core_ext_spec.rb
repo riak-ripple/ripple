@@ -33,7 +33,7 @@ describe DateTime do
   after  { Ripple.date_format = @date_format }
 
   before :each do
-    Time.zone = :utc
+    Time.zone = "UTC"
   end
 
   it "serializes to JSON in UTC, ISO 8601 format by default" do

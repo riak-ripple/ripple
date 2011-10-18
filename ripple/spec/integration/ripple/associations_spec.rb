@@ -95,8 +95,8 @@ describe "Ripple Associations" do
     @user.save
     @user.should_not be_new_record
     @found = User.find(@user.key)
-    @found.friends.map(&:key).should include(@friend1.key)
-    @found.friends.map(&:key).should include(@friend2.key)
+    @found.friends.should include(@friend1)
+    @found.friends.should include(@friend2)
   end
 
   it "should save a one linked association" do
@@ -104,7 +104,7 @@ describe "Ripple Associations" do
     @user.save
     @user.should_not be_new_record
     @found = User.find(@user.key)
-    @found.emergency_contact.key.should == @friend1.key
+    @found.emergency_contact.should == @friend1
   end
 
   it "should reload associations" do
@@ -134,7 +134,7 @@ describe "Ripple Associations" do
     found_user.friends.should == [found_friend]
     found_friend.friends.should == [found_user]
   end
-  
+
   it "should find the object associated by key after saving" do
     @user.key = 'paying-user'
     @user.credit_card = @cc
