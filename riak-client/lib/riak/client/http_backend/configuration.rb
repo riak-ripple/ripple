@@ -106,6 +106,31 @@ module Riak
           raise t('indexes_unsupported') unless new_scheme?
           path(riak_kv_wm_buckets, escape(bucket), "index", escape(index), escape(value.to_s), options)
         end
+
+        # @return [URI] a URL path for a Solr query resource
+        # @param [String] index the index to query
+        # @param [String] query the Lucene-style query string
+        # @param [Hash] options additional query options        
+        def solr_select_path(index, query, options={})
+          raise t('search_unsupported') unless riak_solr_searcher_wm
+          options = {"q" => query, "wt" => "json"}.merge(options)
+          if index
+            path(riak_solr_searcher_wm, index, 'select', options)
+          else
+            path(riak_solr_searcher_wm, 'select', options)
+          end
+        end
+
+        # @return [URI] a URL path for a Solr update resource
+        # @param [String] index the index to update
+        def solr_update_path(index)
+          raise t('search_unsupported') unless riak_solr_indexer_wm
+          if index
+            path(riak_solr_indexer_wm, index, 'update')
+          else
+            path(riak_solr_indexer_wm, 'update')
+          end          
+        end
         
         private
         def server_config
@@ -145,7 +170,15 @@ module Riak
         def riak_kv_wm_stats
           server_config[:riak_kv_wm_stats] || "/stats"
         end
-      end
+
+        def riak_solr_searcher_wm
+          server_config[:riak_solr_searcher_wm]
+        end
+
+        def riak_solr_indexer_wm
+          server_config[:riak_solr_indexer_wm]
+        end
+      end      
     end
   end
 end

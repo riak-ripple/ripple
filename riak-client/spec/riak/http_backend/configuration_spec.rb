@@ -153,6 +153,53 @@ describe Riak::Client::HTTPBackend::Configuration do
     subject.send(:riak_kv_wm_raw).should == "/riak"
   end
 
+  context "generating Solr paths" do
+    context "when Riak Search is disabled" do
+      before {
+        subject.should_receive(:get).with(200, uri).once.and_return(:headers => {'link' => ['</riak>; rel="riak_kv_wm_link_walker",</mapred>; rel="riak_kv_wm_mapred",</ping>; rel="riak_kv_wm_ping",</riak>; rel="riak_kv_wm_raw",</stats>; rel="riak_kv_wm_stats"']})
+      }
+
+      it "should raise an error" do
+        expect { subject.solr_select_path('foo', 'a:b') }.to raise_error
+        expect { subject.solr_update_path('foo') }.to raise_error
+      end
+    end
+
+    context "when Riak Search is enabled" do
+      before {
+        subject.should_receive(:get).with(200, uri).once.and_return(:headers => {'link' => ['</riak>; rel="riak_kv_wm_link_walker",</mapred>; rel="riak_kv_wm_mapred",</ping>; rel="riak_kv_wm_ping",</riak>; rel="riak_kv_wm_raw",</stats>; rel="riak_kv_wm_stats", </solr>; rel="riak_solr_indexer_wm", </solr>; rel="riak_solr_searcher_wm"']})
+      }
+
+      it "should generate a search path for the default index" do
+        url = subject.solr_select_path(nil, 'a:b')
+        url.should be_kind_of(URI)
+        url.path.should == '/solr/select'
+        url.query.should include("q=a%3Ab")
+        url.query.should include('wt=json')
+      end
+      
+      it "should generate a search path for a specified index" do
+        url = subject.solr_select_path('foo', 'a:b', 'wt' => 'xml')
+        url.should be_kind_of(URI)
+        url.path.should == '/solr/foo/select'
+        url.query.should include("q=a%3Ab")
+        url.query.should include('wt=xml')
+      end
+      
+      it "should generate an indexing path for the default index" do
+        url = subject.solr_update_path(nil)
+        url.should be_kind_of(URI)
+        url.path.should == '/solr/update'
+      end
+      
+      it "should generate an indexing path for a specified index" do
+        url = subject.solr_update_path('foo')
+        url.should be_kind_of(URI)
+        url.path.should == '/solr/foo/update'
+      end      
+    end
+  end
+  
   {
     :riak_kv_wm_raw => :prefix,
     :riak_kv_wm_link_walker => :prefix,

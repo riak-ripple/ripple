@@ -19,14 +19,8 @@ module Riak
     # @return [Hash] the query result, containing the 'responseHeaders' and 'response' keys
     def search(*args)
       options = args.extract_options!
-      index, query = args[-2], args[-1]  # Allows nil index, while keeping it as first argument
-      path = [solr, index, "select", {"q" => query, "wt" => "json"}.merge(options.stringify_keys), {}].compact
-      response = http.get(200, *path)
-      if response[:headers]['content-type'].include?("application/json")
-        JSON.parse(response[:body])
-      else
-        response[:body]
-      end
+      index, query = args[-2], args[-1]  # Allows nil index, while keeping it as firstargument
+      http.search(index, query, options)
     end
     alias :select :search
 
@@ -52,8 +46,7 @@ module Riak
           end
         end
       end
-      path = [solr, index, "update", xml.target!, {'Content-Type' => 'text/xml'}].compact
-      http.post(200, *path)
+      http.update_search_index(index, xml.target!)
       true
     end
     alias :add_doc :index
@@ -83,8 +76,7 @@ module Riak
           end
         end
       end
-      path = [solr, index, "update", xml.target!, {'Content-Type' => 'text/xml'}].compact
-      http.post(200, *path)
+      http.update_search_index(index, xml.target!)
       true
     end
     alias :delete_doc :remove

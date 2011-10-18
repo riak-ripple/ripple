@@ -255,4 +255,34 @@ describe Riak::Client::HTTPBackend do
       results.first.should be_empty
     end
   end
+
+  context "performing a search" do
+    before { @backend.send(:server_config)[:riak_solr_searcher_wm] = '/solr' }
+
+    it "should request the searcher resource" do
+      @backend.should_receive(:get).
+        with(200, @backend.solr_select_path(nil, 'foo', {'wt' => 'json'})).
+        and_return(:code => 200, :headers => {"content-type" => ['application/json']}, :body => '{}')
+      @backend.search(nil, 'foo')
+    end
+    
+    it "should vivify JSON responses" do
+      @backend.should_receive(:get).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => '{"response":{"docs":["foo"]}}'})
+      @backend.search(nil, "foo").should == {"response" => {"docs" => ["foo"]}}
+    end
+
+    it "should return non-JSON responses raw" do
+      @backend.should_receive(:get).and_return({:code => 200, :headers => {"content-type"=>["text/plain"]}, :body => '{"response":{"docs":["foo"]}}'})
+      @backend.search(nil, "foo").should == '{"response":{"docs":["foo"]}}'
+    end
+  end
+
+  context "updating a search index" do
+    before { @backend.send(:server_config)[:riak_solr_indexer_wm] = '/solr' }
+
+    it "should request the indexer resource" do
+      @backend.should_receive(:post).with(200, @backend.solr_update_path(nil), 'postbody', {"Content-Type" => "text/xml"})
+      @backend.update_search_index(nil, 'postbody')
+    end
+  end
 end

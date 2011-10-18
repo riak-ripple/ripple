@@ -222,6 +222,30 @@ module Riak
         response = get(200, path)
         JSON.parse(response[:body])['keys']
       end
+
+      # (Riak Search) Performs a search query
+      # @param [String,nil] index the index to query, or nil for the
+      #   default
+      # @param [String] query the Lucene query to perform
+      # @param [Hash] options query options
+      # @see Client#search
+      def search(index, query, options={})
+        response = get(200, solr_select_path(index, query, options.stringify_keys))
+        if response[:headers]['content-type'].include?("application/json")
+          JSON.parse(response[:body])
+        else
+          response[:body]
+        end        
+      end
+
+      # (Riak Search) Updates a search index (includes deletes).
+      # @param [String, nil] index the index to update, or nil for the
+      #   default index.
+      # @param [String] updates an XML update string in Solr's required format
+      # @see Client#index
+      def update_search_index(index, updates)
+        post(200, solr_update_path(index), updates, {'Content-Type' => 'text/xml'})
+      end
     end
   end
 end

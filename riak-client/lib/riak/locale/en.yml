@@ -38,6 +38,7 @@ en:
     port_invalid: "port must be an integer between 0 and 65535"
     protobuffs_failed_request: "Expected success from Riak but received %{code}. %{body}"
     request_body_type: "Request body must be a String or respond to :read."
+    search_unsupported: "Riak server does not support search."
     search_docs_require_id: "Search index documents must include the 'id' field."
     search_remove_requires_id_or_query: "Search index documents to be removed must have 'id' or 'query' keys."
     serializer_not_implemented: "No serializer has been registered for content type %{content_type}"
