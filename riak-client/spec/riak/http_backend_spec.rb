@@ -242,5 +242,17 @@ describe Riak::Client::HTTPBackend do
       @client.should_receive(:bucket).with("foo").and_return(@bucket)
       @backend.link_walk(@object, @specs)
     end
+
+    it "should discard unmarked tombstones" do
+      @backend.should_receive(:get).and_return(:headers => {"content-type" => ["multipart/mixed; boundary=CvfrSTCWwIiwezy0Zt1B2zwKgS7"]}, :body => File.read(File.expand_path("../../fixtures/multipart-with-unmarked-tombstone.txt", __FILE__)))
+      results = @backend.link_walk(@object, @specs)
+      results.first.should be_empty
+    end
+
+    it "should discard marked tombstones" do
+      @backend.should_receive(:get).and_return(:headers => {"content-type" => ["multipart/mixed; boundary=ADqgQtdmA5iQgyR5UGzX6V3HZtI"]}, :body => File.read(File.expand_path("../../fixtures/multipart-with-marked-tombstones.txt", __FILE__)))
+      results = @backend.link_walk(@object, @specs)
+      results.first.should be_empty
+    end
   end
 end

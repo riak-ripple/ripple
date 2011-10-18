@@ -190,12 +190,12 @@ module Riak
         response = get(200, link_walk_path(robject.bucket.name, robject.key, walk_specs))
         if boundary = Util::Multipart.extract_boundary(response[:headers]['content-type'].first)
           Util::Multipart.parse(response[:body], boundary).map do |group|
-            group.map do |obj|
-              if obj[:headers] && obj[:body] && obj[:headers]['location']
-                bucket = $1 if obj[:headers]['location'].first =~ %r{/.*/(.*)/.*$}
-                load_object(RObject.new(client.bucket(bucket), nil), obj)
+            group.map do |obj|              
+              if obj[:headers] && !obj[:headers]['x-riak-deleted'] && !obj[:body].blank? && obj[:headers]['location']
+                link = Riak::Link.new(obj[:headers]['location'].first, "")
+                load_object(RObject.new(client.bucket(link.bucket), link.key), obj)
               end
-            end
+            end.compact
           end
         else
           []
