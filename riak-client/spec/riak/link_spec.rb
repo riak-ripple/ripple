@@ -26,6 +26,13 @@ describe Riak::Link do
       result[0].bucket.should be_nil
       result[0].key.should be_nil
     end
+
+    it "should parse the Riak 1.0 URL scheme" do
+      result = Riak::Link.parse('</buckets/b/keys/k>; riaktag="tag"').first
+      result.bucket.should == 'b'
+      result.key.should == 'k'
+      result.tag.should == 'tag'
+    end
   end
 
   it "should convert to a string appropriate for use in the Link header" do

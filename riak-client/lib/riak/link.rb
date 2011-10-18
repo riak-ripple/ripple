@@ -53,13 +53,13 @@ module Riak
 
     # @return [String] the URL (relative or absolute) of the related resource
     def url
-      @url ||= "/riak/#{escape(bucket)}" + (key.blank? ? "" : "/#{escape(key)}")
+      @url || "/riak/#{escape(bucket)}" + (key.blank? ? "" : "/#{escape(key)}")
     end
 
     def url=(value)
       @url = value
-      @bucket = unescape($1) if value =~ %r{^/[^/]+/([^/]+)/?}
-      @key = unescape($1) if value =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
+      @bucket = unescape($1) if value =~ %r{^/buckets/([^/]+)/?} || value =~ %r{^/[^/]+/([^/]+)/?}
+      @key = unescape($1) if value =~ %r{^/buckets/[^/]+/keys/([^/]+)/?} || value =~ %r{^/[^/]+/[^/]+/([^/]+)/?}
     end
 
     def inspect; to_s; end
