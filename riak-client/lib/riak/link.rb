@@ -52,8 +52,16 @@ module Riak
     end
 
     # @return [String] the URL (relative or absolute) of the related resource
-    def url
-      @url || "/riak/#{escape(bucket)}" + (key.blank? ? "" : "/#{escape(key)}")
+    def url(new_scheme=false)
+      if @bucket
+        if new_scheme
+          "/buckets/#{escape(bucket)}" + (key.blank? ? "" : "/keys/#{escape(key)}")
+        else
+          "/riak/#{escape(bucket)}" + (key.blank? ? "" : "/#{escape(key)}")
+        end
+      else
+        @url
+      end
     end
 
     def url=(value)
@@ -64,8 +72,8 @@ module Riak
 
     def inspect; to_s; end
 
-    def to_s
-      %Q[<#{url}>; riaktag="#{tag}"]
+    def to_s(new_scheme=false)
+      %Q[<#{url(new_scheme)}>; riaktag="#{tag}"]
     end
 
     def hash

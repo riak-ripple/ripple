@@ -33,7 +33,7 @@ module Riak
               hash["If-None-Match"] = "*"
             end
             unless robject.links.blank?
-              hash["Link"] = robject.links.reject {|l| l.rel == "up" }.map(&:to_s).join(", ")
+              hash["Link"] = robject.links.reject {|l| l.rel == "up" }.map {|l| l.to_s(new_scheme?) }.join(", ")
             end
             unless robject.meta.blank?
               robject.meta.each do |k,v|

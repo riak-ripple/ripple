@@ -32,13 +32,20 @@ describe Riak::Link do
       result.bucket.should == 'b'
       result.key.should == 'k'
       result.tag.should == 'tag'
-    end
+    end    
   end
 
-  it "should convert to a string appropriate for use in the Link header" do
-    Riak::Link.new("/riak/foo", "up").to_s.should == '</riak/foo>; riaktag="up"'
-    Riak::Link.new("/riak/foo/bar", "next").to_s.should == '</riak/foo/bar>; riaktag="next"'
-    Riak::Link.new("/riak", "riak_kv_wm_raw").to_s.should == '</riak>; riaktag="riak_kv_wm_raw"'
+  context "converting to a string" do
+    it "should convert to a string appropriate for use in the Link header" do
+      Riak::Link.new("/riak/foo", "up").to_s.should == '</riak/foo>; riaktag="up"'
+      Riak::Link.new("/riak/foo/bar", "next").to_s.should == '</riak/foo/bar>; riaktag="next"'
+      Riak::Link.new("/riak", "riak_kv_wm_raw").to_s.should == '</riak>; riaktag="riak_kv_wm_raw"'
+    end
+
+    it "should convert to a string using the new URL scheme" do
+      Riak::Link.new("bucket", "key", "tag").to_s(true).should == '</buckets/bucket/keys/key>; riaktag="tag"'
+      Riak::Link.parse('</riak/bucket/key>; riaktag="tag"').first.to_s(true).should == '</buckets/bucket/keys/key>; riaktag="tag"'
+    end    
   end
 
   it "should convert to a walk spec when pointing to an object" do

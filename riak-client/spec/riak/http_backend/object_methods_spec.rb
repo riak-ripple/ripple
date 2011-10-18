@@ -6,6 +6,7 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
     @backend = Riak::Client::HTTPBackend.new(@client)
     @bucket = Riak::Bucket.new(@client, "bucket")
     @object = Riak::RObject.new(@bucket, "bar")
+    @backend.stub!(:new_scheme?).and_return(false)
   end
 
   describe "loading object data from the response" do
@@ -172,6 +173,15 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
         @object.links << Riak::Link.new("/riak/foo", "up")
         @backend.store_headers(@object).should have_key("Link")
         @backend.store_headers(@object)["Link"].should_not include('riaktag="up"')
+      end
+
+      context "when using the new URL scheme" do
+        before { @backend.stub!(:new_scheme?).and_return(true) }
+        
+        it "should encode Links using the new format" do          
+          @backend.store_headers(@object).should have_key("Link")
+          @backend.store_headers(@object)['Link'].should include('</buckets/foo/keys/baz>; riaktag="next"')
+        end
       end
     end
 
