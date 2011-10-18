@@ -25,7 +25,7 @@ module Riak
       else
         line = lines.first
         case line
-        when /^RUNNER_BASE_DIR=${RUNNER_SCRIPT_DIR%\/*}/
+        when /^RUNNER_BASE_DIR=$\{RUNNER_SCRIPT_DIR%\/*\}/
           source.parent
         else
           path = pattern.match(line)[1]
