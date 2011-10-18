@@ -126,7 +126,9 @@ describe Ripple::Document::Persistence do
     @widget.save
     @backend.should_receive(:reload_object) do |obj, _|
       obj.key.should == "new_widget"
+      obj.content_type = 'application/json'
       obj.raw_data = '{"name":"spring","size":10,"shipped_at":"Sat, 01 Jan 2000 20:15:01 -0000","_type":"Widget"}'
+      obj
     end
 
     @widget.widget_parts.should_receive(:reset)

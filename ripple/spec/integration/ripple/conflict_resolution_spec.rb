@@ -147,6 +147,11 @@ describe "Ripple conflict resolution", :integration => true do
       person.age.should == (20 + 25 + 30)
     end
 
+    it "reloads a document with conflicts" do      
+      record = original_person.reload
+      record.updated_at.should == most_recent_updated_at
+    end
+    
     context 'when .on_conflict is given a list of attributes' do
       it 'raises an error if attributes not mentioned in the list are in conflict' do
         ConflictedPerson.on_conflict(:age) { }

@@ -177,7 +177,7 @@ module Riak
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
       self.etag = self.last_modified = nil if force
-      bucket.client.backend.reload_object(self, options[:r])
+      bucket.client.backend.reload_object(self, options)
     end
 
     alias :fetch :reload

@@ -71,7 +71,7 @@ module Ripple
         # @return self
         def reload
           return self if new?
-          robject.reload(:force => true)
+          @robject = @robject.reload(:force => true)
           self.__send__(:raw_attributes=, @robject.data.except("_type"))
           reset_associations
           self
