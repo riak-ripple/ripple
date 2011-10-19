@@ -16,7 +16,7 @@ module Ripple
       end
       self.nested_attributes_options = {}
     end
-    
+
     # = Nested Attributes
     #
     # This is similar to the `accepts_nested_attributes` functionality
@@ -77,7 +77,7 @@ module Ripple
     #                                                        { :key => 'yyy', :reference => 'updated foo2' } ])
     #   manifest.shipments.first.reference # => updated foo1
     #   manifest.shipments.second.reference # => updated foo2
-    # 
+    #
     # NOTE: On many embedded, then entire collection of embedded documents is replaced, as there
     # is no key to specifically update.
     #
@@ -95,19 +95,19 @@ module Ripple
     #   end
     #
     # The assigning of attributes replaces existing:
-    #   
+    #
     #   manifest = Manifest.create(:signature_attributes => [ { :esig => 'a00001' }, { :esig => 'b00001' } ]
     #   manifest.signatures # => [<Signature esig="a00001">, <Signature esig="b00001">]
     #
     #   manifest.signature_attributes = [ { :esig => 'c00001' } ]
     #   manifest.signatures # => [<Signature esig="c00001">]
-    #     
+    #
     module ClassMethods
-    
+
       def accepts_nested_attributes_for(*attr_names)
         options = { :allow_destroy => false }
         options.update(attr_names.extract_options!)
-        
+
         attr_names.each do |association_name|
           if association = self.associations[association_name]
             nested_attributes_options[association_name.to_sym] = options
@@ -133,7 +133,7 @@ module Ripple
           else
             raise ArgumentError, "Association #{association_name} not found!"
           end
-        end        
+        end
       end
     end
 
@@ -150,7 +150,7 @@ module Ripple
       end
 
       private
-      
+
       def save_nested_attributes_for_one_association(association_name)
         send(association_name).save
       end
@@ -179,7 +179,7 @@ module Ripple
           assign_nested_attributes_for_one_linked_association(association_name, attributes)
         end
       end
-      
+
       def assign_nested_attributes_for_one_embedded_association(association_name, attributes)
         send(association_name).build(attributes.except(*UNASSIGNABLE_KEYS))
       end
@@ -249,7 +249,7 @@ module Ripple
         record.attributes = attributes.except(*UNASSIGNABLE_KEYS)
       end
     end
-    
+
     def has_destroy_flag?(hash)
       TRUE_VALUES.include?(hash.stringify_keys['_destroy'])
     end
@@ -269,5 +269,5 @@ module Ripple
     end
 
   end
-  
+
 end

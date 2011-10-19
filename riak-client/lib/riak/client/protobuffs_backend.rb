@@ -66,7 +66,7 @@ module Riak
                index(bucket, index, query).
                reduce(%w[riak_kv_mapreduce reduce_identity], :arg => {:reduce_phase_only_1 => true}, :keep => true)).map {|p| p.last }
       end
-      
+
       private
       # Implemented by subclasses
       def decode_response

@@ -11,7 +11,7 @@ module Ripple
       def key
         keys.first
       end
-      
+
       protected
       def find_target
         return nil if links.blank?

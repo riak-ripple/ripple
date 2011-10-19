@@ -2,11 +2,11 @@ require 'yaml'
 
 module Riak
   class Node
-    # Does the node exist on disk?    
+    # Does the node exist on disk?
     def exist?
       manifest.exist?
     end
-    
+
     # Deletes the node and regenerates it.
     def recreate
       delete

@@ -177,7 +177,7 @@ describe Riak::Client::HTTPBackend::Configuration do
         url.query.should include("q=a%3Ab")
         url.query.should include('wt=json')
       end
-      
+
       it "should generate a search path for a specified index" do
         url = subject.solr_select_path('foo', 'a:b', 'wt' => 'xml')
         url.should be_kind_of(URI)
@@ -185,21 +185,21 @@ describe Riak::Client::HTTPBackend::Configuration do
         url.query.should include("q=a%3Ab")
         url.query.should include('wt=xml')
       end
-      
+
       it "should generate an indexing path for the default index" do
         url = subject.solr_update_path(nil)
         url.should be_kind_of(URI)
         url.path.should == '/solr/update'
       end
-      
+
       it "should generate an indexing path for a specified index" do
         url = subject.solr_update_path('foo')
         url.should be_kind_of(URI)
         url.path.should == '/solr/foo/update'
-      end      
+      end
     end
   end
-  
+
   {
     :riak_kv_wm_raw => :prefix,
     :riak_kv_wm_link_walker => :prefix,

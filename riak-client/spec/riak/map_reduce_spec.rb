@@ -79,7 +79,7 @@ describe Riak::MapReduce do
         @mr.index("foo", "email_bin", "sean@basho.com").should == @mr
         @mr.inputs.should == {:bucket => "foo", :index => "email_bin", :key => "sean@basho.com"}
       end
-      
+
       it "should set the inputs for a range" do
         @mr.index("foo", "rank_int", 10..20).should == @mr
         @mr.inputs.should == {:bucket => "foo", :index => "rank_int", :start => 10, :end => 20}
@@ -90,7 +90,7 @@ describe Riak::MapReduce do
         expect { @mr.index("foo", "rank_int", Range.new(1.03, 1.05)) }.to raise_error(ArgumentError)
       end
     end
-    
+
     describe "escaping" do
       before { @oldesc, Riak.escaper = Riak.escaper, CGI }
       after { Riak.escaper = @oldesc }

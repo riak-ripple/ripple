@@ -18,7 +18,7 @@ module Ripple
       extend ActiveSupport::Concern
 
       module ClassMethods
-        # Creates a method that points to the parent document. 
+        # Creates a method that points to the parent document.
         def embedded_in(parent)
           define_method(parent) { @_parent_document }
         end

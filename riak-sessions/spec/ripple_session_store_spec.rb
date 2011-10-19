@@ -75,7 +75,7 @@ describe "Ripple::SessionStore" do
     response.should be_success
     session_id.should_not == response.body
   end
-  
+
   it "should get the session id when the session exists" do
     get '/set_session_value'
     response.should be_success
@@ -86,7 +86,7 @@ describe "Ripple::SessionStore" do
     response.should be_success
     session_id.should == response.body
   end
-  
+
   it "should deserialize an unloaded class" do
     with_autoload_path "session_autoload_test" do
       get '/set_serialized_session_value'
@@ -103,7 +103,7 @@ describe "Ripple::SessionStore" do
       'foo: #<SessionAutoloadTest::Foo bar:"baz">'.should == response.body
     end
   end
-  
+
   it "should not send the session cookie again if the ID already exists" do
     get '/set_session_value'
     response.should be_success
@@ -113,7 +113,7 @@ describe "Ripple::SessionStore" do
     response.should be_success
     headers['Set-Cookie'].should be_nil
   end
-  
+
   it "should prevent session fixation" do
     get '/set_session_value'
     response.should be_success

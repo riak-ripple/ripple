@@ -31,7 +31,7 @@ module Riak
       def initialize
         initialize_http_header({})
       end
-      
+
       # Parse a single header line into its key and value
       # @param [String] chunk a single header line
       def self.parse(chunk)
@@ -41,7 +41,7 @@ module Riak
         m = /\A([^:]+):\s*/.match(line)
         [m[1], m.post_match] rescue [nil, nil]
       end
-      
+
       # Parses a header line and adds it to the header collection
       # @param [String] chunk a single header line
       def parse(chunk)

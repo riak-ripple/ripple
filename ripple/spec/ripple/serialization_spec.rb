@@ -25,7 +25,7 @@ describe Ripple::Serialization do
       doc.key = "1"
       doc.serializable_hash(:except => [:key]).should_not include("key")
     end
-    
+
     it "should include embedded documents by default" do
       doc = Invoice.new(:note => {:text => "Dear customer,..."}).serializable_hash
       doc['note'].should eql({'text' => "Dear customer,..."})
@@ -36,7 +36,7 @@ describe Ripple::Serialization do
       doc.note = Note.new :text => "Dear customer,..."
       doc.serializable_hash['note'].should_not include("_type")
     end
-    
+
     it "should exclude specified attributes" do
       hash = Invoice.new.serializable_hash(:except => [:created_at])
       hash.should_not include('created_at')

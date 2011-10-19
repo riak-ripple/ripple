@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Ripple::EmbeddedDocument::Persistence do
   # require 'support/models/user'
   # require 'support/models/address'
-  
+
   before :each do
     @root = User.new
     @addr = Address.new(:street => "196 Broadway", :kind => "Home")
@@ -19,17 +19,17 @@ describe Ripple::EmbeddedDocument::Persistence do
     @root.should_receive(:save).and_return(true)
     @addr.save.should be_true
   end
-  
+
   it "should delegate save! to the root document" do
     @root.should_receive(:save).and_return(true)
     @addr.save!.should be_true
   end
-  
+
   it "should raise NoRootDocument when calling save without a root document" do
     @addr._parent_document = nil
     lambda { @addr.save }.should raise_error(Ripple::NoRootDocument)
   end
-  
+
   it "should raise NoRootDocument when calling save! without a root document" do
     @addr._parent_document = nil
     lambda { @addr.save! }.should raise_error(Ripple::NoRootDocument)
@@ -38,21 +38,21 @@ describe Ripple::EmbeddedDocument::Persistence do
   it "should have a root document" do
     @addr._root_document.should == @root
   end
-  
+
   it "should have a parent document" do
      @addr._parent_document.should == @root
   end
-  
+
   it "should respond to new_record?" do
     @addr.should respond_to(:new_record?)
     @addr.should be_a_new_record
   end
-  
+
   it "should respond to persisted" do
     @addr.should respond_to(:persisted?)
     @addr.should_not be_persisted
   end
-  
+
   it "should properly create embedded attributes for persistence" do
     @addr = Address.new
     @root.addresses << @addr

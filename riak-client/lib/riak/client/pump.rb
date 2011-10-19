@@ -8,7 +8,7 @@ end
 module Riak
   class Client
     # @private
-    class Pump      
+    class Pump
       def initialize(block)
         @fiber = Fiber.new do
           loop do

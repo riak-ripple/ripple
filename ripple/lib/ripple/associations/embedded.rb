@@ -11,7 +11,7 @@ module Ripple
       end
 
       protected
-      
+
       def lazy_load_validates_associated
         return if @owner.class.validators_on(@reflection.name).any? {|v| Ripple::Validations::AssociatedValidator === v}
         @owner.class.validates @reflection.name, :associated => true

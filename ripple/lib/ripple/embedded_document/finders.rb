@@ -20,7 +20,7 @@ module Ripple
           end
         end
       end
-      
+
     end
   end
 end

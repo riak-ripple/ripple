@@ -11,7 +11,7 @@ end
 
 class Engine
   include Ripple::EmbeddedDocument
-  property :displacement, String  
+  property :displacement, String
 end
 
 class Wheel
@@ -26,7 +26,7 @@ end
 
 class Car
   include Ripple::Document
-  
+
   property :make, String
   property :model, String
 

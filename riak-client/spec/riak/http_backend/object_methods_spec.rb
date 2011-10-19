@@ -72,7 +72,7 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
       @object.indexes['email_bin'].should include('sean@basho.com')
       @object.indexes['rank_int'].should include(50)
     end
-    
+
     it "should parse the location header into the key when present" do
       @backend.load_object(@object, {:headers => {"content-type" => ["application/json"], "location" => ["/riak/foo/baz"]}})
       @object.key.should == "baz"
@@ -177,8 +177,8 @@ describe Riak::Client::HTTPBackend::ObjectMethods do
 
       context "when using the new URL scheme" do
         before { @backend.stub!(:new_scheme?).and_return(true) }
-        
-        it "should encode Links using the new format" do          
+
+        it "should encode Links using the new format" do
           @backend.store_headers(@object).should have_key("Link")
           @backend.store_headers(@object)['Link'].should include('</buckets/foo/keys/baz>; riaktag="next"')
         end

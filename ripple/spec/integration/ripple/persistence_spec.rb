@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Ripple Persistence" do  
+describe "Ripple Persistence" do
   before :each do
     @widget = Widget.new
   end

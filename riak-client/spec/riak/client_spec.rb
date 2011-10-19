@@ -87,7 +87,7 @@ describe Riak::Client do
     subject.should respond_to(:stamp)
     subject.stamp.should be_kind_of(Riak::Stamp)
   end
-  
+
   describe "reconfiguring" do
     before :each do
       @client = Riak::Client.new
@@ -284,7 +284,7 @@ describe Riak::Client do
     end
 
     after { Riak.disable_list_keys_warnings = true }
-    
+
     it "should list buckets" do
       @backend.should_receive(:list_buckets).and_return(%w{test test2})
       buckets = @client.buckets

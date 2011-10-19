@@ -309,7 +309,7 @@ module Riak
     def stamp
       @stamp ||= Riak::Stamp.new(self)
     end
-    
+
     # Stores a large file/IO-like object in Riak via the "Luwak" interface.
     # @overload store_file(filename, content_type, data)
     #   Stores the file at the given key/filename

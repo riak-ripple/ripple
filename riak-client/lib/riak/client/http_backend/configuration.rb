@@ -15,7 +15,7 @@ module Riak
         def ping_path
           path(riak_kv_wm_ping)
         end
-        
+
         # @return [URI] a URL path to the "stats" resource
         def stats_path
           path(riak_kv_wm_stats)
@@ -26,7 +26,7 @@ module Riak
         def mapred_path(options={})
           path(riak_kv_wm_mapred, options)
         end
-        
+
         # @return [URI] a URL path for the "buckets list" resource
         def bucket_list_path(options={})
           if new_scheme?
@@ -49,7 +49,7 @@ module Riak
 
         # @return [URI] a URL path for the "list keys" resource
         # @param [String] bucket the bucket whose keys to list
-        # @param [Hash] options query parameters, e.g. keys=stream        
+        # @param [Hash] options query parameters, e.g. keys=stream
         def key_list_path(bucket, options={:keys => true})
           if new_scheme?
             path(riak_kv_wm_buckets, escape(bucket), "keys", options)
@@ -110,7 +110,7 @@ module Riak
         # @return [URI] a URL path for a Solr query resource
         # @param [String] index the index to query
         # @param [String] query the Lucene-style query string
-        # @param [Hash] options additional query options        
+        # @param [Hash] options additional query options
         def solr_select_path(index, query, options={})
           raise t('search_unsupported') unless riak_solr_searcher_wm
           options = {"q" => query, "wt" => "json"}.merge(options)
@@ -129,9 +129,9 @@ module Riak
             path(riak_solr_indexer_wm, index, 'update')
           else
             path(riak_solr_indexer_wm, 'update')
-          end          
+          end
         end
-        
+
         private
         def server_config
           @server_config ||= {}.tap do |hash|
@@ -150,7 +150,7 @@ module Riak
         def riak_kv_wm_buckets
           server_config[:riak_kv_wm_buckets]
         end
-        
+
         def riak_kv_wm_raw
           server_config[:riak_kv_wm_raw] || client.prefix
         end
@@ -178,7 +178,7 @@ module Riak
         def riak_solr_indexer_wm
           server_config[:riak_solr_indexer_wm]
         end
-      end      
+      end
     end
   end
 end

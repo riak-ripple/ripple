@@ -105,7 +105,7 @@ module Riak
       node = node.name if Node === node
       riak_admin 'remove', node
     end
-    
+
     # Captures the status of the node.
     # @return [Hash] a collection of information about the node
     def status
@@ -124,7 +124,7 @@ module Riak
     end
 
     # Lists riak_core applications that have registered as available,
-    # e.g.  ["riak_kv", "riak_search", "riak_pipe"]    
+    # e.g.  ["riak_kv", "riak_search", "riak_pipe"]
     # @return [Array<String>] a list of running services
     def services
       output = riak_admin 'services'
@@ -148,7 +148,7 @@ module Riak
       result = {}
       if $?.success?
         output.each_line do |line|
-          next if line =~ /^(?:[=-]|Status)+/  # Skip the pretty headers          
+          next if line =~ /^(?:[=-]|Status)+/  # Skip the pretty headers
           if line =~ %r{^Valid:(\d+) / Leaving:(\d+) / Exiting:(\d+) / Joining:(\d+) / Down:(\d+)}
             result.merge!(:valid =>   $1.to_i,
                           :leaving => $2.to_i,

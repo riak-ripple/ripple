@@ -5,7 +5,7 @@ require 'socket'
 # Borrowed from Webrat and Selenium client, watches for TCP port
 # liveness of the spawned server.
 # @private
-class TCPSocket  
+class TCPSocket
   def self.wait_for_service(options)
     verbose_wait until listening_service?(options)
   end

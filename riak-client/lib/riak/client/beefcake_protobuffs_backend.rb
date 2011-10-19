@@ -60,7 +60,7 @@ module Riak
         decode_response(robject)
       end
 
-      def delete_object(bucket, key, options={})        
+      def delete_object(bucket, key, options={})
         bucket = Bucket === bucket ? bucket.name : bucket
         options = normalize_quorums(options)
         options[:bucket] = maybe_encode(bucket)

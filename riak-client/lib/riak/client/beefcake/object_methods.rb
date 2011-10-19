@@ -99,7 +99,7 @@ module Riak
                         :value => maybe_encode(v.to_s))
           end
         end
-        
+
         def maybe_encode(string)
           ENCODING ? string.dup.force_encoding('BINARY') : string
         end

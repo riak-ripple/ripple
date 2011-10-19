@@ -138,7 +138,7 @@ describe Riak::Bucket do
       @bucket.get_index("test_bin", "testing").should == ["bar"]
     end
   end
-  
+
   describe "get/set allow_mult property" do
     before :each do
       @backend.stub!(:get_bucket_props).and_return({"allow_mult" => false})

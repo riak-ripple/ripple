@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Ripple::Document::Finders do
   # require 'support/models/box'
   # require 'support/models/cardboard_box'
-  
+
   before :each do
     @backend = mock("Backend")
     @client = Ripple.client
@@ -21,7 +21,7 @@ describe Ripple::Document::Finders do
     Box.find(nil).should be_nil
     Box.find("").should be_nil
   end
-  
+
   it "should raise Ripple::DocumentNotFound if an empty array is passed to find!" do
     lambda { Box.find!() }.should raise_error(Ripple::DocumentNotFound, "Couldn't find document without a key")
   end
@@ -30,7 +30,7 @@ describe Ripple::Document::Finders do
     before do
       @bucket.stub!(:get).with("square", {}).and_return(@plain)
     end
-    
+
     it "should find a single document by key and assign its attributes" do
       @bucket.should_receive(:get).with("square", {}).and_return(@plain)
       box = Box.find("square")

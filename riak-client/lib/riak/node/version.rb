@@ -5,7 +5,7 @@ module Riak
     def version
       @version ||= configure_version
     end
-    
+
     def configure_version
       if base_dir
         versions = (base_dir + 'releases' + 'start_erl.data').read
@@ -16,7 +16,7 @@ module Riak
     def base_dir
       @base_dir ||= configure_base_dir
     end
-    
+
     def configure_base_dir
       pattern = /^RUNNER_BASE_DIR=(.*)/
       lines = control_script.readlines.grep(pattern)

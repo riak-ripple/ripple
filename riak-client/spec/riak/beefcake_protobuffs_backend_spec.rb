@@ -45,7 +45,7 @@ describe Riak::Client::BeefcakeProtobuffsBackend, '#mapred' do
     @backend = Riak::Client::BeefcakeProtobuffsBackend.new(@client)
     @backend.instance_variable_set(:@server_config, {})
   end
-  
+
   it "should not return nil for previous phases that don't return anything" do
     socket = stub(:socket).as_null_object
     socket.stub(:read).and_return(stub(:socket_header, :unpack => [2, 24]), stub(:socket_message), stub(:socket_header_2, :unpack => [0, 1]))
@@ -54,7 +54,7 @@ describe Riak::Client::BeefcakeProtobuffsBackend, '#mapred' do
     Riak::Client::BeefcakeProtobuffsBackend::RpbMapRedResp.stub(:decode => message)
     TCPSocket.stub(:new => socket)
     @backend.send(:reset_socket)
-    
+
     @backend.mapred('').should == [{}]
   end
 end

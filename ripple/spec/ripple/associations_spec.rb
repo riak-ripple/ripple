@@ -78,7 +78,7 @@ describe Ripple::Association do
     it "should use the :class_name option when given" do
       @association = Ripple::Association.new(:many, :pages, :class_name => "Note")
       @association.class_name.should == "Note"
-    end    
+    end
   end
 
   describe "determining the target class" do
@@ -98,7 +98,7 @@ describe Ripple::Association do
         @association.klass.should == Nested::Scope::Child
       end
     end
-    
+
     it "should default to the constantized class name" do
       @association = Ripple::Association.new(:one, :t, :class_name => "Trunk")
       @association.klass.should == Trunk

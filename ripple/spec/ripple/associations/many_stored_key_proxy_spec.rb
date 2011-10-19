@@ -7,7 +7,7 @@ describe Ripple::Associations::ManyStoredKeyProxy do
     @account = Account.new {|t| t.key = "accounty" }
     @transaction_one = Transaction.new {|t| t.key = "one" }
     @transaction_two = Transaction.new {|t| t.key = "two" }
-    @transaction_three = Transaction.new {|t| t.key = "three" }    
+    @transaction_three = Transaction.new {|t| t.key = "three" }
     @transaction_one.stub(:new_record?).and_return(false)
     @transaction_two.stub(:new_record?).and_return(false)
     @transaction_three.stub(:new_record?).and_return(false)

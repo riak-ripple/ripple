@@ -30,7 +30,7 @@ describe Riak::Cluster, :test_server => false, :slow => true do
   context "creating the cluster" do
     before { subject.create }
     after { subject.destroy }
-    
+
     it "should generate all nodes inside its root" do
       subject.root.should be_exist
       subject.nodes.should be_all {|n| n.exist? }
@@ -39,7 +39,7 @@ describe Riak::Cluster, :test_server => false, :slow => true do
 
   context "destroying the cluster" do
     before { subject.create; subject.should be_exist; subject.destroy }
-    
+
     it "should remove all nodes and its root directory" do
       subject.should_not be_exist
     end
@@ -51,7 +51,7 @@ describe Riak::Cluster, :test_server => false, :slow => true do
       subject.drop
     end
   end
-  
+
   context "starting the cluster", :slow => true do
     before { subject.create }
     after { subject.destroy }

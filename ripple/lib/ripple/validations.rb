@@ -50,7 +50,7 @@ module Ripple
       end
 
       # Saves the document and raises {DocumentInvalid} exception if
-      # validations fail. 
+      # validations fail.
       def save!
         (raise Ripple::DocumentInvalid.new(self) unless save) || true
       end

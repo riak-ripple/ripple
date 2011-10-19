@@ -32,7 +32,7 @@ describe Riak::Link do
       result.bucket.should == 'b'
       result.key.should == 'k'
       result.tag.should == 'tag'
-    end    
+    end
   end
 
   context "converting to a string" do
@@ -45,7 +45,7 @@ describe Riak::Link do
     it "should convert to a string using the new URL scheme" do
       Riak::Link.new("bucket", "key", "tag").to_s(true).should == '</buckets/bucket/keys/key>; riaktag="tag"'
       Riak::Link.parse('</riak/bucket/key>; riaktag="tag"').first.to_s(true).should == '</buckets/bucket/keys/key>; riaktag="tag"'
-    end    
+    end
   end
 
   it "should convert to a walk spec when pointing to an object" do

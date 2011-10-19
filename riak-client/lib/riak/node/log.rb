@@ -10,7 +10,7 @@ module Riak
                     :alert,
                     :emergency
                    ]
-    
+
     def read_console_log(*levels)
       console_log = log + 'console.log'
       if console_log.exist?

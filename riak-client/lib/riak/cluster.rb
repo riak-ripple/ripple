@@ -15,7 +15,7 @@ module Riak
 
     # @return [Pathname] the root directory of the cluster
     attr_reader :root
-    
+
     # Creates a {Cluster} of {Node}s.
     # @param [Hash] config the configuration for the cluster
     # @option config [Fixnum] :count the number of nodes to create
@@ -67,12 +67,12 @@ module Riak
       root.rmtree if root.exist?
       create
     end
-    
+
     # Drops all data from the cluster without destroying the nodes.
     def drop
       nodes.each {|n| n.drop }
     end
-    
+
     # Starts all nodes in the cluster.
     def start
       nodes.each {|n| n.start }
@@ -127,7 +127,7 @@ module Riak
         n.with_console(&block)
       end
     end
-    
+
     # Is the cluster started?
     def started?
       nodes.all? {|n| n.started? }
@@ -137,7 +137,7 @@ module Riak
     def stopped?
       nodes.all? {|n| n.stopped? }
     end
-    
+
     # Joins the nodes together into a cluster.
     # @note This method relies on cluster membership changes present
     #   in the 1.0 series of Riak, and is NOT safe on 0.14 and

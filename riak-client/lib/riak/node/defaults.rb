@@ -1,7 +1,7 @@
 require 'riak/core_ext/deep_dup'
 
 module Riak
-  class Node    
+  class Node
     # Settings based on Riak master/1.0.
     ENV_DEFAULTS = {
       :riak_core => {

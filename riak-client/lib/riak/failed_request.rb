@@ -35,7 +35,7 @@ module Riak
     def is_json?
       headers['content-type'].include?('application/json')
     end
-    
+
     # @return [true,false] whether the error represents a "not found" response
     def not_found?
       @code.to_i == 404
@@ -66,7 +66,7 @@ module Riak
         false
       end
     end
-    
+
     # @return [true,false] whether the error represents a "not found" response
     def not_found?
       @not_found

@@ -26,13 +26,13 @@ module Riak
     # Buffers transport and reduces inconsistency of link-walking
     # vs. regular operations. If the node you are connecting to has
     # set {http_url_encoding, on}, set this to true. Default is false.
-    # @return [true,false] Whether Riak decodes URL-encoded paths and headers    
+    # @return [true,false] Whether Riak decodes URL-encoded paths and headers
     attr_accessor :url_decoding
   end
 
   self.escaper = URI
   self.url_decoding = false
-  
+
   module Util
     # Methods for escaping URL segments.
     module Escape
@@ -46,7 +46,7 @@ module Riak
       def maybe_escape(bucket_or_key)
         Riak.url_decoding ? bucket_or_key : escape(bucket_or_key)
       end
-      
+
       # Escapes bucket or key names that may contain slashes for use in URLs.
       # @param [String] bucket_or_key the bucket or key name
       # @return [String] the escaped path segment
@@ -62,9 +62,9 @@ module Riak
       # @param [String] bucket_or_key the escaped bucket or key name
       # @return [String] the unescaped path segment
       def maybe_unescape(bucket_or_key)
-        Riak.url_decoding ? bucket_or_key : unescape(bucket_or_key) 
+        Riak.url_decoding ? bucket_or_key : unescape(bucket_or_key)
       end
-      
+
       # Unescapes bucket or key names in URLs.
       # @param [String] bucket_or_key the bucket or key name
       # @return [String] the unescaped name

@@ -33,7 +33,7 @@ describe Riak::RObject do
       @object.indexes.should be_empty
       @object.indexes['foo_bin'].should be_kind_of(Set)
     end
-    
+
     it "should yield itself to a given block" do
       Riak::RObject.new(@bucket, "bar") do |r|
         r.key.should == "bar"
@@ -193,7 +193,7 @@ describe Riak::RObject do
       @object.indexes['email_bin'].should have(2).items
       @object.indexes['rank_int'].should have(1).item
     end
-    
+
     it "should set the ETag" do
       @object.etag.should == "5bnavU3rrubcxLI8EvFXhB"
     end
@@ -304,7 +304,7 @@ describe Riak::RObject do
       @backend.should_receive(:reload_object).with(@object, 2).and_return(@object)
       @object.reload :r => 2
     end
-    
+
     it "should disable matching conditions if the key is present and the :force option is given" do
       @backend.should_receive(:reload_object) do |obj, _|
         obj.etag.should be_nil

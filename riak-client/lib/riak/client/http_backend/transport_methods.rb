@@ -159,7 +159,7 @@ module Riak
             uri.query = query if query.present?
           end
         end
-        
+
         # Checks the expected response codes against the actual response code. Use internally when
         # implementing {#perform}.
         # @param [String, Fixnum, Array<String,Fixnum>] expected the expected response code(s)
@@ -186,7 +186,7 @@ module Riak
         def verify_body!(body)
           raise ArgumentError, t('request_body_type') unless String === body || body.respond_to?(:read)
         end
-        
+
         private
         def response_headers
           Thread.current[:response_headers] ||= Riak::Util::Headers.new

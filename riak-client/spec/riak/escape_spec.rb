@@ -50,7 +50,7 @@ describe Riak::Util::Escape do
       @object.escape("bracket[one").should == "bracket[one"
       @object.escape("sean@basho").should == "sean@basho"
     end
-    
+
     it "should escape slashes" do
       @object.escape("some/inner/path").should == "some%2Finner%2Fpath"
     end

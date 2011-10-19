@@ -7,7 +7,7 @@ describe Riak::Node, :test_server => false, :slow => true do
   subject { described_class.new(:root => ".ripplenode", :source => test_server_config['source']) }
   after { subject.stop if subject.started? }
   after(:all) { subject.destroy }
-  
+
   context "creation" do
     before { subject.create }
     after { subject.destroy }

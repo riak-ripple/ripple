@@ -42,7 +42,7 @@ describe "Search features" do
           expect_update_body('<add><doc><field name="field">value</field><field name="id">1</field></doc></add>', 'foo')
         else # 1.8.7, I hate you.
           expect_update_body('<add><doc><field name="id">1</field><field name="field">value</field></doc></add>', 'foo')
-        end        
+        end
         @client.index("foo", doc)
       end
 

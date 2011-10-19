@@ -12,7 +12,7 @@ describe Ripple::AttributeMethods::Dirty do
       company.robject.stub!(:store).and_return(true)
       company.name = 'Fizz Buzz, Inc.'
     end
-    
+
     it "should capture previous changes when saving" do
       company.save
       company.previous_changes.should include('name')

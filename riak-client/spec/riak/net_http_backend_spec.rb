@@ -1,5 +1,5 @@
 require 'spec_helper'
-                  
+
 describe Riak::Client::NetHTTPBackend do
   before :each do
     @client = Riak::Client.new(:http_backend => :NetHTTP)

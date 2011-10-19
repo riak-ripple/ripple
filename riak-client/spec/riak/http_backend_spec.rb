@@ -92,7 +92,7 @@ describe Riak::Client::HTTPBackend do
       @object.should_not_receive(:serialize)
       @backend.store_object(@object, :returnbody => false)
     end
-    
+
     context "when the object has no key" do
       it "should issue a POST request to the bucket, and update the object properties (returning the body by default)" do
         @backend.should_receive(:post).with(201, @backend.object_path("foo", nil, {:returnbody => true}), "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 201})
@@ -118,7 +118,7 @@ describe Riak::Client::HTTPBackend do
         @object.key.should == "somereallylongstring"
         @object.vclock.should == "areallylonghashvalue"
       end
-      
+
       it "should include persistence-tuning parameters in the query string" do
         @backend.should_receive(:put).with([200,204,300], @backend.object_path("foo", "bar", {:w => 2, :returnbody => true}), "This is some text.", @headers).and_return({:headers => {'location' => ["/riak/foo/somereallylongstring"], "x-riak-vclock" => ["areallylonghashvalue"]}, :code => 204})
         @backend.store_object(@object, :returnbody => true, :w => 2)
@@ -140,7 +140,7 @@ describe Riak::Client::HTTPBackend do
     it "should perform a DELETE request with the requested quorum value" do
       @backend.should_receive(:delete).with([204,404], @backend.object_path("foo", 'bar', {:rw => 2}), {'X-Riak-VClock' => "myvclock"}).and_return(:code => 204)
       @backend.delete_object('foo', 'bar', :vclock => "myvclock", :rw => 2)
-    end    
+    end
   end
 
   context "fetching bucket properties" do
@@ -149,14 +149,14 @@ describe Riak::Client::HTTPBackend do
       @backend.get_bucket_props("foo").should == {"n_val" => 3}
     end
   end
-  
+
   context "setting bucket properties" do
     it "should PUT the properties to the bucket URL as JSON" do
       @backend.should_receive(:put).with(204, @backend.bucket_properties_path('foo'), '{"props":{"n_val":2}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
-      @backend.set_bucket_props("foo", {:n_val => 2})      
+      @backend.set_bucket_props("foo", {:n_val => 2})
     end
   end
-  
+
   context "listing keys" do
     it "should unescape key names" do
       @backend.should_receive(:get).with(200, @backend.key_list_path('foo')).and_return({:headers => {"content-type" => ["application/json"]}, :body => '{"keys":["bar%20baz"]}'})
@@ -170,7 +170,7 @@ describe Riak::Client::HTTPBackend do
       @backend.list_buckets.should == ["foo", "bar", "baz"]
     end
   end
-  
+
   context "performing a MapReduce query" do
     before do
       @mr = Riak::MapReduce.new(@client).map("Riak.mapValues", :keep => true)
@@ -211,7 +211,7 @@ describe Riak::Client::HTTPBackend do
       @backend.stats.should == {"vnode_gets" => 20348}
     end
   end
-  
+
   context "performing a link-walking query" do
     before do
       @bucket = Riak::Bucket.new(@client, "foo")
@@ -265,7 +265,7 @@ describe Riak::Client::HTTPBackend do
         and_return(:code => 200, :headers => {"content-type" => ['application/json']}, :body => '{}')
       @backend.search(nil, 'foo')
     end
-    
+
     it "should vivify JSON responses" do
       @backend.should_receive(:get).and_return({:code => 200, :headers => {"content-type"=>["application/json"]}, :body => '{"response":{"docs":["foo"]}}'})
       @backend.search(nil, "foo").should == {"response" => {"docs" => ["foo"]}}
