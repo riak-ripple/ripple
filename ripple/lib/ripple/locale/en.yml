@@ -10,6 +10,7 @@ en:
       no_key: "Couldn't find document without a key"
       one_key: "Couldn't find document with key: %{key}"
       many_keys: "Couldn't find documents with keys: %{keys}"
+    index_type_unknown: "Cannot determine index type for property '%{property}' of type '%{type}'."
     invalid_association_value: "Invalid value %{value} for association %{name} of type %{klass} on %{owner}"
     many_association_validation_error: "are invalid (%{association_errors})"
     many_key_association: "You cannot use a many association using :key"

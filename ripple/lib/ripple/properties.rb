@@ -37,7 +37,8 @@ module Ripple
     # @param [String, Symbol] key the key of the property
     # @param [Class] type the Ruby type of the property. Use {Boolean} for true or false types.
     # @param [Hash] options configuration options
-    # @option options [Object, Proc] :default (nil) a default value for the property, or a lambda to evaluate when providing the default.
+    # @option options [Object, Proc] :default (nil) a default value
+    #   for the property, or a lambda to evaluate when providing the default.
     def initialize(key, type, options={})
       @options = options.to_options
       @key = key.to_sym
@@ -57,7 +58,7 @@ module Ripple
     def validation_options
       @options.dup.except(:default)
     end
-
+    
     # Attempt to coerce the passed value into this property's type
     # @param [Object] value the value to coerce
     # @return [Object] the value coerced into this property's type
