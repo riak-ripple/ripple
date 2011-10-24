@@ -26,6 +26,28 @@ describe Ripple::Indexes do
       subject.robject.indexes["name_bin"].should == Set["Bob"]
       subject.robject.indexes["age_int"].should == Set[28]
     end
+
+    context "when embedded documents have indexes" do
+      subject do
+        Indexer.new(:name => "Bob",
+                    :age => 28,
+                    :addresses => [{:street => "10 Main St", :city => "Anywhere"},
+                                   {:street => "100 W 10th Avenue", :city => "Springfield"}],
+                    :primary_address => {
+                      :street => "1 W 5th Place",
+                      :city => "Independence"})
+      end
+
+      its(:indexes_for_persistence){ should include("primary_address_street_bin") }
+      its(:indexes_for_persistence){ should include("primary_address_city_bin") }
+      its(:indexes_for_persistence){ should include("addresses_street_bin") }
+      its(:indexes_for_persistence){ should include("addresses_city_bin") }
+
+      it "should merge indexes for many embedded associations" do
+        subject.indexes_for_persistence['addresses_city_bin'].should == Set["Anywhere", "Springfield"]
+        subject.indexes_for_persistence['addresses_street_bin'].should == Set["10 Main St", "100 W 10th Avenue"]
+      end
+    end
   end
 end
 
@@ -43,7 +65,7 @@ describe Ripple::Index do
       Ripple::Index.new('foo', klass).index_type.should == 'int'
     end
   end
-  
+
   it "should raise an error when the index type cannot be determined" do
     klass = Class.new
     expect { Ripple::Index.new('foo', klass).index_type }.to raise_error(ArgumentError)
