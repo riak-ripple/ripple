@@ -40,13 +40,13 @@ end
 describe Ripple::Timestamps do
   # require 'support/models/clock'
 
-  let(:backend) { mock("Backend", :store_object => true) }
-  before(:each) { Ripple.client.stub!(:backend).and_return(backend) }
+  before(:each) { clock.robject.stub!(:store).and_return(true) }
 
   context "for a Ripple::Document" do
     it_behaves_like "a timestamped model" do
       subject { Clock.new }
-      let(:record_to_save) { subject }
+      let(:clock) { subject }
+      let(:record_to_save) { subject }      
     end
   end
 
@@ -67,9 +67,16 @@ describe Ripple::Timestamps do
       let(:clock) { Clock.new }
       subject { Mode.new }
       let(:record_to_save) { clock }
-
+      
       before(:each) do
         clock.modes << subject
+      end
+
+      it "should pass-through property options to the created properties" do
+        [:created_at, :updated_at].each do |p|
+          subject.class.properties[p].validation_options.should include(:presence)
+          subject.class.indexes[p].should be
+        end
       end
     end
   end
