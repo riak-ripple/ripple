@@ -46,7 +46,7 @@ class Date
   end
 end
 
-# @privte
+# @private
 class DateTime
   def to_ripple_index(type)
     case type
