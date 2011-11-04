@@ -64,6 +64,7 @@ module Ripple
       include Ripple::Document::Key
       include Ripple::Document::Persistence
       extend Ripple::Properties
+      include Ripple::Document::Finders
       include Ripple::AttributeMethods
       include Ripple::Timestamps
       include Ripple::Validations
@@ -71,7 +72,6 @@ module Ripple
       include Ripple::Callbacks
       include Ripple::Observable
       include Ripple::Conversion
-      include Ripple::Document::Finders
       include Ripple::Inspection
       include Ripple::NestedAttributes
       include Ripple::Serialization
