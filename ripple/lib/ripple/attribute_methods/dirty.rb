@@ -7,6 +7,15 @@ module Ripple
       extend ActiveSupport::Concern
       include ActiveModel::Dirty
 
+      module ClassMethods
+        # @private
+        def instantiate(robject)
+          super(robject).tap do |o|
+            o.changed_attributes.clear
+          end
+        end
+      end
+
       # @private
       def really_save(*args)
         if result = super

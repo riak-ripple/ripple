@@ -41,6 +41,11 @@ describe Ripple::Document::Finders do
       box.should_not be_new_record
     end
 
+    it "should have no changes after find" do
+      box = Box.find("square")
+      box.changes.should == {}
+    end
+
     it "should find the first document using the first key with the bucket's keys" do
       box  = Box.new
       keys = ['some_boxes_key']
