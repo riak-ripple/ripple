@@ -209,13 +209,15 @@ describe Riak::Client::HTTPBackend::Configuration do
       subject.should_receive(:get).with(200, uri).and_return(:headers => {'link' => [%Q{</path>; rel="#{resource}"}]})
       subject.send(resource).should == "/path"
     end
-    it "should fallback to client.#{alternate} if the #{resource} resource is not found" do
+
+    it "should fallback to client.http_paths[:#{alternate}] if the #{resource} resource is not found" do
       subject.should_receive(:get).with(200, uri).and_return(:headers => {'link' => ['</>; rel="top"']})
-      subject.send(resource).should == client.send(alternate)
+      subject.send(resource).should == client.http_paths[alternate]
     end
-    it "should fallback to client.#{alternate} if request fails" do
+
+    it "should fallback to client.http_paths[:#{alternate}] if request fails" do
       subject.should_receive(:get).with(200, uri).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 404, {}, ""))
-      subject.send(resource).should == client.send(alternate)
+      subject.send(resource).should == client.http_paths[alternate]
     end
   end
 

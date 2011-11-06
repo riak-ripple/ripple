@@ -161,8 +161,7 @@ module Riak
     # @raise [ArgumentError] if the content_type is not defined
     def store(options={})
       raise ArgumentError, t("content_type_undefined") unless @content_type.present?
-      params = {:returnbody => true}.merge(options)
-      @bucket.client.backend.store_object(self, params)
+      @bucket.client.store_object(self, options)
       self
     end
 
@@ -177,7 +176,7 @@ module Riak
       force = options.delete(:force)
       return self unless @key && (@vclock || force)
       self.etag = self.last_modified = nil if force
-      bucket.client.backend.reload_object(self, options)
+      bucket.client.reload_object(self, options)
     end
 
     alias :fetch :reload
@@ -259,7 +258,7 @@ module Riak
     # If the key is blank, the bucket URL will be returned (where the object will be
     # submitted to when stored).
     def url
-      segments = [ @bucket.client.prefix, escape(@bucket.name)]
+      segments = [ @bucket.client.http_paths[:prefix], escape(@bucket.name)]
       segments << escape(@key) if @key
       @bucket.client.http.path(*segments).to_s
     end

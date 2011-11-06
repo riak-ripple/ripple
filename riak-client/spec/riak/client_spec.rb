@@ -61,25 +61,25 @@ describe Riak::Client do
 
     it "should accept a mapreduce path" do
       client = Riak::Client.new(:mapred => "/mr")
-      client.mapred.should == "/mr"
+      client.http_paths[:mapred].should == "/mr"
     end
 
     it "should default the mapreduce path to /mapred if not specified" do
-      Riak::Client.new.mapred.should == "/mapred"
+      Riak::Client.new.http_paths[:mapred].should == "/mapred"
     end
 
     it "should accept a luwak path" do
       client = Riak::Client.new(:luwak => "/beans")
-      client.luwak.should == "/beans"
+      client.http_paths[:luwak].should == "/beans"
     end
 
     it "should default the luwak path to /luwak if not specified" do
-      Riak::Client.new.luwak.should == "/luwak"
+      Riak::Client.new.http_paths[:luwak].should == "/luwak"
     end
 
     it "should accept a solr path" do
       client = Riak::Client.new(:solr => "/solar")
-      client.solr.should == "/solar"
+      client.http_paths[:solr].should == "/solar"
     end
   end
 
@@ -177,6 +177,8 @@ describe Riak::Client do
     end
 
     it "should allow setting the prefix" do
+      @client.http_paths.should be_kind_of(Hash)
+      @client.http_paths.include?(:prefix).should == true
       @client.should respond_to(:prefix=)
       @client.prefix = "/another-prefix"
       @client.prefix.should == "/another-prefix"

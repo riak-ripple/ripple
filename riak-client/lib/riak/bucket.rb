@@ -38,9 +38,9 @@ module Riak
     def keys(&block)
       warn(t('list_keys', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
       if block_given?
-        @client.backend.list_keys(self, &block)
+        @client.list_keys(self, &block)
       else
-        @client.backend.list_keys(self)
+        @client.list_keys(self)
       end
     end
 
@@ -66,7 +66,7 @@ module Riak
     def props=(properties)
       raise ArgumentError, t("hash_type", :hash => properties.inspect) unless Hash === properties
       props.merge!(properties)
-      @client.backend.set_bucket_props(self, properties)
+      @client.set_bucket_props(self, properties)
       props
     end
     alias :'properties=' :'props='
@@ -74,7 +74,7 @@ module Riak
     # @return [Hash] Internal Riak bucket properties.
     # @see #props=
     def props
-      @props ||= @client.backend.get_bucket_props(self)
+      @props ||= @client.get_bucket_props(self)
     end
     alias :properties :props
 
@@ -85,7 +85,7 @@ module Riak
     # @return [Riak::RObject] the object
     # @raise [FailedRequest] if the object is not found or some other error occurs
     def get(key, options={})
-      @client.backend.fetch_object(self, key, options)
+      @client.get_object(self, key, options)
     end
     alias :[] :get
 
@@ -136,7 +136,7 @@ module Riak
     # @option options [String] :vclock - the vector clock of the
     #   object being deleted
     def delete(key, options={})
-      client.backend.delete_object(self, key, options)
+      client.delete_object(self, key, options)
     end
 
     # Queries a secondary index on the bucket.
@@ -147,7 +147,7 @@ module Riak
     # @return [Array<String>] a list of keys that match the index
     #   query
     def get_index(index, query)
-      client.backend.get_index(self, index, query)
+      client.get_index(self, index, query)
     end
 
     # @return [true, false] whether the bucket allows divergent siblings
