@@ -296,12 +296,12 @@ describe Riak::RObject do
     end
 
     it "should reload the object if the key is present" do
-      @backend.should_receive(:reload_object).with(@object, nil).and_return(@object)
+      @backend.should_receive(:reload_object).with(@object, {}).and_return(@object)
       @object.reload
     end
 
     it "should pass along the requested R quorum" do
-      @backend.should_receive(:reload_object).with(@object, 2).and_return(@object)
+      @backend.should_receive(:reload_object).with(@object, :r => 2).and_return(@object)
       @object.reload :r => 2
     end
 

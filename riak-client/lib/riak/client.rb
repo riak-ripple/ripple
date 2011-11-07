@@ -28,7 +28,7 @@ module Riak
     # Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
     HOST_REGEX = /^(?:(?:(?:[a-zA-Z\d](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.)*(?:[a-zA-Z](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\])$/n
 
-    VALID_OPTIONS = [:protocol, :host, :port, :http_port, :pb_port, :prefix, :client_id, :mapred, :luwak, :solr, :http_backend, :protobuffs_backend, :ssl, :basic_auth]
+    VALID_OPTIONS = [:protocol, :host, :port, :http_port, :pb_port, :prefix, :client_id, :mapred, :luwak, :solr, :http_paths, :http_backend, :protobuffs_backend, :ssl, :basic_auth]
 
     # @return [String] The protocol to use for the Riak endpoint
     attr_reader :protocol
@@ -55,18 +55,9 @@ module Riak
     #     from the provided config
     attr_writer :ssl
 
-    # @return [String] The URL path prefix to the "raw" HTTP endpoint
-    attr_accessor :prefix
-
-    # @return [String] The URL path to the map-reduce HTTP endpoint
-    attr_accessor :mapred
-
-    # @return [String] The URL path to the luwak HTTP endpoint
-    attr_accessor :luwak
-
-    # @return [String] The URL path prefix to the Solr HTTP endpoint
-    attr_accessor :solr
-
+    # @return [Hash] HTTP path configuration.
+    attr_accessor :http_paths
+    
     # @return [Symbol] The HTTP backend/client to use
     attr_accessor :http_backend
 
@@ -93,10 +84,12 @@ module Riak
       self.http_port          = options[:http_port]          || 8098
       self.pb_port            = options[:pb_port]            || 8087
       self.port               = options[:port]               if options[:port]
-      self.prefix             = options[:prefix]             || "/riak/"
-      self.mapred             = options[:mapred]             || "/mapred"
-      self.luwak              = options[:luwak]              || "/luwak"
-      self.solr               = options[:solr]               || "/solr"
+      self.http_paths         = {
+        prefix: options[:prefix] || "/riak/",
+        mapred: options[:mapred] || "/mapred",
+        luwak:  options[:luwak]  || "/luwak",
+        solr:   options[:solr]   || "/solr" # Unused?
+      }.merge(options[:http_paths] || {})
       self.http_backend       = options[:http_backend]       || :NetHTTP
       self.protobuffs_backend = options[:protobuffs_backend] || :Beefcake
       self.basic_auth         = options[:basic_auth]         if options[:basic_auth]
@@ -270,12 +263,6 @@ module Riak
                    end
     end
 
-    # Pings the Riak server to check for liveness.
-    # @return [true,false] whether the Riak server is alive and reachable
-    def ping
-      backend.ping
-    end
-
     # Retrieves a bucket from Riak.
     # @param [String] bucket the bucket to retrieve
     # @param [Hash] options options for retrieving the bucket
@@ -302,6 +289,136 @@ module Riak
     end
     alias :list_buckets :buckets
 
+    # Deletes a file stored via the "Luwak" interface
+    # @param [String] filename the key/filename to delete
+    def delete_file(filename)
+      http.delete([204,404], http_paths[:luwak], escape(filename))
+      true
+    end
+    
+    # Delete an object. See Bucket#delete
+    def delete_object(bucket, key, options = {})
+      backend.delete_object(bucket, key, options)
+    end
+
+    # Checks whether a file exists in "Luwak".
+    # @param [String] key the key to check
+    # @return [true, false] whether the key exists in "Luwak"
+    def file_exists?(key)
+      result = http.head([200,404], http_paths[:luwak], escape(key))
+      result[:code] == 200
+    end
+    alias :file_exist? :file_exists?
+
+    # Bucket properties. See Bucket#props
+    def get_bucket_props(bucket)
+      backend.get_bucket_props bucket
+    end
+
+    # Retrieves a large file/IO object from Riak via the "Luwak"
+    # interface. Streams the data to a temporary file unless a block
+    # is given.
+    # @param [String] filename the key/filename for the object
+    # @return [IO, nil] the file (also having content_type and
+    #   original_filename accessors). The file will need to be
+    #   reopened to be read. nil will be returned if a block is given.
+    # @yield [chunk] stream contents of the file through the
+    #     block. Passing the block will result in nil being returned
+    #     from the method.
+    # @yieldparam [String] chunk a single chunk of the object's data
+    def get_file(filename, &block)
+      if block_given?
+        http.get(200, http_paths[:luwak], escape(filename), &block)
+        nil
+      else
+        tmpfile = LuwakFile.new(escape(filename))
+        begin
+          response = http.get(200, http_paths[:luwak], escape(filename)) do |chunk|
+            tmpfile.write chunk
+          end
+          tmpfile.content_type = response[:headers]['content-type'].first
+          tmpfile
+        ensure
+          tmpfile.close
+        end
+      end
+    end
+
+    # Queries a secondary index on a bucket. See Bucket#get_index
+    def get_index(bucket, index, query)
+      backend.get_index bucket, index, query
+    end
+    
+    # Get an object. See Bucket#get
+    def get_object(bucket, key, options = {})
+      backend.fetch_object(bucket, key, options)
+    end
+
+    # @return [String] A representation suitable for IRB and debugging output.
+    def inspect
+      "#<Riak::Client #{protocol}://#{host}:#{protocol == 'pbc' ? pb_port : http_port}>"
+    end
+
+    # Retrieves a list of keys in the given bucket. See Bucket#keys
+    def list_keys(bucket, &block)
+      if block_given?
+        backend.list_keys bucket, &block
+      else
+        backend.list_keys bucket
+      end
+    end
+    
+    # Deprecated accessor for http_paths[:luwak]
+    def luwak
+      http_paths[:luwak]
+    end
+
+    # Deprecated accessor for http_paths[:luwak]
+    def luwak=(luwak)
+      http_paths[:luwak] = luwak
+    end
+
+    # Executes a mapreduce request. See MapReduce#run
+    def mapred(mr, &block)
+      backend.mapred(mr, &block)
+    end
+
+    # Pings the Riak server to check for liveness.
+    # @return [true,false] whether the Riak server is alive and reachable
+    def ping
+      backend.ping
+    end
+    
+    # Deprecated accessor for http_paths[:prefix]
+    def prefix
+      http_paths[:prefix]
+    end
+
+    # Deprecated accessor http_paths[:prefix]
+    def prefix=(prefix)
+      http_paths[:prefix] = prefix
+    end
+
+    # Reloads the object from Riak.
+    def reload_object(object, options = {})
+      backend.reload_object(object, options)
+    end
+    
+    # Deprecated accessor for http_paths[:solr]
+    def solr
+      http_paths[:solr]
+    end
+
+    # Deprecated accessor for http_paths[:solr]
+    def solr=(solr)
+      http_paths[:solr] = solr
+    end
+
+    # Sets the properties on a bucket. See Bucket#props=
+    def set_bucket_props(bucket, properties)
+      backend.set_bucket_props(bucket, properties)
+    end
+    
     # Exposes a {Stamp} object for use in generating unique
     # identifiers.
     # @return [Stamp] an ID generator
@@ -324,62 +441,18 @@ module Riak
     def store_file(*args)
       data, content_type, filename = args.reverse
       if filename
-        http.put(204, luwak, escape(filename), data, {"Content-Type" => content_type})
+        http.put(204, http_paths[:luwak], escape(filename), data, {"Content-Type" => content_type})
         filename
       else
-        response = http.post(201, luwak, data, {"Content-Type" => content_type})
+        response = http.post(201, http_paths[:luwak], data, {"Content-Type" => content_type})
         response[:headers]["location"].first.split("/").last
       end
     end
 
-    # Retrieves a large file/IO object from Riak via the "Luwak"
-    # interface. Streams the data to a temporary file unless a block
-    # is given.
-    # @param [String] filename the key/filename for the object
-    # @return [IO, nil] the file (also having content_type and
-    #   original_filename accessors). The file will need to be
-    #   reopened to be read. nil will be returned if a block is given.
-    # @yield [chunk] stream contents of the file through the
-    #     block. Passing the block will result in nil being returned
-    #     from the method.
-    # @yieldparam [String] chunk a single chunk of the object's data
-    def get_file(filename, &block)
-      if block_given?
-        http.get(200, luwak, escape(filename), &block)
-        nil
-      else
-        tmpfile = LuwakFile.new(escape(filename))
-        begin
-          response = http.get(200, luwak, escape(filename)) do |chunk|
-            tmpfile.write chunk
-          end
-          tmpfile.content_type = response[:headers]['content-type'].first
-          tmpfile
-        ensure
-          tmpfile.close
-        end
-      end
-    end
-
-    # Deletes a file stored via the "Luwak" interface
-    # @param [String] filename the key/filename to delete
-    def delete_file(filename)
-      http.delete([204,404], luwak, escape(filename))
-      true
-    end
-
-    # Checks whether a file exists in "Luwak".
-    # @param [String] key the key to check
-    # @return [true, false] whether the key exists in "Luwak"
-    def file_exists?(key)
-      result = http.head([200,404], luwak, escape(key))
-      result[:code] == 200
-    end
-    alias :file_exist? :file_exists?
-
-    # @return [String] A representation suitable for IRB and debugging output.
-    def inspect
-      "#<Riak::Client #{protocol}://#{host}:#{protocol == 'pbc' ? pb_port : http_port}>"
+    # Stores an object in Riak.
+    def store_object(object, options = {})
+      params = {:returnbody => true}.merge(options)
+      backend.store_object(object, params)
     end
 
     private

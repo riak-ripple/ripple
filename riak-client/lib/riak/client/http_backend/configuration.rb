@@ -152,15 +152,15 @@ module Riak
         end
 
         def riak_kv_wm_raw
-          server_config[:riak_kv_wm_raw] || client.prefix
+          server_config[:riak_kv_wm_raw] || client.http_paths[:prefix]
         end
 
         def riak_kv_wm_link_walker
-          server_config[:riak_kv_wm_link_walker] || client.prefix
+          server_config[:riak_kv_wm_link_walker] || client.http_paths[:prefix]
         end
 
         def riak_kv_wm_mapred
-          server_config[:riak_kv_wm_mapred] || client.mapred
+          server_config[:riak_kv_wm_mapred] || client.http_paths[:mapred]
         end
 
         def riak_kv_wm_ping
