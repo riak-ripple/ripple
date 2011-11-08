@@ -1,4 +1,5 @@
 require 'ripple/translation'
+require 'ripple/cluster'
 require 'pp'
 
 namespace :riak do
@@ -65,6 +66,9 @@ namespace :db do
   namespace(:drop) { task :all => "riak:drop:all" }
   task :setup => "riak:setup"
   task :reset => "riak:reset"
+  task :seed do
+    Rails.application.load_seed
+  end
 end
 
 def load_config
@@ -74,7 +78,7 @@ def load_config
 end
 
 def cluster(environment=nil, config=nil)
-  environent ||= Rails.env
+  environment ||= Rails.env
   config ||= load_config[environment]
   root = Rails.root + "db" + environment.to_s
   # TODO: We need to deal with multiple hosts and client ports
