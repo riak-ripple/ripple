@@ -67,7 +67,8 @@ module Riak
     # Creates a client connection to Riak
     # @param [Hash] options configuration options for the client
     # @option options [String] :host ('127.0.0.1') The host or IP address for the Riak endpoint
-    # @option options [Fixnum] :port (8098) The port of the Riak HTTP endpoint
+    # @option options [Fixnum] :http_port (8098) The port of the Riak HTTP endpoint
+    # @option options [Fixnum] :pb_port (8087) The port of the Riak Protocol Buffers endpoint
     # @option options [String] :prefix ('/riak/') The URL path prefix to the main HTTP endpoint
     # @option options [String] :mapred ('/mapred') The path to the map-reduce HTTP endpoint
     # @option options [Fixnum, String] :client_id (rand(MAX_CLIENT_ID)) The internal client ID used by Riak to route responses

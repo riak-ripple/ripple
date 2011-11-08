@@ -54,6 +54,7 @@ module Ripple
       config_file = File.expand_path(config_file)
       config_hash = YAML.load(ERB.new(File.read(config_file)).result).with_indifferent_access
       config_keys.each {|k| config_hash = config_hash[k]}
+      configure_ports(config_hash)
       self.config = config_hash || {}
     rescue Errno::ENOENT
       raise Ripple::MissingConfiguration.new(config_file)
@@ -63,6 +64,12 @@ module Ripple
     private
     def client_config
       config.slice(*Riak::Client::VALID_OPTIONS)
+    end
+
+    def configure_ports(config)
+      return unless config && config[:min_port]
+      config[:http_port] ||= (config[:min_port].to_i)
+      config[:pb_port] ||= (config[:min_port].to_i + 1)
     end
   end
 
