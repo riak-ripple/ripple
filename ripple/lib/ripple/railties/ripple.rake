@@ -66,7 +66,7 @@ namespace :db do
   namespace(:drop) { task :all => "riak:drop:all" }
   task :setup => "riak:setup"
   task :reset => "riak:reset"
-  task seed: :environment do
+  task seed: ['riak:start', 'environment'] do
     Rails.application.load_seed
   end
 end
