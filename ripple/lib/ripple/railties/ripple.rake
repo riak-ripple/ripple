@@ -22,14 +22,8 @@ namespace :riak do
     cluster.create
   end
 
-  desc "Destroys and recreates the cluster for the current environment."
-  task :reset => ['riak:destroy', 'riak:setup']
-
-  desc "Creates the Riak cluster and loads the seed data."
-  task :setup => ["riak:create", "db:seed"]
-
   desc "Destroys the generated Riak cluster for the current environment."
-  task :destroy => :rails_env do
+  task :destroy => ['rails_env', 'riak:stop'] do
     cluster.destroy
   end
 
@@ -60,13 +54,36 @@ namespace :riak do
 end
 
 namespace :db do
+  desc "Creates the database(s) for the current environment"
   task :create => "riak:create"
-  namespace(:create){ task :all => "riak:create:all" }
-  task :drop => "riak:drop"
-  namespace(:drop) { task :all => "riak:drop:all" }
-  task :setup => "riak:setup"
-  task :reset => "riak:reset"
-  task seed: ['riak:start', 'environment'] do
+
+  namespace(:create) do
+    desc "Creates the database(s) for all environments"
+    task :all => "riak:create:all"
+  end
+
+  desc "Drops the database(s) for the current environment"
+  task :drop => ['db:stop', 'riak:drop']
+
+  namespace(:drop) do
+    desc "Drops the database(s) for all environments"
+    task :all => "riak:drop:all"
+  end
+
+  desc "Starts the database(s) for the current environment"
+  task :start => 'riak:start'
+
+  desc "Stops the database(s) for the current environment"
+  task :stop => 'riak:stop'
+
+  desc "Creates the database(s) and loads the seed data."
+  task :setup => ['db:create', 'db:seed']
+
+  desc "Drops and recreates the database(s) for the current environment."
+  task :reset => ['db:drop', 'db:setup']
+
+  desc "Loads the seed data in to the current environment"
+  task :seed => ['db:start', 'environment'] do
     Rails.application.load_seed
   end
 end
@@ -79,8 +96,8 @@ end
 
 def cluster(environment=nil, config=nil)
   environment ||= Rails.env
-  config ||= load_config[environment]
+  config ||= load_config[environment].with_indifferent_access
   root = Rails.root + "db" + environment.to_s
   # TODO: We need to deal with multiple hosts and client ports
-  Riak::Cluster.new(config.merge(:root => root.to_s).with_indifferent_access)
+  Riak::Cluster.new({root: root.to_s}.merge(config).with_indifferent_access)
 end
