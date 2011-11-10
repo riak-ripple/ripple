@@ -50,14 +50,29 @@ module Riak
     # @see http://wiki.basho.com/display/RIAK/REST+API#RESTAPI-Storeaneworexistingobjectwithakey Riak Rest API Docs
     attr_accessor :prevent_stale_writes
 
+    # Defines a callback to be invoked when there is conflict.
+    #
+    # @yield The conflict callback.
+    # @yieldparam [RObject] robject The conflicted RObject
+    # @yieldreturn [RObject, nil] Either the resolved RObject or nil if your
+    #                             callback cannot resolve it. The next registered
+    #                             callback will be given the chance to resolve it.
+    #
+    # @note Ripple registers its own document-level conflict handler, so if you're
+    #       using ripple, you will probably want to use that instead.
     def self.on_conflict(&conflict_hook)
       on_conflict_hooks << conflict_hook
     end
 
+    # @return [Array<Proc>] the list of registered conflict callbacks.
     def self.on_conflict_hooks
       @on_conflict_hooks ||= []
     end
 
+    # Attempts to resolve conflict using the registered conflict callbacks.
+    #
+    # @return [RObject] the RObject
+    # @note There is no guarantee the returned RObject will have been resolved
     def attempt_conflict_resolution
       return self unless conflict?
 
