@@ -19,7 +19,7 @@ describe Riak::CacheStore do
 
     it "should configure the client according to the initialized options" do
       @cache = ActiveSupport::Cache.lookup_store(:riak_store, :http_port => 10000)
-      @cache.client.http_port.should == 10000
+      @cache.client.nodes.all? { |n| n.http_port == 10000 }.should == true
     end
 
     it "should choose the bucket according to the initializer option" do

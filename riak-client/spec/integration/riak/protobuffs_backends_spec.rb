@@ -11,7 +11,7 @@ describe "Protocol Buffers" do
     if bklass.configured?
       describe klass.to_s do
         before do
-          @backend = bklass.new(@client)
+          @backend = bklass.new(@client, @client.node)
         end
 
         it_should_behave_like "Unified backend API"

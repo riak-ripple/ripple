@@ -11,7 +11,7 @@ describe "HTTP" do
     if bklass.configured?
       describe klass.to_s do
         before do
-          @backend = bklass.new(@client)
+          @backend = bklass.new(@client, @client.node)
         end
 
         it_should_behave_like "Unified backend API"
@@ -34,7 +34,7 @@ describe "HTTP" do
   end
 
   describe 'NetHTTPBackend' do
-    subject { Riak::Client::NetHTTPBackend.new(@client) }
+    subject { Riak::Client::NetHTTPBackend.new(@client, @client.node) }
     let(:file) { File.open(__FILE__) }
     let(:sized) { Reader.new(["foo", "bar", "baz"]) }
     let(:sizeless) { SizelessReader.new(["foo", "bar", "baz"]) }
