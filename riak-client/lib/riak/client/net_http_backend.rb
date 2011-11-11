@@ -31,7 +31,7 @@ module Riak
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
         http = Net::HTTP.new(uri.host, uri.port)
         http.read_timeout = self.class.read_timeout
-        configure_ssl(http) if @client.ssl_enabled?
+        configure_ssl(http) if @node.ssl_enabled?
 
         request = Net::HTTP.const_get(method.to_s.capitalize).new(uri.request_uri, headers)
         case data
@@ -66,13 +66,13 @@ module Riak
 
       def configure_ssl(http)
         http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL.const_get("VERIFY_#{@client.ssl_options[:verify_mode].upcase}")
-        if @client.ssl_options[:pem]
-          http.cert = OpenSSL::X509::Certificate.new(@client.ssl_options[:pem])
-          http.key  = OpenSSL::PKey::RSA.new(@client.ssl_options[:pem], @client.ssl_options[:pem_password])
+        http.verify_mode = OpenSSL::SSL.const_get("VERIFY_#{@node.ssl_options[:verify_mode].upcase}")
+        if @node.ssl_options[:pem]
+          http.cert = OpenSSL::X509::Certificate.new(@node.ssl_options[:pem])
+          http.key  = OpenSSL::PKey::RSA.new(@node.ssl_options[:pem], @node.ssl_options[:pem_password])
         end
-        http.ca_file = @client.ssl_options[:ca_file] if @client.ssl_options[:ca_file]
-        http.ca_path = @client.ssl_options[:ca_path] if @client.ssl_options[:ca_path]
+        http.ca_file = @node.ssl_options[:ca_file] if @node.ssl_options[:ca_file]
+        http.ca_path = @node.ssl_options[:ca_path] if @node.ssl_options[:ca_path]
       end
     end
   end

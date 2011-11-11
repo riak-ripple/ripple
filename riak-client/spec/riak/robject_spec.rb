@@ -257,7 +257,7 @@ describe Riak::RObject do
   describe "when storing the object normally" do
     before :each do
       @backend = mock("Backend")
-      @client.stub!(:backend).and_return(@backend)
+      @client.stub!(:backend).and_yield(@backend)
       @object = Riak::RObject.new(@bucket)
       @object.content_type = "text/plain"
       @object.data = "This is some text."
@@ -278,7 +278,7 @@ describe Riak::RObject do
   describe "when reloading the object" do
     before :each do
       @backend = mock("Backend")
-      @client.stub!(:backend).and_return(@backend)
+      @client.stub!(:backend).and_yield(@backend)
       @object = Riak::RObject.new(@bucket, "bar")
       @object.vclock = "somereallylongstring"
     end
@@ -332,7 +332,7 @@ describe Riak::RObject do
   describe "when deleting" do
     before :each do
       @backend = mock("Backend")
-      @client.stub!(:backend).and_return(@backend)
+      @client.stub!(:backend).and_yield(@backend)
       @object = Riak::RObject.new(@bucket, "bar")
     end
 

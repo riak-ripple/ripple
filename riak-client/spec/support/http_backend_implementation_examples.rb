@@ -185,7 +185,11 @@ shared_examples_for "HTTP backend" do
 
   describe "SSL" do
     it "should be supported" do
-      @client.http_port = $mock_server.port + 1 unless @client.http_backend == :NetHTTP
+      unless @client.http_backend == :NetHTTP
+        @client.nodes.each do |node|
+          node.http_port = $mock_server.port + 1
+        end
+      end
       @client.ssl = true
       setup_http_mock(:get, @backend.path("/riak/","ssl").to_s, :body => "Success!")
       response = @backend.get(200,  @backend.path("/riak/","ssl"))

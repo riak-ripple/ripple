@@ -46,8 +46,10 @@ module Riak
       end
 
       attr_accessor :client
-      def initialize(client)
+      attr_accessor :node
+      def initialize(client, node)
         @client = client
+        @node = node
       end
 
       simple :ping,          :PingReq
@@ -78,8 +80,10 @@ module Riak
       end
 
       def new_socket
-        socket = TCPSocket.new(@client.host, @client.pb_port)
+        socket = TCPSocket.new(@node.host, @node.pb_port)
         socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, true)
+        #TODO: Should we set the client ID here?
+        # set_client_id @client.client_id
         socket
       end
 

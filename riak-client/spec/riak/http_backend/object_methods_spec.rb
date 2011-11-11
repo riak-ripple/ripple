@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Riak::Client::HTTPBackend::ObjectMethods do
   before :each do
     @client = Riak::Client.new
-    @backend = Riak::Client::HTTPBackend.new(@client)
+    @backend = Riak::Client::HTTPBackend.new(@client, @client.node)
     @bucket = Riak::Bucket.new(@client, "bucket")
     @object = Riak::RObject.new(@bucket, "bar")
     @backend.stub!(:new_scheme?).and_return(false)

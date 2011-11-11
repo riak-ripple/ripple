@@ -3,17 +3,23 @@ require 'spec_helper'
 describe Riak::Client::HTTPBackend do
   before :each do
     @client = Riak::Client.new
-    @backend = Riak::Client::HTTPBackend.new(@client)
+    @node = @client.nodes.first
+    @backend = Riak::Client::HTTPBackend.new(@client, @node)
     @backend.instance_variable_set(:@server_config, {})
   end
 
-  it "should take the Riak::Client when creating" do
+  it "should take the Riak::Client and Riak::Node when creating" do
     lambda { Riak::Client::HTTPBackend.new(nil) }.should raise_error(ArgumentError)
-    lambda { Riak::Client::HTTPBackend.new(@client) }.should_not raise_error
+    lambda { Riak::Client::HTTPBackend.new(@client) }.should raise_error(ArgumentError)
+    lambda { Riak::Client::HTTPBackend.new(@client, @node) }.should_not raise_error
   end
 
   it "should make the client accessible" do
     @backend.client.should == @client
+  end
+
+  it 'should make the node accessible' do
+    @backend.node.should == @node
   end
 
   context "pinging the server" do

@@ -4,7 +4,7 @@ describe Riak::Bucket do
   before :each do
     @client = Riak::Client.new
     @backend = mock("Backend")
-    @client.stub!(:backend).and_return(@backend)
+    @client.stub!(:backend).and_yield(@backend)
     @bucket = Riak::Bucket.new(@client, "foo")
   end
 

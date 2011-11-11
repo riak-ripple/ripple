@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Riak::Client::HTTPBackend::TransportMethods do
   before :each do
     @client = Riak::Client.new
-    @backend = Riak::Client::HTTPBackend.new(@client)
+    @backend = Riak::Client::HTTPBackend.new(@client, @client.node)
     @backend.instance_variable_set(:@server_config, {})
   end
 
@@ -91,7 +91,7 @@ describe Riak::Client::HTTPBackend::TransportMethods do
 
   it "should allow using the https protocol" do
     @client  = Riak::Client.new(:protocol => 'https')
-    @backend = Riak::Client::HTTPBackend.new(@client)
+    @backend = Riak::Client::HTTPBackend.new(@client, @client.node)
     @backend.root_uri.to_s.should eq("https://127.0.0.1:8098")
   end
 end

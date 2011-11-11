@@ -4,6 +4,8 @@ require 'riak'
 require 'riak/util/translation'
 require 'riak/util/escape'
 require 'riak/failed_request'
+require 'riak/client/pool'
+require 'riak/client/node'
 require 'riak/client/search'
 require 'riak/client/http_backend'
 require 'riak/client/net_http_backend'
@@ -28,41 +30,26 @@ module Riak
     # Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
     HOST_REGEX = /^(?:(?:(?:[a-zA-Z\d](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.)*(?:[a-zA-Z](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\])$/n
 
-    VALID_OPTIONS = [:protocol, :host, :port, :http_port, :pb_port, :prefix, :client_id, :mapred, :luwak, :solr, :http_paths, :http_backend, :protobuffs_backend, :ssl, :basic_auth]
-
     # @return [String] The protocol to use for the Riak endpoint
     attr_reader :protocol
 
-    # @return [String] The host or IP address for the Riak endpoint
-    attr_reader :host
-
-    # @return [Fixnum] The HTTP(S) port for the Riak endpoint
-    attr_reader :http_port
-
-    # @return [Fixnum] The Protocol Buffers port for the Riak endpoint
-    attr_reader :pb_port
-
-    # @return [String] The user:pass for http basic authentication
-    attr_reader :basic_auth
-
-    # @return [Hash|nil] The SSL options that get built when using SSL
-    attr_reader :ssl_options
-
+    # @return [Array] The set of Nodes this client can communicate with.
+    attr_accessor :nodes
+    
     # @return [String] The internal client ID used by Riak to route responses
     attr_reader :client_id
 
-    # @attr_writer [Hash|nil] The writer that will build valid SSL options
-    #     from the provided config
-    attr_writer :ssl
-
-    # @return [Hash] HTTP path configuration.
-    attr_accessor :http_paths
-    
     # @return [Symbol] The HTTP backend/client to use
     attr_accessor :http_backend
+    
+    # @return [Client::Pool] A pool of HTTP connections
+    attr_reader :http_pool
 
     # @return [Symbol] The Protocol Buffers backend/client to use
     attr_accessor :protobuffs_backend
+
+    # @return [Client::Pool] A pool of protobuffs connections
+    attr_reader :protobuffs_pool
 
     # Creates a client connection to Riak
     # @param [Hash] options configuration options for the client
@@ -75,192 +62,52 @@ module Riak
     # @option options [String, Symbol] :protobuffs_backend (:Beefcake) which Protocol Buffers backend to use
     # @raise [ArgumentError] raised if any invalid options are given
     def initialize(options={})
-      unless (options.keys - VALID_OPTIONS).empty?
-        raise ArgumentError, t("invalid_options")
+      if options.include? :port
+        warn(t('deprecated.port', :backtrace => caller[0..2].join("\n    ")))
       end
+
+      @nodes = (options[:nodes] || []).map do |n|
+        Client::Node.new self, n
+      end
+      if @nodes.empty? or options[:host] or options[:http_port] or options[:pb_port]
+        @nodes |= [Client::Node.new(self, options)]
+      end
+
+      @protobuffs_pool = Pool.new(
+        method(:new_protobuffs_backend), 
+        lambda {}
+      )
+     
+      @http_pool = Pool.new(
+        method(:new_http_backend),
+        lambda {}
+      )
+      
       self.protocol           = options[:protocol]           || "http"
-      self.ssl                = options[:ssl]                if options[:ssl]
-      self.host               = options[:host]               || "127.0.0.1"
-      self.http_port          = options[:http_port]          || 8098
-      self.pb_port            = options[:pb_port]            || 8087
-      self.port               = options[:port]               if options[:port]
-      self.http_paths         = {
-        prefix: options[:prefix] || "/riak/",
-        mapred: options[:mapred] || "/mapred",
-        luwak:  options[:luwak]  || "/luwak",
-        solr:   options[:solr]   || "/solr" # Unused?
-      }.merge(options[:http_paths] || {})
       self.http_backend       = options[:http_backend]       || :NetHTTP
       self.protobuffs_backend = options[:protobuffs_backend] || :Beefcake
-      self.basic_auth         = options[:basic_auth]         if options[:basic_auth]
       self.client_id          = options[:client_id]          if options[:client_id]
     end
 
-    # Set the client ID for this client. Must be a string or Fixnum value 0 =< value < MAX_CLIENT_ID.
-    # @param [String, Fixnum] value The internal client ID used by Riak to route responses
-    # @raise [ArgumentError] when an invalid client ID is given
-    # @return [String] the assigned client ID
-    def client_id=(value)
-      value = case value
-              when 0...MAX_CLIENT_ID, String
-                value
-              else
-                raise ArgumentError, t("invalid_client_id", :max_id => MAX_CLIENT_ID)
-              end
-      backend.set_client_id value if backend.respond_to?(:set_client_id)
-      @client_id = value
-    end
-
-    def client_id
-      @client_id ||= backend.respond_to?(:get_client_id) ? backend.get_client_id : make_client_id
-    end
-
-    # Set the protocol of the Riak endpoint.  Value must be in the
-    # Riak::Client::PROTOCOLS array.
-    # @raise [ArgumentError] if the protocol is not in PROTOCOLS
-    # @return [String] the protocol being assigned
-    def protocol=(value)
-      unless PROTOCOLS.include?(value.to_s)
-        raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', '))
-      end
-      @ssl_options ||= {} if value == 'https'
-      @ssl_options = nil if value == 'http'
-      @backend = nil
-      @protocol = value
-    end
-
-    # Set the hostname of the Riak endpoint. Must be an IPv4, IPv6, or valid hostname
-    # @param [String] value The host or IP address for the Riak endpoint
-    # @raise [ArgumentError] if an invalid hostname is given
-    # @return [String] the assigned hostname
-    def host=(value)
-      raise ArgumentError, t("hostname_invalid") unless String === value && value.present? && value =~ HOST_REGEX
-      @host = value
-    end
-
-    # @return [Fixnum] The port of the Riak endpoint
-    # @deprecated Ports for HTTP(S) and Protocol Buffers are
-    #    segregated. Use {#http_port} or {#pb_port}.
-    def port
-      warn(t('deprecated.port', :backtrace => caller.join("\n")))
-      case protocol
-      when /http/i
-        http_port
-      when /pbc/i
-        pb_port
-      end
-    end
-
-    # Set the port number of the Riak endpoint. This must be an
-    # integer between 0 and 65535.
-    # @deprecated Ports for HTTP(S) and Protocol Buffers are
-    #    segregated. Use {#http_port=} or {#pb_port=}.
-    # @param [Fixnum] value The port number of the Riak endpoint
-    # @raise [ArgumentError] if an invalid port number is given
-    # @return [Fixnum] the assigned port number
-    def port=(value)
-      warn(t('deprecated.port', :backtrace => caller[0..2].join("\n    ")))
-      raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
-      case protocol
-      when /http/i
-        self.http_port = value
-      when /pbc/i
-        self.pb_port = value
-      end
-    end
-
-    # Set the HTTP(S) port for the Riak endpoint
-    # @param [Fixnum] value The HTTP port number of the Riak endpoint
-    # @raise [ArgumentError] if an invalid port number is given
-    # @return [Fixnum] the assigned port number
-    def http_port=(value)
-      raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
-      @http_port = value
-    end
-
-    # Set the Protocol Buffers port for the Riak endpoint
-    # @param [Fixnum] value The Protocol Buffers port number of the Riak endpoint
-    # @raise [ArgumentError] if an invalid port number is given
-    # @return [Fixnum] the assigned port number
-    def pb_port=(value)
-      raise ArgumentError, t("port_invalid") unless (0..65535).include?(value)
-      @pb_port = value
-    end
-
-
-    # Sets the HTTP Basic Authentication credentials.
-    # @param [String] value an auth string in the form "user:password"
-    def basic_auth=(value)
-      raise ArgumentError, t("invalid_basic_auth") unless value.to_s.split(':').length === 2
-      @basic_auth = value
-    end
-
-    # Sets the desired HTTP backend
-    def http_backend=(value)
-      @http, @backend = nil, nil
-      @http_backend = value
-    end
-
-    # Sets the desired Protocol Buffers backend
-    def protobuffs_backend=(value)
-      @protobuffs, @backend = nil, nil
-      @protobuffs_backend = value
-    end
-
-    # Enables or disables SSL on the client to be utilized by the HTTP Backends
-    def ssl=(value)
-      @ssl_options = Hash === value ? value : {}
-      value ? ssl_enable : ssl_disable
-    end
-
-    # Checks if SSL is enabled for HTTP
-    def ssl_enabled?
-      protocol == 'https' || @ssl_options.present?
-    end
-
-    # Automatically detects and returns an appropriate HTTP backend.
-    # The HTTP backend is used internally by the Riak client, but can also
-    # be used to access the server directly.
-    # @return [HTTPBackend] the HTTP backend for this client
-    def http
-      @http ||= begin
-                  klass = self.class.const_get("#{@http_backend}Backend")
-                  if klass.configured?
-                    klass.new(self)
-                  else
-                    raise t('http_configuration', :backend => @http_backend)
-                  end
-                end
-    end
-
-    # Automatically detects and returns an appropriate Protocol
-    # Buffers backend.  The Protocol Buffers backend is used
-    # internally by the Riak client but can also be used to access the
-    # server directly.
-    # @return [ProtobuffsBackend] the Protocol Buffers backend for
-    #    this client
-    def protobuffs
-      @protobuffs ||= begin
-                        klass = self.class.const_get("#{@protobuffs_backend}ProtobuffsBackend")
-                        if klass.configured?
-                          klass.new(self)
-                        else
-                          raise t('protobuffs_configuration', :backend => @protobuffs_backend)
-                        end
-                      end
-    end
-
-    # Returns a backend for operations that are protocol-independent.
+    # Yields a backend for operations that are protocol-independent.
     # You can change which type of backend is used by setting the
     # {#protocol}.
-    # @return [HTTPBackend,ProtobuffsBackend] an appropriate client backend
-    def backend
-      @backend ||= case @protocol.to_s
-                   when /https?/i
-                     http
-                   when /pbc/i
-                     protobuffs
-                   end
+    # @yield [HTTPBackend,ProtobuffsBackend] an appropriate client backend
+    def backend(&block)
+      case @protocol.to_s
+      when /https?/i
+        http &block
+      when /pbc/i
+        protobuffs &block
+      end
+    end
+
+    # Sets basic HTTP auth on all nodes.
+    def basic_auth=(auth)
+      @nodes.each do |node|
+        node.basic_auth = auth
+      end
+      auth
     end
 
     # Retrieves a bucket from Riak.
@@ -285,34 +132,76 @@ module Riak
     # @return [Array<Bucket>] a list of buckets
     def buckets
       warn(t('list_buckets', :backtrace => caller.join("\n    "))) unless Riak.disable_list_keys_warnings
-      backend.list_buckets.map {|name| Bucket.new(self, name) }
+      backend do |b|
+        b.list_buckets.map {|name| Bucket.new(self, name) }
+      end
     end
     alias :list_buckets :buckets
+
+    # Set the client ID for this client. Must be a string or Fixnum value 0 =<
+    # value < MAX_CLIENT_ID.
+    # @param [String, Fixnum] value The internal client ID used by Riak to route responses
+    # @raise [ArgumentError] when an invalid client ID is given
+    # @return [String] the assigned client ID
+    def client_id=(value)
+      value = case value
+              when 0...MAX_CLIENT_ID, String
+                value
+              else
+                raise ArgumentError, t("invalid_client_id", :max_id => MAX_CLIENT_ID)
+              end
+
+      # Change all existing backend client IDs.
+      @protobuffs_pool.each do |pb|
+        pb.set_client_id value if backend.respond_to?(:set_client_id)
+      end
+      @client_id = value
+    end
+
+    def client_id
+      @client_id ||= begin
+                       backend do |b|
+                         if b.respond_to?(:get_client_id)
+                           b.get_client_id
+                         else
+                           make_client_id
+                         end
+                       end
+                     end
+    end
 
     # Deletes a file stored via the "Luwak" interface
     # @param [String] filename the key/filename to delete
     def delete_file(filename)
-      http.delete([204,404], http_paths[:luwak], escape(filename))
+      http do |h|
+        h.delete([204,404], h.node.http_paths[:luwak], escape(filename))
+      end
       true
     end
     
     # Delete an object. See Bucket#delete
     def delete_object(bucket, key, options = {})
-      backend.delete_object(bucket, key, options)
+      backend do |b|
+        b.delete_object(bucket, key, options)
+      end
     end
 
     # Checks whether a file exists in "Luwak".
     # @param [String] key the key to check
     # @return [true, false] whether the key exists in "Luwak"
     def file_exists?(key)
-      result = http.head([200,404], http_paths[:luwak], escape(key))
-      result[:code] == 200
+      http do |h|
+        result = h.head([200,404], h.node.http_paths[:luwak], escape(key))
+        result[:code] == 200
+      end
     end
     alias :file_exist? :file_exists?
 
     # Bucket properties. See Bucket#props
     def get_bucket_props(bucket)
-      backend.get_bucket_props bucket
+      backend do |b|
+        b.get_bucket_props bucket
+      end
     end
 
     # Retrieves a large file/IO object from Riak via the "Luwak"
@@ -328,13 +217,17 @@ module Riak
     # @yieldparam [String] chunk a single chunk of the object's data
     def get_file(filename, &block)
       if block_given?
-        http.get(200, http_paths[:luwak], escape(filename), &block)
+        http do |h|
+          h.get(200, h.node.http_paths[:luwak], escape(filename), &block)
+        end
         nil
       else
         tmpfile = LuwakFile.new(escape(filename))
         begin
-          response = http.get(200, http_paths[:luwak], escape(filename)) do |chunk|
-            tmpfile.write chunk
+          response = http do |h|
+            h.get(200, h.node.http_paths[:luwak], escape(filename)) do |chunk|
+              tmpfile.write chunk
+            end
           end
           tmpfile.content_type = response[:headers]['content-type'].first
           tmpfile
@@ -346,79 +239,162 @@ module Riak
 
     # Queries a secondary index on a bucket. See Bucket#get_index
     def get_index(bucket, index, query)
-      backend.get_index bucket, index, query
+      backend do |b|
+        b.get_index bucket, index, query
+      end
     end
     
     # Get an object. See Bucket#get
     def get_object(bucket, key, options = {})
-      backend.fetch_object(bucket, key, options)
+      backend do |b|
+        b.fetch_object(bucket, key, options)
+      end
+    end
+
+    # Yields an HTTPBackend.
+    def http(&block)
+      @http_pool.>> &block
+    end
+
+    # Sets the desired HTTP backend
+    def http_backend=(value)
+      @http, @backend = nil, nil
+      @http_backend = value
     end
 
     # @return [String] A representation suitable for IRB and debugging output.
     def inspect
-      "#<Riak::Client #{protocol}://#{host}:#{protocol == 'pbc' ? pb_port : http_port}>"
+      "#<Riak::Client #{nodes.inspect}>"
     end
 
     # Retrieves a list of keys in the given bucket. See Bucket#keys
     def list_keys(bucket, &block)
       if block_given?
-        backend.list_keys bucket, &block
+        backend do |b|
+          b.list_keys bucket, &block
+        end
       else
-        backend.list_keys bucket
+        backend do |b|
+          b.list_keys bucket
+        end
       end
-    end
-    
-    # Deprecated accessor for http_paths[:luwak]
-    def luwak
-      http_paths[:luwak]
-    end
-
-    # Deprecated accessor for http_paths[:luwak]
-    def luwak=(luwak)
-      http_paths[:luwak] = luwak
     end
 
     # Executes a mapreduce request. See MapReduce#run
     def mapred(mr, &block)
-      backend.mapred(mr, &block)
+      backend do |b|
+        b.mapred(mr, &block)
+      end
     end
 
-    # Pings the Riak server to check for liveness.
-    # @return [true,false] whether the Riak server is alive and reachable
+    # Creates a new HTTP backend.
+    # @return [HTTPBackend] An HTTP backend for a given node.
+    def new_http_backend
+      klass = self.class.const_get("#{@http_backend}Backend")
+      if klass.configured?
+        nodes = @nodes.select do |node|
+          node.http?
+        end
+
+        klass.new(self, nodes[rand nodes.size])
+      else
+        raise t('http_configuration', :backend => @http_backend)
+      end
+    end
+   
+    # Creates a new protocol buffers backend. 
+    # @return [ProtobuffsBackend] the Protocol Buffers backend for
+    #    a given node.
+    def new_protobuffs_backend
+      klass = self.class.const_get("#{@protobuffs_backend}ProtobuffsBackend")
+      if klass.configured?
+        nodes = @nodes.select do |node|
+          node.protobuffs?
+        end
+
+        klass.new(self, nodes[rand nodes.size])
+      else
+        raise t('protobuffs_configuration', :backend => @protobuffs_backend)
+      end
+    end
+
+    # @return [Node] An arbitrary Node.
+    def node
+      @nodes[rand @nodes.size]
+    end
+
+    # Pings the Riak cluster to check for liveness.
+    # @return [true,false] whether the Riak cluster is alive and reachable
     def ping
-      backend.ping
+      backend do |b|
+        b.ping
+      end
     end
     
-    # Deprecated accessor for http_paths[:prefix]
-    def prefix
-      http_paths[:prefix]
+    # Yields a protocol buffers backend.
+    def protobuffs(&block)
+      @protobuffs_pool.>> &block
+    end
+    
+    # Sets the desired Protocol Buffers backend
+    def protobuffs_backend=(value)
+      @protobuffs, @backend = nil, nil
+      @protobuffs_backend = value
     end
 
-    # Deprecated accessor http_paths[:prefix]
-    def prefix=(prefix)
-      http_paths[:prefix] = prefix
+    # Set the protocol of the Riak endpoint.  Value must be in the
+    # Riak::Client::PROTOCOLS array.
+    # @raise [ArgumentError] if the protocol is not in PROTOCOLS
+    # @return [String] the protocol being assigned
+    def protocol=(value)
+      unless PROTOCOLS.include?(value.to_s)
+        raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', '))
+      end
+      
+      case value
+      when 'https'
+        nodes.each do |node| 
+          node.ssl_options ||= {}
+        end
+      when 'http'
+        nodes.each do |node|
+          node.ssl_options = nil
+        end
+      end
+      
+      #TODO
+      @backend = nil
+      @protocol = value
     end
 
     # Reloads the object from Riak.
     def reload_object(object, options = {})
-      backend.reload_object(object, options)
+      backend do |b|
+        b.reload_object(object, options)
+      end
     end
     
-    # Deprecated accessor for http_paths[:solr]
-    def solr
-      http_paths[:solr]
-    end
-
-    # Deprecated accessor for http_paths[:solr]
-    def solr=(solr)
-      http_paths[:solr] = solr
-    end
-
     # Sets the properties on a bucket. See Bucket#props=
     def set_bucket_props(bucket, properties)
-      backend.set_bucket_props(bucket, properties)
+      backend do |b|
+        b.set_bucket_props(bucket, properties)
+      end
     end
-    
+
+    # Enables or disables SSL on all nodes, for HTTP backends.
+    def ssl=(value)
+      @nodes.each do |node|
+        node.ssl = value
+      end
+
+      if value
+        @protocol = 'https'
+      else
+        @protocol = 'http'
+      end
+      value
+    end
+
     # Exposes a {Stamp} object for use in generating unique
     # identifiers.
     # @return [Stamp] an ID generator
@@ -441,10 +417,14 @@ module Riak
     def store_file(*args)
       data, content_type, filename = args.reverse
       if filename
-        http.put(204, http_paths[:luwak], escape(filename), data, {"Content-Type" => content_type})
+        http do |h|
+          h.put(204, h.node.http_paths[:luwak], escape(filename), data, {"Content-Type" => content_type})
+        end
         filename
       else
-        response = http.post(201, http_paths[:luwak], data, {"Content-Type" => content_type})
+        response = http do |h|
+          h.post(201, h.node.http_paths[:luwak], data, {"Content-Type" => content_type})
+        end
         response[:headers]["location"].first.split("/").last
       end
     end
@@ -452,7 +432,9 @@ module Riak
     # Stores an object in Riak.
     def store_object(object, options = {})
       params = {:returnbody => true}.merge(options)
-      backend.store_object(object, params)
+      backend do |b|
+        b.store_object(object, params)
+      end
     end
 
     private
@@ -461,18 +443,15 @@ module Riak
     end
 
     def ssl_enable
-      self.protocol = 'https'
-      @ssl_options[:pem] = File.read(@ssl_options[:pem_file]) if @ssl_options[:pem_file]
-      @ssl_options[:verify_mode] ||= "peer" if @ssl_options.stringify_keys.any? {|k,v| %w[pem ca_file ca_path].include?(k)}
-      @ssl_options[:verify_mode] ||= "none"
-      raise ArgumentError.new(t('invalid_ssl_verify_mode', :invalid => @ssl_options[:verify_mode])) unless %w[none peer].include?(@ssl_options[:verify_mode])
-
-      @ssl_options
+      @nodes.each do |n|
+        n.ssl_enable
+      end
     end
 
     def ssl_disable
-      self.protocol = 'http'
-      @ssl_options  = nil
+      @nodes.each do |n|
+        n.ssl_disable
+      end
     end
 
     # @private

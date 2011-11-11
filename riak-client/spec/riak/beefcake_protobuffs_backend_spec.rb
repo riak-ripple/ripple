@@ -4,7 +4,8 @@ require 'riak/client/beefcake/messages'
 describe Riak::Client::BeefcakeProtobuffsBackend do
   before :each do
     @client = Riak::Client.new
-    @backend = Riak::Client::BeefcakeProtobuffsBackend.new(@client)
+    @node = @client.nodes.first
+    @backend = Riak::Client::BeefcakeProtobuffsBackend.new(@client, @node)
     @backend.instance_variable_set(:@server_config, {})
   end
 
@@ -42,7 +43,8 @@ end
 describe Riak::Client::BeefcakeProtobuffsBackend, '#mapred' do
   before(:each) do
     @client = Riak::Client.new
-    @backend = Riak::Client::BeefcakeProtobuffsBackend.new(@client)
+    @node = @client.nodes.first
+    @backend = Riak::Client::BeefcakeProtobuffsBackend.new(@client, @node)
     @backend.instance_variable_set(:@server_config, {})
   end
 

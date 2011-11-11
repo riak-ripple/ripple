@@ -28,12 +28,18 @@ module Riak
 
       # The Riak::Client that uses this backend
       attr_reader :client
+      
+      # The Riak::Client::Node that uses this backend
+      attr_reader :node
 
       # Create an HTTPBackend for the Riak::Client.
-      # @param [Client] client the client
-      def initialize(client)
+      # @param [Client] The client
+      # @param [Node] The node we're connecting to.
+      def initialize(client, node)
         raise ArgumentError, t("client_type", :client => client) unless Client === client
+        raise ArgumentError, t("node_type", :node => node) unless Node === node
         @client = client
+        @node = node
       end
 
       # Pings the server

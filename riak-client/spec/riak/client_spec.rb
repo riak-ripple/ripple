@@ -2,11 +2,9 @@ require 'spec_helper'
 
 describe Riak::Client do
   describe "when initializing" do
-    it "should default to the local interface on port 8098 (8087 for protobuffs)" do
+    it "should default a single local node" do
       client = Riak::Client.new
-      client.host.should == "127.0.0.1"
-      client.http_port.should == 8098
-      client.pb_port.should == 8087
+      client.nodes.should == [Riak::Client::Node.new(client)]
     end
 
     it "should accept a protocol" do
@@ -16,17 +14,20 @@ describe Riak::Client do
 
     it "should accept a host" do
       client = Riak::Client.new :host => "riak.basho.com"
-      client.host.should == "riak.basho.com"
+      client.nodes.size.should == 1
+      client.nodes.first.host.should == "riak.basho.com"
     end
 
     it "should accept an HTTP port" do
       client = Riak::Client.new :http_port => 9000
-      client.http_port.should == 9000
+      client.nodes.size.should == 1
+      client.nodes.first.http_port.should == 9000
     end
 
     it "should accept a Protobuffs port" do
       client = Riak::Client.new :pb_port => 9000
-      client.pb_port.should == 9000
+      client.nodes.size.should == 1
+      client.nodes.first.pb_port.should == 9000
     end
 
     it "should warn on setting :port" do
@@ -38,7 +39,8 @@ describe Riak::Client do
 
     it "should accept basic_auth" do
       client = Riak::Client.new :basic_auth => "user:pass"
-      client.basic_auth.should eq("user:pass")
+      client.nodes.size.should == 1
+      client.nodes.first.basic_auth.should eq("user:pass")
     end
 
     it "should accept a client ID" do
@@ -52,34 +54,22 @@ describe Riak::Client do
 
     it "should accept a path prefix" do
       client = Riak::Client.new(:prefix => "/jiak/")
-      client.prefix.should == "/jiak/"
-    end
-
-    it "should default the prefix to /riak/ if not specified" do
-      Riak::Client.new.prefix.should == "/riak/"
+      client.nodes.first.http_paths[:prefix].should == "/jiak/"
     end
 
     it "should accept a mapreduce path" do
       client = Riak::Client.new(:mapred => "/mr")
-      client.http_paths[:mapred].should == "/mr"
-    end
-
-    it "should default the mapreduce path to /mapred if not specified" do
-      Riak::Client.new.http_paths[:mapred].should == "/mapred"
+      client.nodes.first.http_paths[:mapred].should == "/mr"
     end
 
     it "should accept a luwak path" do
       client = Riak::Client.new(:luwak => "/beans")
-      client.http_paths[:luwak].should == "/beans"
-    end
-
-    it "should default the luwak path to /luwak if not specified" do
-      Riak::Client.new.http_paths[:luwak].should == "/luwak"
+      client.nodes.first.http_paths[:luwak].should == "/beans"
     end
 
     it "should accept a solr path" do
       client = Riak::Client.new(:solr => "/solar")
-      client.http_paths[:solr].should == "/solar"
+      client.nodes.first.http_paths[:solr].should == "/solar"
     end
   end
 
@@ -104,84 +94,16 @@ describe Riak::Client do
         lambda { @client.protocol = 'invalid-protocol' }.should(
                                                            raise_error(ArgumentError, /^'invalid-protocol' is not a valid protocol/))
       end
-
-      it "should reset the unified backend when changing the protocol" do
-        old = @client.backend
-        @client.protocol = "pbc"
-        old.should_not eq(@client.backend)
-      end
-    end
-
-    describe "setting the host" do
-      it "should allow setting the host" do
-        @client.should respond_to(:host=)
-        @client.host = "riak.basho.com"
-        @client.host.should == "riak.basho.com"
-      end
-
-      it "should require the host to be an IP or hostname" do
-        [238472384972, ""].each do |invalid|
-          lambda { @client.host = invalid }.should raise_error(ArgumentError)
-        end
-        ["127.0.0.1", "10.0.100.5", "localhost", "otherhost.local", "riak.basho.com"].each do |valid|
-          lambda { @client.host = valid }.should_not raise_error
-        end
-      end
-    end
-
-    [:http, :pb].each do |protocol|
-      describe "setting the #{protocol} port" do
-        it "should allow setting the #{protocol} port" do
-          @client.should respond_to("#{protocol}_port=")
-          @client.send("#{protocol}_port=", 9000)
-          @client.send("#{protocol}_port").should == 9000
-        end
-
-        it "should require the port to be a valid number" do
-          [-1,65536,"foo"].each do |invalid|
-            lambda { @client.send("#{protocol}_port=",invalid) }.should raise_error(ArgumentError)
-          end
-          [0,1,65535,8098].each do |valid|
-            lambda { @client.send("#{protocol}_port=", valid) }.should_not raise_error
-          end
-        end
-      end
-    end
-
-    describe "setting the port" do
-      before do
-        @client.stub!(:warn).and_return(true)
-      end
-      it "should raise a deprecation warning" do
-        @client.should_receive(:warn).and_return(true)
-        @client.port = 9000
-      end
-
-      it "should set the port for the selected protocol" do
-        @client.protocol = "pbc"
-        @client.port = 9000
-        @client.pb_port.should == 9000
-      end
     end
 
     describe "setting http auth" do
       it "should allow setting basic_auth" do
         @client.should respond_to(:basic_auth=)
         @client.basic_auth = "user:pass"
-        @client.basic_auth.should eq("user:pass")
+        @client.nodes.each do |node|
+          node.basic_auth.should eq("user:pass")
+        end
       end
-
-      it "should require that basic auth splits into two even parts" do
-        lambda { @client.basic_auth ="user" }.should raise_error(ArgumentError, "basic auth must be set using 'user:pass'")
-      end
-    end
-
-    it "should allow setting the prefix" do
-      @client.http_paths.should be_kind_of(Hash)
-      @client.http_paths.include?(:prefix).should == true
-      @client.should respond_to(:prefix=)
-      @client.prefix = "/another-prefix"
-      @client.prefix.should == "/another-prefix"
     end
 
     describe "setting the client id" do
@@ -207,16 +129,20 @@ describe Riak::Client do
 
     it "should choose the selected backend" do
       @client.http_backend = :NetHTTP
-      @client.http.should be_instance_of(Riak::Client::NetHTTPBackend)
+      @client.http do |h|
+        h.should be_instance_of(Riak::Client::NetHTTPBackend)
+      end
 
       @client = Riak::Client.new
       @client.http_backend = :Excon
-      @client.http.should be_instance_of(Riak::Client::ExconBackend)
+      @client.http do |h|
+        h.should be_instance_of(Riak::Client::ExconBackend)
+      end
     end
 
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::NetHTTPBackend.should_receive(:configured?).and_return(false)
-      lambda { @client.http }.should raise_error
+      lambda { @client.http { |x| } }.should raise_error
     end
   end
 
@@ -227,12 +153,14 @@ describe Riak::Client do
 
     it "should choose the selected backend" do
       @client.protobuffs_backend = :Beefcake
-      @client.protobuffs.should be_instance_of(Riak::Client::BeefcakeProtobuffsBackend)
+      @client.protobuffs do |p|
+        p.should be_instance_of(Riak::Client::BeefcakeProtobuffsBackend)
+      end
     end
 
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::BeefcakeProtobuffsBackend.should_receive(:configured?).and_return(false)
-      lambda { @client.protobuffs }.should raise_error
+      lambda { @client.protobuffs { |x| } }.should raise_error
     end
   end
 
@@ -244,13 +172,17 @@ describe Riak::Client do
     it "should use HTTP when the protocol is http or https" do
       %w[http https].each do |p|
         @client.protocol = p
-        @client.backend.should be_kind_of(Riak::Client::HTTPBackend)
+        @client.backend do |b|
+          b.should be_kind_of(Riak::Client::HTTPBackend)
+        end
       end
     end
 
     it "should use Protobuffs when the protocol is pbc" do
       @client.protocol = "pbc"
-      @client.backend.should be_kind_of(Riak::Client::ProtobuffsBackend)
+      @client.backend do |b|
+        b.should be_kind_of(Riak::Client::ProtobuffsBackend)
+      end
     end
   end
 
@@ -258,7 +190,7 @@ describe Riak::Client do
     before :each do
       @client = Riak::Client.new
       @backend = mock("Backend")
-      @client.stub!(:backend).and_return(@backend)
+      @client.stub!(:backend).and_yield(@backend)
     end
 
     it "should return a bucket object" do
@@ -282,7 +214,7 @@ describe Riak::Client do
     before do
       @client = Riak::Client.new
       @backend = mock("Backend")
-      @client.stub!(:backend).and_return(@backend)
+      @client.stub!(:backend).and_yield(@backend)
     end
 
     after { Riak.disable_list_keys_warnings = true }
@@ -309,7 +241,8 @@ describe Riak::Client do
       before :each do
         @client = Riak::Client.new
         @http = mock(Riak::Client::HTTPBackend)
-        @client.stub!(:http).and_return(@http)
+        @http.stub!(:node).and_return(@client.node)
+        @client.stub!(:http).and_yield(@http)
       end
 
       it "should store the file in Luwak and return the key/filename when no filename is given" do
@@ -327,7 +260,8 @@ describe Riak::Client do
       before :each do
         @client = Riak::Client.new
         @http = mock(Riak::Client::HTTPBackend)
-        @client.stub!(:http).and_return(@http)
+        @http.stub!(:node).and_return(@client.node)
+        @client.stub!(:http).and_yield(@http)
         @http.should_receive(:get).with(200, "/luwak", "greeting.txt").and_yield("Hello,").and_yield(" world!").and_return({:code => 200, :headers => {"content-type" => ["text/plain"]}})
       end
 
@@ -353,27 +287,35 @@ describe Riak::Client do
     it "should delete a file" do
       @client = Riak::Client.new
       @http = mock(Riak::Client::HTTPBackend)
-      @client.stub!(:http).and_return(@http)
+      @http.stub!(:node).and_return(@client.nodes.first)
+      @client.stub!(:http).and_yield(@http)
       @http.should_receive(:delete).with([204,404], "/luwak", "greeting.txt")
       @client.delete_file("greeting.txt")
     end
 
     it "should return true if the file exists" do
       @client = Riak::Client.new
-      @client.http.should_receive(:head).and_return(:code => 200)
+      @http = mock(Riak::Client::HTTPBackend)
+      @http.stub!(:node).and_return(@client.nodes.first)
+      @client.stub!(:http).and_yield(@http)
+      @http.should_receive(:head).and_return(:code => 200)
       @client.file_exists?("foo").should be_true
     end
 
     it "should return false if the file doesn't exist" do
       @client = Riak::Client.new
-      @client.http.should_receive(:head).and_return(:code => 404)
+      @http = mock(Riak::Client::HTTPBackend)
+      @http.stub!(:node).and_return(@client.nodes.first)
+      @client.stub!(:http).and_yield(@http)
+      @http.should_receive(:head).and_return(:code => 404)
       @client.file_exists?("foo").should be_false
     end
 
     it "should escape the filename when storing, retrieving or deleting files" do
       @client = Riak::Client.new
       @http = mock(Riak::Client::HTTPBackend)
-      @client.stub!(:http).and_return(@http)
+      @client.stub!(:http).and_yield(@http)
+      @http.stub!(:node).and_return(@client.nodes.first)
       # Delete escapes keys
       @http.should_receive(:delete).with([204,404], "/luwak", "docs%2FA%20Big%20PDF.pdf")
       @client.delete_file("docs/A Big PDF.pdf")
@@ -399,12 +341,12 @@ describe Riak::Client do
     end
 
     it "should not have ssl options by default" do
-      @client.ssl_options.should be_nil
+      @client.nodes.first.ssl_options.should be_nil
     end
 
     it "should have a blank hash for ssl options if the protocol is set to https" do
       @client.protocol = 'https'
-      @client.ssl_options.should be_a(Hash)
+      @client.nodes.first.ssl_options.should be_a(Hash)
     end
 
     # The api should have an ssl= method for setting up all of the ssl
@@ -416,18 +358,18 @@ describe Riak::Client do
       @client.should_not respond_to(:ssl)
     end
 
-    it "should now allow writing ssl options via ssl_options=" do
+    it "should not allow writing ssl options via ssl_options=" do
       @client.should_not respond_to(:ssl_options=)
     end
 
     it "should allow setting ssl to true" do
       @client.ssl = true
-      @client.ssl_options[:verify_mode].should eq('none')
+      @client.nodes.first.ssl_options[:verify_mode].should eq('none')
     end
 
     it "should allow setting ssl options as a hash" do
       @client.ssl = {:verify_mode => "peer"}
-      @client.ssl_options[:verify_mode].should eq('peer')
+      @client.nodes.first.ssl_options[:verify_mode].should eq('peer')
     end
 
     it "should set the protocol to https when setting ssl to true" do
@@ -443,9 +385,9 @@ describe Riak::Client do
 
     it "should should clear ssl options when setting ssl to false" do
       @client.ssl = true
-      @client.ssl_options.should_not be_nil
+      @client.nodes.first.ssl_options.should_not be_nil
       @client.ssl = false
-      @client.ssl_options.should be_nil
+      @client.nodes.first.ssl_options.should be_nil
     end
 
     it "should set the protocol to https when setting ssl options" do
@@ -455,12 +397,12 @@ describe Riak::Client do
 
     it "should allow setting the verify_mode to none" do
       @client.ssl = {:verify_mode => "none"}
-      @client.ssl_options[:verify_mode].should eq("none")
+      @client.nodes.first.ssl_options[:verify_mode].should eq("none")
     end
 
     it "should allow setting the verify_mode to peer" do
       @client.ssl = {:verify_mode => "peer"}
-      @client.ssl_options[:verify_mode].should eq("peer")
+      @client.nodes.first.ssl_options[:verify_mode].should eq("peer")
     end
 
     it "should not allow setting the verify_mode to anything else" do
@@ -469,50 +411,44 @@ describe Riak::Client do
 
     it "should default verify_mode to none" do
       @client.ssl = true
-      @client.ssl_options[:verify_mode].should eq("none")
-    end
-
-    it "should let the backend know if ssl is enabled" do
-      @client.should_not be_ssl_enabled
-      @client.ssl = true
-      @client.should be_ssl_enabled
+      @client.nodes.first.ssl_options[:verify_mode].should eq("none")
     end
 
     it "should allow setting the pem" do
       @client.ssl = {:pem => 'i-am-a-pem'}
-      @client.ssl_options[:pem].should eq('i-am-a-pem')
+      @client.nodes.first.ssl_options[:pem].should eq('i-am-a-pem')
     end
 
     it "should set them pem from the contents of pem_file" do
       filepath = File.expand_path(File.join(File.dirname(__FILE__), '../fixtures/test.pem'))
       @client.ssl = {:pem_file => filepath}
-      @client.ssl_options[:pem].should eq("i-am-a-pem\n")
+      @client.nodes.first.ssl_options[:pem].should eq("i-am-a-pem\n")
     end
 
     it "should allow setting the pem_password" do
       @client.ssl = {:pem_password => 'pem-pass'}
-      @client.ssl_options[:pem_password].should eq('pem-pass')
+      @client.nodes.first.ssl_options[:pem_password].should eq('pem-pass')
     end
 
     it "should allow setting the ca_file" do
       @client.ssl = {:ca_file => '/path/to/ca.crt'}
-      @client.ssl_options[:ca_file].should eq('/path/to/ca.crt')
+      @client.nodes.first.ssl_options[:ca_file].should eq('/path/to/ca.crt')
     end
 
     it "should allow setting the ca_path" do
       @client.ssl = {:ca_path => '/path/to/certs/'}
-      @client.ssl_options[:ca_path].should eq('/path/to/certs/')
+      @client.nodes.first.ssl_options[:ca_path].should eq('/path/to/certs/')
     end
 
     %w[pem ca_file ca_path].each do |option|
       it "should default the verify_mode to peer when setting the #{option}" do
         @client.ssl = {option.to_sym => 'test-data'}
-        @client.ssl_options[:verify_mode].should eq("peer")
+        @client.nodes.first.ssl_options[:verify_mode].should eq("peer")
       end
 
       it "should allow setting the verify mode when setting the #{option}" do
         @client.ssl = {option.to_sym => 'test-data', :verify_mode => "none"}
-        @client.ssl_options[:verify_mode].should eq("none")
+        @client.nodes.first.ssl_options[:verify_mode].should eq("none")
       end
     end
   end

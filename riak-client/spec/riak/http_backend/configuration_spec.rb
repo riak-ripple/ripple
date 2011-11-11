@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Riak::Client::HTTPBackend::Configuration do
   let(:client){ Riak::Client.new }
-  subject { Riak::Client::HTTPBackend.new(client) }
+  let(:node){ client.node }
+  subject { Riak::Client::HTTPBackend.new(client, node) }
   let(:uri){ URI.parse("http://127.0.0.1:8098/") }
 
   context "generating resource URIs" do
@@ -210,14 +211,14 @@ describe Riak::Client::HTTPBackend::Configuration do
       subject.send(resource).should == "/path"
     end
 
-    it "should fallback to client.http_paths[:#{alternate}] if the #{resource} resource is not found" do
+    it "should fallback to node.http_paths[:#{alternate}] if the #{resource} resource is not found" do
       subject.should_receive(:get).with(200, uri).and_return(:headers => {'link' => ['</>; rel="top"']})
-      subject.send(resource).should == client.http_paths[alternate]
+      subject.send(resource).should == node.http_paths[alternate]
     end
 
-    it "should fallback to client.http_paths[:#{alternate}] if request fails" do
+    it "should fallback to node.http_paths[:#{alternate}] if request fails" do
       subject.should_receive(:get).with(200, uri).and_raise(Riak::HTTPFailedRequest.new(:get, 200, 404, {}, ""))
-      subject.send(resource).should == client.http_paths[alternate]
+      subject.send(resource).should == node.http_paths[alternate]
     end
   end
 

@@ -24,7 +24,8 @@ else
 
     before :each do
       @client = Riak::Client.new(:http_port => $mock_server.port, :http_backend => :Excon) # Point to our mock
-      @backend = @client.http
+      @node = @client.node
+      @backend = @client.new_http_backend
       @_mock_set = false
     end
 

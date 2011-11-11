@@ -21,7 +21,7 @@ module Riak
 
       private
       def perform(method, uri, headers, expect, data=nil, &block)
-        configure_ssl if @client.ssl_enabled?
+        configure_ssl if @node.ssl_enabled?
 
         params = {
           :method => method.to_s.upcase,
@@ -57,8 +57,8 @@ module Riak
       end
 
       def configure_ssl
-        Excon.ssl_verify_peer = @client.ssl_options[:verify_mode].to_s === "peer"
-        Excon.ssl_ca_path     = @client.ssl_options[:ca_path] if @client.ssl_options[:ca_path]
+        Excon.ssl_verify_peer = @node.ssl_options[:verify_mode].to_s === "peer"
+        Excon.ssl_ca_path     = @node.ssl_options[:ca_path] if @node.ssl_options[:ca_path]
       end
     end
   end

@@ -140,13 +140,13 @@ module Riak
         end
 
         def basic_auth_header
-          @client.basic_auth ? {"Authorization" => "Basic #{Base64::encode64(@client.basic_auth)}"} : {}
+          @node.basic_auth ? {"Authorization" => "Basic #{Base64::encode64(@node.basic_auth)}"} : {}
         end
 
         # @return [URI] The calculated root URI for the Riak HTTP endpoint
         def root_uri
-          protocol = client.ssl_enabled? ? "https" : "http"
-          URI.parse("#{protocol}://#{client.host}:#{client.http_port}")
+          protocol = node.ssl_enabled? ? "https" : "http"
+          URI.parse("#{protocol}://#{node.host}:#{node.http_port}")
         end
 
         # Calculates an absolute URI from a relative path specification
