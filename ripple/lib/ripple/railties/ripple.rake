@@ -77,13 +77,13 @@ namespace :db do
   task :stop => 'riak:stop'
 
   desc "Creates the database(s) and loads the seed data."
-  task :setup => ['db:create', 'db:seed']
+  task :setup => ['db:create', 'db:start', 'db:seed']
 
   desc "Drops and recreates the database(s) for the current environment."
   task :reset => ['db:drop', 'db:setup']
 
   desc "Loads the seed data in to the current environment"
-  task :seed => ['db:start', 'environment'] do
+  task :seed => :environment do
     Rails.application.load_seed
   end
 end
