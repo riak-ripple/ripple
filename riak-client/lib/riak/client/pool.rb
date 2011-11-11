@@ -42,7 +42,7 @@ module Riak
       end
 
       # Acquire an element of the pool. Yields the object.
-      def >>
+      def take
         unless block_given?
           raise ArgumentError, "block required"
         end
@@ -67,6 +67,7 @@ module Riak
         end
         r
       end
+      alias >> take
 
       # Iterate over a snapshot of the set. May need to poll to complete.
       # Expensive!
@@ -93,6 +94,10 @@ module Riak
           end
           sleep poll_interval
         end
+      end
+
+      def size
+        @pool.size
       end
     end
   end
