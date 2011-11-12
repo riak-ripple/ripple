@@ -175,7 +175,7 @@ describe Riak::Node, :test_server => false, :slow => true do
     it "should read the console log" do
       if subject.version >= "1.0.0"
         subject.read_console_log(:debug, :info, :notice).should_not be_empty
-        subject.read_console_log(:debug..:emergency).should_not be_empty
+        subject.read_console_log('debug'..'emergency').should_not be_empty
         subject.read_console_log(:info).should_not be_empty
         subject.read_console_log(:foo).should be_empty
       end

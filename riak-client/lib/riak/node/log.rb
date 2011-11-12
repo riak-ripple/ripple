@@ -23,8 +23,8 @@ module Riak
     def expand_log_level(level)
       case level
       when Range
-        first = LAGER_LEVELS.index(level.begin) || 0
-        last = LAGER_LEVELS.index(level.end) || -1
+        first = LAGER_LEVELS.index(level.begin.to_sym) || 0
+        last = LAGER_LEVELS.index(level.end.to_sym) || -1
         LAGER_LEVELS[first..last]
       when Symbol
         level
