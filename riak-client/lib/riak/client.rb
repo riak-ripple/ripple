@@ -30,6 +30,9 @@ module Riak
     # Regexp for validating hostnames, lifted from uri.rb in Ruby 1.8.6
     HOST_REGEX = /^(?:(?:(?:[a-zA-Z\d](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.)*(?:[a-zA-Z](?:[-a-zA-Z\d]*[a-zA-Z\d])?)\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\])$/n
 
+    # Valid constructor options.
+    VALID_OPTIONS = [:protocol, :nodes, :client_id, :http_backend, :protobuffs_backend] | Node::VALID_OPTIONS
+
     # @return [String] The protocol to use for the Riak endpoint
     attr_reader :protocol
 
@@ -65,6 +68,10 @@ module Riak
     def initialize(options={})
       if options.include? :port
         warn(t('deprecated.port', :backtrace => caller[0..2].join("\n    ")))
+      end
+
+      unless (evil = options.keys - VALID_OPTIONS).empty?
+        raise ArgumentError, "#{evil.inspect} are not valid options for Client.new"
       end
 
       @nodes = (options[:nodes] || []).map do |n|
