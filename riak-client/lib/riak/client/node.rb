@@ -6,6 +6,8 @@ module Riak
       include Util::Translation
       include Util::Escape
 
+      VALID_OPTIONS = [:host, :http_port, :pb_port, :http_paths, :prefix, :mapred, :luwak, :solr, :port, :basic_auth, :ssl_options, :ssl]
+
       # What IP address or hostname does this node listen on?
       attr_accessor :host
       # Which port does the HTTP interface listen on?
@@ -23,7 +25,7 @@ module Riak
         @ssl = opts[:ssl]
         @ssl_options = opts[:ssl_options]
         @host = opts[:host] || "127.0.0.1"
-        @http_port = opts[:http_port] || 8098
+        @http_port = opts[:http_port] || opts[:port] || 8098
         @pb_port = opts[:pb_port] || 8087
         @http_paths = {
           :prefix => opts[:prefix] || "/riak/",
