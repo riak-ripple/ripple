@@ -1,32 +1,37 @@
+require 'thread'
+
 module Riak
   class Client
+    # A re-entrant thread-safe resource pool. Generates new resources on
+    # demand.
+    # @private
     class Pool
-      # A re-entrant thread-safe resource pool. Generates new resources on
-      # demand.
-      
-      require 'thread'
-
       attr_accessor :pool
       attr_accessor :open
       attr_accessor :close
-      
-      class Element
-        # An element of the pool. Comprises an object with an owning thread.
-        
-        attr_accessor :object
-        attr_accessor :owner
 
-        def initialize(object, owner = nil)
-          @object = object
-          @owner = owner
-        end
-
+      # An element of the pool. Comprises an object with an owning
+      # thread.
+      # @private
+      class Element < Struct.new(:object, :owner)
+        # Claims this element of the pool for the current Thread.
         def lock
-          @owner = Thread.current
+          self.owner = Thread.current
         end
 
+        # Releases this element of the pool from the current Thread.
         def unlock
-          @owner = nil
+          self.owner = nil
+        end
+
+        # Is this element available for use?
+        def unlocked?
+          owner.nil?
+        end
+
+        # Is this element locked/claimed?
+        def locked?
+          !available?
         end
       end
 
@@ -36,12 +41,19 @@ module Riak
         @open = open
         @close = close
         @lock = Mutex.new
-
+        @iterator = Mutex.new
+        @element_released = ConditionVariable.new
         # Pool is a hash of thread IDs to an array of objects in the pool.
         @pool = Set.new
       end
 
-      # Acquire an element of the pool. Yields the object.
+      # Acquire an element of the pool. Yields the object. If all
+      # elements are claimed, it will create another one.
+      # @yield [obj] a block that will perform some action with the
+      #   element of the pool
+      # @yieldparam [Object] obj an element of the pool, as created by
+      #   the {#open} block
+      # @private
       def take
         unless block_given?
           raise ArgumentError, "block required"
@@ -51,11 +63,11 @@ module Riak
         begin
           e = nil
           @lock.synchronize do
-            if e = pool.find { |e| not e.owner }
-              # An existing element is unlocked
-            else
-              # All lines are busy.
-              pool << (e = Element.new(@open.call))
+            # The pool is lenient and will open as needed.
+            e = pool.find { |e| e.unlocked? }
+            unless e
+              e = Element.new(@open.call)
+              pool << e
             end
             e.lock
           end
@@ -64,40 +76,39 @@ module Riak
         ensure
           # Unlock
           e.unlock
+          @element_released.signal
         end
         r
       end
       alias >> take
 
-      # Iterate over a snapshot of the set. May need to poll to complete.
-      # Expensive!
-      def each(poll_interval = 0.05)
+      # Iterate over a snapshot of the pool. This may block the current
+      # thread until elements are released by other threads.
+      # @private
+      def each
         targets = @pool.to_a
         unlocked = []
-        until targets.empty?
-          @lock.synchronize do
-            unlocked, targets = targets.partition do |e|
-              if e.owner
-                false
-              else
-                e.lock
-                true
+        @iterator.synchronize do
+          until targets.empty?
+            @lock.synchronize do
+              unlocked, targets = targets.partition {|e| e.unlocked? }
+              unlocked.each {|e| e.lock }
+            end
+
+            unlocked.each do |e|
+              begin
+                yield e.object
+              ensure
+                e.unlock
               end
             end
+            @element_released.wait(@iterator) unless targets.empty?
           end
-          unlocked.each do |e|
-            begin
-              yield e.object
-            ensure
-              e.unlock
-            end
-          end
-          sleep poll_interval
         end
       end
 
       def size
-        @pool.size
+        @lock.synchronize { @pool.size }
       end
     end
   end

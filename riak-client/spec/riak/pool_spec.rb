@@ -101,6 +101,34 @@ describe Riak::Client::Pool do
         e.object.first
       end.to_set.should == threads.to_set
     end
+    
+    it 'iterates over a snapshot of all connections, even ones in use' do
+      started = Queue.new
+      n = 30
+      threads = (0..n).map do
+        Thread.new do
+          psleep = 0.75 * rand # up to 50ms sleep
+          subject.take do |a|
+            started << 1
+            a << rand
+            sleep psleep
+          end
+        end
+      end
+
+      n.times { started.pop }
+      touched = []
+
+      subject.each do |e|
+        touched << e
+      end
+
+      threads.each do |t|
+        t.join
+      end
+
+      touched.should be_all {|item| subject.pool.find {|e| e.object == item } }
+    end
 
     it 'stress test', :slow => true do
       n = 100
