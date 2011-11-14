@@ -291,4 +291,48 @@ describe Riak::Client::HTTPBackend do
       @backend.update_search_index(nil, 'postbody')
     end
   end
+  context "Luwak" do
+    before { @backend.send(:server_config)[:luwak_wm_file] = '/luwak' }
+    context "fetching a file" do
+      before do
+
+        @backend.should_receive(:get).with(200, @backend.luwak_path("greeting.txt")).and_yield("Hello,").and_yield(" world!").and_return({:code => 200, :headers => {"content-type" => ["text/plain"]}})
+      end
+
+      it "should return a tempfile when no block is given" do
+        file = @backend.get_file("greeting.txt")
+        file.open {|f| f.read.should == "Hello, world!" }
+      end
+
+      it "should expose the original key and content-type on the temporary file" do
+        file = @backend.get_file("greeting.txt")
+        file.original_filename.should == 'greeting.txt'
+        file.content_type.should == 'text/plain'
+      end
+
+      it "should yield chunks of the file to the block and return nil" do
+        string = ""
+        result = @backend.get_file("greeting.txt"){|chunk| string << chunk }
+        result.should be_nil
+        string.should == "Hello, world!"
+      end
+    end
+
+    context "storing a file" do
+      it "should store a file with the given filename" do
+        @backend.should_receive(:put).with(204, @backend.luwak_path("greeting.txt"), anything, {"Content-Type" => "text/plain"}).and_return({:code => 204, :headers => {}})
+        @backend.store_file("greeting.txt", "text/plain", "Hello, world").should == 'greeting.txt'
+      end
+
+      it "should store a file and return the key/filename when none is given" do
+        @backend.should_receive(:post).with(201, @backend.luwak_path(nil), anything, {"Content-Type" => "text/plain"}).and_return({:code => 201, :headers => {'location' => ["/luwak/123456789"]}})
+        @backend.store_file("text/plain", "Hello, world").should == '123456789'
+      end
+    end
+
+    it "should detect whether a file exists" do
+      @backend.should_receive(:head).with([200,404], @backend.luwak_path("foo")).and_return({:code => 200})
+      @backend.file_exists?("foo").should be_true
+    end
+  end
 end

@@ -28,7 +28,7 @@ module Riak
 
       # The Riak::Client that uses this backend
       attr_reader :client
-      
+
       # The Riak::Client::Node that uses this backend
       attr_reader :node
 
@@ -251,6 +251,69 @@ module Riak
       # @see Client#index
       def update_search_index(index, updates)
         post(200, solr_update_path(index), updates, {'Content-Type' => 'text/xml'})
+      end
+
+      # (Luwak) Fetches a file from the Luwak large-file interface.
+      # @param [String] filename the name of the file
+      # @yield [chunk] A block which will receive individual chunks of
+      #   the file as they are streamed
+      # @yieldparam [String] chunk a block of the file
+      # @return [IO, nil] the file (also having content_type and
+      #   original_filename accessors). The file will need to be
+      #   reopened to be read
+      def get_file(filename, &block)
+        if block_given?
+          get(200, luwak_path(filename), &block)
+          nil
+        else
+          tmpfile = LuwakFile.new(escape(filename))
+          begin
+            response = get(200, luwak_path(filename)) do |chunk|
+              tmpfile.write chunk
+            end
+            tmpfile.content_type = response[:headers]['content-type'].first
+            tmpfile
+          ensure
+            tmpfile.close
+          end
+        end
+      end
+
+      # (Luwak) Detects whether a file exists in the Luwak large-file
+      # interface.
+      # @param [String] filename the name of the file
+      # @return [true,false] whether the file exists
+      def file_exists?(filename)
+        result = head([200,404], luwak_path(filename))
+        result[:code] == 200
+      end
+
+      # (Luwak) Deletes a file from the Luwak large-file interface.
+      # @param [String] filename the name of the file
+      def delete_file(filename)
+        delete([204,404], luwak_path(filename))
+      end
+
+      # (Luwak) Uploads a file to the Luwak large-file interface.
+      # @overload store_file(filename, content_type, data)
+      #   Stores the file at the given key/filename
+      #   @param [String] filename the key/filename for the object
+      #   @param [String] content_type the MIME Content-Type for the data
+      #   @param [IO, String] data the contents of the file
+      # @overload store_file(content_type, data)
+      #   Stores the file with a server-determined key/filename
+      #   @param [String] content_type the MIME Content-Type for the data
+      #   @param [String, #read] data the contents of the file
+      # @return [String] the key/filename where the object was stored
+      def store_file(*args)
+        data, content_type, filename = args.reverse
+        if filename
+          put(204, luwak_path(filename), data, {"Content-Type" => content_type})
+          filename
+        else
+          response = post(201, luwak_path(nil), data, {"Content-Type" => content_type})
+          response[:headers]["location"].first.split("/").last
+        end
       end
     end
   end

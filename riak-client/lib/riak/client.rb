@@ -182,7 +182,7 @@ module Riak
     # @param [String] filename the key/filename to delete
     def delete_file(filename)
       http do |h|
-        h.delete([204,404], h.node.http_paths[:luwak], escape(filename))
+        h.delete_file(filename)
       end
       true
     end
@@ -199,8 +199,7 @@ module Riak
     # @return [true, false] whether the key exists in "Luwak"
     def file_exists?(key)
       http do |h|
-        result = h.head([200,404], h.node.http_paths[:luwak], escape(key))
-        result[:code] == 200
+        h.file_exists?(key)
       end
     end
     alias :file_exist? :file_exists?
@@ -224,24 +223,8 @@ module Riak
     #     from the method.
     # @yieldparam [String] chunk a single chunk of the object's data
     def get_file(filename, &block)
-      if block_given?
-        http do |h|
-          h.get(200, h.node.http_paths[:luwak], escape(filename), &block)
-        end
-        nil
-      else
-        tmpfile = LuwakFile.new(escape(filename))
-        begin
-          response = http do |h|
-            h.get(200, h.node.http_paths[:luwak], escape(filename)) do |chunk|
-              tmpfile.write chunk
-            end
-          end
-          tmpfile.content_type = response[:headers]['content-type'].first
-          tmpfile
-        ensure
-          tmpfile.close
-        end
+      http do |h|
+        h.get_file(filename, &block)
       end
     end
 
@@ -423,18 +406,9 @@ module Riak
     #   @param [String, #read] data the contents of the file
     # @return [String] the key/filename where the object was stored
     def store_file(*args)
-      data, content_type, filename = args.reverse
-      if filename
-        http do |h|
-          h.put(204, h.node.http_paths[:luwak], escape(filename), data, {"Content-Type" => content_type})
-        end
-        filename
-      else
-        response = http do |h|
-          h.post(201, h.node.http_paths[:luwak], data, {"Content-Type" => content_type})
-        end
-        response[:headers]["location"].first.split("/").last
-      end
+      http do |h|
+        h.store_file(*args)
+      end      
     end
 
     # Stores an object in Riak.

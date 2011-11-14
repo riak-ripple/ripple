@@ -201,6 +201,37 @@ describe Riak::Client::HTTPBackend::Configuration do
     end
   end
 
+  context "when Luwak is enabled" do
+    before { subject.should_receive(:get).with(200, uri).and_return(:headers => {'link' => ['</riak>; rel="riak_kv_wm_raw", </ping>; rel="riak_kv_wm_ping", </stats>; rel="riak_kv_wm_stats", </mapred>; rel="riak_kv_wm_mapred", </luwak>; rel="luwak_wm_file"']}) }
+
+    it "should generate a path for a file" do
+      url = subject.luwak_path('foo')
+      url.should be_kind_of(URI)
+      url.path.should == '/luwak/foo'
+    end
+
+    it "should generate a path for the root" do
+      url = subject.luwak_path(nil)
+      url.should be_kind_of(URI)
+      url.path.should == '/luwak'
+    end
+    
+    it "should escape a nested path" do
+      url = subject.luwak_path("foo/bar/baz")
+      url.should be_kind_of(URI)
+      url.path.should == '/luwak/foo%2Fbar%2Fbaz'
+    end
+  end
+
+  context "when Luwak is disabled" do
+    before { subject.should_receive(:get).with(200, uri).and_return(:headers => {'link' => ['</riak>; rel="riak_kv_wm_raw", </ping>; rel="riak_kv_wm_ping", </stats>; rel="riak_kv_wm_stats", </mapred>; rel="riak_kv_wm_mapred"']}) }
+
+    it "should raise an error when generating the path" do
+      expect { subject.luwak_path(nil) }.to raise_error
+      expect { subject.luwak_path('foo') }.to raise_error
+    end
+  end
+  
   {
     :riak_kv_wm_raw => :prefix,
     :riak_kv_wm_link_walker => :prefix,
