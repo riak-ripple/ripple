@@ -38,13 +38,13 @@ module Riak
 
     # @return [Array] The set of Nodes this client can communicate with.
     attr_accessor :nodes
-    
+
     # @return [String] The internal client ID used by Riak to route responses
     attr_reader :client_id
 
     # @return [Symbol] The HTTP backend/client to use
     attr_accessor :http_backend
-    
+
     # @return [Client::Pool] A pool of HTTP connections
     attr_reader :http_pool
 
@@ -82,15 +82,15 @@ module Riak
       end
 
       @protobuffs_pool = Pool.new(
-        method(:new_protobuffs_backend), 
-        lambda {}
-      )
-     
+                                  method(:new_protobuffs_backend),
+                                  lambda {}
+                                  )
+
       @http_pool = Pool.new(
-        method(:new_http_backend),
-        lambda {}
-      )
-      
+                            method(:new_http_backend),
+                            lambda {}
+                            )
+
       self.protocol           = options[:protocol]           || "http"
       self.http_backend       = options[:http_backend]       || :NetHTTP
       self.protobuffs_backend = options[:protobuffs_backend] || :Beefcake
@@ -161,21 +161,19 @@ module Riak
 
       # Change all existing backend client IDs.
       @protobuffs_pool.each do |pb|
-        pb.set_client_id value if backend.respond_to?(:set_client_id)
+        pb.set_client_id value if pb.respond_to?(:set_client_id)
       end
       @client_id = value
     end
 
     def client_id
-      @client_id ||= begin
-                       backend do |b|
-                         if b.respond_to?(:get_client_id)
-                           b.get_client_id
-                         else
-                           make_client_id
-                         end
-                       end
-                     end
+      @client_id ||= backend do |b|
+        if b.respond_to?(:get_client_id)
+          b.get_client_id
+        else
+          make_client_id
+        end
+      end
     end
 
     # Deletes a file stored via the "Luwak" interface
@@ -186,7 +184,7 @@ module Riak
       end
       true
     end
-    
+
     # Delete an object. See Bucket#delete
     def delete_object(bucket, key, options = {})
       backend do |b|
@@ -234,7 +232,7 @@ module Riak
         b.get_index bucket, index, query
       end
     end
-    
+
     # Get an object. See Bucket#get
     def get_object(bucket, key, options = {})
       backend do |b|
@@ -249,8 +247,10 @@ module Riak
 
     # Sets the desired HTTP backend
     def http_backend=(value)
-      @http, @backend = nil, nil
       @http_backend = value
+      # Shut down existing connections using the old backend
+      @http_pool.teardown
+      @http_backend
     end
 
     # @return [String] A representation suitable for IRB and debugging output.
@@ -292,8 +292,8 @@ module Riak
         raise t('http_configuration', :backend => @http_backend)
       end
     end
-   
-    # Creates a new protocol buffers backend. 
+
+    # Creates a new protocol buffers backend.
     # @return [ProtobuffsBackend] the Protocol Buffers backend for
     #    a given node.
     def new_protobuffs_backend
@@ -321,16 +321,18 @@ module Riak
         b.ping
       end
     end
-    
+
     # Yields a protocol buffers backend.
     def protobuffs(&block)
       @protobuffs_pool.>> &block
     end
-    
+
     # Sets the desired Protocol Buffers backend
     def protobuffs_backend=(value)
-      @protobuffs, @backend = nil, nil
+      # Shutdown any connections using the old backend
       @protobuffs_backend = value
+      @protobuffs_pool.teardown
+      @protobuffs_backend
     end
 
     # Set the protocol of the Riak endpoint.  Value must be in the
@@ -341,10 +343,10 @@ module Riak
       unless PROTOCOLS.include?(value.to_s)
         raise ArgumentError, t("protocol_invalid", :invalid => value, :valid => PROTOCOLS.join(', '))
       end
-      
+
       case value
       when 'https'
-        nodes.each do |node| 
+        nodes.each do |node|
           node.ssl_options ||= {}
         end
       when 'http'
@@ -352,7 +354,7 @@ module Riak
           node.ssl_options = nil
         end
       end
-      
+
       #TODO
       @backend = nil
       @protocol = value
@@ -364,7 +366,7 @@ module Riak
         b.reload_object(object, options)
       end
     end
-    
+
     # Sets the properties on a bucket. See Bucket#props=
     def set_bucket_props(bucket, properties)
       backend do |b|
@@ -408,7 +410,7 @@ module Riak
     def store_file(*args)
       http do |h|
         h.store_file(*args)
-      end      
+      end
     end
 
     # Stores an object in Riak.

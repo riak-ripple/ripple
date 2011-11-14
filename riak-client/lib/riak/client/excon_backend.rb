@@ -1,8 +1,6 @@
-
 require 'riak/failed_request'
 require 'riak/client/http_backend'
 require 'riak/client/http_backend/request_headers'
-require 'riak/client/pump'
 
 module Riak
   class Client
@@ -13,12 +11,31 @@ module Riak
       def self.configured?
         begin
           require 'excon'
-          Excon::VERSION >= "0.5.7"
+          Excon::VERSION >= "0.5.7" && patch_excon
         rescue LoadError
           false
         end
       end
 
+      # Adjusts Excon's connection collection to allow multiple
+      # connections to the same host from the same Thread. Instead we
+      # use the Riak::Client::Pool to segregate connections.
+      # @note This can be changed when Excon has a proper pool of its own.
+      def self.patch_excon
+        unless defined? @@patched
+          ::Excon::Connection.class_eval do
+            def sockets
+              @sockets ||= {}
+            end
+          end
+        end
+        @@patched = true
+      end
+
+      def teardown
+        connection.reset
+      end
+      
       private
       def perform(method, uri, headers, expect, data=nil, &block)
         configure_ssl if @node.ssl_enabled?
@@ -32,11 +49,8 @@ module Riak
         params[:body] = data if [:put,:post].include?(method)
         params[:idempotent] = (method != :post)
 
-        if block_given?
-          pump = Pump.new(block)
-          # Later versions of Excon pass multiple arguments to the block
-          block = lambda {|*args| pump.pump(args.first) }
-        end
+        # Later versions of Excon pass multiple arguments to the block
+        block = lambda {|*args| yield args.first } if block_given?
 
         response = connection.request(params, &block)
         response_headers.initialize_http_header(response.headers)

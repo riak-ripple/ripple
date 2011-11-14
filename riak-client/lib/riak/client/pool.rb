@@ -110,6 +110,13 @@ module Riak
       def size
         @lock.synchronize { @pool.size }
       end
+
+      # Attempts to gracefully shutdown connections in the pool, for
+      # instance, when the backend is changed.
+      # @private
+      def teardown
+        each { |e| e.teardown }
+      end
     end
   end
 end

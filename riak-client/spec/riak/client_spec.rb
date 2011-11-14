@@ -140,6 +140,11 @@ describe Riak::Client do
       end
     end
 
+    it "should teardown the existing HTTP connections when changed" do
+      @client.http_pool.should_receive(:teardown)
+      @client.http_backend = :Excon
+    end
+    
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::NetHTTPBackend.should_receive(:configured?).and_return(false)
       lambda { @client.http { |x| } }.should raise_error
@@ -158,6 +163,11 @@ describe Riak::Client do
       end
     end
 
+    it "should teardown the existing Protobuffs connections when changed" do
+      @client.protobuffs_pool.should_receive(:teardown)
+      @client.protobuffs_backend = :Beefcake
+    end
+    
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::BeefcakeProtobuffsBackend.should_receive(:configured?).and_return(false)
       lambda { @client.protobuffs { |x| } }.should raise_error

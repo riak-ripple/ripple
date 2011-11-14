@@ -130,6 +130,26 @@ describe Riak::Client::Pool do
       touched.should be_all {|item| subject.pool.find {|e| e.object == item } }
     end
 
+    it 'should teardown connections in its pool' do
+      n = 10
+      subject = described_class.new(lambda { mock('connection').tap {|m| m.should_receive(:teardown) } },
+                                    lambda { })
+      threads = (0..n).map do
+        Thread.new do
+          psleep = 0.2 * rand
+          subject.take do |a|
+            sleep psleep
+          end
+        end
+      end
+
+      threads.each do |t|
+        t.join
+      end
+
+      subject.teardown
+    end
+    
     it 'stress test', :slow => true do
       n = 100
       psleep = 0.8

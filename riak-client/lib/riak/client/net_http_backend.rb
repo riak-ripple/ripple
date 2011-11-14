@@ -27,6 +27,10 @@ module Riak
         @read_timeout ||= 4096
       end
 
+      # Net::HTTP doesn't use persistent connections, so there's no
+      # work to do here.
+      def teardown; end
+      
       private
       def perform(method, uri, headers, expect, data=nil) #:nodoc:
         http = Net::HTTP.new(uri.host, uri.port)

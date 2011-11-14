@@ -69,6 +69,11 @@ module Riak
                reduce(%w[riak_kv_mapreduce reduce_identity], :arg => {:reduce_phase_only_1 => true}, :keep => true)).map {|p| p.last }
       end
 
+      # Gracefully shuts down this connection.
+      def teardown
+        reset
+      end
+      
       private
       # Implemented by subclasses
       def decode_response
@@ -76,7 +81,7 @@ module Riak
       end
 
       def socket
-        Thread.current[:riakpbc_socket] ||= new_socket
+        @socket ||= new_socket
       end
 
       def new_socket
@@ -88,8 +93,8 @@ module Riak
       end
 
       def reset_socket
-        socket.close if !socket.closed?
-        Thread.current[:riakpbc_socket] = nil
+        @socket.close if @socket && !@socket.closed?
+        @socket = nil
       end
 
       UINTMAX = 0xffffffff

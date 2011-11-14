@@ -3,7 +3,6 @@ require 'riak/json'
 require 'riak/client'
 require 'riak/failed_request'
 require 'riak/client/protobuffs_backend'
-require 'riak/client/pump'
 
 module Riak
   class Client
@@ -91,11 +90,10 @@ module Riak
         req = RpbListKeysReq.new(:bucket => maybe_encode(bucket))
         write_protobuff(:ListKeysReq, req)
         keys = []
-        pump = Pump.new(block) if block_given?
         while msg = decode_response
           break if msg.done
-          if pump
-            pump.pump msg.keys
+          if block_given?
+            yield msg.keys
           else
             keys += msg.keys
           end
@@ -107,13 +105,10 @@ module Riak
         req = RpbMapRedReq.new(:request => mr.to_json, :content_type => "application/json")
         write_protobuff(:MapRedReq, req)
         results = []
-        pump = Pump.new(lambda do |msg|
-          block.call msg.phase, JSON.parse(msg.response)
-        end) if block_given?
         while msg = decode_response
           break if msg.done
-          if pump
-            pump.pump msg
+          if block_given?
+            yield msg.phase, JSON.parse(msg.response)
           else
             results[msg.phase] ||= []
             results[msg.phase] += JSON.parse(msg.response)

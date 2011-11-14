@@ -206,7 +206,7 @@ shared_examples_for "Unified backend API" do
         @backend.list_keys("test") do |keys|
           keys.each do |key|
             begin
-              @backend.fetch_object("test", key)
+              @client.get_object("test", key)
             rescue => e
               errors << e
             end
@@ -263,7 +263,7 @@ shared_examples_for "Unified backend API" do
           unless result.empty?
             result.each do |v|
               begin
-                @backend.fetch_object("test", v['value'])
+                @client.get_object("test", v['value'])
               rescue => e
                 errors << e
               end
