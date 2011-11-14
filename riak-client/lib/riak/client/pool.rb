@@ -112,10 +112,16 @@ module Riak
       end
 
       # Attempts to gracefully shutdown connections in the pool, for
-      # instance, when the backend is changed.
+      # instance, when the backend is changed. This will also delete
+      # them from the pool so they can be garbage collected.
       # @private
       def teardown
-        each { |e| e.teardown }
+        conns = []
+        each do |e|
+          conns << e
+          e.teardown
+        end
+        @lock.synchronize { @pool.delete_if {|i| conns.include? i.object } }
       end
     end
   end

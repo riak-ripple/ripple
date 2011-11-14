@@ -148,6 +148,7 @@ describe Riak::Client::Pool do
       end
 
       subject.teardown
+      subject.pool.should be_empty
     end
     
     it 'stress test', :slow => true do
