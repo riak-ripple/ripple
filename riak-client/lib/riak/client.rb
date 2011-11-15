@@ -83,12 +83,12 @@ module Riak
 
       @protobuffs_pool = Pool.new(
                                   method(:new_protobuffs_backend),
-                                  lambda {}
+                                  lambda { |b| b.teardown }
                                   )
 
       @http_pool = Pool.new(
                             method(:new_http_backend),
-                            lambda {}
+                            lambda { |b| b.teardown }
                             )
 
       self.protocol           = options[:protocol]           || "http"
@@ -249,7 +249,7 @@ module Riak
     def http_backend=(value)
       @http_backend = value
       # Shut down existing connections using the old backend
-      @http_pool.teardown
+      @http_pool.clear
       @http_backend
     end
 
@@ -331,7 +331,7 @@ module Riak
     def protobuffs_backend=(value)
       # Shutdown any connections using the old backend
       @protobuffs_backend = value
-      @protobuffs_pool.teardown
+      @protobuffs_pool.clear
       @protobuffs_backend
     end
 

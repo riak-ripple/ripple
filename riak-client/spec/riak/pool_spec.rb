@@ -71,8 +71,8 @@ describe Riak::Client::Pool do
                                   )}
 
     it 'should allocate n objects for n concurrent operations' do
-      n = 10
       # n threads concurrently allocate and sign objects from the pool
+      n = 10
       readyq = Queue.new
       finishq = Queue.new
       threads = (0...n).map do
@@ -130,25 +130,34 @@ describe Riak::Client::Pool do
       touched.should be_all {|item| subject.pool.find {|e| e.object == item } }
     end
 
-    it 'should teardown connections in its pool' do
+    it 'should clear' do
       n = 10
-      subject = described_class.new(lambda { mock('connection').tap {|m| m.should_receive(:teardown) } },
-                                    lambda { })
-      threads = (0..n).map do
+      subject = described_class.new(
+        lambda { mock('connection').tap {|m| m.should_receive(:teardown) }},
+        lambda { |b| b.teardown })
+
+      # Allocate several elements of the pool
+      q = Queue.new
+      threads = (0...n).map do |i|
         Thread.new do
-          psleep = 0.2 * rand
           subject.take do |a|
-            sleep psleep
+            q << 1
+            sleep 0.1
           end
         end
       end
 
+      # Wait for all threads to have acquired an element
+      n.times { q.pop }
+
+      # Clear the pool while threads still have elements checked out
+      subject.clear
+      subject.pool.should be_empty
+      
+      # Wait for threads to complete
       threads.each do |t|
         t.join
       end
-
-      subject.teardown
-      subject.pool.should be_empty
     end
     
     it 'stress test', :slow => true do

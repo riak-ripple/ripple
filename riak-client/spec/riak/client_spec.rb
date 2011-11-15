@@ -140,8 +140,8 @@ describe Riak::Client do
       end
     end
 
-    it "should teardown the existing HTTP connections when changed" do
-      @client.http_pool.should_receive(:teardown)
+    it "should clear the existing HTTP connections when changed" do
+      @client.http_pool.should_receive(:clear)
       @client.http_backend = :Excon
     end
     
@@ -164,7 +164,7 @@ describe Riak::Client do
     end
 
     it "should teardown the existing Protobuffs connections when changed" do
-      @client.protobuffs_pool.should_receive(:teardown)
+      @client.protobuffs_pool.should_receive(:clear)
       @client.protobuffs_backend = :Beefcake
     end
     

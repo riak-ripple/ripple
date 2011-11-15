@@ -13,7 +13,14 @@ module Riak
       # An element of the pool. Comprises an object with an owning
       # thread.
       # @private
-      class Element < Struct.new(:object, :owner)
+      class Element
+        attr_accessor :object
+        attr_accessor :owner
+        def initialize(object)
+          @object = object
+          @owner = owner
+        end
+
         # Claims this element of the pool for the current Thread.
         def lock
           self.owner = Thread.current
@@ -47,6 +54,20 @@ module Riak
         @pool = Set.new
       end
 
+      # On each element of the pool, calls close(element) and removes it.
+      # @private
+      def clear
+        each_element do |e|
+          @close.call(e.object)
+          
+          # Remove the element from the pool.
+          @lock.synchronize do
+            @pool.delete e
+          end 
+        end
+      end
+      alias :close :clear
+
       # Acquire an element of the pool. Yields the object. If all
       # elements are claimed, it will create another one.
       # @yield [obj] a block that will perform some action with the
@@ -63,7 +84,6 @@ module Riak
         begin
           e = nil
           @lock.synchronize do
-            # The pool is lenient and will open as needed.
             e = pool.find { |e| e.unlocked? }
             unless e
               e = Element.new(@open.call)
@@ -82,12 +102,14 @@ module Riak
       end
       alias >> take
 
-      # Iterate over a snapshot of the pool. This may block the current
-      # thread until elements are released by other threads.
+      # Iterate over a snapshot of the pool. Yielded objects are locked for the
+      # duration of the block. This may block the current thread until elements
+      # are released by other threads.
       # @private
-      def each
+      def each_element
         targets = @pool.to_a
         unlocked = []
+
         @iterator.synchronize do
           until targets.empty?
             @lock.synchronize do
@@ -97,7 +119,7 @@ module Riak
 
             unlocked.each do |e|
               begin
-                yield e.object
+                yield e
               ensure
                 e.unlock
               end
@@ -107,21 +129,15 @@ module Riak
         end
       end
 
-      def size
-        @lock.synchronize { @pool.size }
+      # As each_element, but yields objects, not wrapper elements.
+      def each
+        each_element do |e|
+          yield e.object
+        end
       end
 
-      # Attempts to gracefully shutdown connections in the pool, for
-      # instance, when the backend is changed. This will also delete
-      # them from the pool so they can be garbage collected.
-      # @private
-      def teardown
-        conns = []
-        each do |e|
-          conns << e
-          e.teardown
-        end
-        @lock.synchronize { @pool.delete_if {|i| conns.include? i.object } }
+      def size
+        @lock.synchronize { @pool.size }
       end
     end
   end
