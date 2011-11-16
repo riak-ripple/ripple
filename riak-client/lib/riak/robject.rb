@@ -260,7 +260,7 @@ module Riak
     # @param [Array<Hash,WalkSpec>] link specifications for the query
     def walk(*params)
       specs = WalkSpec.normalize(*params)
-      @bucket.client.http.link_walk(self, specs)
+      @bucket.client.link_walk(self, specs)
     end
 
     # Converts the object to a link suitable for linking other objects

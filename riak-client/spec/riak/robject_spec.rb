@@ -322,7 +322,7 @@ describe Riak::RObject do
   describe "walking from the object to linked objects" do
     before :each do
       @http = mock("HTTPBackend")
-      @client.stub!(:http).and_return(@http)
+      @client.stub!(:http).and_yield(@http)
       @client.stub!(:bucket).and_return(@bucket)
       @object = Riak::RObject.new(@bucket, "bar")
     end

@@ -258,6 +258,13 @@ module Riak
       "#<Riak::Client #{nodes.inspect}>"
     end
 
+    # Link-walk.
+    def link_walk(object, specs)
+      http do |h|
+        h.link_walk object, specs
+      end
+    end
+
     # Retrieves a list of keys in the given bucket. See Bucket#keys
     def list_keys(bucket, &block)
       if block_given?
