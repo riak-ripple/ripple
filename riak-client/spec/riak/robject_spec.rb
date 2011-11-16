@@ -214,6 +214,10 @@ describe Riak::RObject do
       @object.conflict?.should be_false
     end
 
+    it 'should return [self] for siblings' do
+      @object.siblings.should == [@object]
+    end
+
     describe "when there are multiple values in an object" do
       before :each do
         response = @sample_response.dup

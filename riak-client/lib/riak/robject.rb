@@ -210,9 +210,10 @@ module Riak
 
     # Returns sibling objects when in conflict.
     # @return [Array<RObject>] an array of conflicting sibling objects for this key
-    # @return [self] this object when not in conflict
+    # @return [Array<self>] a single-element array containing object when not
+    # in conflict
     def siblings
-      return self unless conflict?
+      return [self] unless conflict?
       @siblings
     end
 
