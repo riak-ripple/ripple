@@ -102,9 +102,8 @@ describe "Multithreaded client" do
       end
       
       it 'should put conflicts in parallel' do
-        proto, @client.protocol = @client.protocol, 'http'
         @client['test'].allow_mult = true
-        @client.protocol = proto
+        @client['test'].allow_mult.should == true
         
         init = @client['test'].new('test')
         init.content_type = "application/json"

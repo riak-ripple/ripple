@@ -369,7 +369,9 @@ module Riak
 
     # Sets the properties on a bucket. See Bucket#props=
     def set_bucket_props(bucket, properties)
-      backend do |b|
+      # A bug in Beefcake is still giving us trouble with default booleans.
+      # Until it is resolved, we'll use the HTTP backend.
+      http do |b|
         b.set_bucket_props(bucket, properties)
       end
     end
