@@ -3,10 +3,12 @@ require 'thread'
 
 describe Riak::Client::Pool do
   describe 'arrays of ints' do
-    subject { described_class.new(
-                                  lambda { [0] },
-                                  lambda { |x| }
-                                  )}
+    subject {
+      described_class.new(
+        lambda { [0] },
+        lambda { |x| }
+      )
+    }
 
     it 'yields a new object' do
       subject.take do |x|
@@ -65,10 +67,12 @@ describe Riak::Client::Pool do
   end
 
   describe 'threads' do
-    subject { described_class.new(
-                                  lambda { [] },
-                                  lambda { |x| }
-                                  )}
+    subject {
+      described_class.new(
+        lambda { [] },
+        lambda { |x| }
+      )
+    }
 
     it 'should allocate n objects for n concurrent operations' do
       # n threads concurrently allocate and sign objects from the pool
@@ -134,7 +138,8 @@ describe Riak::Client::Pool do
       n = 10
       subject = described_class.new(
         lambda { mock('connection').tap {|m| m.should_receive(:teardown) }},
-        lambda { |b| b.teardown })
+        lambda { |b| b.teardown }
+      )
 
       # Allocate several elements of the pool
       q = Queue.new
@@ -155,6 +160,44 @@ describe Riak::Client::Pool do
       subject.pool.should be_empty
       
       # Wait for threads to complete
+      threads.each do |t|
+        t.join
+      end
+    end
+
+    it 'should delete_if' do
+      n = 10
+      subject = described_class.new(
+        lambda { [] },
+        lambda { |x| }
+      )
+
+      # Allocate several elements of the pool
+      q = Queue.new
+      threads = (0...n).map do |i|
+        Thread.new do
+          subject.take do |a|
+            a << i
+            q << 1
+            sleep 0.02
+          end
+        end
+      end
+
+      # Wait for all threads to have acquired an element
+      n.times { q.pop }
+      
+      # Delete odd elements
+      subject.delete_if do |x|
+        x.first.odd?
+      end
+      
+      # Verify odds are gone.
+      subject.pool.all? do |x|
+        x.object.first.even?
+      end.should == true
+
+      # Wait for threads
       threads.each do |t|
         t.join
       end

@@ -68,6 +68,22 @@ module Riak
       end
       alias :close :clear
 
+      # Locks each element in turn and closes/deletes elements for which the
+      # object passes the block.
+      def delete_if
+        raise ArgumentError, "block required" unless block_given?
+
+        each_element do |e|
+          if yield e.object
+            @close.call(e.object)
+            
+            @lock.synchronize do
+              @pool.delete e
+            end
+          end
+        end
+      end
+
       # Acquire an element of the pool. Yields the object. If all
       # elements are claimed, it will create another one.
       # @yield [obj] a block that will perform some action with the
