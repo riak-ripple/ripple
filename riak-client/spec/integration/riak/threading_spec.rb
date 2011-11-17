@@ -73,13 +73,13 @@ describe "Multithreaded client" do
         data = "the gun is good"
         ro = @client['test'].new('test')
         ro.content_type = "application/json"
-        ro.data = data
+        ro.data = [data]
         ro.store
 
         threads 10, :synchronize => true do
           x = @client['test']['test']
           x.content_type.should == "application/json"
-          x.data.should == data
+          x.data.should == [data]
         end
       end
       
@@ -90,14 +90,14 @@ describe "Multithreaded client" do
         threads n, :synchronize => true do |i|
           x = @client['test'].new("test-#{i}")
           x.content_type = "application/json"
-          x.data = "#{data}-#{i}"
+          x.data = ["#{data}-#{i}"]
           x.store
         end
         
         (0...n).each do |i|
           read = @client['test']["test-#{i}"]
           read.content_type.should == "application/json"
-          read.data.should == "#{data}-#{i}"
+          read.data.should == ["#{data}-#{i}"]
         end
       end
       
@@ -116,14 +116,14 @@ describe "Multithreaded client" do
         threads n, :synchronize => true do |i|
           x = @client['test']["test"]
           s.sync
-          x.data = i
+          x.data = [i]
           x.store
         end
         
         read = @client['test']["test"]
         read.conflict?.should == true
         read.siblings.map do |sibling|
-          sibling.data
+          sibling.data.first
         end.to_set.should == (0...n).to_set
       end
 
@@ -135,7 +135,7 @@ describe "Multithreaded client" do
         count.times do |i|
           o = @client['test'].new("#{i}")
           o.content_type = 'application/json'
-          o.data = i
+          o.data = [i]
           o.store
         end
         
@@ -143,7 +143,7 @@ describe "Multithreaded client" do
           set = Set.new
           @client['test'].keys do |stream|
             stream.each do |key|
-              set << @client['test'][key].data
+              set.merge @client['test'][key].data
             end
           end
           set.should == (0...count).to_set
