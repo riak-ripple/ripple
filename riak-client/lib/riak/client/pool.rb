@@ -6,9 +6,9 @@ module Riak
     # demand.
     # @private
     class Pool
-      attr_accessor :pool
-      attr_accessor :open
-      attr_accessor :close
+      # Raised when a taken element should be deleted from the pool.
+      class BadResource < RuntimeError
+      end
 
       # An element of the pool. Comprises an object with an owning
       # thread.
@@ -25,6 +25,11 @@ module Riak
         def lock
           self.owner = Thread.current
         end
+        
+        # Is this element locked/claimed?
+        def locked?
+          not owner.nil?
+        end
 
         # Releases this element of the pool from the current Thread.
         def unlock
@@ -35,12 +40,11 @@ module Riak
         def unlocked?
           owner.nil?
         end
-
-        # Is this element locked/claimed?
-        def locked?
-          !available?
-        end
       end
+      
+      attr_accessor :pool
+      attr_accessor :open
+      attr_accessor :close
 
       # Open is a callable which returns a new object for the pool. Close is
       # called with an object before it is freed.
@@ -50,7 +54,6 @@ module Riak
         @lock = Mutex.new
         @iterator = Mutex.new
         @element_released = ConditionVariable.new
-        # Pool is a hash of thread IDs to an array of objects in the pool.
         @pool = Set.new
       end
 
@@ -109,6 +112,11 @@ module Riak
           end
 
           r = yield e.object
+        rescue BadResource
+          @lock.synchronize do
+            @pool.delete e
+          end
+          raise
         ensure
           # Unlock
           e.unlock
@@ -117,7 +125,7 @@ module Riak
         r
       end
       alias >> take
-
+      
       # Iterate over a snapshot of the pool. Yielded objects are locked for the
       # duration of the block. This may block the current thread until elements
       # are released by other threads.

@@ -60,9 +60,18 @@ describe Riak::Client::Pool do
       end
       subject.pool.all? { |e| not e.owner }.should == true
       subject.pool.map { |e| e.object }.to_set.should == [
-                                                          [0,1,2],
-                                                          [0,3]
-                                                         ].to_set
+        [0,1,2],
+        [0,3]
+      ].to_set
+    end
+
+    it 'should delete when BadResource is raised' do
+      lambda do
+        subject.take do |x|
+          raise Riak::Client::Pool::BadResource
+        end
+      end.should raise_error(Riak::Client::Pool::BadResource)
+      subject.size.should == 0
     end
   end
 
