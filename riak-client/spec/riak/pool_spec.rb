@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'thread'
 
 describe Riak::Client::Pool do
-  describe 'arrays of ints' do
+  describe 'basics' do
     subject {
       described_class.new(
         lambda { [0] },
@@ -66,6 +66,15 @@ describe Riak::Client::Pool do
     end
 
     it 'should delete when BadResource is raised' do
+      subject.open = lambda do
+        m = mock('resource')
+        m.should_receive(:close)
+        m
+      end
+      subject.close = lambda do |res|
+        res.close
+      end
+
       lambda do
         subject.take do |x|
           raise Riak::Client::Pool::BadResource

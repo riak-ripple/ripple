@@ -61,15 +61,19 @@ module Riak
       # @private
       def clear
         each_element do |e|
-          @close.call(e.object)
-          
-          # Remove the element from the pool.
-          @lock.synchronize do
-            @pool.delete e
-          end 
+          delete_element e
         end
       end
       alias :close :clear
+
+      # Deletes an element of the pool. Calls close on its object.
+      # Not intendend for external use.
+      def delete_element(e)
+        @close.call(e.object)
+        @lock.synchronize do
+          @pool.delete e
+        end
+      end
 
       # Locks each element in turn and closes/deletes elements for which the
       # object passes the block.
@@ -78,11 +82,7 @@ module Riak
 
         each_element do |e|
           if yield e.object
-            @close.call(e.object)
-            
-            @lock.synchronize do
-              @pool.delete e
-            end
+            delete_element e
           end
         end
       end
@@ -113,9 +113,7 @@ module Riak
 
           r = yield e.object
         rescue BadResource
-          @lock.synchronize do
-            @pool.delete e
-          end
+          delete_element e
           raise
         ensure
           # Unlock
