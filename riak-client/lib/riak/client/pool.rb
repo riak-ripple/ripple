@@ -91,10 +91,14 @@ module Riak
       # elements are claimed, it will create another one.
       # @yield [obj] a block that will perform some action with the
       #   element of the pool
-      # @yieldparam [Object] obj an element of the pool, as created by
-      #   the {#open} block
+      # @yieldparam [Object] resource a resource managed by the pool. 
+      #   Locked for the duration of the block
+      # @param [callable] :filter a callable which receives objects and has 
+      #   the opportunity to reject each in turn.
+      # @param [Object] :default if no resources are available, use this object
+      #   instead of calling #open.
       # @private
-      def take
+      def take(opts = {})
         unless block_given?
           raise ArgumentError, "block required"
         end
@@ -103,9 +107,17 @@ module Riak
         begin
           e = nil
           @lock.synchronize do
-            e = pool.find { |e| e.unlocked? }
+            # Find an existing element.
+            if f = opts[:filter]
+              e = pool.find { |e| e.unlocked? and f.call(e.object) }
+            else
+              e = pool.find { |e| e.unlocked? }
+            end
+
             unless e
-              e = Element.new(@open.call)
+              # No objects were acceptable
+              resource = opts[:default] || @open.call
+              e = Element.new(resource)
               pool << e
             end
             e.lock
