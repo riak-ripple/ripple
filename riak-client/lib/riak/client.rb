@@ -161,9 +161,18 @@ module Riak
 
     # Choose a node from a set.
     def choose_node(nodes = self.nodes)
-      # Prefer nodes with lowest error rates
-      nodes.min_by do |node|
-        node.error_rate.value
+      # Prefer nodes with error rates under 0.5.
+      s = nodes.select do |node|
+        node.error_rate.value < 0.5
+      end
+      
+      if s.empty?
+        # Fall back to minimally broken node.
+        nodes.min_by do |node|
+          node.error_rate.value
+        end
+      else
+        s[rand(s.size)]
       end
     end
 
