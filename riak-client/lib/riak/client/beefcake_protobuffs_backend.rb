@@ -171,7 +171,8 @@ module Riak
         end
       rescue SystemCallError, SocketError => e
         reset_socket
-        raise Riak::ProtobuffsFailedRequest.new(:server_error, e.message)
+        raise
+        #raise Riak::ProtobuffsFailedRequest.new(:server_error, e.message)
       end
     end
   end

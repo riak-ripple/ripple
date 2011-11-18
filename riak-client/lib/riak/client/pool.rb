@@ -129,8 +129,10 @@ module Riak
           raise
         ensure
           # Unlock
-          e.unlock
-          @element_released.signal
+          if e
+            e.unlock
+            @element_released.signal
+          end
         end
         r
       end

@@ -41,7 +41,9 @@ module Riak
       Errno::ENETRESET,
       Errno::ECONNABORTED,
       Errno::ECONNRESET,
-      Errno::ECONNREFUSED
+      Errno::ECONNREFUSED,
+      SystemCallError,
+      SocketError
     ]
 
     # @return [String] The protocol to use for the Riak endpoint
@@ -157,6 +159,14 @@ module Riak
     end
     alias :list_buckets :buckets
 
+    # Choose a node from a set.
+    def choose_node(nodes = self.nodes)
+      # Prefer nodes with lowest error rates
+      nodes.min_by do |node|
+        node.error_rate.value
+      end
+    end
+
     # Set the client ID for this client. Must be a string or Fixnum value 0 =<
     # value < MAX_CLIENT_ID.
     # @param [String, Fixnum] value The internal client ID used by Riak to route responses
@@ -251,50 +261,6 @@ module Riak
       end
     end
 
-    # Takes a pool. Acquires a backend from the pool and yields it with
-    # node-specific error recovery.
-    def recover_from(pool)
-      skip_nodes = []
-      take_opts = {}
-      tries = 3
-
-      begin
-        # Only select nodes which we haven't used before.
-        unless skip_nodes.empty?
-          take_opts[:filter] = lambda do |backend|
-            not skip_nodes.include? backend.node
-          end
-        end
-        
-        # Acquire a backend
-        pool.take(take_opts) do |backend|
-          begin
-            yield backend
-          rescue => e
-            if NETWORK_ERRORS.include? e.class
-              # Network error.
-              tries -= 1
-
-              # Notify the node that a request against it failed.
-              backend.node.error_rate << 1
-              
-              # Skip this node next time.
-              skip_nodes << backend.node
-
-              # And delete this connection.
-              raise Pool::BadResource, e
-            end
-
-            # Some other error; raise as normal.
-            raise
-          end
-        end
-      rescue Pool::BadResource => e
-        retry if tries > 0
-        raise e.message
-      end
-    end
-
     # Yields an HTTPBackend.
     def http(&block)
       recover_from @http_pool, &block
@@ -345,11 +311,13 @@ module Riak
     def new_http_backend
       klass = self.class.const_get("#{@http_backend}Backend")
       if klass.configured?
-        nodes = @nodes.select do |node|
-          node.http?
-        end
+        node = choose_node(
+          @nodes.select do |n|
+            n.http?
+          end
+        )
 
-        klass.new(self, nodes[rand nodes.size])
+        klass.new(self, node)
       else
         raise t('http_configuration', :backend => @http_backend)
       end
@@ -361,11 +329,13 @@ module Riak
     def new_protobuffs_backend
       klass = self.class.const_get("#{@protobuffs_backend}ProtobuffsBackend")
       if klass.configured?
-        nodes = @nodes.select do |node|
-          node.protobuffs?
-        end
+        node = choose_node(
+          @nodes.select do |n|
+            n.protobuffs?
+          end
+        )
 
-        klass.new(self, nodes[rand nodes.size])
+        klass.new(self, node)
       else
         raise t('protobuffs_configuration', :backend => @protobuffs_backend)
       end
@@ -373,7 +343,7 @@ module Riak
 
     # @return [Node] An arbitrary Node.
     def node
-      @nodes[rand @nodes.size]
+      nodes[rand nodes.size]
     end
 
     # Pings the Riak cluster to check for liveness.
@@ -420,6 +390,50 @@ module Riak
       #TODO
       @backend = nil
       @protocol = value
+    end
+    
+    # Takes a pool. Acquires a backend from the pool and yields it with
+    # node-specific error recovery.
+    def recover_from(pool)
+      skip_nodes = []
+      take_opts = {}
+      tries = 3
+
+      begin
+        # Only select nodes which we haven't used before.
+        unless skip_nodes.empty?
+          take_opts[:filter] = lambda do |backend|
+            not skip_nodes.include? backend.node
+          end
+        end
+        
+        # Acquire a backend
+        pool.take(take_opts) do |backend|
+          begin
+            yield backend
+          rescue => e
+            if NETWORK_ERRORS.any? { |k| k === e }
+              # Network error.
+              tries -= 1
+
+              # Notify the node that a request against it failed.
+              backend.node.error_rate << 1
+              
+              # Skip this node next time.
+              skip_nodes << backend.node
+
+              # And delete this connection.
+              raise Pool::BadResource, e
+            end
+
+            # Some other error; raise as normal.
+            raise
+          end
+        end
+      rescue Pool::BadResource => e
+        retry if tries > 0
+        raise e.message
+      end
     end
 
     # Reloads the object from Riak.
