@@ -5,6 +5,7 @@ require 'riak/util/translation'
 require 'riak/util/escape'
 require 'riak/failed_request'
 require 'riak/client/pool'
+require 'riak/client/decaying'
 require 'riak/client/node'
 require 'riak/client/search'
 require 'riak/client/http_backend'
@@ -32,6 +33,16 @@ module Riak
 
     # Valid constructor options.
     VALID_OPTIONS = [:protocol, :nodes, :client_id, :http_backend, :protobuffs_backend] | Node::VALID_OPTIONS
+
+    # Network errors.
+    NETWORK_ERRORS = [
+      Errno::ENETDOWN,
+      Errno::ENETUNREACH,
+      Errno::ENETRESET,
+      Errno::ECONNABORTED,
+      Errno::ECONNRESET,
+      Errno::ECONNREFUSED
+    ]
 
     # @return [String] The protocol to use for the Riak endpoint
     attr_reader :protocol
@@ -240,9 +251,53 @@ module Riak
       end
     end
 
+    # Takes a pool. Acquires a backend from the pool and yields it with
+    # node-specific error recovery.
+    def recover_from(pool)
+      skip_nodes = []
+      take_opts = {}
+      tries = 3
+
+      begin
+        # Only select nodes which we haven't used before.
+        unless skip_nodes.empty?
+          take_opts[:filter] = lambda do |backend|
+            not skip_nodes.include? backend.node
+          end
+        end
+        
+        # Acquire a backend
+        pool.take(take_opts) do |backend|
+          begin
+            yield backend
+          rescue => e
+            if NETWORK_ERRORS.include? e.class
+              # Network error.
+              tries -= 1
+
+              # Notify the node that a request against it failed.
+              backend.node.error_rate << 1
+              
+              # Skip this node next time.
+              skip_nodes << backend.node
+
+              # And delete this connection.
+              raise Pool::BadResource, e
+            end
+
+            # Some other error; raise as normal.
+            raise
+          end
+        end
+      rescue Pool::BadResource => e
+        retry if tries > 0
+        raise e.message
+      end
+    end
+
     # Yields an HTTPBackend.
     def http(&block)
-      @http_pool.>> &block
+      recover_from @http_pool, &block
     end
 
     # Sets the desired HTTP backend
@@ -331,7 +386,7 @@ module Riak
 
     # Yields a protocol buffers backend.
     def protobuffs(&block)
-      @protobuffs_pool.>> &block
+      recover_from @protobuffs_pool, &block
     end
 
     # Sets the desired Protocol Buffers backend
