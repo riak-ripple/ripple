@@ -71,7 +71,7 @@ module Riak
 
       # Gracefully shuts down this connection.
       def teardown
-        reset
+        reset_socket
       end
       
       private

@@ -6,7 +6,12 @@ module Riak
       include Util::Translation
       include Util::Escape
 
-      VALID_OPTIONS = [:host, :http_port, :pb_port, :http_paths, :prefix, :mapred, :luwak, :solr, :port, :basic_auth, :ssl_options, :ssl]
+      VALID_OPTIONS = [:host, :http_port, :pb_port, :http_paths, :prefix,
+        :mapred, :luwak, :solr, :port, :basic_auth, :ssl_options, :ssl]
+
+      # For a score which halves in 10 seconds, choose
+      # ln(1/2)/10
+      ERRORS_DECAY_RATE = Math.log(0.5)/10
 
       # What IP address or hostname does this node listen on?
       attr_accessor :host
@@ -19,6 +24,8 @@ module Riak
       # A "user:password" string.
       attr_reader :basic_auth
       attr_accessor :ssl_options
+      # A Decaying rate of errors.
+      attr_reader :error_rate
 
       def initialize(client, opts = {})
         @client = client
@@ -34,6 +41,8 @@ module Riak
           :solr =>   opts[:solr]   || "/solr" # Unused?
         }.merge(opts[:http_paths] || {})
         self.basic_auth = opts[:basic_auth]
+
+        @error_rate = Decaying.new
       end
 
       def ==(o)

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'thread'
 
 describe Riak::Client::Pool do
-  describe 'arrays of ints' do
+  describe 'basics' do
     subject {
       described_class.new(
         lambda { [0] },
@@ -46,6 +46,7 @@ describe Riak::Client::Pool do
       subject.pool.map { |e| e.object.first }.sort.should == [1,2,3,4]
     end
 
+
     it 'should unlock when exceptions are raised' do
       begin
         subject.take do |x|
@@ -60,9 +61,27 @@ describe Riak::Client::Pool do
       end
       subject.pool.all? { |e| not e.owner }.should == true
       subject.pool.map { |e| e.object }.to_set.should == [
-                                                          [0,1,2],
-                                                          [0,3]
-                                                         ].to_set
+        [0,1,2],
+        [0,3]
+      ].to_set
+    end
+
+    it 'should delete when BadResource is raised' do
+      subject.open = lambda do
+        m = mock('resource')
+        m.should_receive(:close)
+        m
+      end
+      subject.close = lambda do |res|
+        res.close
+      end
+
+      lambda do
+        subject.take do |x|
+          raise Riak::Client::Pool::BadResource
+        end
+      end.should raise_error(Riak::Client::Pool::BadResource)
+      subject.size.should == 0
     end
   end
 
@@ -106,6 +125,57 @@ describe Riak::Client::Pool do
       end.to_set.should == threads.to_set
     end
     
+    it 'take with filter and default' do
+      n = 10
+      subject = described_class.new(
+        lambda { [] },
+        lambda { |x| }
+      )
+
+      # Allocate several elements of the pool
+      q = Queue.new
+      threads = (0...n).map do |i|
+        Thread.new do
+          subject.take do |a|
+            a << i
+            q << 1
+            sleep 0.02
+          end
+        end
+      end
+
+      # Wait for all threads to have acquired an element
+      n.times { q.pop }
+      
+      threads.each do |t|
+        t.join
+      end
+
+      # Get and delete existing even elements
+      got = Set.new
+      (n / 2).times do
+        begin
+          subject.take(
+            :filter => lambda { |x| x.first.even? },
+            :default => [:default]
+          ) do |x|
+            got << x.first
+            raise Riak::Client::Pool::BadResource
+          end
+        rescue Riak::Client::Pool::BadResource
+        end
+      end
+      got.should == (0...n).select(&:even?).to_set
+
+      # This time, no even elements exist, so we should get the default.
+      subject.take(
+        :filter => lambda { |x| x.first.even? },
+        :default => :default
+      ) do |x|
+        x.should == :default
+      end
+    end
+
     it 'iterates over a snapshot of all connections, even ones in use' do
       started = Queue.new
       n = 30
@@ -202,7 +272,7 @@ describe Riak::Client::Pool do
         t.join
       end
     end
-    
+
     it 'stress test', :slow => true do
       n = 100
       psleep = 0.8

@@ -6,9 +6,9 @@ module Riak
     # demand.
     # @private
     class Pool
-      attr_accessor :pool
-      attr_accessor :open
-      attr_accessor :close
+      # Raised when a taken element should be deleted from the pool.
+      class BadResource < RuntimeError
+      end
 
       # An element of the pool. Comprises an object with an owning
       # thread.
@@ -25,6 +25,11 @@ module Riak
         def lock
           self.owner = Thread.current
         end
+        
+        # Is this element locked/claimed?
+        def locked?
+          not owner.nil?
+        end
 
         # Releases this element of the pool from the current Thread.
         def unlock
@@ -35,12 +40,11 @@ module Riak
         def unlocked?
           owner.nil?
         end
-
-        # Is this element locked/claimed?
-        def locked?
-          !available?
-        end
       end
+      
+      attr_accessor :pool
+      attr_accessor :open
+      attr_accessor :close
 
       # Open is a callable which returns a new object for the pool. Close is
       # called with an object before it is freed.
@@ -50,7 +54,6 @@ module Riak
         @lock = Mutex.new
         @iterator = Mutex.new
         @element_released = ConditionVariable.new
-        # Pool is a hash of thread IDs to an array of objects in the pool.
         @pool = Set.new
       end
 
@@ -58,15 +61,19 @@ module Riak
       # @private
       def clear
         each_element do |e|
-          @close.call(e.object)
-          
-          # Remove the element from the pool.
-          @lock.synchronize do
-            @pool.delete e
-          end 
+          delete_element e
         end
       end
       alias :close :clear
+
+      # Deletes an element of the pool. Calls close on its object.
+      # Not intendend for external use.
+      def delete_element(e)
+        @close.call(e.object)
+        @lock.synchronize do
+          @pool.delete e
+        end
+      end
 
       # Locks each element in turn and closes/deletes elements for which the
       # object passes the block.
@@ -75,11 +82,7 @@ module Riak
 
         each_element do |e|
           if yield e.object
-            @close.call(e.object)
-            
-            @lock.synchronize do
-              @pool.delete e
-            end
+            delete_element e
           end
         end
       end
@@ -88,10 +91,14 @@ module Riak
       # elements are claimed, it will create another one.
       # @yield [obj] a block that will perform some action with the
       #   element of the pool
-      # @yieldparam [Object] obj an element of the pool, as created by
-      #   the {#open} block
+      # @yieldparam [Object] resource a resource managed by the pool. 
+      #   Locked for the duration of the block
+      # @param [callable] :filter a callable which receives objects and has 
+      #   the opportunity to reject each in turn.
+      # @param [Object] :default if no resources are available, use this object
+      #   instead of calling #open.
       # @private
-      def take
+      def take(opts = {})
         unless block_given?
           raise ArgumentError, "block required"
         end
@@ -100,24 +107,37 @@ module Riak
         begin
           e = nil
           @lock.synchronize do
-            e = pool.find { |e| e.unlocked? }
+            # Find an existing element.
+            if f = opts[:filter]
+              e = pool.find { |e| e.unlocked? and f.call(e.object) }
+            else
+              e = pool.find { |e| e.unlocked? }
+            end
+
             unless e
-              e = Element.new(@open.call)
+              # No objects were acceptable
+              resource = opts[:default] || @open.call
+              e = Element.new(resource)
               pool << e
             end
             e.lock
           end
 
           r = yield e.object
+        rescue BadResource
+          delete_element e
+          raise
         ensure
           # Unlock
-          e.unlock
-          @element_released.signal
+          if e
+            e.unlock
+            @element_released.signal
+          end
         end
         r
       end
       alias >> take
-
+      
       # Iterate over a snapshot of the pool. Yielded objects are locked for the
       # duration of the block. This may block the current thread until elements
       # are released by other threads.
