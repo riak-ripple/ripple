@@ -36,14 +36,15 @@ module Riak
 
     # Network errors.
     NETWORK_ERRORS = [
-      Errno::ENETDOWN,
-      Errno::ENETUNREACH,
-      Errno::ENETRESET,
+      EOFError,
       Errno::ECONNABORTED,
-      Errno::ECONNRESET,
       Errno::ECONNREFUSED,
+      Errno::ECONNRESET,
+      Errno::ENETDOWN,
+      Errno::ENETRESET,
+      Errno::ENETUNREACH,
+      SocketError,
       SystemCallError,
-      SocketError
     ]
 
     # @return [String] The protocol to use for the Riak endpoint
