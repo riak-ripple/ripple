@@ -99,5 +99,5 @@ def cluster(environment=nil, config=nil)
   config ||= load_config[environment].with_indifferent_access
   root = Rails.root + "db" + environment.to_s
   # TODO: We need to deal with multiple hosts and client ports
-  Riak::Cluster.new({root: root.to_s}.merge(config).with_indifferent_access)
+  Riak::Cluster.new({ :root => root.to_s }.merge(config).with_indifferent_access)
 end
