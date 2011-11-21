@@ -18,6 +18,10 @@ module Ripple
         end
         super
       end
+
+      def index(key, type, &block)
+        indexes[key] = Index.new(key, type, true, block)
+      end
     end
 
     module InstanceMethods
@@ -40,7 +44,12 @@ module Ripple
 
           # Add this document's indexes
           self.class.indexes.each do |key, index|
-            index_value = index.to_index_value(self[key])
+
+            if index.block.nil?
+              index_value = index.to_index_value(self[key])
+            else
+              index_value =  instance_eval &index.block
+            end
             index_value = Set[index_value] unless Enumerable === index_value
             indexes[prefix + index.index_key].merge index_value
           end
@@ -61,15 +70,16 @@ module Ripple
   # Represents a Secondary Index on a Document
   class Index
     include Translation
-    attr_reader :key, :type
+    attr_reader :key, :type, :block
 
     # Creates an index for a Document
     # @param [Symbol] key the attribute key
     # @param [Class] property_type the type of the associated property
     # @param ['bin', 'int'] index_type if given, the type of index
-    def initialize(key, property_type, index_type=true)
-      @key, @type, @index = key, property_type, index_type
+    def initialize(key, property_type, index_type=true, block = nil)
+      @key, @type, @index, @block = key, property_type, index_type, block
     end
+
 
     # The key under which a value will be indexed
     def index_key

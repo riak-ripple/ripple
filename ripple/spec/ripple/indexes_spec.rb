@@ -4,11 +4,15 @@ describe Ripple::Indexes do
   context "class methods" do
     subject { Indexer }
     it { should respond_to(:indexes) }
-    it { should have(2).indexes }
+    it { should have(3).indexes }
 
     it "should remove the :index key from the property options" do
       subject.properties[:name].options.should_not include(:index)
       subject.properties[:age].options.should_not include(:index)
+    end
+
+    it "should not have a property for indexes" do
+      subject.properties[:name_age].should == nil
     end
   end
 
@@ -25,6 +29,7 @@ describe Ripple::Indexes do
       subject.robject.indexes.should_not be_empty
       subject.robject.indexes["name_bin"].should == Set["Bob"]
       subject.robject.indexes["age_int"].should == Set[28]
+      subject.robject.indexes["name_age_bin"].should == Set["Bob-28"]
     end
 
     context "when embedded documents have indexes" do
