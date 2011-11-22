@@ -70,6 +70,11 @@ module Riak
 
     # Creates a client connection to Riak
     # @param [Hash] options configuration options for the client
+    # @option options [Array] :nodes A list of nodes this client connects to.
+    #   Each element of the list is a hash which is passed to Node.new, e.g.
+    #   {host: '127.0.0.1', pb_port: 1234, ...}.
+    #   If no nodes are given, a single node is constructed from the remaining
+    #   options given to Client.new.
     # @option options [String] :host ('127.0.0.1') The host or IP address for the Riak endpoint
     # @option options [Fixnum] :http_port (8098) The port of the Riak HTTP endpoint
     # @option options [Fixnum] :pb_port (8087) The port of the Riak Protocol Buffers endpoint
