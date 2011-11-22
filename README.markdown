@@ -53,6 +53,13 @@ client = Riak::Client.new(:http_backend => :Excon)
 # Create a client that uses Protocol Buffers
 client = Riak::Client.new(:protocol => "pbc")
 
+# Automatically balance between multiple nodes
+client = Riak::Client.new(:nodes => [
+  {:host => '10.0.0.1'},
+  {:host => '10.0.0.2', :pb_port => 1234},
+  {:host => '10.0.0.3', :http_port => 5678}
+])
+
 # Retrieve a bucket
 bucket = client.bucket("doc")  # a Riak::Bucket
 
