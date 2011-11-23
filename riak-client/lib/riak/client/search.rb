@@ -20,7 +20,9 @@ module Riak
     def search(*args)
       options = args.extract_options!
       index, query = args[-2], args[-1]  # Allows nil index, while keeping it as firstargument
-      http.search(index, query, options)
+      http do |h|
+        h.search(index, query, options)
+      end
     end
     alias :select :search
 
@@ -46,7 +48,9 @@ module Riak
           end
         end
       end
-      http.update_search_index(index, xml.target!)
+      http do |h|
+        h.update_search_index(index, xml.target!)
+      end
       true
     end
     alias :add_doc :index
@@ -76,7 +80,9 @@ module Riak
           end
         end
       end
-      http.update_search_index(index, xml.target!)
+      http do |h|
+        h.update_search_index(index, xml.target!)
+      end
       true
     end
     alias :delete_doc :remove

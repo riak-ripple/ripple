@@ -5,7 +5,7 @@ describe "Search features" do
     before :each do
       @client = Riak::Client.new
       @http = mock(Riak::Client::HTTPBackend)
-      @client.stub!(:http).and_return(@http)
+      @client.stub!(:http).and_yield(@http)
     end
 
     describe "searching" do
