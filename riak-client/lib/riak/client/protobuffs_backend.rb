@@ -8,6 +8,7 @@ module Riak
   class Client
     class ProtobuffsBackend
       include Util::Translation
+      include Util::Escape
 
       # Message Codes Enum
       MESSAGE_CODES = %W[
