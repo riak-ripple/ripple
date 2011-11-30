@@ -30,7 +30,6 @@ describe Ripple::Validations do
   end
 
   it "should allow skipping validations by passing save :validate => false" do
-    Ripple.client.http.stub!(:perform).and_return(mock_response)
     @box.should_not_receive(:valid?)
     @box.save(:validate => false).should be_true
   end

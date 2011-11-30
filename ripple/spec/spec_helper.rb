@@ -12,7 +12,6 @@ Riak.disable_list_keys_warnings = true
 
 %w[
    integration_setup
-   mocks
    test_server
    search
    models
