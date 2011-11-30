@@ -28,6 +28,10 @@ module Ripple
 
       private
 
+      def undeleted_siblings
+        @undeleted_siblings ||= siblings.reject(&:deleted?)
+      end
+
       def process_properties
         model_class.properties.each do |name, property|
           document.send(:"#{name}=", resolved_property_value_for(property))
@@ -53,7 +57,7 @@ module Ripple
       end
 
       def resolved_property_value_for(property)
-        uniq_values = siblings.map(&property.key).uniq
+        uniq_values = undeleted_siblings.map(&property.key).uniq
 
         value = if uniq_values.size == 1
           uniq_values.first
@@ -69,7 +73,7 @@ module Ripple
 
       def resolved_association_value_for(association, proxy_value_method)
         # the association proxy doesn't uniquify well, so we have to use the target or links directly
-        uniq_values = siblings.map { |s| s.send(association.name).__send__(proxy_value_method) }.uniq
+        uniq_values = undeleted_siblings.map { |s| s.send(association.name).__send__(proxy_value_method) }.uniq
 
         return uniq_values.first if uniq_values.size == 1
         remaining_conflicts << association.name

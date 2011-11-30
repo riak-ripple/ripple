@@ -80,7 +80,8 @@ describe "Ripple conflict resolution", :integration => true do
     before(:each) do
       create_conflict original_person,
         lambda { |p| p.destroy! },
-        lambda { |p| p.age = 20 }
+        lambda { |p| p.age = 20 },
+        lambda { |p| p.age = 30 }
     end
 
     it 'indicates that one of the siblings was deleted' do
@@ -88,16 +89,24 @@ describe "Ripple conflict resolution", :integration => true do
       ConflictedPerson.on_conflict { |s, c| siblings = s }
       ConflictedPerson.find('John')
 
-      siblings.should have(2).sibling_records
+      siblings.should have(3).sibling_records
       deleted, undeleted = siblings.partition(&:deleted?)
       deleted.should have(1).record
-      undeleted.should have(1).record
-
-      deleted, undeleted = deleted.first, undeleted.first
-      undeleted.age.should == 20
+      undeleted.should have(2).records
+      deleted = deleted.first
 
       # the deleted record should be totally blank except for the name (since it is the key)
       deleted.attributes.reject { |k, v| v.blank? }.should == {"name" => "John"}
+    end
+
+    it 'does not consider the deleted sibling when trying basic resolution of attributes that siblings are in agreement about' do
+      record = conflicts = nil
+      ConflictedPerson.on_conflict { |s, c| conflicts = c; record = self }
+      ConflictedPerson.find('John')
+
+      conflicts.should == [:age]
+      record.gender.should == 'male'
+      record.favorite_colors.should == ['green'].to_set
     end
   end
 
