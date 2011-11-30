@@ -16,7 +16,7 @@ module Ripple
             Ripple.client.client_id += 1
 
             modifier.call(record)
-            record.save!
+            record.save! unless record.deleted?
           end
 
           robject = klass.bucket.get(key)

@@ -31,6 +31,12 @@ module Ripple
         def initialize
           super
           @new = true
+          @deleted = false
+        end
+
+        # Determines whether this document has been deleted or not.
+        def deleted?
+          @deleted
         end
 
         # Determines whether this is a new document.
@@ -80,6 +86,7 @@ module Ripple
         # Deletes the document from Riak and freezes this instance
         def destroy!
           robject.delete(self.class.quorums.slice(:rw)) unless new?
+          @deleted = true
           freeze
         end
 

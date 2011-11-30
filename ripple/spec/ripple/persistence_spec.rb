@@ -145,6 +145,7 @@ describe Ripple::Document::Persistence do
     @client.should_receive(:delete_object).and_return(true)
     @widget.destroy.should be_true
     @widget.should be_frozen
+    @widget.should be_deleted
   end
 
   it "should destroy all saved objects" do

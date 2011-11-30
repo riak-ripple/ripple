@@ -11,7 +11,7 @@ module Ripple
 
       def self.to_proc
         @to_proc ||= lambda do |robject|
-          possible_model_classes = robject.siblings.map { |s| s.data['_type'] }.uniq
+          possible_model_classes = robject.siblings.map { |s| s.data && s.data['_type'] }.compact.uniq
           return nil unless possible_model_classes.size == 1
 
           resolver = new(robject, possible_model_classes.first.constantize)
@@ -36,7 +36,15 @@ module Ripple
       end
 
       def siblings
-        @siblings ||= @robject.siblings.map { |s| @model_class.send(:instantiate, s) }
+        @siblings ||= @robject.siblings.map do |s|
+          @model_class.send(:instantiate, s).tap do |record|
+            # TODO: make the deleted conditional explicit by putting logic in
+            #       RObject to know it has loaded a deleted sibling.
+            #       Here we assume it is deleted if the data is nil because
+            #       that's the only way we know of that the data can be nil.
+            record.instance_variable_set(:@deleted, true) if s.data.nil?
+          end
+        end
       end
 
       def document
