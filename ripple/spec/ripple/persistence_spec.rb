@@ -153,6 +153,24 @@ describe Ripple::Document::Persistence do
     Widget.destroy_all.should be_true
   end
 
+  context 'when a delete fails' do
+    let(:error) { Riak::FailedRequest.new("Riak could not delete your object") }
+    before(:each) do
+      @widget.stub(:new? => false)
+      @widget.robject.should_receive(:delete).and_raise(error)
+    end
+
+    it 'causes destroy to return false' do
+      @widget.destroy.should be_false
+    end
+
+    it 'causes destroy! to raise an error' do
+      expect {
+        @widget.destroy!
+      }.to raise_error(error)
+    end
+  end
+
   it "should freeze an unsaved object when destroying" do
     @client.should_not_receive(:delete_object)
     @widget.destroy.should be_true

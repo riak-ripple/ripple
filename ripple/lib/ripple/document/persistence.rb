@@ -78,9 +78,13 @@ module Ripple
         end
 
         # Deletes the document from Riak and freezes this instance
-        def destroy
+        def destroy!
           robject.delete(self.class.quorums.slice(:rw)) unless new?
           freeze
+        end
+
+        def destroy
+          destroy!
           true
         rescue Riak::FailedRequest
           false
