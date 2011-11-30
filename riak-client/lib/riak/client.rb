@@ -426,23 +426,18 @@ module Riak
         pool.take(take_opts) do |backend|
           begin
             yield backend
-          rescue => e
-            if NETWORK_ERRORS.any? { |k| k === e }
-              # Network error.
-              tries -= 1
+          rescue *NETWORK_ERRORS => e
+            # Network error.
+            tries -= 1
 
-              # Notify the node that a request against it failed.
-              backend.node.error_rate << 1
-              
-              # Skip this node next time.
-              skip_nodes << backend.node
+            # Notify the node that a request against it failed.
+            backend.node.error_rate << 1
+            
+            # Skip this node next time.
+            skip_nodes << backend.node
 
-              # And delete this connection.
-              raise Pool::BadResource, e
-            end
-
-            # Some other error; raise as normal.
-            raise
+            # And delete this connection.
+            raise Pool::BadResource, e
           end
         end
       rescue Pool::BadResource => e
