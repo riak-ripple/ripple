@@ -5,9 +5,7 @@ describe Ripple::Document::Finders do
   # require 'support/models/cardboard_box'
 
   before :each do
-    @backend = mock("Backend")
     @client = Ripple.client
-    @client.stub!(:backend).and_return(@backend)
     @bucket = Ripple.client.bucket("boxes")
     @plain = Riak::RObject.new(@bucket, "square"){|o| o.content_type = "application/json"; o.raw_data = '{"shape":"square"}'}
     @cb = Riak::RObject.new(@bucket, "rectangle"){|o| o.content_type = "application/json"; o.raw_data = '{"shape":"rectangle"}'}

@@ -6,7 +6,7 @@ describe Ripple::Validations do
   before :each do
     @box = Box.new
     @client = Ripple.client
-    @client.stub!(:backend).and_return(mock("Backend", :store_object => true))
+    @client.stub(:store_object => true)
   end
 
   it "should add validation declarations to the class" do

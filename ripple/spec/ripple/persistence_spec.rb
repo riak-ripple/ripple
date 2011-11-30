@@ -4,9 +4,7 @@ describe Ripple::Document::Persistence do
   # require 'support/models/widget'
 
   before :each do
-    @backend = mock("Backend")
     @client = Ripple.client
-    @client.stub!(:backend).and_return(@backend)
     @bucket = Ripple.client.bucket("widgets")
     @widget = Widget.new(:size => 1000)
   end
@@ -14,7 +12,7 @@ describe Ripple::Document::Persistence do
   it "forces the content type to 'application/json'" do
     @widget.robject.content_type = 'application/not-json'
 
-    @backend.should_receive(:store_object) do |obj, *_|
+    @client.should_receive(:store_object) do |obj, *_|
       obj.content_type.should == 'application/json'
     end
 
@@ -23,7 +21,7 @@ describe Ripple::Document::Persistence do
 
   it "should save a new object to Riak" do
     json = @widget.attributes.merge("_type" => "Widget").to_json
-    @backend.should_receive(:store_object) do |obj, _, _, _|
+    @client.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
@@ -37,7 +35,7 @@ describe Ripple::Document::Persistence do
 
   it "should modify attributes and save a new object" do
     json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
-    @backend.should_receive(:store_object) do |obj, _, _, _|
+    @client.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
@@ -51,7 +49,7 @@ describe Ripple::Document::Persistence do
 
   it "should modify a single attribute and save a new object" do
     json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
-    @backend.should_receive(:store_object) do |obj, _, _, _|
+    @client.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
@@ -66,7 +64,7 @@ describe Ripple::Document::Persistence do
 
   it "should instantiate and save a new object to riak" do
     json = @widget.attributes.merge(:size => 10, :shipped_at => "2000-01-01T20:15:01Z", :_type => 'Widget').to_json
-    @backend.should_receive(:store_object) do |obj, _, _, _|
+    @client.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
@@ -80,7 +78,7 @@ describe Ripple::Document::Persistence do
 
   it "should instantiate and save a new object to riak and allow its attributes to be set via a block" do
     json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
-    @backend.should_receive(:store_object) do |obj, _, _, _|
+    @client.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
@@ -95,7 +93,7 @@ describe Ripple::Document::Persistence do
 
   it "should save the attributes not having a corresponding property" do
     attrs = @widget.attributes.merge("_type" => "Widget", "unknown_property" => "a_value")
-    @backend.should_receive(:store_object) do |obj, _, _, _|
+    @client.should_receive(:store_object) do |obj, _, _, _|
       obj.data.should == attrs
       obj.key.should be_nil
       # Simulate loading the response with the key
@@ -117,14 +115,14 @@ describe Ripple::Document::Persistence do
 
   it "should reload a saved object, including associations" do
     json = @widget.attributes.merge(:_type => "Widget").to_json
-    @backend.should_receive(:store_object) do |obj, _, _, _|
+    @client.should_receive(:store_object) do |obj, _, _, _|
       obj.raw_data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
       obj.key = "new_widget"
     end
     @widget.save
-    @backend.should_receive(:reload_object) do |obj, _|
+    @client.should_receive(:reload_object) do |obj, _|
       obj.key.should == "new_widget"
       obj.content_type = 'application/json'
       obj.raw_data = '{"name":"spring","size":10,"shipped_at":"Sat, 01 Jan 2000 20:15:01 -0000","_type":"Widget"}'
@@ -140,11 +138,11 @@ describe Ripple::Document::Persistence do
   end
 
   it "should destroy a saved object" do
-    @backend.should_receive(:store_object).and_return(true)
+    @client.should_receive(:store_object).and_return(true)
     @widget.key = "foo"
     @widget.save
     @widget.should_not be_new
-    @backend.should_receive(:delete_object).and_return(true)
+    @client.should_receive(:delete_object).and_return(true)
     @widget.destroy.should be_true
     @widget.should be_frozen
   end
@@ -156,7 +154,7 @@ describe Ripple::Document::Persistence do
   end
 
   it "should freeze an unsaved object when destroying" do
-    @backend.should_not_receive(:delete_object)
+    @client.should_not_receive(:delete_object)
     @widget.destroy.should be_true
     @widget.should be_frozen
   end
@@ -172,7 +170,7 @@ describe Ripple::Document::Persistence do
 
     it "should store the _type field as the class name" do
       json = @cog.attributes.merge("_type" => "Cog").to_json
-      @backend.should_receive(:store_object) do |obj, _, _, _|
+      @client.should_receive(:store_object) do |obj, _, _, _|
         obj.raw_data.should == json
         obj.key = "new_widget"
       end
@@ -213,7 +211,7 @@ describe Ripple::Document::Persistence do
 
   shared_examples_for "saving a parent document with linked child documents" do
     before(:each) do
-      @backend.stub(:store_object)
+      @client.stub(:store_object)
     end
 
     it 'saves new children when the parent is saved' do
@@ -279,7 +277,7 @@ describe Ripple::Document::Persistence do
 
   shared_examples_for "embedded association persistence logic" do
     before(:each) do
-      @backend.stub(:store_object)
+      @client.stub(:store_object)
     end
 
     it "does not save children when the parent is saved" do

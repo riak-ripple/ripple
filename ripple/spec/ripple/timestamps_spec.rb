@@ -40,8 +40,7 @@ end
 describe Ripple::Timestamps do
   # require 'support/models/clock'
 
-  let(:backend) { mock("Backend", :store_object => true) }
-  before(:each) { Ripple.client.stub!(:backend).and_return(backend) }
+  before(:each) { Ripple.client.stub(:store_object => true) }
 
   context "for a Ripple::Document" do
     it_behaves_like "a timestamped model" do

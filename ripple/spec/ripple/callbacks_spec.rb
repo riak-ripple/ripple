@@ -22,8 +22,7 @@ describe Ripple::Callbacks do
     before :each do
       response = {:headers => {"content-type" => ["application/json"]}, :body => "{}"}
       @client = Ripple.client
-      @backend = mock("Backend", :store_object => true)
-      @client.stub!(:backend).and_return(@backend)
+      @client.stub(:store_object => true)
       $pinger = mock("callback verifier")
     end
 

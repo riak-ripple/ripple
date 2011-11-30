@@ -6,8 +6,7 @@ describe Ripple::Observable do
 
   before :each do
     @client   = Ripple.client
-    @backend = mock("Backend", :store_object => true)
-    @client.stub!(:backend).and_return(@backend)
+    @client.stub(:store_object => true)
     @clock    = Clock.new
     @observer = ClockObserver.instance
   end
