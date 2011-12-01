@@ -103,13 +103,23 @@ describe Ripple::Callbacks do
       @box.save
     end
 
-    it "should call destroy callbacks" do
-      Box.before_destroy { $pinger.ping }
-      Box.after_destroy { $pinger.ping }
-      Box.around_destroy(lambda { $pinger.ping })
-      $pinger.should_receive(:ping).exactly(3).times
-      @box = Box.new
-      @box.destroy
+    describe "destroy callbacks" do
+      let(:box) { Box.new }
+
+      before(:each) do
+        Box.before_destroy { $pinger.ping }
+        Box.after_destroy { $pinger.ping }
+        Box.around_destroy(lambda { $pinger.ping })
+        $pinger.should_receive(:ping).exactly(3).times
+      end
+
+      it "invokes them when #destroy is called" do
+        box.destroy
+      end
+
+      it "invokes them when #destroy! is called" do
+        box.destroy!
+      end
     end
 
     it "should call save and validate callbacks in the correct order" do

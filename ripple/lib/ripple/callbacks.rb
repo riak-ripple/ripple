@@ -56,7 +56,7 @@ module Ripple
       end
 
       # @private
-      def destroy(*args, &block)
+      def destroy!(*args, &block)
         run_callbacks(:destroy) do
           super
         end
