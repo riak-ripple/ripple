@@ -11,7 +11,7 @@ describe Ripple::Indexes do
       subject.properties[:age].options.should_not include(:index)
     end
 
-    it "should not have a property for indexes" do
+    it "should not have a property for synthetic indexes" do
       subject.properties[:name_age].should == nil
     end
   end
@@ -71,6 +71,14 @@ describe Ripple::Index do
     end
   end
 
+  it "should use an integer index when index type is Integer" do
+    Ripple::Index.new('foo', String, Integer).index_type.should == 'int'
+  end
+
+  it "should use a binary index when index type is String" do
+    Ripple::Index.new('foo', Integer, String).index_type.should == 'bin'
+  end
+
   it "should raise an error when the index type cannot be determined" do
     klass = Class.new
     expect { Ripple::Index.new('foo', klass).index_type }.to raise_error(ArgumentError)
@@ -78,6 +86,8 @@ describe Ripple::Index do
 
   it "should use the specified index type" do
     Ripple::Index.new('foo', Time, 'bin').index_type.should == 'bin'
+    Ripple::Index.new('foo', Time, String).index_type.should == 'bin'
+    Ripple::Index.new('foo', Time, Integer).index_type.should == 'int'
   end
 
   it "should provide an index key that includes the type" do

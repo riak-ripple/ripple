@@ -20,7 +20,7 @@ module Ripple
       end
 
       def index(key, type, &block)
-        indexes[key] = Index.new(key, type, true, block)
+        indexes[key] = Index.new(key, type, &block)
       end
     end
 
@@ -44,11 +44,10 @@ module Ripple
 
           # Add this document's indexes
           self.class.indexes.each do |key, index|
-
-            if index.block.nil?
-              index_value = index.to_index_value(self[key])
+            if index.block
+              index_value = index.to_index_value instance_exec(&index.block)
             else
-              index_value =  instance_eval &index.block
+              index_value = index.to_index_value(self[key])
             end
             index_value = Set[index_value] unless Enumerable === index_value
             indexes[prefix + index.index_key].merge index_value
@@ -75,8 +74,10 @@ module Ripple
     # Creates an index for a Document
     # @param [Symbol] key the attribute key
     # @param [Class] property_type the type of the associated property
-    # @param ['bin', 'int'] index_type if given, the type of index
-    def initialize(key, property_type, index_type=true, block = nil)
+    # @param ['bin', 'int', String, Integer] index_type if given, the
+    #   type of index
+    # @yield a block that returns the value of the index
+    def initialize(key, property_type, index_type=true, &block)
       @key, @type, @index, @block = key, property_type, index_type, block
     end
 
@@ -98,19 +99,24 @@ module Ripple
     # @return ["bin", "int", nil] the type of index used for this property
     # @raise [ArgumentError] if the type cannot be automatically determined
     def index_type
-      @index_type ||= if /^bin|int$/ === @index
+      @index_type ||= case @index
+                      when /^bin|int$/
                         @index
+                      when Class
+                        determine_index_type(@index)
                       else
-                        determine_index_type or  raise ArgumentError, t('index_type_unknown', :property => @key, :type => @type.name)
+                        determine_index_type(@type)
                       end
     end
 
     private
-    def determine_index_type
-      if String == @type || @type < String
+    def determine_index_type(itype)
+      if String == itype || itype < String
         'bin'
-      elsif [Integer, Time, Date, ActiveSupport::TimeWithZone].any? {|t| t == @type || @type < t }
+      elsif [Integer, Time, Date, ActiveSupport::TimeWithZone].any? {|t| t == itype || itype < t }
         'int'
+      else
+        raise ArgumentError, t('index_type_unknown', :property => @key, :type => itype.name)
       end
     end
   end
