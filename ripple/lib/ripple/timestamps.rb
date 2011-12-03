@@ -10,9 +10,9 @@ module Ripple
     module ClassMethods
       # Adds the :created_at and :updated_at timestamp properties to
       # the document.
-      def timestamps!
-        property :created_at, Time, :default => proc { Time.now }
-        property :updated_at, Time
+      def timestamps!(options={})
+        property :created_at, Time, options.merge(:default => proc { Time.now })
+        property :updated_at, Time, options.dup
         before_save :touch
       end
     end

@@ -28,6 +28,7 @@ module Ripple
       include Persistence
       extend Ripple::Properties
       include Ripple::AttributeMethods
+      include Ripple::Indexes
       include Ripple::Timestamps
       include Ripple::Validations
       include Ripple::Associations

@@ -6,5 +6,5 @@ end
 
 class Mode
   include Ripple::EmbeddedDocument
-  timestamps!
+  timestamps! :index => true, :presence => { :unless => :new? }
 end

@@ -8,6 +8,7 @@ require 'ripple/document/finders'
 require 'ripple/document/link'
 require 'ripple/properties'
 require 'ripple/attribute_methods'
+require 'ripple/indexes'
 require 'ripple/timestamps'
 require 'ripple/validations'
 require 'ripple/associations'
@@ -55,6 +56,8 @@ module Ripple
       include Ripple::Document::Finders
       include Ripple::AttributeMethods
       include Ripple::Timestamps
+      include Ripple::Indexes
+      include Ripple::Indexes::DocumentMethods
       include Ripple::Validations
       include Ripple::Associations
       include Ripple::Callbacks

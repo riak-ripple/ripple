@@ -29,6 +29,7 @@
   credit_card
   post
   nested
+  indexer
   ].each do |file|
   require File.join("support", "models", file)
 end
