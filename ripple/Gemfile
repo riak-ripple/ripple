@@ -9,17 +9,20 @@ else
 end
 
 gem 'riak-client', :path => "../riak-client"
-gem 'guard-rspec'
-gem 'rb-fsevent'
-gem 'growl'
 
-platforms :mri_18, :jruby do
-  gem 'ruby-debug'
+unless ENV['TRAVIS']
+  gem 'guard-rspec'
+  gem 'rb-fsevent'
+  gem 'growl'
 end
 
-platforms :mri_19 do
-  gem 'ruby-debug19'
-end
+# platforms :mri_18, :jruby do
+#   gem 'ruby-debug'
+# end
+
+# platforms :mri_19 do
+#   gem 'ruby-debug19'
+# end
 
 platforms :jruby do
   gem 'jruby-openssl'

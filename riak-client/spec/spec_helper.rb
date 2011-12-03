@@ -20,7 +20,7 @@ Riak.disable_list_keys_warnings = true
 end
 
 RSpec.configure do |config|
-  config.debug = true
+  #config.debug = true
   config.mock_with :rspec
 
   config.before(:all, :integration => true) do
