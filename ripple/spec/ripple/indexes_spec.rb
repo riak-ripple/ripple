@@ -4,7 +4,7 @@ describe Ripple::Indexes do
   context "class methods" do
     subject { Indexer }
     it { should respond_to(:indexes) }
-    it { should have(3).indexes }
+    it { should have(4).indexes }
 
     it "should remove the :index key from the property options" do
       subject.properties[:name].options.should_not include(:index)
@@ -13,6 +13,7 @@ describe Ripple::Indexes do
 
     it "should not have a property for synthetic indexes" do
       subject.properties[:name_age].should == nil
+      subject.properties[:name_greeting].should == nil
     end
   end
 
@@ -22,6 +23,8 @@ describe Ripple::Indexes do
     it { should respond_to(:indexes_for_persistence) }
     its(:indexes_for_persistence) { should include('age_int') }
     its(:indexes_for_persistence) { should include('name_bin') }
+    its(:indexes_for_persistence) { should include('name_age_bin') }
+    its(:indexes_for_persistence) { should include('name_greeting_bin') }
     its(:indexes_for_persistence) { should be_all {|_,i| i.kind_of?(Set) } }
 
     it "should set the indexes on the internal Riak object when saving" do
@@ -30,6 +33,7 @@ describe Ripple::Indexes do
       subject.robject.indexes["name_bin"].should == Set["Bob"]
       subject.robject.indexes["age_int"].should == Set[28]
       subject.robject.indexes["name_age_bin"].should == Set["Bob-28"]
+      subject.robject.indexes["name_greeting_bin"].should == Set["Bob: Hello!"]
     end
 
     context "when embedded documents have indexes" do

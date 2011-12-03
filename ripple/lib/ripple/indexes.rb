@@ -20,7 +20,11 @@ module Ripple
       end
 
       def index(key, type, &block)
-        indexes[key] = Index.new(key, type, &block)
+        if block_given?
+          indexes[key] = Index.new(key, type, &block)
+        else
+          indexes[key] = Index.new(key, type)
+        end
       end
     end
 
@@ -47,7 +51,7 @@ module Ripple
             if index.block
               index_value = index.to_index_value instance_exec(&index.block)
             else
-              index_value = index.to_index_value(self[key])
+              index_value = index.to_index_value send(key)
             end
             index_value = Set[index_value] unless Enumerable === index_value
             indexes[prefix + index.index_key].merge index_value
