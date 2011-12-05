@@ -97,9 +97,15 @@ module Ripple
           false
         end
 
-        # Freezes the document, preventing further modification.
+        # Freeze the attributes hash instead of the record itself to avoid
+        # errors when calling methods on frozen records.
         def freeze
-          @attributes.freeze; super
+          @attributes.freeze
+        end
+
+        # Returns +true+ if the attributes hash has been frozen.
+        def frozen?
+          @attributes.frozen?
         end
 
         attr_writer :robject

@@ -178,6 +178,12 @@ describe Ripple::Document::Persistence do
     @widget.should be_frozen
   end
 
+  it "should be able to call #errors after destroying" do
+    @widget.destroy.should be_true
+    @widget.should be_frozen
+    expect { @widget.errors }.to_not raise_error
+  end
+
   it "should be a root document" do
     @widget._root_document.should == @widget
   end
