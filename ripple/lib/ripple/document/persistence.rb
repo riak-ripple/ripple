@@ -94,7 +94,7 @@ module Ripple
 
         # Returns +true+ if the attributes hash has been frozen.
         def frozen?
-          @attributes.freeze
+          @attributes.frozen?
         end
 
         attr_writer :robject
