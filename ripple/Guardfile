@@ -10,6 +10,7 @@ end
 guard 'rspec', :cli => '--profile', :rvm => rvms do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{lib/rails/generators(.*)(\w+)/\2_generator\.rb}) {|m| "spec/generators#{m[1]}#{m[2]}_generator_spec.rb" }
+  watch(%r{lib/rails/generators(.*)(\w+)/templates}) {|m| "spec/generators#{m[1]}#{m[2]}_generator_spec.rb" }
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec/ripple" }
 end
