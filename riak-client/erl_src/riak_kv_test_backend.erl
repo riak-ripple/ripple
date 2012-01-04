@@ -52,7 +52,9 @@
          is_empty/1,
          status/1,
          callback/3,
-         reset/0]).
+         reset/0,
+         capabilities/1,
+         capabilities/2]).
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
@@ -79,7 +81,7 @@
 -spec reset() -> ok | {error, timeout}.
 reset() ->
     {ok, Ring} = riak_core_ring_manager:get_my_ring(),
-    [ ets:delete_all_objects(list_to_atom("kv" ++ integer_to_list(P))) ||
+    [ catch ets:delete_all_objects(list_to_atom("kv" ++ integer_to_list(P))) ||
         P <- riak_core_ring:my_indices(Ring) ],
     ok.
 
@@ -87,28 +89,44 @@ reset() ->
 
 %% @doc Return the major version of the
 %% current API and a capabilities list.
--spec api_version() -> {integer(), [atom()]}.
+-spec api_version() -> {ok, integer()} | {integer(), [atom()]}.
 api_version() ->
-    {?API_VERSION, ?CAPABILITIES}.
+    case lists:member({capabilities, 1}, riak_kv_backend:behaviour_info(callbacks)) of
+        true -> % Using 1.1 API or later
+            {ok, ?API_VERSION};
+        _ -> % Using 1.0 API
+            {?API_VERSION, ?CAPABILITIES}
+    end.
+
+%% @doc Return the capabilities of the backend.
+-spec capabilities(state()) -> {ok, [atom()]}.
+capabilities(_) ->
+    {ok, ?CAPABILITIES}.
+
+%% @doc Return the capabilities of the backend.
+-spec capabilities(riak_object:bucket(), state()) -> {ok, [atom()]}.
+capabilities(_, _) ->
+    {ok, ?CAPABILITIES}.
 
 %% @doc Start the memory backend
 -spec start(integer(), config()) -> {ok, state()}.
-start(Partition, Config) ->
-    TTL = config_value(ttl, Config),
-    MemoryMB = config_value(max_memory, Config),
-    case MemoryMB of
-        undefined ->
-            MaxMemory = undefined,
-            TimeRef = undefined;
-        _ ->
-            MaxMemory = MemoryMB * 1024 * 1024,
-            TimeRef = ets:new(list_to_atom(integer_to_list(Partition)), [ordered_set])
-    end,
+start(Partition, _Config) ->
+    %% TTL = config_value(ttl, Config),
+    %% MemoryMB = config_value(max_memory, Config),
+    %% case MemoryMB of
+    %%     undefined ->
+    %%         MaxMemory = undefined,
+    %%         TimeRef = undefined;
+    %%     _ ->
+    %%         MaxMemory = MemoryMB * 1024 * 1024,
+    %%         TimeRef = ets:new(list_to_atom(integer_to_list(Partition)), [ordered_set])
+    %% end,
     DataRef = ets:new(list_to_atom("kv" ++ integer_to_list(Partition)), [named_table, public]),
-    {ok, #state{data_ref=DataRef,
-                max_memory=MaxMemory,
-                time_ref=TimeRef,
-                ttl=TTL}}.
+    {ok, #state{data_ref=DataRef
+                %% max_memory=MaxMemory,
+                %% time_ref=TimeRef,
+                %% ttl=TTL
+               }}.
 
 %% @doc Stop the memory backend
 -spec stop(state()) -> ok.
