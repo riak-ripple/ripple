@@ -34,7 +34,7 @@ module Ripple
           inject_into_file "test/test_helper.rb", :before => test_case_prelude do
             "#{indentation}# Setup in-memory test server for Riak\n#{indentation}require 'ripple/test_server'\n\n"
           end
-          inject_into_class "test/test_helper.rb", ActiveSupport::TestCase do
+          inject_into_class "test/test_helper.rb", 'ActiveSupport::TestCase' do
             "#{indentation}  setup { Ripple::TestServer.setup }\n#{indentation}  teardown { Ripple::TestServer.clear }\n\n"
           end
         end
