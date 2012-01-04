@@ -73,3 +73,17 @@ module Enumerable
     Set.new(map {|v| v.to_ripple_index(type) })
   end
 end
+
+if String < Enumerable
+  # Fix for 1.8, in which String is Enumerable
+  class String
+    def to_ripple_index(type)
+      case type
+      when 'bin'
+        to_s
+      when 'int'
+        to_i
+      end
+    end
+  end
+end

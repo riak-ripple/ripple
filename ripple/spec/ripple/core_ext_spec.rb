@@ -118,6 +118,23 @@ describe String do
     'Tue, 16 Mar 2010 12:00:00 +0000'.to_datetime.should == DateTime.civil(2010,3,16,12)
     '2010-03-16T12:00:00+00:00'.to_datetime.should == DateTime.civil(2010,3,16,12)
   end
+
+  context "converting to an index value" do
+    subject { "1234" }
+
+    it "should not be treated as an Enumerable" do
+      subject.should_not_receive(:map)
+      subject.to_ripple_index('bin')
+    end
+
+    it "should convert to a binary index" do
+      subject.to_ripple_index('bin').should == subject
+    end
+
+    it "should convert to an integer index" do
+      subject.to_ripple_index('int').should == 1234
+    end
+  end
 end
 
 describe "Boolean" do
@@ -161,3 +178,4 @@ describe Enumerable do
     end
   end
 end
+

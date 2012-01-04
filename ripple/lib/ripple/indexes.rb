@@ -34,11 +34,11 @@ module Ripple
       def indexes_for_persistence(prefix = '')
         Hash.new {|h,k| h[k] = Set.new }.tap do |indexes|
           # Add embedded associations' indexes
-          self.class.embedded_associations.each do |association|
+          self.class.embedded_associations.each do |association|            
             documents = instance_variable_get(association.ivar)
             unless documents.nil?
               Array(documents).each do |doc|
-                embedded_indexes = doc.indexes_for_persistence("#{association.name}_")
+                embedded_indexes = doc.indexes_for_persistence("#{prefix}#{association.name}_")
                 indexes.merge!(embedded_indexes) do |_,original,new|
                   original.merge new
                 end
@@ -53,7 +53,7 @@ module Ripple
             else
               index_value = index.to_index_value send(key)
             end
-            index_value = Set[index_value] unless Enumerable === index_value
+            index_value = Set[index_value] unless index_value.is_a?(Enumerable) && !index_value.is_a?(String)
             indexes[prefix + index.index_key].merge index_value
           end
         end
