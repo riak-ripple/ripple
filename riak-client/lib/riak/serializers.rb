@@ -22,7 +22,7 @@ module Riak
     private
 
     def serializer_for(content_type)
-      serializers.fetch(content_type) do
+      serializers.fetch(content_type[/^[^;\s]+/]) do
         raise NotImplementedError.new(t('serializer_not_implemented', :content_type => content_type.inspect))
       end
     end
