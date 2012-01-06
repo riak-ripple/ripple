@@ -89,5 +89,8 @@ describe Riak::Serializers do
       end
     end
   end
+
+  it_behaves_like "a serializer", "application/json; charset=UTF-8", { "a" => 7 }, %q|{"a":7}|
+  it_behaves_like "a serializer", "application/json ;charset=UTF-8", { "a" => 7 }, %q|{"a":7}|
 end
 
