@@ -7,7 +7,7 @@ module Ripple
       # Cucumber
       def create_cucumber_file
         if File.directory?("features/support")
-          template 'test_server.rb', 'features/support/ripple.rb'
+          template 'cucumber.rb', 'features/support/ripple.rb'
         end
       end
 
@@ -20,7 +20,7 @@ module Ripple
             "#{indentation}require 'ripple/test_server'\n"
           end
           inject_into_file 'spec/spec_helper.rb', :after => rspec_prelude do
-            "\n#{indentation}  config.before(:all) { Ripple::TestServer.setup }" +
+            "\n#{indentation}  config.before(:suite) { Ripple::TestServer.setup }" +
               "\n#{indentation}  config.after(:each) { Ripple::TestServer.clear }\n"
           end
         end
