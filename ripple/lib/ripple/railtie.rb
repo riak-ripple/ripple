@@ -19,6 +19,7 @@ module Ripple
         # Make sure the TestServer lives in the default location, if
         # not set in the config file.
         Ripple.config[:root] ||= (Rails.root + 'tmp/riak_test_server').to_s
+        Ripple.config[:js_source_dir] ||= (Rails.root + "app/mapreduce").to_s
       end
     end
   end
