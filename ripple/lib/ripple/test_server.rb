@@ -29,7 +29,6 @@ module Ripple
       options[:env][:riak_core][:http] ||= [ Tuple[Ripple.config[:host], Ripple.config[:http_port]] ]
       options[:env][:riak_kv][:pb_port] ||= Ripple.config[:pb_port]
       options[:env][:riak_kv][:pb_ip] ||= Ripple.config[:host]
-      options[:root] ||= (Rails.root + 'tmp/riak_test_server').to_s
       super(options)
     end
   end
