@@ -46,7 +46,7 @@ describe Ripple::Timestamps do
     it_behaves_like "a timestamped model" do
       subject { Clock.new }
       let(:clock) { subject }
-      let(:record_to_save) { subject }      
+      let(:record_to_save) { subject }
     end
   end
 
@@ -67,7 +67,7 @@ describe Ripple::Timestamps do
       let(:clock) { Clock.new }
       subject { Mode.new }
       let(:record_to_save) { clock }
-      
+
       before(:each) do
         clock.modes << subject
       end

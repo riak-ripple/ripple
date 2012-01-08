@@ -124,7 +124,7 @@ describe Riak::Client::Pool do
         e.object.first
       end.to_set.should == threads.to_set
     end
-    
+
     it 'take with filter and default' do
       n = 10
       subject = described_class.new(
@@ -146,7 +146,7 @@ describe Riak::Client::Pool do
 
       # Wait for all threads to have acquired an element
       n.times { q.pop }
-      
+
       threads.each do |t|
         t.join
       end
@@ -228,7 +228,7 @@ describe Riak::Client::Pool do
       # Clear the pool while threads still have elements checked out
       subject.clear
       subject.pool.should be_empty
-      
+
       # Wait for threads to complete
       threads.each do |t|
         t.join
@@ -256,12 +256,12 @@ describe Riak::Client::Pool do
 
       # Wait for all threads to have acquired an element
       n.times { q.pop }
-      
+
       # Delete odd elements
       subject.delete_if do |x|
         x.first.odd?
       end
-      
+
       # Verify odds are gone.
       subject.pool.all? do |x|
         x.object.first.even?

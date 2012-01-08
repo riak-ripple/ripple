@@ -144,7 +144,7 @@ describe Riak::Client do
       @client.http_pool.should_receive(:clear)
       @client.http_backend = :Excon
     end
-    
+
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::NetHTTPBackend.should_receive(:configured?).and_return(false)
       lambda { @client.http { |x| } }.should raise_error
@@ -167,7 +167,7 @@ describe Riak::Client do
       @client.protobuffs_pool.should_receive(:clear)
       @client.protobuffs_backend = :Beefcake
     end
-    
+
     it "should raise an error when the chosen backend is not valid" do
       Riak::Client::BeefcakeProtobuffsBackend.should_receive(:configured?).and_return(false)
       lambda { @client.protobuffs { |x| } }.should raise_error

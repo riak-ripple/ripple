@@ -141,7 +141,7 @@ module Riak
             path(luwak_wm_file)
           end
         end
-        
+
         private
         def server_config
           @server_config ||= {}.tap do |hash|

@@ -58,7 +58,7 @@ module Ripple
     def validation_options
       @options.dup.except(:default)
     end
-    
+
     # Attempt to coerce the passed value into this property's type
     # @param [Object] value the value to coerce
     # @return [Object] the value coerced into this property's type

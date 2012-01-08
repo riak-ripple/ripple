@@ -34,7 +34,7 @@ describe Ripple::Generators::ModelGenerator do
   let(:attributes){ {} }
   subject { model_file }
   before { run_generator cli }
-  
+
   describe "generating a bare model" do
     it_behaves_like :document_generator
   end

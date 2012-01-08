@@ -1,8 +1,8 @@
 class Riak::Client::Decaying
   # A float which decays exponentially with time.
- 
+
   attr_accessor :e
-  attr_accessor :p 
+  attr_accessor :p
   # @param[:p] The initial value
   # @param[:e] Exponent base
   # @param[:r] Timescale

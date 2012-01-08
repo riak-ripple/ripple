@@ -171,7 +171,7 @@ module Riak
       s = nodes.select do |node|
         node.error_rate.value < 0.1
       end
-      
+
       if s.empty?
         # Fall back to minimally broken node.
         nodes.min_by do |node|
@@ -406,7 +406,7 @@ module Riak
       @backend = nil
       @protocol = value
     end
-    
+
     # Takes a pool. Acquires a backend from the pool and yields it with
     # node-specific error recovery.
     def recover_from(pool)
@@ -421,7 +421,7 @@ module Riak
             not skip_nodes.include? backend.node
           end
         end
-        
+
         # Acquire a backend
         pool.take(take_opts) do |backend|
           begin
@@ -432,7 +432,7 @@ module Riak
 
             # Notify the node that a request against it failed.
             backend.node.error_rate << 1
-            
+
             # Skip this node next time.
             skip_nodes << backend.node
 

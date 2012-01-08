@@ -34,7 +34,7 @@ module Ripple
       def indexes_for_persistence(prefix = '')
         Hash.new {|h,k| h[k] = Set.new }.tap do |indexes|
           # Add embedded associations' indexes
-          self.class.embedded_associations.each do |association|            
+          self.class.embedded_associations.each do |association|
             documents = instance_variable_get(association.ivar)
             unless documents.nil?
               Array(documents).each do |doc|

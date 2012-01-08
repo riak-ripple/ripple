@@ -51,7 +51,7 @@ describe Riak::Node do
     it "default mapreduce path should be /mapred" do
       @node.http_paths[:mapred].should == "/mapred"
     end
-    
+
     it 'should accept a solr path' do
       node = Riak::Client::Node.new @client, :solr => "/mr"
       node.http_paths[:solr].should == "/mr"
@@ -60,7 +60,7 @@ describe Riak::Node do
     it "default solr path should be /solr" do
       @node.http_paths[:solr].should == "/solr"
     end
-    
+
     it 'should accept a luwak path' do
       node = Riak::Client::Node.new @client, :luwak => "/mr"
       node.http_paths[:luwak].should == "/mr"

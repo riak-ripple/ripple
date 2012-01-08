@@ -37,7 +37,7 @@ module Riak
       def teardown
         connection.reset
       end
-      
+
       private
       def perform(method, uri, headers, expect, data=nil, &block)
         configure_ssl if @node.ssl_enabled?

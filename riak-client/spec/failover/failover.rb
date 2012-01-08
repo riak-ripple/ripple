@@ -27,7 +27,7 @@ require 'riak'
 
   (0...n).map do |t|
     Thread.new do
-      # Generate a stream of put reqs. Put a . for each success, an X for 
+      # Generate a stream of put reqs. Put a . for each success, an X for
       # each failure.
       c.times do |i|
         begin

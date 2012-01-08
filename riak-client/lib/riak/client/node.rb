@@ -86,7 +86,7 @@ module Riak
       # Checks if SSL is enabled for HTTP
       def ssl_enabled?
         @client.protocol == 'https' || @ssl_options.present?
-      end     
+      end
 
       def ssl_enable
         @client.protocol = 'https'
@@ -102,7 +102,7 @@ module Riak
         @client.protocol = 'http'
         @ssl_options  = nil
       end
- 
+
       def inspect
         "<#Node #{@host}:#{@http_port}:#{@pb_port}>"
       end

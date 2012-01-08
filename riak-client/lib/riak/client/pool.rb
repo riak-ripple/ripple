@@ -25,7 +25,7 @@ module Riak
         def lock
           self.owner = Thread.current
         end
-        
+
         # Is this element locked/claimed?
         def locked?
           not owner.nil?
@@ -41,7 +41,7 @@ module Riak
           owner.nil?
         end
       end
-      
+
       attr_accessor :pool
       attr_accessor :open
       attr_accessor :close
@@ -91,9 +91,9 @@ module Riak
       # elements are claimed, it will create another one.
       # @yield [obj] a block that will perform some action with the
       #   element of the pool
-      # @yieldparam [Object] resource a resource managed by the pool. 
+      # @yieldparam [Object] resource a resource managed by the pool.
       #   Locked for the duration of the block
-      # @param [callable] :filter a callable which receives objects and has 
+      # @param [callable] :filter a callable which receives objects and has
       #   the opportunity to reject each in turn.
       # @param [Object] :default if no resources are available, use this object
       #   instead of calling #open.
@@ -137,7 +137,7 @@ module Riak
         r
       end
       alias >> take
-      
+
       # Iterate over a snapshot of the pool. Yielded objects are locked for the
       # duration of the block. This may block the current thread until elements
       # are released by other threads.

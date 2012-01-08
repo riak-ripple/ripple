@@ -74,7 +74,7 @@ module Riak
       def teardown
         reset_socket
       end
-      
+
       private
       # Implemented by subclasses
       def decode_response

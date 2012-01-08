@@ -82,7 +82,7 @@ describe "Multithreaded client", :test_server => true do
           x.data.should == [data]
         end
       end
-      
+
       it 'should put in parallel' do
         data = "the tabernacle is indestructible and everlasting"
 
@@ -93,18 +93,18 @@ describe "Multithreaded client", :test_server => true do
           x.data = ["#{data}-#{i}"]
           x.store
         end
-        
+
         (0...n).each do |i|
           read = @client['test']["test-#{i}"]
           read.content_type.should == "application/json"
           read.data.should == ["#{data}-#{i}"]
         end
       end
-      
+
       it 'should put conflicts in parallel' do
         @client['test'].allow_mult = true
         @client['test'].allow_mult.should == true
-        
+
         init = @client['test'].new('test')
         init.content_type = "application/json"
         init.data = ''
@@ -119,7 +119,7 @@ describe "Multithreaded client", :test_server => true do
           x.data = [i]
           x.store
         end
-        
+
         read = @client['test']["test"]
         read.conflict?.should == true
         read.siblings.map do |sibling|
@@ -138,7 +138,7 @@ describe "Multithreaded client", :test_server => true do
           o.data = [i]
           o.store
         end
-        
+
         threads(threads) do
           set = Set.new
           @client['test'].keys do |stream|

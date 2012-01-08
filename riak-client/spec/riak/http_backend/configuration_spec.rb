@@ -215,7 +215,7 @@ describe Riak::Client::HTTPBackend::Configuration do
       url.should be_kind_of(URI)
       url.path.should == '/luwak'
     end
-    
+
     it "should escape a nested path" do
       url = subject.luwak_path("foo/bar/baz")
       url.should be_kind_of(URI)
@@ -231,7 +231,7 @@ describe Riak::Client::HTTPBackend::Configuration do
       expect { subject.luwak_path('foo') }.to raise_error
     end
   end
-  
+
   {
     :riak_kv_wm_raw => :prefix,
     :riak_kv_wm_link_walker => :prefix,
