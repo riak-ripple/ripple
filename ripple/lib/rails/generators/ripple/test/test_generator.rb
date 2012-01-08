@@ -7,7 +7,7 @@ module Ripple
       # Cucumber
       def create_cucumber_file
         if File.directory?("features/support")
-          template 'cucumber.rb', 'features/support/ripple.rb'
+          template 'cucumber.rb.erb', 'features/support/ripple.rb'
         end
       end
 
