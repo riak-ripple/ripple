@@ -11,7 +11,7 @@ module Ripple
       check_class_collision
 
       def create_model_file
-        template 'model.rb', "app/models/#{file_path}.rb"
+        template 'model.rb.erb', "app/models/#{file_path}.rb"
       end
 
       hook_for :test_framework

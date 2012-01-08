@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Multithreaded client" do
+describe "Multithreaded client", :test_server => true do
   class Synchronizer
     def initialize(n)
       @mutex = Mutex.new

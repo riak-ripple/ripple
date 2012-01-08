@@ -29,7 +29,13 @@ module Riak
     def drop
       was_started = started?
       stop if was_started
-      data.children.each {|dir| dir.children.each {|c| c.rmtree } }
+      data.children.each do |item|
+        if item.directory?
+          item.children.each {|c| c.rmtree }
+        else
+          item.delete
+        end
+      end
       start if was_started
     end
 
@@ -76,7 +82,8 @@ module Riak
           line.sub!(/(RUNNER_ETC_DIR=)(.*)/, '\1' + etc.to_s)
           line.sub!(/(RUNNER_USER=)(.*)/, '\1')
           line.sub!(/(RUNNER_LOG_DIR=)(.*)/, '\1' + log.to_s)
-          line.sub!(/(PIPE_DIR=)(.*)/, '\1' + pipe.to_s)
+          line.sub!(/(PIPE_DIR=)(.*)/, '\1' + pipe.to_s + "/") # PIPE_DIR must have a trailing slash
+          line.sub!(/(PLATFORM_DATA_DIR=)(.*)/, '\1' + data.to_s)
           line.sub!('grep "$RUNNER_BASE_DIR/.*/[b]eam"', 'grep "$RUNNER_ETC_DIR/app.config"')
           if line.strip == "RUNNER_BASE_DIR=${RUNNER_SCRIPT_DIR%/*}"
             line = "RUNNER_BASE_DIR=#{source.parent.to_s}\n"

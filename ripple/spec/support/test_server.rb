@@ -5,7 +5,7 @@ RSpec.configure do |config|
     unless $test_server
       begin
         require 'yaml'
-        config = YAML.load_file("spec/support/test_server.yml")
+        config = YAML.load_file(File.expand_path("../test_server.yml", __FILE__))
         $test_server = Riak::TestServer.create(:root => config['root'],
                                                :source => config['source'],
                                                :min_port => config['min_port'] || 15000)
@@ -22,6 +22,6 @@ RSpec.configure do |config|
   end
 
   config.after(:each, :integration => true) do
-    $test_server.drop
+    $test_server.drop if $test_server
   end
 end
