@@ -23,13 +23,12 @@ module Ripple
     def initialize(options=Ripple.config.dup)
       options[:env] ||= {}
       options[:env][:riak_kv] ||= {}
-      options[:env][:riak_kv][:js_source_dir] ||= Ripple.config.delete(:js_source_dir) || (Rails.root + "app/mapreduce").to_s
+      options[:env][:riak_kv][:js_source_dir] ||= Ripple.config.delete(:js_source_dir)
       options[:env][:riak_kv][:map_cache_size] ||= 0
       options[:env][:riak_core] ||= {}
       options[:env][:riak_core][:http] ||= [ Tuple[Ripple.config[:host], Ripple.config[:http_port]] ]
       options[:env][:riak_kv][:pb_port] ||= Ripple.config[:pb_port]
       options[:env][:riak_kv][:pb_ip] ||= Ripple.config[:host]
-      options[:root] ||= (Rails.root + 'tmp/riak_test_server').to_s
       super(options)
     end
   end
