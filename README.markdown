@@ -4,6 +4,13 @@
 database that contains an ActiveModel-based document abstraction which
 is inspired by ActiveRecord, DataMapper, and MongoMapper.
 
+**NOTE**: If you are looking for the other gems (`riak-client`,
+`riak-sessions`) that used to live in this repository, please find
+their canonical sources below:
+
+* [`riak-client`](https://github.com/basho/riak-ruby-client)
+* [`riak-sessions`](https://github.com/seancribbs/riak-sessions)
+
 ## Dependencies
 
 `ripple` requires Ruby 1.8.7 or later and versions 3 or above of
