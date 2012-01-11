@@ -1,98 +1,44 @@
 require 'rubygems'
-require 'rake'
-require 'rake/clean'
+require 'rubygems/package_task'
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
-PROJECTS = %w{riak-client ripple riak-sessions}
+def gemspec
+  $ripple_gemspec ||= Gem::Specification.load("ripple.gemspec")
+end
 
-begin
-  require 'yard'
-  desc "Generate YARD documentation."
-  YARD::Rake::YardocTask.new do |yard|
-    docfiles = FileList['{riak-client,ripple,riak-sessions}/lib/**/*.rb']
-    docfiles.exclude '**/generators/**/templates/*'
-    yard.files = docfiles.to_a + ['-','RELEASE_NOTES.textile']
-    yard.options = ["--no-private"]
-  end
+Gem::PackageTask.new(gemspec) do |pkg|
+  pkg.need_zip = false
+  pkg.need_tar = false
+end
 
-  desc "Generate YARD documentation into a repo on the gh-pages branch."
-  task :doc => :yard do
-    original_dir = Dir.pwd
-    docs_dir = File.expand_path(File.join(original_dir, "..", "ripple-docs"))
-    rm_rf File.join(docs_dir, "*")
-    cp_r File.join(original_dir, "doc", "."), docs_dir
-    touch File.join(docs_dir, '.nojekyll')
-  end
-rescue LoadError, NameError
+task :gem => :gemspec
+
+desc %{Validate the gemspec file.}
+task :gemspec do
+  gemspec.validate
+end
+
+desc %{Release the gem to RubyGems.org}
+task :release => :gem do
+  system "gem push pkg/#{gemspec.name}-#{gemspec.version}.gem"
+end
+
+desc "Run Unit Specs Only"
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.rspec_opts = %w[--profile --tag ~integration]
 end
 
 namespace :spec do
-  PROJECTS.each do |dir|
-    desc "Run specs for sub-project #{dir}."
-    task dir do
-      Dir.chdir(dir) do
-        system 'rake spec'
-      end
-    end
+  desc "Run Integration Specs Only"
+  RSpec::Core::RakeTask.new(:integration) do |spec|
+    spec.rspec_opts = %w[--profile --tag integration]
   end
 
-  desc "Run integration specs for all sub-projects."
-  task :integration do
-    %w{riak-client ripple}.each do |dir|
-      Dir.chdir(dir) do
-        system 'rake spec:integration'
-      end
-    end
+  desc "Run All Specs"
+  RSpec::Core::RakeTask.new(:all) do |spec|
+    spec.rspec_opts = %w[--profile]
   end
 end
 
-desc "Regenerate all gemspecs."
-task :gemspecs do
-  PROJECTS.each do |dir|
-    Dir.chdir(dir) do
-      system "rake gemspec"
-    end
-  end
-end
-
-desc "Release all gems to Rubygems.org."
-task :release do
-  PROJECTS.each do |dir|
-    Dir.chdir(dir) do
-      system "rake release"
-    end
-  end
-end
-
-desc "Cleans up white space for each project"
-task :clean_whitespace do
-  PROJECTS.each do |dir|
-    Dir.chdir(dir) do
-      no_file_cleaned = true
-      puts
-      puts ("=" * 20) + " #{dir} " + ("=" * 20)
-
-      Dir["**/*.rb"].each do |file|
-        contents = File.read(file)
-        cleaned_contents = contents.gsub(/([ \t]+)$/, '')
-
-        unless cleaned_contents == contents
-          no_file_cleaned = false
-          puts " - Cleaned #{file}"
-          File.open(file, 'w') { |f| f.write(cleaned_contents) }
-        end
-      end
-
-      if no_file_cleaned
-        puts "No files with trailing whitespace found"
-      end
-    end
-  end
-end
-
-desc "Run all sub-project specs."
-task :spec => ["spec:riak-client", "spec:ripple", "spec:riak-sessions"]
-
-task :default => :spec
-
-CLOBBER.include(".yardoc")
-CLOBBER.include("doc")
+task :default => "spec:all"

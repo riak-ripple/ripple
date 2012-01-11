@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-if [ -n "$CI" -a -n "$TRAVIS" ]; then
-    (echo $MY_RUBY_HOME | grep -q jruby) && find "$MY_RUBY_HOME" -name "libjruby-cext.*" -exec mv {} {}.bad \;
-fi
-exit 0
