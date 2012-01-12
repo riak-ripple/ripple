@@ -8,21 +8,17 @@ else
   gem 'activemodel', '~> 3.0.10'
 end
 
-gem 'riak-client', :path => "../riak-client"
-
-unless ENV['TRAVIS']
+if ENV['TRAVIS']
+  # Once the APIs are stable, this should be removed
+  gem 'riak-client', :git => "git://github.com/basho/riak-ruby-client.git"
+else
+  # Comment this gem out if you are using a stable version of
+  # riak-client in development
+  gem 'riak-client', :path => "../riak-client"
   gem 'guard-rspec'
   gem 'rb-fsevent'
   gem 'growl'
 end
-
-# platforms :mri_18, :jruby do
-#   gem 'ruby-debug'
-# end
-
-# platforms :mri_19 do
-#   gem 'ruby-debug19'
-# end
 
 platforms :jruby do
   gem 'jruby-openssl'
