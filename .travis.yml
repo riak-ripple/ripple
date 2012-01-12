@@ -1,9 +1,12 @@
-env:
-  - "RIAK_BIN_DIR=/usr/sbin"
-  - "RIAK_BIN_DIR=/usr/sbin RAILS31=true"
+gemfiles:
+  - Gemfile
+  - Gemfile.rails31
 rvm:
   - 1.8.7
   - 1.9.2
   - 1.9.3
   - jruby
-before_script: ! 'echo "root: /tmp/.riaktest\nsource: $RIAK_BIN_DIR" > spec/support/test_server.yml; ulimit -n 2048'
+before_script:
+  - ! 'echo "root: /tmp/.riaktest" > spec/support/test_server.yml'
+  - ! 'echo "source: /usr/sbin" >> spec/support/test_server.yml'
+  - "ulimit -n 2048"

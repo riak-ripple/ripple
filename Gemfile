@@ -2,12 +2,6 @@ source :rubygems
 
 gemspec
 
-if ENV['RAILS31']
-  gem 'activemodel', '~> 3.1.0'
-else
-  gem 'activemodel', '~> 3.0.10'
-end
-
 if ENV['TRAVIS']
   # Once the APIs are stable, this should be removed
   gem 'riak-client', :git => "git://github.com/basho/riak-ruby-client.git"
