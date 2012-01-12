@@ -1,4 +1,4 @@
-gemfiles:
+gemfile:
   - Gemfile
   - Gemfile.rails31
 rvm:
