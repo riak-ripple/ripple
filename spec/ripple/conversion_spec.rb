@@ -2,21 +2,13 @@ require 'spec_helper'
 
 describe Ripple::Conversion do
   # require 'support/models/box'
+  subject { Box.new { |a| a.key = 'some-key' } }
 
   before :each do
-    @box = Box.new { |a| a.key = 'some-key' }
-    @box.stub!(:new?).and_return(false)
+    subject.stub!(:new?).and_return(false)
   end
 
-  it "should return the key as an array for to_key" do
-    @box.to_key.should == ['some-key']
-  end
-
-  it "should be able to be converted to a param" do
-    @box.to_param.should == 'some-key'
-  end
-
-  it "should be able to be converted to a model" do
-    @box.to_model.should == @box
-  end
+  its(:to_key)  { should == ['some-key'] }
+  its(:to_param){ should == 'some-key'   }
+  its(:to_model){ should == subject      }
 end

@@ -30,4 +30,10 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   # config.debug = true
   config.include Ripple::Conflict::TestHelper
+
+  if defined? Java
+    config.seed = Time.now.to_i
+  else
+    config.order = :random
+  end
 end

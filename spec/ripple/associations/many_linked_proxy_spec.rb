@@ -58,7 +58,7 @@ describe Ripple::Associations::ManyLinkedProxy do
     @person.tasks.__send__(:should_receive, :reset)
     @person.tasks.__send__(:links).should == [@task.robject.to_link("tasks")]
     @person.tasks.replace_links([@other_task, @third_task].map { |t| t.robject.to_link("tasks") })
-    @person.tasks.__send__(:links).should == [@other_task, @third_task].map { |t| t.robject.to_link("tasks") }
+    @person.tasks.__send__(:links).should =~ [@other_task, @third_task].map { |t| t.robject.to_link("tasks") }
   end
 
   it "should replace associated documents with a new set" do
@@ -151,7 +151,7 @@ describe Ripple::Associations::ManyLinkedProxy do
 
     it "returns a set of keys" do
       @person.tasks.keys.should be_a(Set)
-      @person.tasks.keys.to_a.should == link_keys
+      @person.tasks.keys.to_a.should =~ link_keys
     end
 
     it "is memoized between calls" do

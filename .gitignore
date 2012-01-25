@@ -33,3 +33,4 @@ Gemfile*.lock
 **/.riaktest
 vendor/erlang
 vendor/riak
+tmp/*

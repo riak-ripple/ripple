@@ -123,7 +123,7 @@ describe Ripple::Associations::ManyReferenceProxy do
 
     it "returns a set of keys" do
       @account.payment_methods.keys.should be_a(Set)
-      @account.payment_methods.keys.to_a.should == ze_keys
+      @account.payment_methods.keys.to_a.should =~ ze_keys
     end
 
     it "is memoized between calls" do
