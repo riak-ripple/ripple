@@ -3,20 +3,16 @@ require 'spec_helper'
 describe Ripple::Validations do
   # require 'support/models/box'
   let(:klass) do
-    Class.new do
+    class self.class::Valid
       include Ripple::Document
       self.bucket_name = "validators"
-
-      # Anonymous classes have no name
-      def self.model_name
-        @_model_name ||= ActiveModel::Name.new(self, nil, "Valid")
-      end
     end
+    self.class::Valid
   end
 
   subject { klass.new }
   let(:client) { Ripple.client }
-
+  after(:each) { self.class.send :remove_const, :Valid }
   before :each do
     client.stub(:store_object => true)
   end
@@ -88,15 +84,18 @@ describe Ripple::Validations do
     lambda { klass.create! }.should raise_error(Ripple::DocumentInvalid)
   end
 
+
   it "should automatically add validations from property options" do
     klass.property :size, Integer, :inclusion => {:in => 1..30 }
+
     subject.size = 0
     subject.should be_invalid
   end
 
   it "should run validations at the correct lifecycle state" do
     klass.property :size, Integer, :inclusion => {:in => 1..30, :on => :update }
-    subject.stub!(:new).and_return(true)
+
+    subject.stub!(:new?).and_return(true)
     subject.size = 0
     subject.should be_valid
   end

@@ -37,11 +37,8 @@ describe "Ripple conflict resolution", :integration => true do
     property :title, String
   end
 
-  before :all do
-    ConflictedPerson.bucket.allow_mult = true
-  end
-
   before(:each) do
+    ConflictedPerson.bucket.allow_mult ||= true
     ConflictedPerson.on_conflict { } # reset to no-op
   end
 
