@@ -9,7 +9,6 @@ module TestServerSupport
         server = Riak::TestServer.create(:root => config['root'],
                                          :source => config['source'],
                                          :min_port => config['min_port'] || 15000)
-        at_exit { server.stop }
         $test_server = server
       rescue => e
         pending("Can't run ripple integration specs without the test server. Specify the location of your Riak installation in spec/support/test_server.yml\n#{e.inspect}")
@@ -32,5 +31,9 @@ RSpec.configure do |config|
 
   config.after(:each, :integration => true) do
     test_server.drop
+  end
+
+  config.after(:suite) do
+    $test_server.stop if $test_server
   end
 end
