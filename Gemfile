@@ -2,16 +2,14 @@ source :rubygems
 
 gemspec
 
-if ENV['TRAVIS']
-  # Once the APIs are stable, this should be removed
-  gem 'riak-client', :git => "git://github.com/basho/riak-ruby-client.git"
-else
-  # Comment this gem out if you are using a stable version of
-  # riak-client in development
-  gem 'riak-client', :path => "../riak-client"
+group :guard do
   gem 'guard-rspec'
   gem 'rb-fsevent'
   gem 'growl'
+end
+
+if File.directory?(File.expand_path("../../riak-client", __FILE__))
+  gem 'riak-client', :path => "../riak-client"
 end
 
 platforms :jruby do
