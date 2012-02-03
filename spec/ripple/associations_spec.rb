@@ -11,22 +11,23 @@ describe Ripple::Associations do
   end
 
   it "should collect the embedded associations" do
-    Invoice.embedded_associations.should == Array(Invoice.associations[:note])
+    Invoice.embedded_associations.should == [ Invoice.associations[:note] ]
   end
 
   it "should collect the linked associations" do
-    Invoice.linked_associations.should == Array(Invoice.associations[:customer])
+    Invoice.linked_associations.should == [ Invoice.associations[:customer] ]
   end
 
   it "should collect the stored_key associations" do
-    Account.stored_key_associations.should == Array(Account.associations[:transactions])
-    Transaction.stored_key_associations.should == Array(Transaction.associations[:account])
+    Account.stored_key_associations.should == [ Account.associations[:transactions] ]
+    Transaction.stored_key_associations.should == [ Transaction.associations[:account] ]
   end
 
   it "should copy associations to a subclass" do
     Invoice.associations[:foo] = "bar"
     class SubInvoice < Invoice; end
     SubInvoice.associations[:foo].should == "bar"
+    Invoice.associations.delete :foo
   end
 
   describe "when adding a :many association" do

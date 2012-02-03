@@ -7,6 +7,7 @@ rvm:
   - 1.9.3
   - jruby
 before_script:
+  - "if [[ -x /tmp/.riaktest/bin/riak ]]; then /tmp/.riaktest/bin/riak stop; rm -rf /tmp/.riaktest; fi"
   - ! 'echo "root: /tmp/.riaktest" > spec/support/test_server.yml'
   - ! 'echo "source: /usr/sbin" >> spec/support/test_server.yml'
   - "ulimit -n 2048"

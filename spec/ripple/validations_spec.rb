@@ -2,102 +2,101 @@ require 'spec_helper'
 
 describe Ripple::Validations do
   # require 'support/models/box'
-
-  before :each do
-    @box = Box.new
-    @client = Ripple.client
-    @client.stub(:store_object => true)
+  let(:klass) do
+    class self.class::Valid
+      include Ripple::Document
+      self.bucket_name = "validators"
+    end
+    self.class::Valid
   end
 
-  it "should add validation declarations to the class" do
+  subject { klass.new }
+  let(:client) { Ripple.client }
+  after(:each) { self.class.send :remove_const, :Valid }
+  before :each do
+    client.stub(:store_object => true)
+  end
+
+  context "adding validation declarations to the class" do
     [:validates, :validate, :validates_with, :validates_each,
      :validates_acceptance_of, :validates_confirmation_of, :validates_exclusion_of,
      :validates_format_of, :validates_inclusion_of, :validates_length_of,
      :validates_numericality_of, :validates_presence_of].each do |meth|
-      Box.should respond_to(meth)
+      its(:class){ should respond_to(meth) }
     end
   end
 
-  it "should add validation methods to the instance" do
-    %w{errors valid? invalid?}.each do |meth|
-      @box.should respond_to(meth)
-    end
+  context "adding validation methods to the instance" do
+    it { should respond_to(:errors) }
+    it { should respond_to(:valid?) }
+    it { should respond_to(:invalid?) }
   end
 
   it "should override save to run validations" do
-    @box.should_receive(:valid?).and_return(false)
-    @box.save.should be_false
+    subject.should_receive(:valid?).and_return(false)
+    subject.save.should be_false
   end
 
   it "should allow skipping validations by passing save :validate => false" do
-    @box.should_not_receive(:valid?)
-    @box.save(:validate => false).should be_true
+    subject.should_not_receive(:valid?)
+    subject.save(:validate => false).should be_true
   end
 
   describe "when using save! on an invalid record" do
-    before(:each) { @box.stub!(:valid?).and_return(false) }
-
-    it "should raise DocumentInvalid" do
-      lambda { @box.save! }.should raise_error(Ripple::DocumentInvalid)
-    end
+    before(:each) { subject.stub!(:valid?).and_return(false) }
 
     it "should raise an exception that has the invalid document" do
       begin
-        @box.save!
+        subject.save!
       rescue Ripple::DocumentInvalid => invalid
-        invalid.document.should == @box
+        invalid.document.should == subject
+      else
+        fail "Nothing was raised!"
       end
     end
   end
 
-  it "should not raise an error when save! is called and the document is valid" do
-    @box.stub!(:save).and_return(true)
-    @box.stub!(:valid?).and_return(true)
-    lambda { @box.save! }.should_not raise_error(Ripple::DocumentInvalid)
-  end
-
   it "should return true from save! when no exception is raised" do
-    @box.stub!(:save).and_return(true)
-    @box.stub!(:valid?).and_return(true)
-    @box.save!.should be_true
+    subject.stub!(:save).and_return(true)
+    subject.stub!(:valid?).and_return(true)
+    subject.save!.should be_true
   end
 
   it "should allow unexpected exceptions to be raised" do
-    robject = mock("robject", :key => @box.key, "data=" => true, "content_type=" => true, "indexes=" => true)
+    robject = mock("robject", :key => subject.key, "data=" => true, "content_type=" => true, "indexes=" => true)
     robject.should_receive(:store).and_raise(Riak::HTTPFailedRequest.new(:post, 200, 404, {}, "404 not found"))
-    @box.stub!(:robject).and_return(robject)
-    @box.stub!(:valid?).and_return(true)
-    lambda { @box.save! }.should raise_error(Riak::FailedRequest)
+    subject.stub!(:robject).and_return(robject)
+    subject.stub!(:valid?).and_return(true)
+    lambda { subject.save! }.should raise_error(Riak::FailedRequest)
   end
 
   it "should not raise an error when creating a box with create! succeeds" do
-    @box.stub!(:new?).and_return(false)
-    Box.stub(:create).and_return(@box)
-    lambda { @new_box = Box.create! }.should_not raise_error(Ripple::DocumentInvalid)
-    @new_box.should == @box
+    subject.stub!(:new?).and_return(false)
+    klass.stub(:create).and_return(subject)
+    new_subject = nil
+    new_subject = klass.create!
+    new_subject.should == subject
   end
 
   it "should raise an error when creating a box with create! fails" do
-    @box.stub!(:new?).and_return(true)
-    Box.stub(:create).and_return(@box)
-    lambda { Box.create! }.should raise_error(Ripple::DocumentInvalid)
+    subject.stub!(:new?).and_return(true)
+    klass.stub(:create).and_return(subject)
+    lambda { klass.create! }.should raise_error(Ripple::DocumentInvalid)
   end
 
+
   it "should automatically add validations from property options" do
-    Box.property :size, Integer, :inclusion => {:in => 1..30 }
-    @box.size = 0
-    @box.should_not be_valid
-    Box.properties.delete :size
+    klass.property :size, Integer, :inclusion => {:in => 1..30 }
+
+    subject.size = 0
+    subject.should be_invalid
   end
 
   it "should run validations at the correct lifecycle state" do
-    Box.property :size, Integer, :inclusion => {:in => 1..30, :on => :update }
-    @box.size = 0
-    @box.should be_valid
-    Box.properties.delete :size
-  end
+    klass.property :size, Integer, :inclusion => {:in => 1..30, :on => :update }
 
-  after :each do
-    Box.reset_callbacks(:validate)
+    subject.stub!(:new?).and_return(true)
+    subject.size = 0
+    subject.should be_valid
   end
 end

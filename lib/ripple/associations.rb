@@ -178,7 +178,7 @@ module Ripple
       # @private
       def run_callbacks(name, *args, &block)
         # validation is already propagated to embedded documents via the
-        # AssociatedValidator.  We don't need to duplicate the propgation here.
+        # AssociatedValidator.  We don't need to duplicate the propagation here.
         return super if name == :validation
 
         propagate_callbacks_to_embedded_associations(name, :before)

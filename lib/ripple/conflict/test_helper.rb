@@ -9,10 +9,11 @@ module Ripple
 
         begin
           klass, key = main_record.class, main_record.key
+          raise "#{klass.bucket.name} allow_mult property is false!" unless klass.bucket.allow_mult
           records = modifiers.map { |_| klass.find!(key) }
 
           records.zip(modifiers).each do |(record, modifier)|
-            # necessary to get conflict, so riak thinks they are being saved by different clients
+            # necessary to get conflict on 0.14 and earlier, so riak thinks they are being saved by different clients
             Ripple.client.client_id += 1
 
             modifier.call(record)

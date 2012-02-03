@@ -20,9 +20,9 @@ describe Ripple::Document::Persistence do
   end
 
   it "should save a new object to Riak" do
-    json = @widget.attributes.merge("_type" => "Widget").to_json
+    json = @widget.attributes.merge("_type" => "Widget")
     @client.should_receive(:store_object) do |obj, _, _, _|
-      obj.raw_data.should == json
+      obj.data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
       obj.key = "new_widget"
@@ -34,9 +34,9 @@ describe Ripple::Document::Persistence do
   end
 
   it "should modify attributes and save a new object" do
-    json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
+    json = @widget.attributes.merge("_type" => "Widget", "size" => 5)
     @client.should_receive(:store_object) do |obj, _, _, _|
-      obj.raw_data.should == json
+      obj.data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
       obj.key = "new_widget"
@@ -48,9 +48,9 @@ describe Ripple::Document::Persistence do
   end
 
   it "should modify a single attribute and save a new object" do
-    json = @widget.attributes.merge("_type" => "Widget", "size" => 5).to_json
+    json = @widget.attributes.merge("_type" => "Widget", "size" => 5)
     @client.should_receive(:store_object) do |obj, _, _, _|
-      obj.raw_data.should == json
+      obj.data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
       obj.key = "new_widget"
@@ -63,10 +63,10 @@ describe Ripple::Document::Persistence do
   end
 
   it "should instantiate and save a new object to riak" do
-    json = @widget.attributes.merge(:size => 10, :shipped_at => "2000-01-01T20:15:01Z", :_type => 'Widget').to_json
+    json = @widget.attributes.merge(:size => 10, :shipped_at => Time.utc(2000,"jan",1,20,15,1), :_type => 'Widget')
     @client.should_receive(:store_object) do |obj, _, _, _|
-      obj.raw_data.should == json
       obj.key.should be_nil
+      obj.data.should == json
       # Simulate loading the response with the key
       obj.key = "new_widget"
     end
@@ -77,9 +77,9 @@ describe Ripple::Document::Persistence do
   end
 
   it "should instantiate and save a new object to riak and allow its attributes to be set via a block" do
-    json = @widget.attributes.merge(:size => 10, :_type => 'Widget').to_json
+    json = @widget.attributes.merge(:size => 10, :_type => 'Widget')
     @client.should_receive(:store_object) do |obj, _, _, _|
-      obj.raw_data.should == json
+      obj.data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
       obj.key = "new_widget"
@@ -114,9 +114,9 @@ describe Ripple::Document::Persistence do
   end
 
   it "should reload a saved object, including associations" do
-    json = @widget.attributes.merge(:_type => "Widget").to_json
+    json = @widget.attributes.merge(:_type => "Widget")
     @client.should_receive(:store_object) do |obj, _, _, _|
-      obj.raw_data.should == json
+      obj.data.should == json
       obj.key.should be_nil
       # Simulate loading the response with the key
       obj.key = "new_widget"
@@ -168,7 +168,7 @@ describe Ripple::Document::Persistence do
     it 'causes destroy! to raise an error' do
       expect {
         @widget.destroy!
-      }.to raise_error(error)
+      }.to raise_error(Riak::FailedRequest)
     end
   end
 
@@ -194,9 +194,9 @@ describe Ripple::Document::Persistence do
     end
 
     it "should store the _type field as the class name" do
-      json = @cog.attributes.merge("_type" => "Cog").to_json
+      json = @cog.attributes.merge("_type" => "Cog")
       @client.should_receive(:store_object) do |obj, _, _, _|
-        obj.raw_data.should == json
+        obj.data.should == json
         obj.key = "new_widget"
       end
       @cog.save
