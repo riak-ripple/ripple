@@ -33,8 +33,8 @@ module Ripple
       end
 
       # @private
-      def initialize(attrs={})
-        super(attrs)
+      def initialize(*args)
+        super
         changed_attributes.clear
       end
 
