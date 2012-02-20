@@ -231,6 +231,15 @@ describe Ripple::AttributeMethods do
   it "should allow mass assigning arbitrary attributes when without_protection is specified" do
     @widget = Widget.new({:manufactured => true}, :without_protection => true)
     @widget[:manufactured].should be_true
+
+    @client = Ripple.client
+    @client.stub(:store_object => true)
+
+    @widget = Widget.create({:manufactured => true}, :without_protection => true)
+    @widget[:manufactured].should be_true
+
+    @widget = Widget.create!({:manufactured => true}, :without_protection => true)
+    @widget[:manufactured].should be_true
   end
 
   it "default assign_attributes should respect mass attribute assignment security" do
@@ -259,5 +268,4 @@ describe Ripple::AttributeMethods do
       @widget.restricted.should be_true
     end
   end
-
 end

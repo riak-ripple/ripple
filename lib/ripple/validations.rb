@@ -36,8 +36,8 @@ module Ripple
 
       # Instantiates a new document, applies attributes from a block, and saves it
       # Raises Ripple::DocumentInvalid if the record did not save
-      def create!(attrs={}, &block)
-        obj = create(attrs, &block)
+      def create!(*args, &block)
+        obj = create(*args, &block)
         (raise Ripple::DocumentInvalid.new(obj) if obj.new?) || obj
       end
     end
