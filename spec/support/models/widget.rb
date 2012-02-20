@@ -7,7 +7,7 @@ class Widget
   property :restricted, Boolean, :default => false
 
   attr_protected :manufactured
-  attr_protected :restricted, as: :default
+  attr_protected :restricted, :as => :default
 
   many :widget_parts
 end

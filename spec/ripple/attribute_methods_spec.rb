@@ -244,7 +244,7 @@ describe Ripple::AttributeMethods do
     @widget.assign_attributes(:restricted => true)
     @widget.restricted.should be_false
 
-    @widget.assign_attributes({:restricted => true}, as: :admin)
+    @widget.assign_attributes({:restricted => true}, :as => :admin)
     @widget.restricted.should be_true
   end
 
