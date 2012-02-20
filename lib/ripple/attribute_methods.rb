@@ -57,15 +57,35 @@ module Ripple
 
       # Mass assign the document's attributes.
       # @param [Hash] attrs the attributes to assign
-      def attributes=(attrs)
-        raise ArgumentError, t('attribute_hash') unless Hash === attrs
-        sanitize_for_mass_assignment(attrs).each do |k,v|
+      # @param [Hash] options assignment options
+      def assign_attributes(attrs, options={})
+        raise ArgumentError, t('attribute_hash') unless(Hash === attrs)
+
+        unless options[:without_protection]
+          if method(:sanitize_for_mass_assignment).arity == 1 # ActiveModel 3.0
+            if options[:as]
+              raise ArgumentError, t('mass_assignment_roles_unsupported')
+            end
+            attrs = sanitize_for_mass_assignment(attrs)
+          else
+            mass_assignment_role = (options[:as] || :default)
+            attrs = sanitize_for_mass_assignment(attrs, mass_assignment_role)
+          end
+        end
+
+        attrs.each do |k,v|
           if respond_to?("#{k}=")
             __send__("#{k}=",v)
           else
             raise ArgumentError, t('undefined_property', :prop => k, :class => self.class.name)
           end
         end
+      end
+
+      # Mass assign the document's attributes.
+      # @param [Hash] attrs the attributes to assign
+      def attributes=(attrs)
+        assign_attributes(attrs)
       end
 
       # @private
@@ -82,10 +102,10 @@ module Ripple
       end
 
       # @private
-      def initialize(attrs={})
+      def initialize(attrs={}, options={})
         super()
         @attributes = attributes_from_property_defaults
-        self.attributes = attrs
+        assign_attributes(attrs, options)
         yield self if block_given?
       end
 

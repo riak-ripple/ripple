@@ -4,8 +4,10 @@ class Widget
   property :name, String, :default => "widget"
   property :manufactured, Boolean, :default => false
   property :shipped_at, Time
+  property :restricted, Boolean, :default => false
 
   attr_protected :manufactured
+  attr_protected :restricted, :as => :default
 
   many :widget_parts
 end

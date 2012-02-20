@@ -140,7 +140,7 @@ describe Ripple::AttributeMethods do
 
   describe "#attributes" do
     it "it returns a hash representation of all of the attributes" do
-      @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil}
+      @widget.attributes.should == {"name" => "widget", "size" => nil, "manufactured" => false, "shipped_at" => nil, "restricted" => false}
     end
 
     it "does not include ghost attributes (attributes that do not have a defined property)" do
@@ -157,7 +157,8 @@ describe Ripple::AttributeMethods do
         'size'                => nil,
         'manufactured'        => false,
         'shipped_at'          => nil,
-        'some_undefined_prop' => 17
+        'some_undefined_prop' => 17,
+        'restricted'          => false,
       }
     end
   end
@@ -225,6 +226,38 @@ describe Ripple::AttributeMethods do
 
   it "should raise an ArgumentError with an undefined property message when mass assigning a property that doesn't exist" do
     lambda { @widget = Widget.new(:explode => '?BOOM') }.should raise_error(ArgumentError, %q[Undefined property :explode for class 'Widget'])
+  end
+
+  it "should allow mass assigning arbitrary attributes when without_protection is specified" do
+    @widget = Widget.new({:manufactured => true}, :without_protection => true)
+    @widget[:manufactured].should be_true
+  end
+
+  it "default assign_attributes should respect mass attribute assignment security" do
+    @widget = Widget.new
+    @widget.assign_attributes(:manufactured => true)
+    @widget.manufactured.should be_false
+  end
+
+  if(ActiveModel::VERSION::MAJOR == 3 && ActiveModel::VERSION::MINOR == 0)
+    it "assigning attributes should respect roles" do
+      @widget = Widget.new
+      @widget.assign_attributes(:restricted => true)
+      @widget.restricted.should be_false
+
+      lambda do
+        @widget.assign_attributes({:restricted => true}, :as => :admin)
+      end.should raise_error(ArgumentError, %q[Roles for mass assignment are not supported for Rails 3.0])
+    end
+  else
+    it "assigning attributes with a role should raise an error" do
+      @widget = Widget.new
+      @widget.assign_attributes(:restricted => true)
+      @widget.restricted.should be_false
+
+      @widget.assign_attributes({:restricted => true}, :as => :admin)
+      @widget.restricted.should be_true
+    end
   end
 
 end
