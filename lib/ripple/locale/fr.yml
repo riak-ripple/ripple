@@ -1,0 +1,24 @@
+fr:
+  ripple:
+    around_callbacks_not_supported: "Les callbacks around_%{type} ne sont pas utilisables sur les documents embarqués. Voir https://github.com/seancribbs/ripple/issues/188 pour plus d'information."
+    associated_document_error_summary: "Pour %{doc_type} %{doc_id}: %{errors}"
+    attribute_hash: "La valeur des attributs doit être un Hash"
+    cluster_not_created: "Le cluster pour l'environnement actuel n'a pas été créé. Executez d'abord `rake riak:create`"
+    conflict_handler_not_implemented: "Aucun handler on_conflict n'a été implémenté pour %{document}"
+    document_invalid: "La validation a échoué : %{errors}"
+    document_not_found: 
+      no_key: "Document introuvable sans clé."
+      one_key: "Document introuvable avec la clé %{key}"
+      many_keys: "Documents introuvables avec les clés : %{keys}"
+    index_type_unknown: "Impossible de déterminer le type d'index pour la propriété '%{property}' of type '%{type}'."
+    invalid_association_value: "Valeur invalide %{value} pour l'association %{name} de type %{klass} sur %{owner}"
+    many_association_validation_error: "sont invalides (%{association_errors})"
+    many_key_association: "Vous ne pouvez pas utiliser une association `many` avec :key"
+    mass_assignment_roles_unsupported: "Les rôles pour les assignations de masse ne sont pas supportés avec Rails 3.0"
+    missing_configuration: "Votre fichier de configuration est introuvable. Il devrait être ici : %{file}"
+    no_root_document: "Vous ne pouvez appeler %{method} sur %{doc} sans document racine."
+    one_association_validation_error: "est invalide (%{association_errors})"
+    property_type_mismatch: "Ne peut caster %{value} en %{class}"
+    undefined_property: "Propriété indéfinie :%{prop} pour la  classe '%{class}'"
+    unexpected_conflicts: "Le conflit ne peut être résolu : %{conflicts} (pour %{document})"
+
