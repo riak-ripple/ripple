@@ -61,9 +61,16 @@ module Ripple
       def assign_attributes(attrs, options={})
         raise ArgumentError, t('attribute_hash') unless(Hash === attrs)
 
-        mass_assignment_role = (options[:as] || :default)
         unless options[:without_protection]
-          attrs = sanitize_for_mass_assignment(attrs, mass_assignment_role)
+          if method(:sanitize_for_mass_assignment).arity == 1 # ActiveModel 3.0
+            if options[:as]
+              raise ArgumentError, t('mass_assignment_roles_unsupported')
+            end
+            attrs = sanitize_for_mass_assignment(attrs)
+          else
+            mass_assignment_role = (options[:as] || :default)
+            attrs = sanitize_for_mass_assignment(attrs, mass_assignment_role)
+          end
         end
 
         attrs.each do |k,v|

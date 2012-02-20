@@ -239,13 +239,25 @@ describe Ripple::AttributeMethods do
     @widget.manufactured.should be_false
   end
 
-  it "assigning attributes should respect roles" do
-    @widget = Widget.new
-    @widget.assign_attributes(:restricted => true)
-    @widget.restricted.should be_false
+  if(ActiveModel::VERSION::MAJOR == 3 && ActiveModel::VERSION::MINOR == 0)
+    it "assigning attributes should respect roles" do
+      @widget = Widget.new
+      @widget.assign_attributes(:restricted => true)
+      @widget.restricted.should be_false
 
-    @widget.assign_attributes({:restricted => true}, :as => :admin)
-    @widget.restricted.should be_true
+      lambda do
+        @widget.assign_attributes({:restricted => true}, :as => :admin)
+      end.should raise_error(ArgumentError, %q[Roles for mass assignment are not supported for Rails 3.0])
+    end
+  else
+    it "assigning attributes with a role should raise an error" do
+      @widget = Widget.new
+      @widget.assign_attributes(:restricted => true)
+      @widget.restricted.should be_false
+
+      @widget.assign_attributes({:restricted => true}, :as => :admin)
+      @widget.restricted.should be_true
+    end
   end
 
 end

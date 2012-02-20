@@ -14,6 +14,7 @@ en:
     invalid_association_value: "Invalid value %{value} for association %{name} of type %{klass} on %{owner}"
     many_association_validation_error: "are invalid (%{association_errors})"
     many_key_association: "You cannot use a many association using :key"
+    mass_assignment_roles_unsupported: "Roles for mass assignment are not supported for Rails 3.0"
     missing_configuration: "You are missing your ripple configuration file that should be at %{file}"
     no_root_document: "You cannot call %{method} on %{doc} without a root document"
     one_association_validation_error: "is invalid (%{association_errors})"
