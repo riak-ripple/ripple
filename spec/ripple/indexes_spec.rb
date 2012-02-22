@@ -57,6 +57,34 @@ describe Ripple::Indexes do
         subject.indexes_for_persistence['addresses_street_bin'].should == Set["10 Main St", "100 W 10th Avenue"]
       end
     end
+
+    context "finding documents by an index" do
+      before(:all) do
+        Indexer.destroy_all
+        @bob = Indexer.create(:name => "Bob", :age => 28)
+        @sally = Indexer.create(:name => "Sally", :age => 28)
+        @mary = Indexer.create(:name => "Mary", :age => 25)
+      end
+      after(:all) { Indexer.destroy_all }
+
+      it "should find one" do
+        Ripple.client.stub(:get_index).with('indexers', 'name_bin', 'Bob').and_return([@bob.key])
+        Indexer.find_by_index(:name, 'Bob').should == [@bob]
+      end
+      it "should find many" do
+        Ripple.client.stub(:get_index).with('indexers', 'age_int', 28).and_return([@bob.key, @sally.key])
+        result = Indexer.find_by_index(:age, 28)
+        result.should include(@bob, @sally)
+        result.should_not include(@mary)
+      end
+      it "should find none" do
+        Ripple.client.stub(:get_index).with('indexers', 'age_int', 30).and_return([])
+        Indexer.find_by_index(:age, 30).should == []
+      end
+      it "should raise an error when the requested index doesn't exist" do
+        lambda {Indexer.find_by_index(:hair, 'blonde')}.should raise_error( ArgumentError, "No index has been defined for property 'hair' of type 'Indexer'.")
+      end
+    end
   end
 end
 

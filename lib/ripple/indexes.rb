@@ -63,9 +63,21 @@ module Ripple
     # Modifies the persistence chain to set indexes on the internal
     # {Riak::RObject} before saving.
     module DocumentMethods
+      extend ActiveSupport::Concern
       def update_robject
         robject.indexes = indexes_for_persistence
         super
+      end
+
+      module ClassMethods
+        # Search for a document using an indexed column 
+        # @param [Symbol] name of the index 
+        # @param [String, Integer, Range] query to search for
+        def find_by_index(index_name, query)
+          idx = self.indexes[index_name]
+          raise ArgumentError, t('index_undefined', :property => index_name, :type => self.name) if idx.nil?
+          self.find(Ripple.client.get_index(self.bucket.name, idx.index_key, query))
+        end
       end
     end
   end
