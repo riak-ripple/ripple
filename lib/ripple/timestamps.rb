@@ -17,11 +17,9 @@ module Ripple
       end
     end
 
-    module InstanceMethods
-      # Sets the :updated_at attribute before saving the document.
-      def touch
-        self.updated_at = Time.now
-      end
+    # Sets the :updated_at attribute before saving the document.
+    def touch
+      self.updated_at = Time.now
     end
   end
 end

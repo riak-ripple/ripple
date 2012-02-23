@@ -38,36 +38,33 @@ module Ripple
     end
 
     # @private
-    module InstanceMethods
-      # @private
-      def really_save(*args, &block)
-        run_save_callbacks do
-          super
+    def really_save(*args, &block)
+      run_save_callbacks do
+        super
+      end
+    end
+    
+    def run_save_callbacks
+      state = new? ? :create : :update
+      run_callbacks(:save) do
+        run_callbacks(state) do
+          yield
         end
       end
-
-      def run_save_callbacks
-        state = new? ? :create : :update
-        run_callbacks(:save) do
-          run_callbacks(state) do
-            yield
-          end
-        end
+    end
+    
+    # @private
+    def destroy!(*args, &block)
+      run_callbacks(:destroy) do
+        super
       end
-
-      # @private
-      def destroy!(*args, &block)
-        run_callbacks(:destroy) do
-          super
-        end
-      end
-
-      # @private
-      def valid?(*args, &block)
-        @_on_validate = new? ? :create : :update
-        run_callbacks(:validation) do
-          super
-        end
+    end
+    
+    # @private
+    def valid?(*args, &block)
+      @_on_validate = new? ? :create : :update
+      run_callbacks(:validation) do
+        super
       end
     end
   end
