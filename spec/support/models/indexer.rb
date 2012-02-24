@@ -20,3 +20,7 @@ class Indexer
     "#{name}: Hello!"
   end
 end
+
+class SubIndexer < Indexer
+  property :height, String, :index => true
+end

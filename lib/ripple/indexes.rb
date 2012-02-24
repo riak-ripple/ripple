@@ -7,9 +7,19 @@ module Ripple
     extend ActiveSupport::Concern
 
     module ClassMethods
+
+      def inherited(subclass)
+        super
+        subclass.indexes = indexes.dup
+      end
+
       # Indexes defined on the document.
       def indexes
         @indexes ||= {}.with_indifferent_access
+      end
+
+      def indexes=(idx)
+        @indexes = idx
       end
 
       def property(key, type, options={})
