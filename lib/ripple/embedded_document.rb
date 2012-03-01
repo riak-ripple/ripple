@@ -47,19 +47,17 @@ module Ripple
       end
     end
 
-    module InstanceMethods
-      def ==(other)
-        self.class == other.class &&
-        _parent_document == other._parent_document &&
-        serializable_hash == other.serializable_hash
-      end
-      alias eql? ==
-
-      def hash
-        parent = [_parent_document.class]
-        parent << [_parent_document.key] if _parent_document.respond_to?(:key)
-        [ self.class, parent, serializable_hash ].hash
-      end
+    def ==(other)
+      self.class == other.class &&
+      _parent_document == other._parent_document &&
+      serializable_hash == other.serializable_hash
+    end
+    alias eql? ==
+    
+    def hash
+      parent = [_parent_document.class]
+      parent << [_parent_document.key] if _parent_document.respond_to?(:key)
+      [ self.class, parent, serializable_hash ].hash
     end
   end
 end

@@ -28,34 +28,32 @@ module Ripple
       end
     end
 
-    module InstanceMethods
-      # Returns indexes in a form suitable for persisting to Riak.
-      # @return [Hash] indexes for this document
-      def indexes_for_persistence(prefix = '')
-        Hash.new {|h,k| h[k] = Set.new }.tap do |indexes|
-          # Add embedded associations' indexes
-          self.class.embedded_associations.each do |association|
-            documents = instance_variable_get(association.ivar)
-            unless documents.nil?
-              Array(documents).each do |doc|
-                embedded_indexes = doc.indexes_for_persistence("#{prefix}#{association.name}_")
-                indexes.merge!(embedded_indexes) do |_,original,new|
-                  original.merge new
-                end
+    # Returns indexes in a form suitable for persisting to Riak.
+    # @return [Hash] indexes for this document
+    def indexes_for_persistence(prefix = '')
+      Hash.new {|h,k| h[k] = Set.new }.tap do |indexes|
+        # Add embedded associations' indexes
+        self.class.embedded_associations.each do |association|
+          documents = instance_variable_get(association.ivar)
+          unless documents.nil?
+            Array(documents).each do |doc|
+              embedded_indexes = doc.indexes_for_persistence("#{prefix}#{association.name}_")
+              indexes.merge!(embedded_indexes) do |_,original,new|
+                original.merge new
               end
             end
           end
-
-          # Add this document's indexes
-          self.class.indexes.each do |key, index|
-            if index.block
-              index_value = index.to_index_value instance_exec(&index.block)
-            else
-              index_value = index.to_index_value send(key)
-            end
-            index_value = Set[index_value] unless index_value.is_a?(Enumerable) && !index_value.is_a?(String)
-            indexes[prefix + index.index_key].merge index_value
+        end
+    
+        # Add this document's indexes
+        self.class.indexes.each do |key, index|
+          if index.block
+            index_value = index.to_index_value instance_exec(&index.block)
+          else
+            index_value = index.to_index_value send(key)
           end
+          index_value = Set[index_value] unless index_value.is_a?(Enumerable) && !index_value.is_a?(String)
+          indexes[prefix + index.index_key].merge index_value
         end
       end
     end

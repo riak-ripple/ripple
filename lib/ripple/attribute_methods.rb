@@ -39,100 +39,105 @@ module Ripple
       end
     end
 
-    module InstanceMethods
-      # A copy of the values of all attributes in the Document. The result
-      # is not memoized, so use sparingly.  This does not include associated objects,
-      # nor embedded documents.
-      # @return [Hash] all document attributes, by key
-      def attributes
-        raw_attributes.reject { |k, v| !respond_to?(k) }
+    # A copy of the values of all attributes in the Document. The result
+    # is not memoized, so use sparingly.  This does not include associated objects,
+    # nor embedded documents.
+    # @return [Hash] all document attributes, by key
+    def attributes
+      raw_attributes.reject { |k, v| !respond_to?(k) }
+    end
+
+    def raw_attributes
+      self.class.properties.values.inject(@attributes.with_indifferent_access) do |hash, prop|
+        hash[prop.key] = attribute(prop.key)
+        hash
       end
+    end
 
-      def raw_attributes
-        self.class.properties.values.inject(@attributes.with_indifferent_access) do |hash, prop|
-          hash[prop.key] = attribute(prop.key)
-          hash
-        end
-      end
+    # Mass assign the document's attributes.
+    # @param [Hash] attrs the attributes to assign
+    # @param [Hash] options assignment options
+    def assign_attributes(attrs, options={})
+      raise ArgumentError, t('attribute_hash') unless(Hash === attrs)
 
-      # Mass assign the document's attributes.
-      # @param [Hash] attrs the attributes to assign
-      # @param [Hash] options assignment options
-      def assign_attributes(attrs, options={})
-        raise ArgumentError, t('attribute_hash') unless(Hash === attrs)
-
-        unless options[:without_protection]
-          if method(:sanitize_for_mass_assignment).arity == 1 # ActiveModel 3.0
-            if options[:as]
-              raise ArgumentError, t('mass_assignment_roles_unsupported')
-            end
-            attrs = sanitize_for_mass_assignment(attrs)
-          else
-            mass_assignment_role = (options[:as] || :default)
-            attrs = sanitize_for_mass_assignment(attrs, mass_assignment_role)
+      unless options[:without_protection]
+        if method(:sanitize_for_mass_assignment).arity == 1 # ActiveModel 3.0
+          if options[:as]
+            raise ArgumentError, t('mass_assignment_roles_unsupported')
           end
-        end
-
-        attrs.each do |k,v|
-          if respond_to?("#{k}=")
-            __send__("#{k}=",v)
-          else
-            raise ArgumentError, t('undefined_property', :prop => k, :class => self.class.name)
-          end
+          attrs = sanitize_for_mass_assignment(attrs)
+        else
+          mass_assignment_role = (options[:as] || :default)
+          attrs = sanitize_for_mass_assignment(attrs, mass_assignment_role)
         end
       end
 
-      # Mass assign the document's attributes.
-      # @param [Hash] attrs the attributes to assign
-      def attributes=(attrs)
-        assign_attributes(attrs)
-      end
-
-      # @private
-      def raw_attributes=(attrs)
-        raise ArgumentError, t('attribute_hash') unless Hash === attrs
-        attrs.each do |k,v|
-          next if k.to_sym == :key
-          if respond_to?("#{k}=")
-            __send__("#{k}=",v)
-          else
-            __send__(:attribute=,k,v)
-          end
+      attrs.each do |k,v|
+        if respond_to?("#{k}=")
+          __send__("#{k}=",v)
+        else
+          raise ArgumentError, t('undefined_property', :prop => k, :class => self.class.name)
         end
       end
+    end
 
-      # @private
-      def initialize(attrs={}, options={})
-        super()
-        @attributes = attributes_from_property_defaults
-        assign_attributes(attrs, options)
-        yield self if block_given?
-      end
+    # Mass assign the document's attributes.
+    # @param [Hash] attrs the attributes to assign
+    def attributes=(attrs)
+      assign_attributes(attrs)
+    end
 
-      # @private
-      def method_missing(method, *args, &block)
-        self.class.define_attribute_methods
-        super
+    # @private
+    def raw_attributes=(attrs)
+      raise ArgumentError, t('attribute_hash') unless Hash === attrs
+      attrs.each do |k,v|
+        next if k.to_sym == :key
+        if respond_to?("#{k}=")
+          __send__("#{k}=",v)
+        else
+          __send__(:attribute=,k,v)
+        end
       end
+    end
 
-      # @private
-      def respond_to?(*args)
-        self.class.define_attribute_methods
-        super
-      end
+    # @private
+    def initialize(attrs={}, options={})
+      super()
+      @attributes = attributes_from_property_defaults
+      assign_attributes(attrs, options)
+      yield self if block_given?
+    end
 
-      protected
-      # @private
-      def attribute_method?(attr_name)
-        self.class.properties.include?(attr_name)
-      end
+    # @private
+    def method_missing(method, *args, &block)
+      self.class.define_attribute_methods
+      return super unless ActiveSupport::VERSION::STRING >= '3.2'
 
-      def attributes_from_property_defaults
-        self.class.properties.values.inject({}) do |hash, prop|
-          hash[prop.key] = prop.default unless prop.default.nil?
-          hash
-        end.with_indifferent_access
-      end
+      # FIXME: This is a workaround for Rails 3.2: rather than relying on
+      #        #respond_to_without_attributes? being called from
+      #        ActiveModel::AttributeMethods#method_missing, which is giving us
+      #        unreliable results.
+      match = match_attribute_method?(method.to_s)
+      match ? attribute_missing(match, *args, &block) : super
+    end
+
+    # @private
+    def respond_to?(*args)
+      self.class.define_attribute_methods
+      super
+    end
+
+    protected
+    # @private
+    def attribute_method?(attr_name)
+      self.class.properties.include?(attr_name)
+    end
+
+    def attributes_from_property_defaults
+      self.class.properties.values.inject({}) do |hash, prop|
+        hash[prop.key] = prop.default unless prop.default.nil?
+        hash
+      end.with_indifferent_access
     end
   end
 end
