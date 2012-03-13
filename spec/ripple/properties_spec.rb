@@ -81,7 +81,7 @@ describe Ripple::Property do
         @prop = Ripple::Property.new('foo', Boolean)
       end
 
-      [0, 0.0, "", [], false, "f", "FALSE"].each do |v|
+      [0, 0.0, "", "0", [], false, "f", "FALSE"].each do |v|
         it "should cast #{v.inspect} to false" do
           @prop.type_cast(v).should == false
         end
