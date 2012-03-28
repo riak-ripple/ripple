@@ -15,7 +15,7 @@ module Ripple
 
       def <<(value)
         if loaded?
-          new_target = @target.concat(Array(value))
+          new_target = @target.concat(Array.wrap(value))
           replace new_target
         else
           @reflection.verify_type!([value], @owner)

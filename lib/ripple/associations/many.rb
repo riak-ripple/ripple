@@ -7,7 +7,7 @@ module Ripple
 
       def to_ary
         load_target
-        Array === target ? target.to_ary : Array(target)
+        Array === target ? target.to_ary : Array.wrap(target)
       end
 
       def count
