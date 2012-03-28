@@ -28,8 +28,10 @@ module Ripple
     module ClassMethods
       # @private
       def property(key, type, options={})
-        undefine_attribute_methods
-        super
+        super.tap do
+          undefine_attribute_methods
+          define_attribute_methods
+        end
       end
 
       # Generates all the attribute-related methods for properties defined
@@ -106,25 +108,6 @@ module Ripple
       @attributes = attributes_from_property_defaults
       assign_attributes(attrs, options)
       yield self if block_given?
-    end
-
-    # @private
-    def method_missing(method, *args, &block)
-      self.class.define_attribute_methods
-      return super unless ActiveSupport::VERSION::STRING >= '3.2'
-
-      # FIXME: This is a workaround for Rails 3.2: rather than relying on
-      #        #respond_to_without_attributes? being called from
-      #        ActiveModel::AttributeMethods#method_missing, which is giving us
-      #        unreliable results.
-      match = match_attribute_method?(method.to_s)
-      match ? attribute_missing(match, *args, &block) : super
-    end
-
-    # @private
-    def respond_to?(*args)
-      self.class.define_attribute_methods
-      super
     end
 
     protected
