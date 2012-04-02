@@ -129,9 +129,6 @@ describe Ripple::Association do
   end
 
   describe "key correspondence" do
-    require 'support/models/profile'
-    require 'support/models/user'
-
     it "should raise an exception if trying to use a many association when :using => :key" do
       expect { Profile.many :user, :using => :key }.to raise_error(ArgumentError, "You cannot use a many association using :key")
     end
@@ -140,6 +137,17 @@ describe Ripple::Association do
       Profile.one :user, :using => :key
       Profile.new.should respond_to(:key_delegate)
       Profile.new.should respond_to(:key_delegate=)
+    end
+  end
+
+  describe "stored key" do
+    it "should raise an error when the target property does not exist" do
+      expect {
+        Class.new do
+          include Ripple::Document
+          many :transactions, :using => :stored_key
+        end
+      }.to raise_error(ArgumentError)
     end
   end
 end

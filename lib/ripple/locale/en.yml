@@ -19,6 +19,7 @@ en:
     no_root_document: "You cannot call %{method} on %{doc} without a root document"
     one_association_validation_error: "is invalid (%{association_errors})"
     property_type_mismatch: "Cannot cast %{value} into a %{class}"
+    stored_key_requires_property: "Missing property: %{name}. Stored-key associations require a property on the owner document."
     undefined_property: "Undefined property :%{prop} for class '%{class}'"
     unexpected_conflicts: "Conflict cannot be resolved for %{conflicts} (for %{document})"
 

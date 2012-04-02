@@ -101,6 +101,7 @@ module Ripple
       private
       def create_association(type, name, options={})
         association = associations[name] = Association.new(type, name, options)
+        association.validate!(self)
         association.setup_on(self)
 
         define_method(name) do
@@ -199,6 +200,16 @@ module Ripple
 
     def initialize(type, name, options={})
       @type, @name, @options = type, name, options.to_options
+    end
+
+    def validate!(owner)
+      # TODO: Refactor this into an association subclass. See also GH #284
+      if @options[:using] == :stored_key
+        single_name = ActiveSupport::Inflector.singularize(@name.to_s)
+        prop_name = "#{single_name}_key"
+        prop_name << "s" if many?
+        raise ArgumentError, t('stored_key_requires_property', :name => prop_name) unless owner.properties.include?(prop_name)
+      end
     end
 
     # @return String The class name of the associated object(s)
