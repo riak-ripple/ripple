@@ -52,8 +52,8 @@ module Ripple
     # Evaluates the configuration with ERB before loading.
     def load_configuration(config_file, config_keys = [:ripple])
       config_file = File.expand_path(config_file)
-      config_hash = YAML.load(ERB.new(File.read(config_file)).result).with_indifferent_access
-      config_keys.each {|k| config_hash = config_hash[k]}
+      config_hash = YAML.load(ERB.new(File.read(config_file)).result).deep_symbolize_keys!
+      config_keys.each {|k| config_hash = config_hash[(k.to_sym rescue k) || k]}
       configure_ports(config_hash)
       self.config = config_hash || {}
     rescue Errno::ENOENT

@@ -179,3 +179,30 @@ describe Enumerable do
   end
 end
 
+describe Hash do
+  subject { {"a" => {"b" => {"c" => "d"}}} }
+
+  def it_should_be_symbolized(hash)
+    hash.keys.each do |key|
+      key.should be_kind_of(Symbol)
+      if Hash === hash[key]
+        it_should_be_symbolized(hash[key])
+      end
+    end
+  end
+
+  context "deeply symbolizing keys" do
+    let(:dupsym){ subject.deep_symbolize_keys }
+    let(:sym){ subject.deep_symbolize_keys! }
+
+    it "should symbolize deeply nested keys into a new hash" do
+      dupsym.should_not equal(subject)
+      it_should_be_symbolized(dupsym)
+    end
+
+    it "should symbolize deeply nested keys in-place" do
+      sym.should equal(subject)
+      it_should_be_symbolized(subject)
+    end
+  end
+end

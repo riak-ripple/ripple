@@ -50,6 +50,14 @@ describe Ripple do
     Ripple.client.node.host.should == 'localhost'
   end
 
+  it "should symbolize deeply-nested keys in the loaded configuration [#256]" do
+    Ripple.load_config(File.join(File.dirname(__FILE__), '..', 'fixtures', 'config.yml'), [:deep])
+    Ripple.config.keys.should == [:env]
+    Ripple.config[:env].keys.should == [:riak_kv]
+    Ripple.config[:env][:riak_kv].keys.should == [:add_paths]
+    Ripple.config[:env][:riak_kv][:add_paths].should include("app/mapreduce/erlang")
+  end
+
   describe "date format" do
     before { @date_format = Ripple.date_format }
     after  { Ripple.date_format = @date_format }
