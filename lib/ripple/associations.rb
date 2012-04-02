@@ -205,7 +205,7 @@ module Ripple
     def validate!(owner)
       # TODO: Refactor this into an association subclass. See also GH #284
       if @options[:using] == :stored_key
-        single_name = ActiveSupport::Inflector.singularize(@name)
+        single_name = ActiveSupport::Inflector.singularize(@name.to_s)
         prop_name = "#{single_name}_key"
         prop_name << "s" if many?
         raise ArgumentError, t('stored_key_requires_property', :name => prop_name) unless owner.properties.include?(prop_name)
