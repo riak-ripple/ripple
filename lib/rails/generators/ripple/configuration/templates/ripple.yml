@@ -3,6 +3,7 @@ development:
   http_port: 8098
   pb_port: 8087
   host: 127.0.0.1
+  source: /usr/local/bin  #Default for Homebrew.
 
 # The test environment has additional keys for configuring the
 # Riak::TestServer for your test/spec suite:
