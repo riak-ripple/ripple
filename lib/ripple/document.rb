@@ -75,32 +75,30 @@ module Ripple
       end
     end
 
-    module InstanceMethods
-      def _root_document
-        self
-      end
+    def _root_document
+      self
+    end
 
-      # Returns true if the +comparison_object+ is the same object, or is of the same type and has the same key.
-      def ==(comparison_object)
-        comparison_object.equal?(self) ||
-          (comparison_object.class < Document && (comparison_object.instance_of?(self.class) || comparison_object.class.bucket.name == self.class.bucket.name) &&
-           !new? && comparison_object.key == key && !comparison_object.new?)
-      end
+    # Returns true if the +comparison_object+ is the same object, or is of the same type and has the same key.
+    def ==(comparison_object)
+      comparison_object.equal?(self) ||
+        (comparison_object.class < Document && (comparison_object.instance_of?(self.class) || comparison_object.class.bucket.name == self.class.bucket.name) &&
+         !new? && comparison_object.key == key && !comparison_object.new?)
+    end
 
-      def eql?(other)
-        return true if other.equal?(self)
+    def eql?(other)
+      return true if other.equal?(self)
 
-        (other.class.equal?(self.class)) &&
-        !other.new? && !new? &&
-        (other.key == key)
-      end
+      (other.class.equal?(self.class)) &&
+      !other.new? && !new? &&
+      (other.key == key)
+    end
 
-      def hash
-        if new?
-          super # every new document should be treated as a different doc
-        else
-          [self.class, key].hash
-        end
+    def hash
+      if new?
+        super # every new document should be treated as a different doc
+      else
+        [self.class, key].hash
       end
     end
   end

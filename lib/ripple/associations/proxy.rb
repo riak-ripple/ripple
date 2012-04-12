@@ -20,7 +20,7 @@ module Ripple
 
       def initialize(owner, reflection)
         @owner, @reflection = owner, reflection
-        Array(reflection.options[:extend]).each { |ext| proxy_extend(ext) }
+        Array.wrap(reflection.options[:extend]).each { |ext| proxy_extend(ext) }
         reset
       end
 
@@ -86,7 +86,7 @@ module Ripple
       end
 
       def loaded_documents
-        loaded? ? Array(target) : []
+        loaded? ? Array.wrap(target) : []
       end
 
       def has_changed_documents?

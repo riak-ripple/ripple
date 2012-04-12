@@ -17,20 +17,18 @@ module Ripple
         end
       end
 
-      module InstanceMethods
-        # Reads the key for this Document.
-        def key
-          @key
-        end
-
-        # Sets the key for this Document.
-        def key=(value)
-          @key = value.to_s
-        end
-
-        def key_attr
-          :key
-        end
+      # Reads the key for this Document.
+      def key
+        @key
+      end
+      
+      # Sets the key for this Document.
+      def key=(value)
+        @key = value.to_s
+      end
+      
+      def key_attr
+        :key
       end
     end
   end

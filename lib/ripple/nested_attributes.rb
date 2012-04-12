@@ -1,5 +1,9 @@
 require 'active_support/concern'
-require 'active_support/core_ext/class/inheritable_attributes'
+if ActiveSupport::VERSION::STRING < '3.2'
+  require 'active_support/core_ext/class/inheritable_attributes'
+else
+  require 'active_support/core_ext/class/attribute'
+end
 
 module Ripple
   module NestedAttributes #:nodoc:
@@ -137,107 +141,105 @@ module Ripple
       end
     end
 
-    module InstanceMethods
 
-      protected
-
-      def autosave
-        @autosave_nested_attributes_for ||= {}
+    protected
+    
+    def autosave
+      @autosave_nested_attributes_for ||= {}
+    end
+    
+    def marked_for_destruction
+      @marked_for_destruction ||= {}
+    end
+    
+    private
+    
+    def save_nested_attributes_for_one_association(association_name)
+      send(association_name).save
+    end
+    
+    def save_nested_attributes_for_many_association(association_name)
+      send(association_name).map(&:save)
+    end
+    
+    def destroy_marked_for_destruction
+      self.marked_for_destruction.each_pair do |association_name, resources|
+        resources.map(&:destroy)
+        send(association_name).reload
       end
-
-      def marked_for_destruction
-        @marked_for_destruction ||= {}
+    end
+    
+    def destroy_nested_many_association(association_name)
+      send(association_name).map(&:destroy)
+    end
+    
+    def assign_nested_attributes_for_one_association(association_name, attributes)
+      association = self.class.associations[association_name]
+      if association.embedded?
+        assign_nested_attributes_for_one_embedded_association(association_name, attributes)
+      else
+        self.autosave[association_name] = true
+        assign_nested_attributes_for_one_linked_association(association_name, attributes)
       end
-
-      private
-
-      def save_nested_attributes_for_one_association(association_name)
-        send(association_name).save
-      end
-
-      def save_nested_attributes_for_many_association(association_name)
-        send(association_name).map(&:save)
-      end
-
-      def destroy_marked_for_destruction
-        self.marked_for_destruction.each_pair do |association_name, resources|
-          resources.map(&:destroy)
-          send(association_name).reload
-        end
-      end
-
-      def destroy_nested_many_association(association_name)
-        send(association_name).map(&:destroy)
-      end
-
-      def assign_nested_attributes_for_one_association(association_name, attributes)
-        association = self.class.associations[association_name]
-        if association.embedded?
-          assign_nested_attributes_for_one_embedded_association(association_name, attributes)
-        else
-          self.autosave[association_name] = true
-          assign_nested_attributes_for_one_linked_association(association_name, attributes)
-        end
-      end
-
-      def assign_nested_attributes_for_one_embedded_association(association_name, attributes)
+    end
+    
+    def assign_nested_attributes_for_one_embedded_association(association_name, attributes)
+      send(association_name).build(attributes.except(*UNASSIGNABLE_KEYS))
+    end
+    
+    def assign_nested_attributes_for_one_linked_association(association_name, attributes)
+      attributes = attributes.stringify_keys
+      options = nested_attributes_options[association_name]
+    
+      if attributes[key_attr.to_s].blank? && !reject_new_record?(association_name, attributes)
         send(association_name).build(attributes.except(*UNASSIGNABLE_KEYS))
+      else
+        if ((existing_record = send(association_name)).key.to_s == attributes[key_attr.to_s].to_s)
+          assign_to_or_mark_for_destruction(existing_record, attributes, association_name, options[:allow_destroy])
+        else
+          raise ArgumentError, "Attempting to update a child that isn't already associated to the parent."
+        end
       end
-
-      def assign_nested_attributes_for_one_linked_association(association_name, attributes)
+    end
+    
+    def assign_nested_attributes_for_many_association(association_name, attributes_collection)
+      unless attributes_collection.is_a?(Hash) || attributes_collection.is_a?(Array)
+        raise ArgumentError, "Hash or Array expected, got #{attributes_collection.class.name} (#{attributes_collection.inspect})"
+      end
+    
+      if attributes_collection.is_a? Hash
+        attributes_collection = attributes_collection.sort_by { |index, _| index.to_i }.map { |_, attributes| attributes }
+      end
+    
+      association = self.class.associations[association_name]
+      if association.embedded?
+        assign_nested_attributes_for_many_embedded_association(association_name, attributes_collection)
+      else
+        self.autosave[association_name] = true
+        assign_nested_attributes_for_many_linked_association(association_name, attributes_collection)
+      end
+    end
+    
+    def assign_nested_attributes_for_many_embedded_association(association_name, attributes_collection)
+      options = nested_attributes_options[association_name]
+      send(:"#{association_name}=", []) # Clobber existing
+      attributes_collection.each do |attributes|
         attributes = attributes.stringify_keys
-        options = nested_attributes_options[association_name]
-
+        if !reject_new_record?(association_name, attributes)
+          send(association_name).build(attributes.except(*UNASSIGNABLE_KEYS))
+        end
+      end
+    end
+    
+    def assign_nested_attributes_for_many_linked_association(association_name, attributes_collection)
+      options = nested_attributes_options[association_name]
+      attributes_collection.each do |attributes|
+        attributes = attributes.stringify_keys
+    
         if attributes[key_attr.to_s].blank? && !reject_new_record?(association_name, attributes)
           send(association_name).build(attributes.except(*UNASSIGNABLE_KEYS))
-        else
-          if ((existing_record = send(association_name)).key.to_s == attributes[key_attr.to_s].to_s)
-            assign_to_or_mark_for_destruction(existing_record, attributes, association_name, options[:allow_destroy])
-          else
-            raise ArgumentError, "Attempting to update a child that isn't already associated to the parent."
-          end
-        end
-      end
-
-      def assign_nested_attributes_for_many_association(association_name, attributes_collection)
-        unless attributes_collection.is_a?(Hash) || attributes_collection.is_a?(Array)
-          raise ArgumentError, "Hash or Array expected, got #{attributes_collection.class.name} (#{attributes_collection.inspect})"
-        end
-
-        if attributes_collection.is_a? Hash
-          attributes_collection = attributes_collection.sort_by { |index, _| index.to_i }.map { |_, attributes| attributes }
-        end
-
-        association = self.class.associations[association_name]
-        if association.embedded?
-          assign_nested_attributes_for_many_embedded_association(association_name, attributes_collection)
-        else
-          self.autosave[association_name] = true
-          assign_nested_attributes_for_many_linked_association(association_name, attributes_collection)
-        end
-      end
-
-      def assign_nested_attributes_for_many_embedded_association(association_name, attributes_collection)
-        options = nested_attributes_options[association_name]
-        send(:"#{association_name}=", []) # Clobber existing
-        attributes_collection.each do |attributes|
-          attributes = attributes.stringify_keys
-          if !reject_new_record?(association_name, attributes)
-            send(association_name).build(attributes.except(*UNASSIGNABLE_KEYS))
-          end
-        end
-      end
-
-      def assign_nested_attributes_for_many_linked_association(association_name, attributes_collection)
-        options = nested_attributes_options[association_name]
-        attributes_collection.each do |attributes|
-          attributes = attributes.stringify_keys
-
-          if attributes[key_attr.to_s].blank? && !reject_new_record?(association_name, attributes)
-            send(association_name).build(attributes.except(*UNASSIGNABLE_KEYS))
-          elsif existing_record = send(association_name).detect { |record| record.key.to_s == attributes[key_attr.to_s].to_s }
-            assign_to_or_mark_for_destruction(existing_record, attributes, association_name, options[:allow_destroy])
-          end
+        elsif existing_record = send(association_name).detect { |record| record.key.to_s == attributes[key_attr.to_s].to_s }
+          assign_to_or_mark_for_destruction(existing_record, attributes, association_name, options[:allow_destroy])
         end
       end
     end

@@ -5,8 +5,10 @@ module Ripple
     module Read
       extend ActiveSupport::Concern
 
-      included do
-        attribute_method_suffix ""
+      if ActiveSupport::VERSION::STRING < '3.2'
+        included do
+          attribute_method_suffix ''
+        end
       end
 
       def [](attr_name)

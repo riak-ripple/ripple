@@ -10,9 +10,10 @@ module Ripple
 
       def <<(docs)
         load_target
-        @reflection.verify_type!(Array(docs), @owner)
+        docs = Array.wrap(docs)
+        @reflection.verify_type!(docs, @owner)
         assign_references(docs)
-        @target += Array(docs)
+        @target += docs
         self
       end
 

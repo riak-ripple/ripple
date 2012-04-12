@@ -7,7 +7,7 @@ module Ripple
       def replace(value)
         @reflection.verify_type!(value, @owner)
         @owner.robject.links -= links
-        Array(value).compact.each do |doc|
+        Array.wrap(value).compact.each do |doc|
           @owner.robject.links << doc.to_link(@reflection.link_tag)
         end
         loaded

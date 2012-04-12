@@ -9,11 +9,12 @@ module Ripple
       include Many
 
       def <<(value)
-        @reflection.verify_type!([value], @owner)
+        values = Array.wrap(value)
+        @reflection.verify_type!(values, @owner)
 
-        assign_key(value)
+        values.each {|v| assign_key(v) }
         load_target
-        @target << value
+        @target.merge values
 
         self
       end
@@ -21,7 +22,7 @@ module Ripple
       def replace(value)
         @reflection.verify_type!(value, @owner)
         delete_all
-        Array(value).compact.each do |doc|
+        Array.wrap(value).compact.each do |doc|
           assign_key(doc)
         end
         loaded
@@ -43,6 +44,7 @@ module Ripple
       end
 
       def target
+        load_target
         @target.to_a
       end
 

@@ -18,7 +18,7 @@ module Ripple
       end
 
       def assign_references(docs)
-        Array(docs).each do |doc|
+        Array.wrap(docs).each do |doc|
           next unless doc.respond_to?(:_parent_document=)
           doc._parent_document = owner
         end

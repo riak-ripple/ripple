@@ -16,6 +16,16 @@ describe Ripple::Indexes do
       subject.properties[:name_greeting].should == nil
     end
   end
+  context "inherited indexes" do
+    subject { SubIndexer }
+    it { should have(5).indexes }
+    it "should have inherited indexes" do
+      subject.indexes.keys.should include('age', 'name', 'name_age', 'name_greeting')
+    end
+    it "should have indexes defined on the subclass" do
+      subject.indexes.keys.should include('height')
+    end
+  end
 
   context "instance methods" do
     before { subject.robject.stub!(:store).and_return(true) }

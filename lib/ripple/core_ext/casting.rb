@@ -71,6 +71,8 @@ BooleanCast = Module.new do
       !value.zero?
     when TrueClass, FalseClass
       value
+    when /^\s*0/
+      false
     when /^\s*t/i
       true
     when /^\s*f/i

@@ -101,6 +101,7 @@ module Ripple
       private
       def create_association(type, name, options={})
         association = associations[name] = Association.new(type, name, options)
+        association.validate!(self)
         association.setup_on(self)
 
         define_method(name) do
@@ -120,72 +121,71 @@ module Ripple
       end
     end
 
-    module InstanceMethods
-      # @private
-      def get_proxy(association)
-        unless proxy = instance_variable_get(association.ivar)
-          proxy = association.proxy_class.new(self, association)
-          instance_variable_set(association.ivar, proxy)
-        end
-        proxy
+
+    # @private
+    def get_proxy(association)
+      unless proxy = instance_variable_get(association.ivar)
+        proxy = association.proxy_class.new(self, association)
+        instance_variable_set(association.ivar, proxy)
       end
+      proxy
+    end
 
-      # @private
-      def reset_associations
-        self.class.associations.each do |name, assoc_object|
-          send(name).reset
-        end
+    # @private
+    def reset_associations
+      self.class.associations.each do |name, assoc_object|
+        send(name).reset
       end
+    end
 
-      # Adds embedded documents to the attributes
-      # @private
-      def attributes_for_persistence
-        self.class.embedded_associations.inject(super) do |attrs, association|
-          documents = instance_variable_get(association.ivar)
-          # We must explicitly check #nil? (rather than just saying `if documents`)
-          # because documents can be an association proxy that is proxying nil.
-          # In this case ruby treats documents as true because it is not _really_ nil,
-          # but #nil? will tell us if it is proxying nil.
+    # Adds embedded documents to the attributes
+    # @private
+    def attributes_for_persistence
+      self.class.embedded_associations.inject(super) do |attrs, association|
+        documents = instance_variable_get(association.ivar)
+        # We must explicitly check #nil? (rather than just saying `if documents`)
+        # because documents can be an association proxy that is proxying nil.
+        # In this case ruby treats documents as true because it is not _really_ nil,
+        # but #nil? will tell us if it is proxying nil.
 
-          unless documents.nil?
-            attrs[association.name] = documents.is_a?(Array) ? documents.map(&:attributes_for_persistence) : documents.attributes_for_persistence
+        unless documents.nil?
+          attrs[association.name] = documents.is_a?(Array) ? documents.map(&:attributes_for_persistence) : documents.attributes_for_persistence
+        end
+        attrs
+      end
+    end
+
+    def propagate_callbacks_to_embedded_associations(name, kind)
+      self.class.embedded_associations.each do |association|
+        documents = instance_variable_get(association.ivar)
+        # We must explicitly check #nil? (rather than just saying `if documents`)
+        # because documents can be an association proxy that is proxying nil.
+        # In this case ruby treats documents as true because it is not _really_ nil,
+        # but #nil? will tell us if it is proxying nil.
+        next if documents.nil?
+
+        Array(documents).each do |doc|
+          doc.send("_#{name}_callbacks").each do |callback|
+            next unless callback.kind == kind
+            doc.send(callback.filter)
           end
-          attrs
         end
       end
+    end
 
-      def propagate_callbacks_to_embedded_associations(name, kind)
-        self.class.embedded_associations.each do |association|
-          documents = instance_variable_get(association.ivar)
-          # We must explicitly check #nil? (rather than just saying `if documents`)
-          # because documents can be an association proxy that is proxying nil.
-          # In this case ruby treats documents as true because it is not _really_ nil,
-          # but #nil? will tell us if it is proxying nil.
-          next if documents.nil?
+    # Propagates callbacks (save/create/update/destroy) to embedded associated documents.
+    # This is necessary so that when a parent is saved, the embedded child's before_save
+    # hooks are run as well.
+    # @private
+    def run_callbacks(name, *args, &block)
+      # validation is already propagated to embedded documents via the
+      # AssociatedValidator.  We don't need to duplicate the propagation here.
+      return super if name == :validation
 
-          Array(documents).each do |doc|
-            doc.send("_#{name}_callbacks").each do |callback|
-              next unless callback.kind == kind
-              doc.send(callback.filter)
-            end
-          end
-        end
-      end
-
-      # Propagates callbacks (save/create/update/destroy) to embedded associated documents.
-      # This is necessary so that when a parent is saved, the embedded child's before_save
-      # hooks are run as well.
-      # @private
-      def run_callbacks(name, *args, &block)
-        # validation is already propagated to embedded documents via the
-        # AssociatedValidator.  We don't need to duplicate the propagation here.
-        return super if name == :validation
-
-        propagate_callbacks_to_embedded_associations(name, :before)
-        return_value = super
-        propagate_callbacks_to_embedded_associations(name, :after)
-        return_value
-      end
+      propagate_callbacks_to_embedded_associations(name, :before)
+      return_value = super
+      propagate_callbacks_to_embedded_associations(name, :after)
+      return_value
     end
   end
 
@@ -200,6 +200,16 @@ module Ripple
 
     def initialize(type, name, options={})
       @type, @name, @options = type, name, options.to_options
+    end
+
+    def validate!(owner)
+      # TODO: Refactor this into an association subclass. See also GH #284
+      if @options[:using] == :stored_key
+        single_name = ActiveSupport::Inflector.singularize(@name.to_s)
+        prop_name = "#{single_name}_key"
+        prop_name << "s" if many?
+        raise ArgumentError, t('stored_key_requires_property', :name => prop_name) unless owner.properties.include?(prop_name)
+      end
     end
 
     # @return String The class name of the associated object(s)

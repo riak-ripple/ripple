@@ -3,6 +3,7 @@ require 'active_model/conversion'
 module Ripple
   # Provides ActionPack compatibility for {Ripple::Document} models.
   module Conversion
+    extend  ActiveSupport::Concern
     include ActiveModel::Conversion
 
     # True if this is a new document
