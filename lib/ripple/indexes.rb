@@ -54,7 +54,7 @@ module Ripple
             end
           end
         end
-    
+
         # Add this document's indexes
         self.class.indexes.each do |key, index|
           if index.block
@@ -78,13 +78,17 @@ module Ripple
       end
 
       module ClassMethods
-        # Search for a document using an indexed column 
-        # @param [Symbol] name of the index 
+        # Search for a document using an indexed column
+        # @param [Symbol] name of the index
         # @param [String, Integer, Range] query to search for
         def find_by_index(index_name, query)
-          idx = self.indexes[index_name]
-          raise ArgumentError, t('index_undefined', :property => index_name, :type => self.name) if idx.nil?
-          self.find(Ripple.client.get_index(self.bucket.name, idx.index_key, query))
+          if ["$bucket", "$key"].include?(index_name.to_s)
+            self.find(Ripple.client.get_index(self.bucket.name, index_name.to_s, query))
+          else
+            idx = self.indexes[index_name]
+            raise ArgumentError, t('index_undefined', :property => index_name, :type => self.name) if idx.nil?
+            self.find(Ripple.client.get_index(self.bucket.name, idx.index_key, query))
+          end
         end
       end
     end

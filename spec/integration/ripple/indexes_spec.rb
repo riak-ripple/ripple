@@ -32,6 +32,14 @@ describe Ripple::Indexes do
       Indexer.find_by_index(:age, 10..20).should == []
     end
 
+    it "should find by the special $bucket index" do
+      Indexer.find_by_index('$bucket', Indexer.bucket.name).should =~ [@bob, @sally, @mary]
+    end
+
+    it "should find by the special $key index" do
+      Indexer.find_by_index('$key', @bob.key..@bob.key.succ).should =~ [@bob]
+    end
+
     it "should raise an error when the requested index doesn't exist" do
       lambda { Indexer.find_by_index(:hair, 'blonde') }.should raise_error(ArgumentError)
     end
