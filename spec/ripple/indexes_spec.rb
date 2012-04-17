@@ -16,6 +16,7 @@ describe Ripple::Indexes do
       subject.properties[:name_greeting].should == nil
     end
   end
+
   context "inherited indexes" do
     subject { SubIndexer }
     it { should have(5).indexes }
@@ -44,6 +45,13 @@ describe Ripple::Indexes do
       subject.robject.indexes["age_int"].should == Set[28]
       subject.robject.indexes["name_age_bin"].should == Set["Bob-28"]
       subject.robject.indexes["name_greeting_bin"].should == Set["Bob: Hello!"]
+    end
+
+    context "when an index value is nil" do
+      subject { Indexer.new(:name => nil, :age => 28) }
+      its(:indexes_for_persistence) { should_not include('name_bin') }
+      its(:indexes_for_persistence) { should_not include('name_age_bin') }
+      its(:indexes_for_persistence) { should_not include('name_greeting_bin') }
     end
 
     context "when embedded documents have indexes" do

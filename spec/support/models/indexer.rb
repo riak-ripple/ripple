@@ -12,12 +12,16 @@ class Indexer
   one :primary_address, :class => IndexedAddress
   many :addresses, :class => IndexedAddress
   index :name_age, String do
-    "#{self.name}-#{self.age}"
+    if self.name && self.age
+      "#{self.name}-#{self.age}"
+    end
   end
   index :name_greeting, String
 
   def name_greeting
-    "#{name}: Hello!"
+    if name
+      "#{name}: Hello!"
+    end
   end
 end
 

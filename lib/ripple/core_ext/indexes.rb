@@ -22,6 +22,13 @@ class Object
 end
 
 # @private
+class NilClass
+  def to_ripple_index(type)
+    self
+  end
+end
+
+# @private
 class Time
   def to_ripple_index(type)
     case type

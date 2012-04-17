@@ -62,8 +62,10 @@ module Ripple
           else
             index_value = index.to_index_value send(key)
           end
-          index_value = Set[index_value] unless index_value.is_a?(Enumerable) && !index_value.is_a?(String)
-          indexes[prefix + index.index_key].merge index_value
+          unless index_value.nil?
+            index_value = Set[index_value] unless index_value.is_a?(Enumerable) && !index_value.is_a?(String)
+            indexes[prefix + index.index_key].merge index_value
+          end
         end
       end
     end
