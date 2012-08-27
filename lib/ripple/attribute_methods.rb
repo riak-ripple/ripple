@@ -39,6 +39,12 @@ module Ripple
       def define_attribute_methods
         super(properties.keys)
       end
+
+      protected
+
+      def instance_method_already_implemented?(method_name)
+        method_defined?(method_name)
+      end
     end
 
     # A copy of the values of all attributes in the Document. The result
