@@ -61,6 +61,21 @@ describe Ripple::AttributeMethods do
       @widget.name.gsub!("w","f")
       @widget.name.should == "fidget"
     end
+
+    it "should not replace inherited accessors" do
+      parent = Class.new do
+        include Ripple::Document
+        def foo
+          "awesome"
+        end
+      end
+      parent.new.foo.should eq("awesome")
+
+      child = Class.new(parent) do
+        property :foo, String
+      end
+      child.new.foo.should eq("awesome")
+    end
   end
 
   describe "mutators" do
