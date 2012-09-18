@@ -1,15 +1,8 @@
-# `ripple`: Riak Document Models [![Build Status](https://secure.travis-ci.org/seancribbs/ripple.png)](http://travis-ci.org/seancribbs/ripple)
+# `ripple`: Riak Document Models [![Build Status](https://secure.travis-ci.org/basho/ripple.png)](http://travis-ci.org/basho/ripple)
 
 `ripple` is a rich Ruby modeling layer for Riak, Basho's distributed
 database that contains an ActiveModel-based document abstraction which
 is inspired by ActiveRecord, DataMapper, and MongoMapper.
-
-**NOTE**: If you are looking for the other gems (`riak-client`,
-`riak-sessions`) that used to live in this repository, please find
-their canonical sources below:
-
-* [`riak-client`](https://github.com/basho/riak-ruby-client)
-* [`riak-sessions`](https://github.com/seancribbs/riak-sessions)
 
 ## Dependencies
 
@@ -138,11 +131,11 @@ production:
 
 ## How to Contribute
 
-* Fork the project on [Github](http://github.com/seancribbs/ripple).  If you have already forked, use `git pull --rebase` to reapply your changes on top of the mainline. Example:
+* Fork the project on [Github](http://github.com/basho/ripple).  If you have already forked, use `git pull --rebase` to reapply your changes on top of the mainline. Example:
 
     ``` bash
     $ git checkout master
-    $ git pull --rebase seancribbs master
+    $ git pull --rebase basho master
     ```
 * Create a topic branch. If you've already created a topic branch, rebase it on top of changes from the mainline "master" branch. Examples:
   * New branch:
@@ -159,7 +152,7 @@ production:
 * Make your feature addition or bug fix. Make your specs and stories pass (green).
 * Run the suite using multiruby or rvm to ensure cross-version compatibility.
 * Cleanup any trailing whitespace in your code (try @whitespace-mode@ in Emacs, or "Remove Trailing Spaces in Document" in the "Text" bundle in Textmate).
-* Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the [tracker](http://github.com/seancribbs/ripple/issues), include "Closes #X" in the commit message (where X is the issue number).
+* Commit, do not mess with Rakefile or VERSION.  If related to an existing issue in the [tracker](http://github.com/basho/ripple/issues), include "Closes #X" in the commit message (where X is the issue number).
 * Send me a pull request.
 
 ## License & Copyright
