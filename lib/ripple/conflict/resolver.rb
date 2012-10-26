@@ -74,17 +74,19 @@ module Ripple
         )
       end
 
-      def select_sibling(sibling)
-        if defined? Riak::RContent && Riak::RContent === sibling
+      if defined? Riak::RContent
+        def select_sibling(sibling)
           # riak-client 1.1.0+ makes the siblings a different class,
           # as they should be. We need to make a new RObject to hold
           # only this sibling.
           sibling.robject.dup.tap do |robject|
             robject.siblings = [ sibling.dup ]
           end
-        else
+        end
+      else
+        def select_sibling(sibling)
           # riak-client 1.0.x and earlier makes the siblings RObjects,
-          # so we can this sibling as-is after duplication.
+          # so we can use this sibling as-is after duplication.
           sibling.dup
         end
       end
