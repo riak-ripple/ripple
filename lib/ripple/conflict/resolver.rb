@@ -37,7 +37,7 @@ module Ripple
 
       def siblings
         @siblings ||= @robject.siblings.map do |s|
-          @model_class.send(:instantiate, s).tap do |record|
+          @model_class.send(:instantiate, select_sibling(s)).tap do |record|
             # TODO: make the deleted conditional explicit by putting logic in
             #       RObject to know it has loaded a deleted sibling.
             #       Here we assume it is deleted if the data is nil because
@@ -50,7 +50,7 @@ module Ripple
       def document
         # pick a sibling robject to use as the basis of the document to resolve
         # which one doesn't really matter.
-        @document ||= @model_class.send(:instantiate, @robject.siblings.first.dup)
+        @document ||= @model_class.send(:instantiate, select_sibling(@robject.siblings.first))
       end
 
       private
@@ -72,6 +72,23 @@ module Ripple
           :conflicts => basic_resolver.unexpected_conflicts.inspect,
           :document  => document.inspect
         )
+      end
+
+      if defined? Riak::RContent
+        def select_sibling(sibling)
+          # riak-client 1.1.0+ makes the siblings a different class,
+          # as they should be. We need to make a new RObject to hold
+          # only this sibling.
+          sibling.robject.dup.tap do |robject|
+            robject.siblings = [ sibling.dup ]
+          end
+        end
+      else
+        def select_sibling(sibling)
+          # riak-client 1.0.x and earlier makes the siblings RObjects,
+          # so we can use this sibling as-is after duplication.
+          sibling.dup
+        end
       end
     end
   end
