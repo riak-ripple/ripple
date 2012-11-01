@@ -178,7 +178,7 @@ describe Ripple::NestedAttributes, :integration => true do
 
     describe "update" do
       before do
-        subject.engine.build(:displacement => '3.6L')
+        subject.build_engine(:displacement => '3.6L')
         subject.save
       end
 
