@@ -7,7 +7,7 @@ describe Ripple::Associations::ManyReferenceProxy do
     @account = Account.new {|e| e.key = "accounty"}
     @payment_method = PaymentMethod.new {|e| e.key = "paymadoo"}
     @other_payment_method = PaymentMethod.new {|e| e.key = "otherpaym"}
-    Ripple.client.stub(:search => {"response" => {"docs" => []}})
+    Ripple.client.stub(:search => {"docs" => [], "max_score" => 0.0, "num_found" => 0})
   end
 
   it "should be empty before any associated documents are set" do
@@ -35,7 +35,7 @@ describe Ripple::Associations::ManyReferenceProxy do
   end
 
   it "should find the associated documents when accessing" do
-    Ripple.client.should_receive(:search).with("payment_methods", "account_key: accounty").and_return({"response" => {"docs" => ["id" => "paymadoo"]}})
+    Ripple.client.should_receive(:search).with("payment_methods", "account_key: accounty").and_return({"docs" => ["id" => "paymadoo"], "max_score" => 0.0, "num_found" => 1})
     PaymentMethod.should_receive(:find).with(["paymadoo"]).and_return([@payment_method])
     @account.payment_methods.should == [@payment_method]
   end
@@ -71,7 +71,7 @@ describe Ripple::Associations::ManyReferenceProxy do
     end
 
     it "should be able to count without loading documents" do
-      Ripple.client.stub(:search => {"response" => {"docs" => [{"id" => @payment_method.key}, {"id" => @other_payment_method.key}]}})
+      Ripple.client.stub(:search => {"docs" => [{"id" => @payment_method.key}, {"id" => @other_payment_method.key}], "max_score" => 0.5, "num_found" => 2})
       PaymentMethod.should_not_receive(:find)
       @account.payment_methods.count.should == 2
     end
@@ -113,7 +113,7 @@ describe Ripple::Associations::ManyReferenceProxy do
   describe "#keys" do
     let(:ze_keys) { %w(1 2 3) }
     let(:search_results) do
-      {"response" => {"docs" => ze_keys.map { |k| {"id" => k} }}}
+      {"docs" => ze_keys.map { |k| {"id" => k} }, "num_found" => 3, "max_score" => 0.0}
     end
 
     before(:each) do
