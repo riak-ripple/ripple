@@ -52,6 +52,7 @@ module Ripple
         @keys ||=
           begin
             search = Ripple.client.search(klass.bucket_name,"#{key_name}: #{@owner.key}")
+            search = search['response'] if search['response']
             search["docs"].map {|doc| doc['id'] }.to_set
           end
       end
