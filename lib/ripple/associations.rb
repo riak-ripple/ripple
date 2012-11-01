@@ -120,16 +120,16 @@ module Ripple
             get_proxy(association).present?
           end
 
-          define_method("build_#{name}") do |attrs={}|
-            get_proxy(association).build(attrs)
+          define_method("build_#{name}") do |*args|
+            get_proxy(association).build(*args)
           end
 
-          define_method("create_#{name}") do |attrs={}|
-            get_proxy(association).create(attrs)
+          define_method("create_#{name}") do |*args|
+            get_proxy(association).create(*args)
           end
 
-          define_method("create_#{name}!") do |attrs={}|
-            get_proxy(association).create!(attrs)
+          define_method("create_#{name}!") do |*args|
+            get_proxy(association).create!(*args)
           end
         else
           define_method(name) do
