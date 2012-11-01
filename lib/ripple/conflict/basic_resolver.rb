@@ -46,7 +46,7 @@ module Ripple
 
       def process_linked_associations
         model_class.linked_associations.each do |assoc|
-          document.send(assoc.name).replace_links(resolved_association_value_for(assoc, :links))
+          document.send(:get_proxy, assoc).replace_links(resolved_association_value_for(assoc, :links))
         end
       end
 
@@ -73,7 +73,7 @@ module Ripple
 
       def resolved_association_value_for(association, proxy_value_method)
         # the association proxy doesn't uniquify well, so we have to use the target or links directly
-        uniq_values = undeleted_siblings.map { |s| s.send(association.name).__send__(proxy_value_method) }.uniq
+        uniq_values = undeleted_siblings.map { |s| s.send(:get_proxy, association).__send__(proxy_value_method) }.uniq
 
         return uniq_values.first if uniq_values.size == 1
         remaining_conflicts << association.name

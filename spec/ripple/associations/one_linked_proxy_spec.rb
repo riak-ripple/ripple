@@ -48,11 +48,13 @@ describe Ripple::Associations::OneLinkedProxy do
   end
 
   it "allows the links to be replaced directly" do
+    pending "Evaluate removal of this functionality. Instead should we have aname_link accessors on the owner?"
     @person.profile = @profile
-    @person.profile.__send__(:should_receive, :reset)
-    @person.profile.__send__(:links).should == [@profile.robject.to_link("profile")]
-    @person.profile.replace_links(@other_profile.robject.to_link("profile"))
-    @person.profile.__send__(:links).should == [@other_profile.robject.to_link("profile")]
+    proxy = @person.get_proxy(Person.associations[:profile])
+    proxy.__send__(:should_receive, :reset)
+    proxy.__send__(:links).should == [@profile.robject.to_link("profile")]
+    proxy.replace_links @other_profile.robject.to_link("profile")
+    proxy.__send__(:links).should == [@other_profile.robject.to_link("profile")]
   end
 
   it "should return nil immediately if the association link is missing" do

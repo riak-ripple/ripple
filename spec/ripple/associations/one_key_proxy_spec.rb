@@ -30,7 +30,7 @@ describe Ripple::Associations::OneKeyProxy do
 
     it "should be able to build a new profile" do
       Profile.stub(:new).and_return(@profile)
-      @user.profile.build.should eq(@profile)
+      @user.build_profile.should eq(@profile)
     end
 
     it "should assign its key to the associated profile when assigning" do
@@ -41,7 +41,7 @@ describe Ripple::Associations::OneKeyProxy do
 
     it "should assign its key to the built profile" do
       @user.key = "foo"
-      @user.profile.build.key.should eq("foo")
+      @user.build_profile.key.should eq("foo")
     end
 
     it "should update the key on the profile when updating it on the user" do

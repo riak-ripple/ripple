@@ -49,13 +49,13 @@ describe Ripple::Associations::OneEmbeddedProxy do
 
   it "should be able to build a new child" do
     Child.stub!(:new).and_return(@child)
-    @parent.child.build.should == @child
+    @parent.build_child.should == @child
   end
 
   it "should assign a parent to the child created with instantiate_target" do
     Child.stub!(:new).and_return(@child)
     @child._parent_document.should be_nil
-    @parent.child.build._parent_document.should == @parent
+    @parent.build_child._parent_document.should == @parent
   end
 
   it "should validate the child when saving the parent" do

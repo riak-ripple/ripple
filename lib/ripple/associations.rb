@@ -104,18 +104,41 @@ module Ripple
         association.validate!(self)
         association.setup_on(self)
 
-        define_method(name) do
-          get_proxy(association)
-        end
+        if association.one?
+          define_method(name) do
+            proxy = get_proxy(association)
+            proxy.send(:load_target)
+            proxy.proxy_target
+          end
 
-        define_method("#{name}=") do |value|
-          get_proxy(association).replace(value)
-          value
-        end
+          define_method("#{name}=") do |value|
+            get_proxy(association).replace(value)
+            value
+          end
 
-        unless association.many?
           define_method("#{name}?") do
             get_proxy(association).present?
+          end
+
+          define_method("build_#{name}") do |attrs={}|
+            get_proxy(association).build(attrs)
+          end
+
+          define_method("create_#{name}") do |attrs={}|
+            get_proxy(association).create(attrs)
+          end
+
+          define_method("create_#{name}!") do |attrs={}|
+            get_proxy(association).create!(attrs)
+          end
+        else
+          define_method(name) do
+            get_proxy(association)
+          end
+
+          define_method("#{name}=") do |value|
+            get_proxy(association).replace(value)
+            value
           end
         end
       end
@@ -134,7 +157,7 @@ module Ripple
     # @private
     def reset_associations
       self.class.associations.each do |name, assoc_object|
-        send(name).reset
+        get_proxy(assoc_object).reset
       end
     end
 
@@ -355,7 +378,7 @@ module Ripple
           @_in_save_loaded_documents_callback = true
 
           begin
-            send(_association.name).loaded_documents.each do |document|
+            get_proxy(_association).loaded_documents.each do |document|
               document.save if document.new? || document.changed?
             end
           ensure

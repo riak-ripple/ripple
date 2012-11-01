@@ -43,7 +43,7 @@ module Ripple
       # documents at any level, have changed.
       def changed?
         super || self.class.embedded_associations.any? do |association|
-          send(association.name).has_changed_documents?
+          get_proxy(association).has_changed_documents?
         end
       end
 
