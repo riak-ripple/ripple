@@ -106,7 +106,7 @@ describe Ripple::Associations::ManyEmbeddedProxy do
   it "should not add the associated validator multiple times" do
     # TODO: the validator is added lazily on first instantiation of
     # the proxy. This is a code smell!
-    user.addresses 
+    user.addresses
     User.validators_on(:addresses).count.should eq(1)
   end
 end

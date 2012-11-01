@@ -34,33 +34,33 @@ module Ripple
     # @return [Hash] a hash of attributes and embedded documents
     def serializable_hash(options=nil)
       options = options.try(:clone) || {}
-    
+
       unless options.has_key?(:include)
         options[:include] = self.class.embedded_associations.map(&:name)
       end
-    
+
       hash = super(options)
-    
+
       hash['key'] = key if respond_to?(:key) && key.present? && (!options[:except] || !options[:except].map(&:to_s).include?("key"))
-    
+
       serializable_add_includes(options) do |association, records, opts|
         hash[association.to_s] = records.is_a?(Enumerable) ? records.map {|r| r.serializable_hash(opts) } : records.serializable_hash(opts)
       end
       hash
     end
-    
+
     private
     def serializable_add_includes(options={})
       return unless include_associations = options.delete(:include)
-    
+
       base_only_or_except = {
         :except => options[:except],
         :only => options[:only]
       }
-    
+
       include_has_options = include_associations.is_a?(Hash)
       associations = include_has_options ? include_associations.keys : Array.wrap(include_associations)
-    
+
       for association in associations
         records = case self.class.associations[association.to_sym].type
                   when :many
@@ -68,14 +68,14 @@ module Ripple
                   when :one
                     send(association)
                   end
-    
+
         unless records.nil?
           association_options = include_has_options ? include_associations[association] : base_only_or_except
           opts = options.merge(association_options)
           yield(association, records, opts)
         end
       end
-    
+
       options[:include] = include_associations
     end
   end

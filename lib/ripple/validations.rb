@@ -47,13 +47,13 @@ module Ripple
       return false if options[:validate] && !valid?
       super()
     end
-    
+
     # Saves the document and raises {DocumentInvalid} exception if
     # validations fail.
     def save!
       (raise Ripple::DocumentInvalid.new(self) unless save) || true
     end
-    
+
     # Sets the passed attributes and saves the document, raising a
     # {DocumentInvalid} exception if the validations fail.
     def update_attributes!(attrs)

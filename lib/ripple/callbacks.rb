@@ -43,7 +43,7 @@ module Ripple
         super
       end
     end
-    
+
     def run_save_callbacks
       state = new? ? :create : :update
       run_callbacks(:save) do
@@ -52,14 +52,14 @@ module Ripple
         end
       end
     end
-    
+
     # @private
     def destroy!(*args, &block)
       run_callbacks(:destroy) do
         super
       end
     end
-    
+
     # @private
     def valid?(*args, &block)
       @_on_validate = new? ? :create : :update

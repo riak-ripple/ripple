@@ -21,12 +21,12 @@ module Ripple
       def key
         @key
       end
-      
+
       # Sets the key for this Document.
       def key=(value)
         @key = value.to_s
       end
-      
+
       def key_attr
         :key
       end

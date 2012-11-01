@@ -32,17 +32,17 @@ module Ripple
         @new = true
         @deleted = false
       end
-      
+
       # Determines whether this document has been deleted or not.
       def deleted?
         @deleted
       end
-      
+
       # Determines whether this is a new document.
       def new?
         @new || false
       end
-      
+
       # Updates a single attribute and then saves the document
       # NOTE: THIS SKIPS VALIDATIONS! Use with caution.
       # @return [true,false] whether the document succeeded in saving
@@ -50,20 +50,20 @@ module Ripple
         send("#{attribute}=", value)
         save(:validate => false)
       end
-      
+
       # Writes new attributes and then saves the document
       # @return [true,false] whether the document succeeded in saving
       def update_attributes(attrs)
         self.attributes = attrs
         save
       end
-      
+
       # Saves the document in Riak.
       # @return [true,false] whether the document succeeded in saving
       def save(*args)
         really_save(*args)
       end
-      
+
       def really_save(*args)
         update_robject
         robject.store(self.class.quorums.slice(:w,:dw))
@@ -71,7 +71,7 @@ module Ripple
         @new = false
         true
       end
-      
+
       # Reloads the document from Riak
       # @return self
       def reload
@@ -81,46 +81,46 @@ module Ripple
         reset_associations
         self
       end
-      
+
       # Deletes the document from Riak and freezes this instance
       def destroy!
         robject.delete(self.class.quorums.slice(:rw)) unless new?
         @deleted = true
         freeze
       end
-      
+
       def destroy
         destroy!
         true
       rescue Riak::FailedRequest
         false
       end
-      
+
       # Freeze the attributes hash instead of the record itself to avoid
       # errors when calling methods on frozen records.
       def freeze
         @attributes.freeze
       end
-      
+
       # Returns +true+ if the attributes hash has been frozen.
       def frozen?
         @attributes.frozen?
       end
-      
+
       attr_writer :robject
-      
+
       def robject
         @robject ||= Riak::RObject.new(self.class.bucket, key).tap do |obj|
           obj.content_type = "application/json"
         end
       end
-      
+
       def update_robject
         robject.key = key if robject.key != key
         robject.content_type = 'application/json'
         robject.data = attributes_for_persistence
       end
-      
+
       private
       def attributes_for_persistence
         raw_attributes.merge("_type" => self.class.name)
