@@ -53,41 +53,6 @@ namespace :riak do
   end
 end
 
-namespace :db do
-  desc "Creates the database(s) for the current environment"
-  task :create => "riak:create"
-
-  namespace(:create) do
-    desc "Creates the database(s) for all environments"
-    task :all => "riak:create:all"
-  end
-
-  desc "Drops the database(s) for the current environment"
-  task :drop => ['db:stop', 'riak:drop']
-
-  namespace(:drop) do
-    desc "Drops the database(s) for all environments"
-    task :all => "riak:drop:all"
-  end
-
-  desc "Starts the database(s) for the current environment"
-  task :start => 'riak:start'
-
-  desc "Stops the database(s) for the current environment"
-  task :stop => 'riak:stop'
-
-  desc "Creates the database(s) and loads the seed data."
-  task :setup => ['db:create', 'db:start', 'db:seed']
-
-  desc "Drops and recreates the database(s) for the current environment."
-  task :reset => ['db:drop', 'db:setup']
-
-  desc "Loads the seed data in to the current environment"
-  task :seed => :environment do
-    Rails.application.load_seed
-  end
-end
-
 def load_config
   file = Rails.root + "config/ripple.yml"
   raise Ripple::MissingConfiguration, file.to_s unless file.exist?
