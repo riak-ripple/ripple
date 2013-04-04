@@ -325,7 +325,7 @@ module Ripple
       when polymorphic?
         one? || Array === value
       when many?
-        Array === value && value.all? {|d| (embedded? && Hash === d) || klass === d }
+        Array === value && value.all? {|d| (embedded? && Hash === d) || d.kind_of?(klass) }
       when one?
         value.nil? || (embedded? && Hash === value) || value.kind_of?(klass)
       end

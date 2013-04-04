@@ -1,6 +1,7 @@
 class User
   include Ripple::Document
   many :addresses
+  one :primary_mailing_address, :class_name => "Address"
 
   one :profile, :using => :key
   one :user_profile

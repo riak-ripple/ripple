@@ -101,12 +101,19 @@ describe Ripple::Associations::ManyEmbeddedProxy do
     lambda { user.addresses = nil }.should raise_error
     lambda { user.addresses = address }.should raise_error
     lambda { user.addresses = [note] }.should raise_error
+    lambda { user.addresses << Company.new }.should raise_error
+  end
+
+  it "should allow adding previously embedded objects of the right type" do
+    user.primary_mailing_address = address
+    user.addresses << user.primary_mailing_address
+    user.addresses.should == [address]
   end
 
   it "should not add the associated validator multiple times" do
     # TODO: the validator is added lazily on first instantiation of
     # the proxy. This is a code smell!
-    user.addresses 
+    user.addresses
     User.validators_on(:addresses).count.should eq(1)
   end
 end
