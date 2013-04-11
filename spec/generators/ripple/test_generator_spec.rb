@@ -37,6 +37,7 @@ describe Ripple::Generators::TestGenerator do
     it "should insert the test server setup" do
       contents.should include("  config.before(:suite) { Ripple::TestServer.setup }")
       contents.should include("  config.after(:each) { Ripple::TestServer.clear }")
+      contents.should include("  config.after(:suite) { Ripple::TestServer.instance.stop }")
     end
 
     context "when the configuration block is indented" do
@@ -59,6 +60,7 @@ describe Ripple::Generators::TestGenerator do
       it "should insert the test server setup with additional indentation" do
         contents.should include("    config.before(:suite) { Ripple::TestServer.setup }")
         contents.should include("    config.after(:each) { Ripple::TestServer.clear }")
+        contents.should include("    config.after(:suite) { Ripple::TestServer.instance.stop }")
       end
     end
   end
