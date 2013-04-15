@@ -21,7 +21,8 @@ module Ripple
           end
           inject_into_file 'spec/spec_helper.rb', :after => rspec_prelude do
             "\n#{indentation}  config.before(:suite) { Ripple::TestServer.setup }" +
-              "\n#{indentation}  config.after(:each) { Ripple::TestServer.clear }\n"
+              "\n#{indentation}  config.after(:each) { Ripple::TestServer.clear }" +
+              "\n#{indentation}  config.after(:suite) { Ripple::TestServer.instance.stop }\n"
           end
         end
       end
