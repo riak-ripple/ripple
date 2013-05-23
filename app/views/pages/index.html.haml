@@ -1,69 +1,60 @@
 - content_for :title do
   Riak on Rails
-- content_for :page_title do
-  Ripple: Riak on Rails
 
-:markdown
-  Ripple is a modeling layer for Riak, mapping Riak keys, values, and indexes to
-  ActiveModel objects. It's inspired by ActiveRecord, DataMapper, and MongoMapper.
-
-  ## Dependencies
-
-  Ripple requires Ruby 1.8.7 or later. It depends on `activemodel` 3.0, 3.1, or 3.2, 
-  and the many gems (including `activesupport`) that `activemodel` depends on.
-
-  Ripple uses the `riak-client` gem to connect to Riak.
-
-  Use `bundler` to handle dependencies; put this in your `Gemfile`.
-
-      source 'https://rubygems.org'
-
-      gem 'ripple', '~> 1.0.0.beta2'
-      
-  Once you've configured that, run `bundle` and Ripple will be available.
-
-  Rails applications will automatically load `ripple`. Non-Rails applications
-  should `require "ripple"` at some point.
-
-  ## Basic Model
-
-  Make a new model in `app/models`.
-
-      class Post
-        include Ripple::Document
-
-        property :name, String, presence: true
-        property :body, String, presence: true
-      end
-
-  This model has two `String` properties. Some of the other classes available
-  for properties are `Integer`, `Float`, `Numeric`, `Symbol`, `Boolean`,
-  `Time`, `Date`, and `DateTime`.
-
-.protip
+%section#intro
   :markdown
-    ### Source Diving
+    Ripple is a modeling layer for Riak, mapping Riak keys, values, and indexes to
+    ActiveModel objects. It's inspired by ActiveRecord, DataMapper, and MongoMapper.
 
-    For more about what property classes are available, look at
-    [`core_ext/casting.rb`](https://github.com/basho/ripple/blob/master/lib/ripple/core_ext/casting.rb).
-    The short answer is that properties need a `ripple_cast` 
+%section#basics
+  :markdown
+    ## tl;dr
 
-:markdown
-  Let's play with an instance of the Post class:
+        class Vehicle
+          include Ripple::Document
 
-      p = Post.new
-      p.name = "first post"
-      p.body = "this post is rad!!!\n" * 10
+          property :license, String, presence: true, index: true
+          property :region, String
 
-      p.save
+          property :serial, String, presence: true, index: true
+          property :name, String
 
-      p.key #=> "37458abc752f8413e"
+          one :model, using: :stored_key # adds a model_key property
 
-      p2 = Post.find "37458abc752f8413e"
+          # looks for vehicle_key if Option is a Document, or
+          # adds an options collection if Option is an EmbeddedDocument
+          many :options
 
-      p.name #=> "first post"
+          index :region_license, String do
+            "\#{region}-\#{license}"
+          end
 
-  ## Alternate Keys
+          def self.find_by_region_and_license(region, license)
+            index_key = "\#{region}-\#{license}"
 
-  Sometimes you don't want a Riak-assigned key: "37458abc752f8413e" is pretty
-  gross.
+            # find_by returns an array
+            candidates = find_by :region_license, index_key
+            return candidates.first
+          end
+        end
+
+%section#dependencies
+  :markdown
+    ## Dependencies
+
+    Ripple requires Ruby 1.8.7 or later. It depends on `activemodel` 3.0, 3.1, or 3.2, 
+    and the many gems (including `activesupport`) that `activemodel` depends on.
+
+    Ripple uses the `riak-client` gem to connect to Riak.
+
+    Use `bundler` to handle dependencies; put this in your `Gemfile`.
+
+        source 'https://rubygems.org'
+
+        gem 'ripple', '~> 1.0.0.beta2'
+        
+    Once you've configured that, run `bundle` and Ripple will be available.
+
+    Rails applications will automatically load `ripple`. Non-Rails applications
+    should `require "ripple"` at some point.
+

@@ -1,0 +1,4 @@
+%nav
+  %ul
+    - %w{index model}.each do |p|
+      %li= link_to_unless_current p.titleize, id: p

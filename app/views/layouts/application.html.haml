@@ -2,12 +2,16 @@
 %html
   %head
     %title
-      Ripple
+      Ripple: 
       = yield :title
     = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
-  %body
+  %body{class: params[:id]}
     .container
-      %h1#page_title= yield :page_title
+      #title_unit
+        %h1#page_title
+          Ripple:
+          = yield :title
+      = render partial: 'shared/navbar'
       = yield

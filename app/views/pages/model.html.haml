@@ -1,0 +1,56 @@
+- content_for :title do
+  Model Design
+
+%section#basics
+  :markdown
+    ## Basic Model
+
+    Make a new model in `app/models`.
+
+        class Post
+          include Ripple::Document
+
+          property :name, String, presence: true
+          property :body, String, presence: true
+
+          timestamps!
+        end
+
+  = source_dive do
+    :markdown
+      For more about what property classes are available, look at
+      [`core_ext/casting.rb`](https://github.com/basho/ripple/blob/master/lib/ripple/core_ext/casting.rb).
+      The short answer is that instances of a property class need a `ripple_cast`
+      method.
+
+  :markdown
+    This model has two `String` properties. Some of the other classes available
+    for properties are `Integer`, `Float`, `Numeric`, `Symbol`, `Boolean`,
+    `Time`, `Date`, and `DateTime`.
+
+    Both `String` properties are required to be present.
+
+    Let's play with an instance of the Post class:
+
+        p = Post.new
+        p.name = "first post"
+        p.body = "this post is rad!!!\n" * 10
+
+        p.save
+
+        p.key #=> "37458abc752f8413e"
+
+        p2 = Post.find "37458abc752f8413e"
+
+        p.name #=> "first post"
+
+%section#keys
+  :markdown
+    ## Alternate Keys
+
+    Sometimes you don't want a Riak-assigned key: "37458abc752f8413e" is pretty
+    gross.
+
+        class User
+          include Ripple::Document
+          property :email, String, presence: true
