@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/thoughtbot/high_voltage.git
+  revision: 5babcbd8258c2b4c1edcd5712a38c0023885ca5e
+  specs:
+    high_voltage (1.2.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -45,7 +51,6 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
-    high_voltage (1.2.2)
     hike (1.2.2)
     i18n (0.6.4)
     jbuilder (1.0.2)
@@ -121,7 +126,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
   haml-rails
-  high_voltage
+  high_voltage!
   jbuilder (~> 1.0.1)
   jquery-rails
   maruku

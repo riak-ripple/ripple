@@ -6,7 +6,7 @@ gem 'rails', '4.0.0.beta1'
 gem 'haml-rails'
 gem 'maruku'
 
-gem 'high_voltage'
+gem 'high_voltage', github: 'thoughtbot/high_voltage'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0.rc1'
