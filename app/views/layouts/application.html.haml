@@ -1,9 +1,13 @@
 !!!
 %html
   %head
-    %title Ripple
+    %title
+      Ripple
+      = yield :title
     = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
   %body
-    = yield
+    .container
+      %h1#page_title= yield :page_title
+      = yield
