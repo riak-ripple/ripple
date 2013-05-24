@@ -4,6 +4,6 @@ class Timeseries
   property :column, String
 
   def key
-    "\#{column}-\#{date}"
+    "#{column}-#{date}"
   end
 end

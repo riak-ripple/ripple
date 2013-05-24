@@ -14,11 +14,11 @@ class Vehicle
   many :options
 
   index :region_license, String do
-    "\#{region}-\#{license}"
+    "#{region}-#{license}"
   end
 
   def self.find_by_region_and_license(region, license)
-    index_key = "\#{region}-\#{license}"
+    index_key = "#{region}-#{license}"
 
     # find_by returns an array
     candidates = find_by :region_license, index_key
