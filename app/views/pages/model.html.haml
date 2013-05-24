@@ -7,14 +7,7 @@
 
     Make a new model in `app/models`.
 
-        class Post
-          include Ripple::Document
-
-          property :name, String, presence: true
-          property :body, String, presence: true
-
-          timestamps!
-        end
+    #{snippet 'post_basic.rb'}
 
   = source_dive do
     :markdown
@@ -32,17 +25,7 @@
 
     Let's play with an instance of the Post class:
 
-        p = Post.new
-        p.name = "first post"
-        p.body = "this post is rad!!!\n" * 10
-
-        p.save
-
-        p.key #=> "37458abc752f8413e"
-
-        p2 = Post.find "37458abc752f8413e"
-
-        p.name #=> "first post"
+    #{snippet 'post_usage.rb'}
 
 %section#keys
   :markdown
@@ -59,73 +42,21 @@
   :markdown
     You can use `key_on` to declare a single property as the key:
 
-        class User
-          include Ripple::Document
-          property :email, String, presence: true
-
-          key_on :email
-        end
+    #{snippet 'user_key_on.rb'}
 
     Ripple calls the `key` method to figure out the key, so if you want a 
     composite key (or really any complicated key) you can define it that way:
 
-        class Timeseries
-          include Ripple::Document
-          property :date, Date
-          property :column, String
-
-          def key
-            "\#{column}-\#{date}"
-          end
-        end
+    #{snippet 'timeseries_key_method.rb'}
 
     You can also just assign the key yourself.
 
-        p = Post.new key: 'first-post', name: 'first post', body: 'rad post 1000'
-        p.save
-
-        p.key #=> "first-post"
+    #{snippet 'post_key_assignment.rb'}
 
     If you have a complicated keying setup, it might be worthwhile to move
     keying logic to a separate class:
 
-        class TimeseriesKey
-          attr_accessor :column, :user_key
-          attr_reader :date
-
-          # http://en.wikipedia.org/wiki/Record_separator#Field_separators
-          UNIT_SEPARATOR = "\x1f"
-
-          def initialize(opts)
-            initialize_from_key(opts) if opts.is_a? String
-
-            # the implementation of this is left as an exercise for the reader
-            initialize_from_options(opts) if opts.is_a? Hash
-          end
-
-          def initialize_from_key(opts)
-            self.date, self.column, self.user_key = opts.split(UNIT_SEPARATOR)
-          end
-
-          def date=(new_date)
-            # coerce new_date to the appropriate type
-          end
-
-          def to_s
-            [date, column, user_key].join UNIT_SEPARATOR
-          end
-        end
-
-        class Timeseries
-          include Ripple::Document
-          property :date, Date
-          property :column, String
-          one :user, using: :stored_key
-
-          def key
-            @key ||= TimeseriesKey.new(attributes).to_s
-          end
-        end
+    #{snippet 'timeseries_key_class.rb'}        
 
     By having this logic isolated, it becomes much easier to test and reason
     about independently from the model or business logic.
