@@ -9,7 +9,7 @@ module ApplicationHelper
   def snippet(name)
     path = Rails.root + 'snippets' + name
     data = File.read path
-    highlit = Albino.colorize data, :ruby
+    highlit = Pygments.highlight data, lexer: :ruby
     Haml::Helpers.preserve(highlit)
   end
 end

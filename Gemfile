@@ -6,7 +6,7 @@ gem 'rails', '4.0.0.beta1'
 
 gem 'haml-rails'
 gem 'maruku'
-gem 'albino'
+gem 'pygments.rb'
 
 gem 'high_voltage', github: 'thoughtbot/high_voltage'
 
