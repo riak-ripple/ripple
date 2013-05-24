@@ -5,4 +5,11 @@ module ApplicationHelper
       content_tag(:div, class: 'protip-content', &blk)
     end
   end
+
+  def snippet(name)
+    path = Rails.root + 'app/snippets' + name
+    data = File.read path
+    highlit = Albino.colorize data, :ruby
+    Haml::Helpers.preserve(highlit)
+  end
 end
