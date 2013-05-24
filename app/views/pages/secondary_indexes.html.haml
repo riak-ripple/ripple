@@ -11,3 +11,11 @@
     In Riak 1.3.1 and newer, both the `eleveldb` and `memory` backends support
     2i. If you're using the `multi` backend, `eleveldb` and `memory` buckets 
     will support queries, while `bitcask` and `innostore` buckets won't.
+
+%section#definition
+  :markdown
+    ## Definition
+
+    You can define secondary indexes directly on properties:
+
+    #{snippet 'vehicle_2i_def.rb'}
