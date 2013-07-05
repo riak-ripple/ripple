@@ -1,0 +1,20 @@
+- content_for :title do
+  Riak Search
+
+%section#search
+  :markdown
+    Riak supports full-text search through an interface called
+    "Riak Search."
+
+    Enabling search takes several steps: making sure the cluster has 
+    `riak_search` enabled, adding the precommit hook to the bucket you will
+    be searching, and re-update the objects in the bucket.
+
+    The Riak documentation describes 
+    [enabling search on a cluster](http://docs.basho.com/riak/latest/references/Riak-Search---Settings/),
+    [use cases for `riak_search`](http://docs.basho.com/riak/latest/tutorials/querying/Riak-Search/), and
+    [working with search](http://docs.basho.com/riak/latest/cookbooks/Riak-Search---Indexing-and-Querying-Riak-KV-Data/).
+
+        Ripple.client.
+          search('zombies', 'text:run*')['response']['docs'].
+          map{|d|Zombie.find d['id']}

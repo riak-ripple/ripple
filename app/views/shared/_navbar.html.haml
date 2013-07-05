@@ -1,6 +1,6 @@
 %nav
   %ul
-    - %w{index model secondary_indexes}.each do |p|
+    - %w{index model secondary_indexes search}.each do |p|
       %li= link_to_unless_current p.titleize, id: p
     %li.starboard= link_to 'GitHub', 'https://github.com/basho/ripple/'
     %li.starboard= link_to 'Gem', 'https://rubygems.org/gems/ripple/'
