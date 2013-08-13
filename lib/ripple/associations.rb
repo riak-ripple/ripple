@@ -323,11 +323,11 @@ module Ripple
     def type_matches?(value)
       case
       when polymorphic?
-        one? || Array === value
+        one? || value.is_a?(Array)
       when many?
-        Array === value && value.all? {|d| (embedded? && Hash === d) || d.kind_of?(klass) }
+        value.is_a?(Array) && value.all? {|d| (embedded? && d.is_a?(Hash)) || d.kind_of?(klass) }
       when one?
-        value.nil? || (embedded? && Hash === value) || value.kind_of?(klass)
+        value.nil? || (embedded? && value.is_a?(Hash)) || value.kind_of?(klass)
       end
     end
 
