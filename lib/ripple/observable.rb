@@ -1,6 +1,4 @@
-
-require 'active_support/concern'
-require 'active_model/observing'
+require 'rails/observers/active_model/observing' 
 
 module Ripple
   module Observable
