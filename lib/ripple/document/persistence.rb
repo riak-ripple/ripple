@@ -58,6 +58,12 @@ module Ripple
         save
       end
       
+      # Alias for update_attributes()
+      # (Rails 4.0 generated controllers now use @obj.update(params) instead of .update_attributes(params))
+      def update(attrs)
+        update_attributes(attrs)
+      end
+      
       # Saves the document in Riak.
       # @return [true,false] whether the document succeeded in saving
       def save(*args)
