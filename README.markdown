@@ -1,4 +1,4 @@
-# `ripple`: Riak Document Models [![Build Status](https://secure.travis-ci.org/basho/ripple.png)](http://travis-ci.org/basho/ripple)
+# `ripple`: Riak Document Models [![Build Status](https://secure.travis-ci.org/basho-labs/ripple.png)](http://travis-ci.org/basho-labs/ripple)
 
 `ripple` is a rich Ruby modeling layer for Riak, Basho's distributed
 database that contains an ActiveModel-based document abstraction which
