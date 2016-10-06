@@ -7,8 +7,8 @@ Gem::Specification.new do |gem|
   gem.version = Ripple::VERSION
   gem.summary = %Q{ripple is an object-mapper library for Riak, the distributed database by Basho.}
   gem.description = %Q{ripple is an object-mapper library for Riak, the distributed database by Basho.  It uses ActiveModel to provide an experience that integrates well with Rails 3 applications.}
-  gem.email = ["sean@basho.com"]
-  gem.homepage = "http://seancribbs.github.com/ripple"
+  gem.email = ["luke@bakken.io"]
+  gem.homepage = "https://github.com/riak-ripple/ripple"
   gem.authors = ["Sean Cribbs"]
 
   # Deps
